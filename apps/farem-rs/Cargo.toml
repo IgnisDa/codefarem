@@ -1,0 +1,12 @@
+[package]
+name = "farem-rs"
+version = "0.1.0"
+edition = "2021"
+description = "This binary will be responsible for taking a rust source, compiling it to wasm and then returning the response as the compiled output or error encountered while transformation."
+
+[dependencies]
+duct = "0.13.5"
+rocket = "0.4.11"
+rocket_contrib = "0.4.11"
+serde = { version = "1.0.144", features = ["derive"] }
+tempfile = "3.3.0"

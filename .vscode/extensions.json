@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "nrwl.angular-console",
+    "esbenp.prettier-vscode",
+    "magicstack.edgedb",
+    "tamasfe.even-better-toml",
+    "dustypomerleau.rust-syntax",
+    "lorenzopirro.rust-flash-snippets",
+    "serayuzgur.crates",
+    "evgeniypeshkov.syntax-highlighter",
+    "jscearcy.rust-doc-viewer",
+    "zhangyue.rust-mod-generator",
+    "rust-lang.rust-analyzer"
+  ]
+}
