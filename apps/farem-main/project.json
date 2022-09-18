@@ -8,6 +8,12 @@
       "options": {
         "release": false
       },
+      "outputs": [
+        "target/debug/farem-main*",
+        "target/debug/*/farem-main*",
+        "target/release/farem-main*",
+        "target/release/*/farem-main*"
+      ],
       "configurations": {
         "production": {
           "release": true

@@ -2,7 +2,7 @@
 
 use rocket::{post, routes};
 
-enum Language {
+enum _Language {
     Rust,
 }
 
@@ -14,7 +14,7 @@ fn index() -> String {
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let conn = edgedb_tokio::create_client().await?;
-    let val = conn
+    let _val = conn
         .query_required_single::<i32, _>("SELECT {<int32>$0}", &(1 + 2,))
         .await?;
     let val = conn
