@@ -1,0 +1,38 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/farem-main/src",
+  "targets": {
+    "build": {
+      "executor": "@ignisda/nx-rust:build",
+      "options": {
+        "release": false
+      },
+      "configurations": {
+        "production": {
+          "release": true
+        }
+      }
+    },
+    "run": {
+      "executor": "@ignisda/nx-rust:build",
+      "options": {
+        "release": false,
+        "run": true
+      }
+    },
+    "test": {
+      "executor": "@ignisda/nx-rust:nextest",
+      "options": {}
+    },
+    "lint": {
+      "executor": "@ignisda/nx-rust:clippy",
+      "options": {
+        "fix": false,
+        "failOnWarnings": true,
+        "noDeps": true
+      }
+    }
+  },
+  "tags": []
+}
