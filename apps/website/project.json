@@ -1,0 +1,77 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/website",
+  "projectType": "application",
+  "targets": {
+    "__tailwindcss": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "pnpm tailwindcss -i app/styles/tailwind.scss -o app/tailwind.css",
+        "cwd": "apps/website"
+      }
+    },
+    "__typecheck": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "tsc --project tsconfig.json --noEmit",
+        "cwd": "apps/website"
+      }
+    },
+    "__dev-server": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "remix dev",
+        "cwd": "apps/website"
+      }
+    },
+    "__dev-tailwindcss": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "pnpm nx run website:__tailwindcss -- --watch",
+        "cwd": "apps/website"
+      }
+    },
+    "__dev-routes": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx routes-gen -d @routes-gen/remix --watch --output app/lib/routes.d.ts",
+        "cwd": "apps/website"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "pnpm nx run website:__dev-tailwindcss",
+          "pnpm nx run website:__dev-routes",
+          "pnpm nx run website:__dev-server"
+        ],
+        "cwd": "apps/website"
+      },
+      "configurations": {
+        "production": {
+          "command": "npx remix-serve .",
+          "cwd": "dist/apps/website"
+        }
+      }
+    },
+    "build": {
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "__typecheck"
+        }
+      ],
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/website",
+        "commands": [
+          "pnpm nx run website:__tailwindcss -- --minify",
+          "cross-env NODE_ENV='production' remix build"
+        ]
+      },
+      "outputs": ["dist/apps/website"]
+    }
+  },
+  "tags": []
+}

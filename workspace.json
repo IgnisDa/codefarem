@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "farem-main": "apps/farem-main",
-    "farem-rs": "apps/farem-rs"
+    "farem-rs": "apps/farem-rs",
+    "website": "apps/website"
   }
 }

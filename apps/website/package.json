@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "name": "website",
+  "scripts": {
+    "postinstall": "npx remix setup node"
+  }
+}

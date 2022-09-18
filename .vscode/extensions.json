@@ -10,6 +10,9 @@
     "evgeniypeshkov.syntax-highlighter",
     "jscearcy.rust-doc-viewer",
     "zhangyue.rust-mod-generator",
-    "rust-lang.rust-analyzer"
+    "rust-lang.rust-analyzer",
+    "bradlc.vscode-tailwindcss",
+    "heybourn.headwind",
+    "rbbit.typescript-hero"
   ]
 }
