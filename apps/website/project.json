@@ -10,7 +10,7 @@
         "cwd": "apps/website"
       }
     },
-    "__typecheck": {
+    "lint": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "tsc --project tsconfig.json --noEmit",
@@ -56,12 +56,6 @@
       }
     },
     "build": {
-      "dependsOn": [
-        {
-          "projects": "self",
-          "target": "__typecheck"
-        }
-      ],
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "cwd": "apps/website",
