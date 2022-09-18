@@ -1,4 +1,4 @@
-#![feature(proc_macro_hygiene, decl_macro, rustc_private, box_patterns)]
+#![feature(proc_macro_hygiene, decl_macro)]
 
 use duct::cmd;
 use rocket::response::NamedFile;

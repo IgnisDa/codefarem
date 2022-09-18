@@ -21,7 +21,7 @@
       }
     },
     "test": {
-      "executor": "@ignisda/nx-rust:test",
+      "executor": "@ignisda/nx-rust:nextest",
       "options": {}
     },
     "lint": {
