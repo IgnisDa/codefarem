@@ -1,5 +1,4 @@
 pub mod graphql;
-pub mod services;
 
 use std::sync::Arc;
 

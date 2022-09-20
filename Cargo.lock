@@ -632,6 +632,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 
 [[package]]
+name = "domains"
+version = "0.1.0"
+dependencies = [
+ "async-graphql",
+ "async-trait",
+ "edgedb-tokio",
+]
+
+[[package]]
 name = "duct"
 version = "0.13.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -745,6 +754,7 @@ dependencies = [
  "anyhow",
  "async-graphql",
  "async-graphql-rocket",
+ "domains",
  "edgedb-tokio",
  "rocket 0.5.0-rc.2",
  "strum",
@@ -989,6 +999,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b919933a397b79c37e33b77bb2aa3dc8eb6e165ad809e58ff75bc7db2e34574"
 
 [[package]]
+name = "h2"
+version = "0.3.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5ca32592cf21ac7ccab1825cd87f6c9b3d9022c44d086172ed0966bec8af30be"
+dependencies = [
+ "bytes",
+ "fnv",
+ "futures-core",
+ "futures-sink",
+ "futures-util",
+ "http",
+ "indexmap",
+ "slab",
+ "tokio",
+ "tokio-util 0.7.4",
+ "tracing",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1119,6 +1148,7 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-util",
+ "h2",
  "http",
  "http-body",
  "httparse",
@@ -1915,6 +1945,7 @@ dependencies = [
  "rocket_codegen 0.5.0-rc.2",
  "rocket_http 0.5.0-rc.2",
  "serde",
+ "serde_json",
  "state 0.5.3",
  "tempfile",
  "time 0.3.14",
@@ -2634,6 +2665,7 @@ dependencies = [
  "futures-sink",
  "pin-project-lite",
  "tokio",
+ "tracing",
 ]
 
 [[package]]

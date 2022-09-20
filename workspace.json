@@ -2,6 +2,7 @@
   "$schema": "node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "domains": "libs/domains",
     "farem-main": "apps/farem-main",
     "farem-rs": "apps/farem-rs",
     "website": "apps/website"

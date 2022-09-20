@@ -7,8 +7,9 @@ edition = "2021"
 anyhow = "1.0.65"
 async-graphql = "4.0.13"
 async-graphql-rocket = "4.0.13"
+domains = { path = "../../libs/domains" }
 edgedb-tokio = "0.3.0"
-rocket = { version = "0.5.0-rc.2", default-features = false }
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
 strum = { version = "0.24.1", features = ["derive"] }
 strum_macros = "0.24.3"
 tokio = { version = "1.21.1", features = ["rt", "macros"] }

@@ -1,0 +1,9 @@
+[package]
+name = "domains"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-graphql = "4.0.13"
+async-trait = "0.1.57"
+edgedb-tokio = "0.3.0"
