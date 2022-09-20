@@ -13,6 +13,7 @@
     "rust-lang.rust-analyzer",
     "bradlc.vscode-tailwindcss",
     "heybourn.headwind",
-    "rbbit.typescript-hero"
+    "rbbit.typescript-hero",
+    "dbaeumer.vscode-eslint"
   ]
 }

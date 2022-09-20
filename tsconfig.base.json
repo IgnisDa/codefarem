@@ -17,7 +17,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@codefarem/generated/*": [
+        "libs/generated/src/lib/*"
+      ],
+      "@codefarem/graphql/*": [
+        "libs/graphql/src/lib/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

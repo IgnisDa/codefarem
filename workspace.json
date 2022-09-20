@@ -5,6 +5,8 @@
     "domains": "libs/domains",
     "farem-main": "apps/farem-main",
     "farem-rs": "apps/farem-rs",
+    "generated": "libs/generated",
+    "graphql": "libs/graphql",
     "website": "apps/website"
   }
 }

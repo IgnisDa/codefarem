@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/generated/src",
+  "projectType": "library",
+  "targets": {},
+  "tags": []
+}
