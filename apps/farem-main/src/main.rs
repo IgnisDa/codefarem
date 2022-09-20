@@ -1,26 +1,33 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-use rocket::{post, routes};
+use async_graphql::http::playground_source;
+use async_graphql::http::GraphQLPlaygroundConfig;
+use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use async_graphql_rocket::{GraphQLRequest as Request, GraphQLResponse as Response};
+use farem_main::{graphql::QueryRoot, ApplicationContext};
+use rocket::get;
+use rocket::response::content::RawHtml;
+use rocket::{launch, post, routes, State};
 
-enum _Language {
-    Rust,
+pub type GraphqlSchema = Schema<QueryRoot, EmptyMutation, EmptySubscription>;
+
+#[get("/graphiql")]
+fn graphiql() -> RawHtml<String> {
+    RawHtml(playground_source(GraphQLPlaygroundConfig::new("/graphql")))
 }
 
-#[post("/")]
-fn index() -> String {
-    "Hello".to_string()
+#[post("/graphql", data = "<request>", format = "application/json")]
+async fn graphql_request(schema: &State<GraphqlSchema>, request: Request) -> Response {
+    request.execute(schema).await
 }
 
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    let conn = edgedb_tokio::create_client().await?;
-    let _val = conn
-        .query_required_single::<i32, _>("SELECT {<int32>$0}", &(1 + 2,))
-        .await?;
-    let val = conn
-        .query_required_single::<String, _>("SELECT {<str>$0}", &("wow",))
-        .await?;
-    println!("7*8 is: {}", val);
-    rocket::ignite().mount("/", routes![index]).launch();
-    Ok(())
+#[launch]
+async fn rocket() -> _ {
+    let ctx = ApplicationContext::init().await.unwrap();
+    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription)
+        .data(ctx)
+        .finish();
+    rocket::build()
+        .manage(schema)
+        .mount("/", routes![graphiql, graphql_request])
 }

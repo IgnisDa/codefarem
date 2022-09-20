@@ -21,10 +21,12 @@
       }
     },
     "run": {
-      "executor": "@ignisda/nx-rust:build",
-      "options": {
-        "release": false,
-        "run": true
+      "executor": "@ignisda/nx-rust:run",
+      "options": {},
+      "configurations": {
+        "production": {
+          "release": true
+        }
       }
     },
     "test": {
