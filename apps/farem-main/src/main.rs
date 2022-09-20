@@ -4,7 +4,7 @@ use async_graphql::{
 };
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
 use domains::farem::service::FaremService;
-use farem_main::{graphql::QueryRoot, ApplicationContext};
+use farem_main::{graphql::QueryRoot, init_application};
 use rocket::{get, launch, post, response::content::RawHtml, routes, State};
 
 pub type GraphqlSchema = Schema<QueryRoot, EmptyMutation, EmptySubscription>;
@@ -24,10 +24,9 @@ async fn graphql_request(
 
 #[launch]
 async fn rocket() -> _ {
-    let ctx = ApplicationContext::init().await.unwrap();
-    let farem_service = FaremService::new(&ctx.db_conn);
+    let (db,) = init_application().await.unwrap();
+    let farem_service = FaremService::new(&db);
     let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription)
-        .data(ctx)
         .data(farem_service)
         .finish();
     rocket::build()
