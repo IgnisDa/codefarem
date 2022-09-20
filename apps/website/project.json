@@ -38,7 +38,7 @@
         "cwd": "apps/website"
       }
     },
-    "serve": {
+    "start": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [

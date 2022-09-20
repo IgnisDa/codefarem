@@ -28,7 +28,7 @@ export default () => {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
