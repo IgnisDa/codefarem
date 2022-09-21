@@ -24,9 +24,9 @@ async fn graphql_request(
 
 #[launch]
 async fn rocket() -> _ {
-    let (db,) = init_application().await.unwrap();
-    let farem_service = FaremService::new(&db);
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription)
+    let (db, farem_client) = init_application().await.unwrap();
+    let farem_service = FaremService::new(&db, &farem_client);
+    let schema = Schema::build(QueryRoot::default(), EmptyMutation, EmptySubscription)
         .data(farem_service)
         .finish();
     rocket::build()
