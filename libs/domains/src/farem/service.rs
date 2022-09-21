@@ -10,24 +10,23 @@ use tempfile::Builder;
 
 #[async_trait]
 pub trait FaremServiceTrait: Sync + Send {
-    /// Get all supported langauges
     fn supported_languages(&self) -> Vec<SupportedLanguage>;
 
-    /// Compile and execute a Rust source.
-    // Currently does not support user inputs.
+    async fn language_example(&self, language: SupportedLanguage) -> String;
+
     async fn compile_rust(&self, input: String) -> String;
 }
 
 pub struct FaremService {
     pub db_conn: Arc<DbClient>,
-    pub farem_client: Arc<HttpClient>,
+    pub rust_farem_client: Arc<HttpClient>,
 }
 
 impl FaremService {
-    pub fn new(db_conn: &Arc<DbClient>, farem_client: &Arc<HttpClient>) -> Self {
+    pub fn new(db_conn: &Arc<DbClient>, rust_farem_client: &Arc<HttpClient>) -> Self {
         Self {
             db_conn: db_conn.clone(),
-            farem_client: farem_client.clone(),
+            rust_farem_client: rust_farem_client.clone(),
         }
     }
 }
@@ -49,9 +48,22 @@ impl FaremServiceTrait for FaremService {
         SupportedLanguage::variants()
     }
 
+    async fn language_example(&self, language: SupportedLanguage) -> String {
+        let farem_client = match language {
+            SupportedLanguage::Rust => &self.rust_farem_client,
+        };
+        farem_client
+            .get("/example")
+            .await
+            .unwrap()
+            .body_string()
+            .await
+            .unwrap()
+    }
+
     async fn compile_rust(&self, input: String) -> String {
         let mut s = self
-            .farem_client
+            .rust_farem_client
             .post("/farem")
             .body_json(&json!({ "rust": input }))
             .unwrap()

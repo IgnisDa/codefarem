@@ -1,7 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 use duct::cmd;
-use rocket::response::NamedFile;
+use rocket::response::{content::Plain, NamedFile};
 use rocket_contrib::json::Json;
 use serde::Deserialize;
 use std::io::Write;
@@ -13,6 +13,21 @@ extern crate rocket;
 #[derive(Debug, PartialEq, Eq, Deserialize)]
 struct FaremInput {
     rust: String,
+}
+
+#[get("/example")]
+fn example() -> Plain<String> {
+    Plain(
+        r#"
+use std::collections::HashMap;
+
+fn main() {
+  println!("hello world, and welcome to CodeFarem!")
+}
+"#
+        .trim()
+        .to_string(),
+    )
 }
 
 #[post("/farem", data = "<code_input>")]
@@ -32,9 +47,14 @@ fn farem(code_input: Json<FaremInput>) -> Option<NamedFile> {
     )
     .run()
     .unwrap();
-    NamedFile::open(output_file).ok()
+    let resp = NamedFile::open(&output_file).ok();
+    input_file.close().unwrap();
+    output_file.close().unwrap();
+    resp
 }
 
 fn main() {
-    rocket::ignite().mount("/", routes![farem]).launch();
+    rocket::ignite()
+        .mount("/", routes![example, farem])
+        .launch();
 }
