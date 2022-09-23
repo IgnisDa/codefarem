@@ -23,6 +23,9 @@
       ],
       "@codefarem/graphql/*": [
         "libs/graphql/src/lib/*"
+      ],
+      "@codefarem/react-ui": [
+        "libs/react-ui/src/index.ts"
       ]
     }
   },
