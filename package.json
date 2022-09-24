@@ -73,22 +73,26 @@
   "dependencies": {
     "@codemirror/lang-rust": "6.0.0",
     "@headlessui/react": "1.7.2",
-    "@radix-ui/react-toggle-group": "^1.0.0",
+    "@radix-ui/react-toggle-group": "1.0.0",
     "@remix-run/node": "1.7.1",
     "@remix-run/react": "1.7.1",
     "@remix-run/serve": "1.7.1",
     "@uiw/react-codemirror": "4.12.3",
-    "core-js": "^3.6.5",
+    "core-js": "3.25.2",
+    "domain-functions": "1.1.0",
     "env-var": "7.3.0",
     "graphql": "16.6.0",
     "lodash": "4.17.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0",
+    "react-hook-form": "7.36.1",
+    "react-icons": "4.4.0",
     "regenerator-runtime": "0.13.7",
+    "remix-forms": "0.18.2",
     "remix-utils": "3.3.0",
-    "tiny-invariant": "^1.2.0",
+    "tiny-invariant": "1.2.0",
     "urql": "3.0.3",
-    "urql-generic-requester": "0.0.2"
+    "urql-generic-requester": "0.0.2",
+    "zod": "3.19.1"
   }
 }

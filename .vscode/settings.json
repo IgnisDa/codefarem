@@ -5,6 +5,7 @@
         "codemirror",
         "commitlint",
         "cssmodule",
+        "dedup",
         "dotenv",
         "edgedb",
         "farem",

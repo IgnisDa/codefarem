@@ -24,7 +24,7 @@ specifiers:
   '@nrwl/remix': 14.7.0
   '@nrwl/web': 14.7.5
   '@nrwl/workspace': 14.7.5
-  '@radix-ui/react-toggle-group': ^1.0.0
+  '@radix-ui/react-toggle-group': 1.0.0
   '@remix-run/dev': 1.7.1
   '@remix-run/eslint-config': 1.7.1
   '@remix-run/node': 1.7.1
@@ -43,8 +43,9 @@ specifiers:
   autoprefixer: 10.4.11
   babel-jest: 28.1.1
   commitizen: 4.2.5
-  core-js: ^3.6.5
+  core-js: 3.25.2
   cross-env: 7.0.3
+  domain-functions: 1.1.0
   env-var: 7.3.0
   eslint: 8.20.0
   eslint-config-prettier: 8.5.0
@@ -62,19 +63,22 @@ specifiers:
   prettier: 2.7.1
   react: 18.2.0
   react-dom: 18.2.0
-  react-icons: ^4.4.0
+  react-hook-form: 7.36.1
+  react-icons: 4.4.0
   react-test-renderer: 18.2.0
   regenerator-runtime: 0.13.7
+  remix-forms: 0.18.2
   remix-utils: 3.3.0
   routes-gen: 0.5.2
   tailwindcss: 3.1.8
-  tiny-invariant: ^1.2.0
+  tiny-invariant: 1.2.0
   ts-jest: 28.0.5
   ts-node: 10.9.1
   tslib: 2.4.0
   typescript: 4.8.3
   urql: 3.0.3
   urql-generic-requester: 0.0.2
+  zod: 3.19.1
 
 dependencies:
   '@codemirror/lang-rust': 6.0.0
@@ -84,18 +88,22 @@ dependencies:
   '@remix-run/react': 1.7.1_biqbaboplfbrettd7655fr4n2y
   '@remix-run/serve': 1.7.1_biqbaboplfbrettd7655fr4n2y
   '@uiw/react-codemirror': 4.12.3_os2i4b4c4r6ynotuwzkce5wzcu
-  core-js: 3.25.1
+  core-js: 3.25.2
+  domain-functions: 1.1.0
   env-var: 7.3.0
   graphql: 16.6.0
   lodash: 4.17.21
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.36.1_react@18.2.0
   react-icons: 4.4.0_react@18.2.0
   regenerator-runtime: 0.13.7
+  remix-forms: 0.18.2_6qrdphyoxfo7s3owecewd45c3y
   remix-utils: 3.3.0_iroum3fkcfsau4uzn6ztqaojpi
   tiny-invariant: 1.2.0
   urql: 3.0.3_onqnqwb3ubg5opvemcqf7c2qhy
   urql-generic-requester: 0.0.2_graphql@16.6.0+urql@3.0.3
+  zod: 3.19.1
 
 devDependencies:
   '@commitlint/cli': 17.1.2
@@ -2469,6 +2477,14 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
+  /@hookform/resolvers/2.9.8_react-hook-form@7.36.1:
+    resolution: {integrity: sha512-iVVjH0USq+1TqDdGkWe2M1x7Wn5OFPgVRo7CbWFsXTqqXqCaZtZcnzJu+UhljCWbthFWxWGXKLGYUDPZ04oVvQ==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.36.1_react@18.2.0
+    dev: false
+
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
@@ -3287,7 +3303,7 @@ packages:
       '@nrwl/devkit': 14.7.5_nx@14.7.5+typescript@4.8.3
       '@nrwl/linter': 14.7.5_7ikanpt5awllp723xftodt7mgm
       '@nrwl/workspace': 14.7.5_4zhdkdeyxv5htyam2v37kyhcla
-      core-js: 3.25.1
+      core-js: 3.25.2
       dotenv: 10.0.0
       semver: 7.3.4
       ts-loader: 9.3.1_kb3egcnme7w23lfa5xodfjfhge
@@ -3366,7 +3382,7 @@ packages:
       chalk: 4.1.0
       chokidar: 3.5.3
       copy-webpack-plugin: 10.2.4_webpack@5.74.0
-      core-js: 3.25.1
+      core-js: 3.25.2
       css-loader: 6.7.1_webpack@5.74.0
       css-minimizer-webpack-plugin: 3.4.1_jocfejeu7nc2tbm3hu6gslcolu
       enhanced-resolve: 5.10.0
@@ -6570,8 +6586,8 @@ packages:
     requiresBuild: true
     dev: true
 
-  /core-js/3.25.1:
-    resolution: {integrity: sha512-sr0FY4lnO1hkQ4gLDr24K0DGnweGO1QwSj5BpfQjpSJPdqWalja4cTps29Y/PJVG/P7FYlPDkH3hO+Tr0CvDgQ==}
+  /core-js/3.25.2:
+    resolution: {integrity: sha512-YB4IAT1bjEfxTJ1XYy11hJAKskO+qmhuDBM8/guIfMz4JvdsAQAqvyb97zXX7JgSrfPLG5mRGFWJwJD39ruq2A==}
     requiresBuild: true
 
   /core-util-is/1.0.3:
@@ -7184,6 +7200,13 @@ packages:
       domhandler: 4.3.1
       entities: 2.2.0
     dev: true
+
+  /domain-functions/1.1.0:
+    resolution: {integrity: sha512-tvValjypE5Q+vzM6LYX8z8JHqmpI/8mvdE4RkHP2Iz0ne/Zm+mL5YeC/KjVOMmvG1ErFu7nWCJHdcf/azdCqwg==}
+    dependencies:
+      qs: 6.11.0
+      zod: 3.19.1
+    dev: false
 
   /domelementtype/2.3.0:
     resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
@@ -13370,7 +13393,6 @@ packages:
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.0.4
-    dev: true
 
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
@@ -13428,6 +13450,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+
+  /react-hook-form/7.36.1_react@18.2.0:
+    resolution: {integrity: sha512-EbYYkCG2p8ywe7ikOH2l02lAFMrrrslZi1I8fqd8ifDGNAkhomHZQzQsP6ksvzrWBKntRe8b5L5L7Zsd+Gm02Q==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-icons/4.4.0_react@18.2.0:
     resolution: {integrity: sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==}
@@ -13690,6 +13721,25 @@ packages:
   /remedial/1.0.8:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
     dev: true
+
+  /remix-forms/0.18.2_6qrdphyoxfo7s3owecewd45c3y:
+    resolution: {integrity: sha512-npTGm2JV/7kH/Jw/e+Qtr5mmFCGK6kwRIw61BKssSfCXC0S8pQ9RBYwKT2H0GuIkKzH23qcL6bm2a1WH2gyhDA==}
+    peerDependencies:
+      '@remix-run/react': '>=1.2'
+      '@remix-run/server-runtime': '>=1.2'
+      domain-functions: '>=1.0.0'
+      react: '>=16.8'
+      react-hook-form: '>=7.27'
+      zod: '>=3.12'
+    dependencies:
+      '@hookform/resolvers': 2.9.8_react-hook-form@7.36.1
+      '@remix-run/react': 1.7.1_biqbaboplfbrettd7655fr4n2y
+      '@remix-run/server-runtime': 1.7.1_biqbaboplfbrettd7655fr4n2y
+      domain-functions: 1.1.0
+      react: 18.2.0
+      react-hook-form: 7.36.1_react@18.2.0
+      zod: 3.19.1
+    dev: false
 
   /remix-utils/3.3.0_iroum3fkcfsau4uzn6ztqaojpi:
     resolution: {integrity: sha512-jqqFcUH8DNTgcw8rje0q1Ra3w0TBa8B8c39BArXIweWsNX12MVwBY9NET3c+IXj0iQlzRk4GNObuOe4r5UrJIg==}
@@ -16166,6 +16216,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+    dev: false
 
   /zwitch/2.0.2:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}
