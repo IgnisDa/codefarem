@@ -5,6 +5,7 @@
   "forwardPorts": [],
   "workspaceFolder": "/workspace",
   "postCreateCommand": ". ${containerWorkspaceFolder}/.devcontainer/scripts/post-create.sh",
+  "postStartCommand": ". ${containerWorkspaceFolder}/.devcontainer/scripts/post-start.sh",
   "remoteUser": "node",
   "remoteEnv": {
     "GIT_AUTHOR_NAME": "${localEnv:GIT_AUTHOR_NAME}",

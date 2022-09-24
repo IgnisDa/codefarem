@@ -15,6 +15,7 @@
     "heybourn.headwind",
     "rbbit.typescript-hero",
     "dbaeumer.vscode-eslint",
-    "firsttris.vscode-jest-runner"
+    "firsttris.vscode-jest-runner",
+    "ms-vscode.cpptools"
   ]
 }
