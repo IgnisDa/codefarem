@@ -1,8 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 use duct::cmd;
-use rocket::response::{content::Plain, NamedFile};
-use rocket_contrib::json::Json;
+use rocket::{fs::NamedFile, launch, serde::json::Json};
 use serde::Deserialize;
 use std::io::Write;
 use tempfile::Builder;
@@ -16,22 +15,22 @@ struct FaremInput {
 }
 
 #[get("/example")]
-fn example() -> Plain<String> {
-    Plain(
-        r#"
+fn example() -> String {
+    let code = r#"
 use std::collections::HashMap;
 
 fn main() {
-  println!("hello world, and welcome to CodeFarem!")
+  println!("hello world, and welcome to CodeFarem!");
+  "This is another code";
 }
 "#
-        .trim()
-        .to_string(),
-    )
+    .trim()
+    .to_string();
+    code
 }
 
 #[post("/farem", data = "<code_input>")]
-fn farem(code_input: Json<FaremInput>) -> Option<NamedFile> {
+async fn farem(code_input: Json<FaremInput>) -> Option<NamedFile> {
     let mut builder = Builder::new();
     builder.prefix("farem").suffix(".rs").rand_bytes(16);
     let mut input_file = builder.tempfile().unwrap();
@@ -47,14 +46,13 @@ fn farem(code_input: Json<FaremInput>) -> Option<NamedFile> {
     )
     .run()
     .unwrap();
-    let resp = NamedFile::open(&output_file).ok();
+    let resp = NamedFile::open(&output_file).await.ok();
     input_file.close().unwrap();
     output_file.close().unwrap();
     resp
 }
 
-fn main() {
-    rocket::ignite()
-        .mount("/", routes![example, farem])
-        .launch();
+#[launch]
+async fn rocket() -> _ {
+    rocket::build().mount("/", routes![example, farem])
 }

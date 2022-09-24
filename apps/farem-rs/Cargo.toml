@@ -6,7 +6,6 @@ description = "This binary will be responsible for taking a rust source, compili
 
 [dependencies]
 duct = "0.13.5"
-rocket = "0.4.11"
-rocket_contrib = "0.4.11"
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0.144", features = ["derive"] }
 tempfile = "3.3.0"
