@@ -23,13 +23,14 @@ export type Scalars = {
 /** The GraphQL top-level mutation type */
 export type MutationRoot = {
   __typename?: 'MutationRoot';
-  /** Compile a rust source and execute it. */
-  compileRust: Scalars['String'];
+  /** Takes some code as input and compiles it to wasm before executing it */
+  executeCode: Scalars['String'];
 };
 
 /** The GraphQL top-level mutation type */
-export type MutationRootCompileRustArgs = {
+export type MutationRootExecuteCodeArgs = {
   input: Scalars['String'];
+  language: SupportedLanguage;
 };
 
 /** The GraphQL top-level query type */
@@ -50,13 +51,14 @@ export enum SupportedLanguage {
   Rust = 'RUST',
 }
 
-export type CompileRustMutationVariables = Exact<{
+export type ExecuteCodeMutationVariables = Exact<{
   input: Scalars['String'];
+  language: SupportedLanguage;
 }>;
 
-export type CompileRustMutation = {
+export type ExecuteCodeMutation = {
   __typename?: 'MutationRoot';
-  compileRust: string;
+  executeCode: string;
 };
 
 export type SupportedLanguagesQueryVariables = Exact<{ [key: string]: never }>;
@@ -75,9 +77,9 @@ export type LanguageExampleQuery = {
   languageExample: string;
 };
 
-export const CompileRustDocument = gql`
-  mutation CompileRust($input: String!) {
-    compileRust(input: $input)
+export const ExecuteCodeDocument = gql`
+  mutation ExecuteCode($input: String!, $language: SupportedLanguage!) {
+    executeCode(input: $input, language: $language)
   }
 `;
 export const SupportedLanguagesDocument = gql`
@@ -97,15 +99,15 @@ export type Requester<C = {}, E = unknown> = <R, V>(
 ) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    CompileRust(
-      variables: CompileRustMutationVariables,
+    ExecuteCode(
+      variables: ExecuteCodeMutationVariables,
       options?: C
-    ): Promise<CompileRustMutation> {
-      return requester<CompileRustMutation, CompileRustMutationVariables>(
-        CompileRustDocument,
+    ): Promise<ExecuteCodeMutation> {
+      return requester<ExecuteCodeMutation, ExecuteCodeMutationVariables>(
+        ExecuteCodeDocument,
         variables,
         options
-      ) as Promise<CompileRustMutation>;
+      ) as Promise<ExecuteCodeMutation>;
     },
     SupportedLanguages(
       variables?: SupportedLanguagesQueryVariables,

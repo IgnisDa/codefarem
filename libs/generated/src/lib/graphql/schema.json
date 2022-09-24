@@ -54,8 +54,8 @@
         "description": "The GraphQL top-level mutation type",
         "fields": [
           {
-            "name": "compileRust",
-            "description": "Compile a rust source and execute it.",
+            "name": "executeCode",
+            "description": "Takes some code as input and compiles it to wasm before executing it",
             "args": [
               {
                 "name": "input",
@@ -66,6 +66,22 @@
                   "ofType": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "language",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "SupportedLanguage",
                     "ofType": null
                   }
                 },

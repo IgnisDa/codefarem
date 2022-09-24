@@ -1,7 +1,7 @@
 import { gql } from 'urql';
 
-export const COMPILE_RUST = gql`
-  mutation CompileRust($input: String!) {
-    compileRust(input: $input)
+export const EXECUTE_CODE = gql`
+  mutation ExecuteCode($input: String!, $language: SupportedLanguage!) {
+    executeCode(input: $input, language: $language)
   }
 `;
