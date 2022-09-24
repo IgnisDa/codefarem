@@ -21,7 +21,6 @@ use std::collections::HashMap;
 
 fn main() {
   println!("hello world, and welcome to CodeFarem!");
-  "This is another code";
 }
 "#
     .trim()

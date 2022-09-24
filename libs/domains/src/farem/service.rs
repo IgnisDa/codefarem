@@ -15,6 +15,8 @@ pub trait FaremServiceTrait: Sync + Send {
     async fn language_example(&self, language: SupportedLanguage) -> String;
 
     async fn compile_rust(&self, input: String) -> String;
+
+    async fn execute_code(&self, input: String, language: SupportedLanguage) -> String;
 }
 
 pub struct FaremService {
@@ -79,5 +81,11 @@ impl FaremServiceTrait for FaremService {
         let stdout = cmd!("wasmtime", named_tempfile.path()).read().unwrap();
         named_tempfile.close().unwrap();
         stdout
+    }
+
+    async fn execute_code(&self, input: String, language: SupportedLanguage) -> String {
+        match language {
+            SupportedLanguage::Rust => self.compile_rust(input).await,
+        }
     }
 }

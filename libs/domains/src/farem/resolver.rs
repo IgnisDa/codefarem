@@ -29,13 +29,18 @@ impl FaremQuery {
 
 #[Object]
 impl FaremMutation {
-    /// Compile a rust source and execute it.
+    /// Takes some code as input and compiles it to wasm before executing it
     // Currently does not support user inputs.
-    async fn compile_rust(&self, ctx: &Context<'_>, input: String) -> Result<String> {
+    async fn execute_code(
+        &self,
+        ctx: &Context<'_>,
+        input: String,
+        language: SupportedLanguage,
+    ) -> Result<String> {
         let output = ctx
             .data::<FaremService>()
             .unwrap()
-            .compile_rust(input)
+            .execute_code(input, language)
             .await;
         Ok(output)
     }
