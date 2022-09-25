@@ -1,4 +1,4 @@
-use std::{io::Write, sync::Arc};
+use std::{io::Write, path::PathBuf, sync::Arc};
 
 use async_graphql::Enum;
 use async_trait::async_trait;
@@ -6,7 +6,8 @@ use duct::cmd;
 use edgedb_tokio::Client as DbClient;
 use serde_json::json;
 use surf::Client as HttpClient;
-use tempfile::Builder;
+
+use crate::utils::generate_random_file;
 
 #[async_trait]
 pub trait FaremServiceTrait: Sync + Send {
@@ -14,33 +15,73 @@ pub trait FaremServiceTrait: Sync + Send {
 
     async fn language_example(&self, language: SupportedLanguage) -> String;
 
-    async fn compile_rust(&self, input: String) -> String;
-
     async fn execute_code(&self, input: String, language: SupportedLanguage) -> String;
 }
 
 pub struct FaremService {
     pub db_conn: Arc<DbClient>,
     pub rust_farem_client: Arc<HttpClient>,
+    pub cpp_farem_client: Arc<HttpClient>,
 }
 
 impl FaremService {
-    pub fn new(db_conn: &Arc<DbClient>, rust_farem_client: &Arc<HttpClient>) -> Self {
+    pub fn new(
+        db_conn: &Arc<DbClient>,
+        rust_farem_client: &Arc<HttpClient>,
+        cpp_farem_client: &Arc<HttpClient>,
+    ) -> Self {
         Self {
             db_conn: db_conn.clone(),
             rust_farem_client: rust_farem_client.clone(),
+            cpp_farem_client: cpp_farem_client.clone(),
         }
     }
 }
 
 #[derive(Enum, Clone, Copy, PartialEq, Eq)]
+#[graphql(rename_items = "lowercase")]
 pub enum SupportedLanguage {
     Rust,
+    Cpp,
 }
 
 impl SupportedLanguage {
     fn variants() -> Vec<Self> {
-        vec![Self::Rust]
+        vec![Self::Rust, Self::Cpp]
+    }
+}
+
+impl FaremService {
+    fn execute_wasm(&self, path: &PathBuf) -> String {
+        cmd!("wasmtime", path).read().unwrap()
+    }
+
+    async fn compile_source(&self, input: String, client: &Arc<HttpClient>) -> Vec<u8> {
+        let mut s = client
+            .post("/farem")
+            .body_json(&json!({ "code": input }))
+            .unwrap()
+            .await
+            .unwrap();
+        s.body_bytes().await.unwrap()
+    }
+
+    fn write_wasm_to_temp_file(&self, wasm: Vec<u8>) -> PathBuf {
+        let (mut file, file_path) = generate_random_file(Some("wasm")).unwrap();
+        file.write_all(wasm.as_slice()).unwrap();
+        file_path
+    }
+
+    async fn compile_rust(&self, input: String) -> String {
+        let wasm = self.compile_source(input, &self.rust_farem_client).await;
+        let path = self.write_wasm_to_temp_file(wasm);
+        self.execute_wasm(&path)
+    }
+
+    async fn compile_cpp(&self, input: String) -> String {
+        let wasm = self.compile_source(input, &self.cpp_farem_client).await;
+        let path = self.write_wasm_to_temp_file(wasm);
+        self.execute_wasm(&path)
     }
 }
 
@@ -53,6 +94,7 @@ impl FaremServiceTrait for FaremService {
     async fn language_example(&self, language: SupportedLanguage) -> String {
         let farem_client = match language {
             SupportedLanguage::Rust => &self.rust_farem_client,
+            SupportedLanguage::Cpp => &self.cpp_farem_client,
         };
         farem_client
             .get("/example")
@@ -63,29 +105,10 @@ impl FaremServiceTrait for FaremService {
             .unwrap()
     }
 
-    async fn compile_rust(&self, input: String) -> String {
-        let mut s = self
-            .rust_farem_client
-            .post("/farem")
-            .body_json(&json!({ "rust": input }))
-            .unwrap()
-            .await
-            .unwrap();
-        let wasm = s.body_bytes().await.unwrap();
-        let mut named_tempfile = Builder::new()
-            .suffix(".wasm")
-            .rand_bytes(5)
-            .tempfile()
-            .unwrap();
-        named_tempfile.write_all(wasm.as_slice()).unwrap();
-        let stdout = cmd!("wasmtime", named_tempfile.path()).read().unwrap();
-        named_tempfile.close().unwrap();
-        stdout
-    }
-
     async fn execute_code(&self, input: String, language: SupportedLanguage) -> String {
         match language {
             SupportedLanguage::Rust => self.compile_rust(input).await,
+            SupportedLanguage::Cpp => self.compile_cpp(input).await,
         }
     }
 }

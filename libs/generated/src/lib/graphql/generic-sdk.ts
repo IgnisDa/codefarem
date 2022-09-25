@@ -48,7 +48,8 @@ export type QueryRootLanguageExampleArgs = {
 };
 
 export enum SupportedLanguage {
-  Rust = 'RUST',
+  Cpp = 'cpp',
+  Rust = 'rust',
 }
 
 export type ExecuteCodeMutationVariables = Exact<{

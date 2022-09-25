@@ -195,7 +195,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "RUST",
+            "name": "cpp",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rust",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

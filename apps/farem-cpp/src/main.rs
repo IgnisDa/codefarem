@@ -12,8 +12,17 @@ struct FaremInput {
 #[get("/example")]
 fn example() -> String {
     r#"
-fn main() {
-  println!("hello world, and welcome to CodeFarem!");
+#include <iostream>
+#include <fstream>
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+int main()
+{
+    cout << "hello world, and welcome to CodeFarem!" << endl;
+    return 0;
 }
 "#
     .trim()
@@ -26,10 +35,10 @@ async fn farem(code_input: Json<FaremInput>) -> Option<NamedFile> {
     fs::write(&input_file_path, &code_input.code).unwrap();
     let (_, output_file_path) = generate_random_file(Some("wasm")).unwrap();
     cmd!(
-        "rustc",
+        "emcc",
         &input_file_path,
-        "--target",
-        "wasm32-wasi",
+        "-s",
+        "STANDALONE_WASM",
         "-o",
         &output_file_path
     )

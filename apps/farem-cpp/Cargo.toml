@@ -1,0 +1,11 @@
+[package]
+name = "farem-cpp"
+version = "0.1.0"
+edition = "2021"
+description = "Responsible for the Cpp farem"
+
+[dependencies]
+domains = { path = "../../libs/domains" }
+duct = "0.13.5"
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
+serde = { version = "1.0.144", features = ["derive"] }

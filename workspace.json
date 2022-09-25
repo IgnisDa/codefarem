@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "domains": "libs/domains",
+    "farem-cpp": "apps/farem-cpp",
     "farem-main": "apps/farem-main",
     "farem-rs": "apps/farem-rs",
     "generated": "libs/generated",
