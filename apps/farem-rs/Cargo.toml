@@ -2,10 +2,10 @@
 name = "farem-rs"
 version = "0.1.0"
 edition = "2021"
-description = "This binary will be responsible for taking a rust source, compiling it to wasm and then returning the response as the compiled output or error encountered while transformation."
+description = "Responsible for the Rust farem"
 
 [dependencies]
+domains = { path = "../../libs/domains" }
 duct = "0.13.5"
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0.144", features = ["derive"] }
-tempfile = "3.3.0"
