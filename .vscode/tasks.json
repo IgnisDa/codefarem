@@ -1,0 +1,64 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run farem services",
+            "detail": "Starts all the farem services",
+            "type": "shell",
+            "command": "echo 'Stopping services...'",
+            "dependsOn": [
+                "farem-main",
+                "farem-cpp",
+                "farem-rs",
+                "website"
+            ]
+        },
+        {
+            "label": "website",
+            "type": "shell",
+            "command": "pnpm nx start website",
+            "detail": "Run the main website server",
+            "isBackground": true,
+            "options": {},
+        },
+        {
+            "label": "farem-cpp",
+            "type": "shell",
+            "command": "cargo-watch -cqs 'cargo run'",
+            "detail": "Run cpp farem service",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}/apps/farem-cpp",
+                "env": {
+                    "ROCKET_PORT": "8002"
+                }
+            },
+        },
+        {
+            "label": "farem-rs",
+            "type": "shell",
+            "command": "cargo-watch -cqs 'cargo run'",
+            "detail": "Run rust farem service",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}/apps/farem-rs",
+                "env": {
+                    "ROCKET_PORT": "8001"
+                }
+            },
+        },
+        {
+            "label": "farem-main",
+            "type": "shell",
+            "command": "cargo-watch -cqs 'cargo run'",
+            "detail": "Run main service",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}/apps/farem-main",
+                "env": {
+                    "ROCKET_PORT": "8000"
+                }
+            },
+        },
+    ]
+}
