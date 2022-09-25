@@ -1,4 +1,5 @@
 import { SupportedLanguage } from '@codefarem/generated/graphql/generic-sdk';
+import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { json } from '@remix-run/node';
 import { Form, Link, useActionData, useLoaderData } from '@remix-run/react';
@@ -6,7 +7,6 @@ import EditorView from '@uiw/react-codemirror';
 import { makeDomainFunction } from 'domain-functions';
 import { useState } from 'react';
 import { formAction } from 'remix-forms';
-import { ClientOnly } from 'remix-utils';
 import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { z } from 'zod';
@@ -30,14 +30,13 @@ export async function loader({ params }: LoaderArgs) {
   return json({ languageExample, supportedLanguages, selectedLanguage });
 }
 
-const schema = z.object({
-  input: z.string(),
-  language: z.nativeEnum(SupportedLanguage),
-});
+const schema = z.object({ input: z.string(), language: z.string() });
 
 const mutation = makeDomainFunction(schema)(async (values) => {
-  const { input, language } = values;
-  const { executeCode } = await graphqlSdk.ExecuteCode({ input, language });
+  const { executeCode } = await graphqlSdk.ExecuteCode({
+    input: JSON.parse(values.input),
+    language: values.language as SupportedLanguage,
+  });
   return executeCode;
 });
 
@@ -52,6 +51,16 @@ export default () => {
   const data = useActionData<typeof action>();
   const [code, setCode] = useState(languageExample);
 
+  let extensions;
+  switch (selectedLanguage) {
+    case SupportedLanguage.Cpp:
+      extensions = [cpp()];
+      break;
+    case SupportedLanguage.Rust:
+      extensions = [rust()];
+      break;
+  }
+
   return (
     <div className="flex flex-col items-center justify-center flex-1 w-full h-full space-y-10">
       {supportedLanguages.map((l, idx) => (
@@ -65,7 +74,13 @@ export default () => {
         </div>
       ))}
       <Form method="post">
-        <input type="text" name="input" value={code} readOnly hidden />
+        <input
+          type="text"
+          name="input"
+          value={JSON.stringify(code)}
+          readOnly
+          hidden
+        />
         <input
           type="text"
           name="language"
@@ -82,17 +97,13 @@ export default () => {
           {data && data.executeCode}
         </div>
         <div className="w-2/3 overflow-scroll">
-          <ClientOnly fallback={`Loading ${selectedLanguage} editor`}>
-            {() => (
-              <EditorView
-                extensions={[rust()]}
-                value={code}
-                theme="dark"
-                className="text-xl"
-                onChange={(val) => setCode(val)}
-              />
-            )}
-          </ClientOnly>
+          <EditorView
+            extensions={extensions}
+            value={code}
+            theme="dark"
+            className="text-lg"
+            onChange={(val) => setCode(val)}
+          />
         </div>
       </div>
     </div>
