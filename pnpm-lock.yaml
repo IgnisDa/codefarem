@@ -75,6 +75,7 @@ specifiers:
   tiny-invariant: 1.2.0
   ts-jest: 28.0.5
   ts-node: 10.9.1
+  ts-pattern: 4.0.5
   tslib: 2.4.0
   typescript: 4.8.3
   urql: 3.0.3
@@ -103,6 +104,7 @@ dependencies:
   remix-forms: 0.18.2_lpdo34dlerxe7ev7xovdqbssrq
   remix-utils: 3.3.0_4ys4ldfuyiqtpp7u6iy62jf6q4
   tiny-invariant: 1.2.0
+  ts-pattern: 4.0.5
   urql: 3.0.3_onqnqwb3ubg5opvemcqf7c2qhy
   urql-generic-requester: 0.0.2_graphql@16.6.0+urql@3.0.3
   zod: 3.19.1
@@ -15558,6 +15560,10 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /ts-pattern/4.0.5:
+    resolution: {integrity: sha512-Bq44KCEt7JVaNLa148mBCJkcQf4l7jtLEBDuDdeuLynWDA+1a60P4D0rMkqSM9mOKLQbIWUddE9h3XKyKwBeqA==}
+    dev: false
 
   /tsconfig-paths-webpack-plugin/3.5.2:
     resolution: {integrity: sha512-EhnfjHbzm5IYI9YPNVIxx1moxMI4bpHD2e0zTXeDNQcwjjRaGepP7IhTHJkyDBG0CAOoxRfe7jCG630Ou+C6Pw==}
