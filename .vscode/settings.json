@@ -11,6 +11,8 @@
         "cssmodule",
         "dedup",
         "devcontainer",
+        "devcontainers",
+        "devel",
         "dotenv",
         "edgedb",
         "emcc",
@@ -22,14 +24,23 @@
         "headlessui",
         "ignisda",
         "iostream",
+        "makepkg",
         "nextest",
         "nrwl",
+        "pacman",
+        "paru",
+        "pnpm",
+        "proto",
         "rustc",
         "rustup",
         "tailwindcss",
         "tempfile",
+        "tinygo",
+        "tlsv",
+        "tokei",
         "urql",
         "wasi",
-        "wasmtime"
+        "wasmtime",
+        "zxvf"
     ]
 }
