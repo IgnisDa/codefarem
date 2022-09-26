@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { formAction } from 'remix-forms';
 import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
+import { match } from 'ts-pattern';
 import { z } from 'zod';
 
 import { graphqlSdk } from '../../lib/graphql.server';
@@ -51,28 +52,25 @@ export default () => {
   const data = useActionData<typeof action>();
   const [code, setCode] = useState(languageExample);
 
-  let extensions;
-  switch (selectedLanguage) {
-    case SupportedLanguage.Cpp:
-      extensions = [cpp()];
-      break;
-    case SupportedLanguage.Rust:
-      extensions = [rust()];
-      break;
-  }
+  const extensions = match(selectedLanguage)
+    .with(SupportedLanguage.Cpp, () => [cpp()])
+    .with(SupportedLanguage.Rust, () => [rust()])
+    .exhaustive();
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 w-full h-full space-y-10">
-      {supportedLanguages.map((l, idx) => (
-        <div key={idx}>
+      <div className="flex items-center space-x-3">
+        {supportedLanguages.map((l, idx) => (
           <Link
+            key={idx}
             to={route('/playground/:lang', { lang: l })}
             className="px-4 py-1 text-lg tracking-wider border border-purple-600 rounded-lg bg-purple-50"
+            reloadDocument
           >
             {l}
           </Link>
-        </div>
-      ))}
+        ))}
+      </div>
       <Form method="post">
         <input
           type="text"
