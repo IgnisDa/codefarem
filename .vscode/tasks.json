@@ -7,8 +7,9 @@
             "type": "shell",
             "command": "echo 'Stopping services...'",
             "dependsOn": [
-                "farem-main",
                 "farem-cpp",
+                "farem-go",
+                "farem-main",
                 "farem-rs",
                 "website"
             ]
@@ -16,45 +17,54 @@
         {
             "label": "website",
             "type": "shell",
+            "isBackground": true,
             "command": "pnpm nx start website",
             "detail": "Run the main website server",
-            "isBackground": true,
             "options": {},
         },
         {
             "label": "farem-cpp",
             "type": "shell",
-            "command": "cargo watch -cqs 'cargo run'",
-            "detail": "Run cpp farem service",
             "isBackground": true,
+            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-cpp && cargo run'",
+            "detail": "Run cpp farem service",
             "options": {
-                "cwd": "${workspaceFolder}/apps/farem-cpp",
                 "env": {
-                    "ROCKET_PORT": "8002"
+                    "ROCKET_PORT": "5002"
+                }
+            },
+        },
+        {
+            "label": "farem-go",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-go && cargo run'",
+            "detail": "Run go farem service",
+            "options": {
+                "env": {
+                    "ROCKET_PORT": "5003"
                 }
             },
         },
         {
             "label": "farem-rs",
             "type": "shell",
-            "command": "cargo watch -cqs 'cargo run'",
-            "detail": "Run rust farem service",
             "isBackground": true,
+            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-rs && cargo run'",
+            "detail": "Run rust farem service",
             "options": {
-                "cwd": "${workspaceFolder}/apps/farem-rs",
                 "env": {
-                    "ROCKET_PORT": "8001"
+                    "ROCKET_PORT": "5001"
                 }
             },
         },
         {
             "label": "farem-main",
             "type": "shell",
-            "command": "cargo watch -cqs 'cargo run'",
-            "detail": "Run main service",
             "isBackground": true,
+            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-main && cargo run'",
+            "detail": "Run main service",
             "options": {
-                "cwd": "${workspaceFolder}/apps/farem-main",
                 "env": {
                     "ROCKET_PORT": "8000"
                 }
