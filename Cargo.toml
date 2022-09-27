@@ -1,2 +1,8 @@
 [workspace]
-members = ["apps/farem-rs", "apps/farem-main", "libs/domains", "apps/farem-cpp"]
+members = [
+  "apps/farem-rs",
+  "apps/farem-main",
+  "libs/domains",
+  "apps/farem-cpp",
+  "apps/farem-go"
+]

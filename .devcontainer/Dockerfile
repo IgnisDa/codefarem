@@ -11,7 +11,7 @@ RUN groupadd -g ${GUID} ${USERNAME} ; \
     echo "ALL ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} ;\
     chmod 0440 /etc/sudoers.d/${USERNAME}
 
-RUN pacman -S --noconfirm rustup nodejs npm python3 tinygo fish curl wget
+RUN pacman -S --noconfirm rustup nodejs npm python3 go tinygo fish curl wget
 
 RUN set -eu ;\
     npm install --global pnpm ;\

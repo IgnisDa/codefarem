@@ -27,8 +27,10 @@ async fn graphql_request(
 
 #[launch]
 async fn rocket() -> _ {
-    let (db, rust_farem_client, cpp_farem_client) = init_application().await.unwrap();
-    let farem_service = FaremService::new(&db, &rust_farem_client, &cpp_farem_client);
+    let (db, rust_farem_client, cpp_farem_client, go_farem_client) =
+        init_application().await.unwrap();
+    let farem_service =
+        FaremService::new(&db, &rust_farem_client, &cpp_farem_client, &go_farem_client);
     let schema = Schema::build(
         QueryRoot::default(),
         MutationRoot::default(),

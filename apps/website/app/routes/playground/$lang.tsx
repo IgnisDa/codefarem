@@ -1,6 +1,8 @@
 import { SupportedLanguage } from '@codefarem/generated/graphql/generic-sdk';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
+import { StreamLanguage } from '@codemirror/language';
+import { go } from '@codemirror/legacy-modes/mode/go';
 import { json } from '@remix-run/node';
 import { Form, Link, useActionData, useLoaderData } from '@remix-run/react';
 import EditorView from '@uiw/react-codemirror';
@@ -55,6 +57,7 @@ export default () => {
   const extensions = match(selectedLanguage)
     .with(SupportedLanguage.Cpp, () => [cpp()])
     .with(SupportedLanguage.Rust, () => [rust()])
+    .with(SupportedLanguage.Go, () => [StreamLanguage.define(go)])
     .exhaustive();
 
   return (

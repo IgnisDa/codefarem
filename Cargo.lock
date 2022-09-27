@@ -988,6 +988,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "farem-go"
+version = "0.1.0"
+dependencies = [
+ "domains",
+ "duct",
+ "rocket",
+ "serde",
+]
+
+[[package]]
 name = "farem-main"
 version = "0.1.0"
 dependencies = [

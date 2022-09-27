@@ -49,6 +49,7 @@ export type QueryRootLanguageExampleArgs = {
 
 export enum SupportedLanguage {
   Cpp = 'cpp',
+  Go = 'go',
   Rust = 'rust',
 }
 

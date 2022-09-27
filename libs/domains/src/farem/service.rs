@@ -22,6 +22,7 @@ pub struct FaremService {
     pub db_conn: Arc<DbClient>,
     pub rust_farem_client: Arc<HttpClient>,
     pub cpp_farem_client: Arc<HttpClient>,
+    pub go_farem_client: Arc<HttpClient>,
 }
 
 impl FaremService {
@@ -29,11 +30,13 @@ impl FaremService {
         db_conn: &Arc<DbClient>,
         rust_farem_client: &Arc<HttpClient>,
         cpp_farem_client: &Arc<HttpClient>,
+        go_farem_client: &Arc<HttpClient>,
     ) -> Self {
         Self {
             db_conn: db_conn.clone(),
             rust_farem_client: rust_farem_client.clone(),
             cpp_farem_client: cpp_farem_client.clone(),
+            go_farem_client: go_farem_client.clone(),
         }
     }
 }
@@ -42,12 +45,13 @@ impl FaremService {
 #[graphql(rename_items = "lowercase")]
 pub enum SupportedLanguage {
     Rust,
+    Go,
     Cpp,
 }
 
 impl SupportedLanguage {
     fn variants() -> Vec<Self> {
-        vec![Self::Rust, Self::Cpp]
+        vec![Self::Rust, Self::Go, Self::Cpp]
     }
 }
 
@@ -83,6 +87,12 @@ impl FaremService {
         let path = self.write_wasm_to_temp_file(wasm);
         self.execute_wasm(&path)
     }
+
+    async fn compile_go(&self, input: String) -> String {
+        let wasm = self.compile_source(input, &self.go_farem_client).await;
+        let path = self.write_wasm_to_temp_file(wasm);
+        self.execute_wasm(&path)
+    }
 }
 
 #[async_trait]
@@ -95,6 +105,7 @@ impl FaremServiceTrait for FaremService {
         let farem_client = match language {
             SupportedLanguage::Rust => &self.rust_farem_client,
             SupportedLanguage::Cpp => &self.cpp_farem_client,
+            SupportedLanguage::Go => &self.go_farem_client,
         };
         farem_client
             .get("/example")
@@ -109,6 +120,7 @@ impl FaremServiceTrait for FaremService {
         match language {
             SupportedLanguage::Rust => self.compile_rust(input).await,
             SupportedLanguage::Cpp => self.compile_cpp(input).await,
+            SupportedLanguage::Go => self.compile_go(input).await,
         }
     }
 }
