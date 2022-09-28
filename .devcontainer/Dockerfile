@@ -13,6 +13,9 @@ RUN groupadd -g ${GUID} ${USERNAME} ; \
 
 RUN pacman -S --noconfirm rustup nodejs npm python3 go tinygo fish curl wget
 
+RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\nexport RUSTC_WRAPPER=sccache' >> /etc/profile.d/cargo.sh ;\
+    chmod +x /etc/profile.d/cargo.sh
+
 RUN set -eu ;\
     npm install --global pnpm ;\
     curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
@@ -30,7 +33,7 @@ RUN set -eu ;\
     sudo cp "$HOME/.wasmtime/bin/wasmtime" "/usr/bin/" ;\
     rustup default nightly ;\
     rustup target add wasm32-wasi ;\
-    cargo binstall cargo-nextest cargo-watch --no-confirm
+    cargo binstall cargo-nextest cargo-watch sccache --no-confirm
 
 RUN set -eu ;\
     git clone https://aur.archlinux.org/paru.git /tmp/paru ;\
