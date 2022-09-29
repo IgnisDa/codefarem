@@ -1,13 +1,10 @@
-use std::{io::Write, path::PathBuf, sync::Arc};
+use std::sync::Arc;
 
 use async_graphql::Enum;
 use async_trait::async_trait;
-use duct::cmd;
 use edgedb_tokio::Client as DbClient;
 use serde_json::json;
 use surf::Client as HttpClient;
-
-use crate::utils::generate_random_file;
 
 #[async_trait]
 pub trait FaremServiceTrait: Sync + Send {
@@ -20,6 +17,7 @@ pub trait FaremServiceTrait: Sync + Send {
 
 pub struct FaremService {
     pub db_conn: Arc<DbClient>,
+    pub execute_client: Arc<HttpClient>,
     pub rust_farem_client: Arc<HttpClient>,
     pub cpp_farem_client: Arc<HttpClient>,
     pub go_farem_client: Arc<HttpClient>,
@@ -28,12 +26,14 @@ pub struct FaremService {
 impl FaremService {
     pub fn new(
         db_conn: &Arc<DbClient>,
+        execute_client: &Arc<HttpClient>,
         rust_farem_client: &Arc<HttpClient>,
         cpp_farem_client: &Arc<HttpClient>,
         go_farem_client: &Arc<HttpClient>,
     ) -> Self {
         Self {
             db_conn: db_conn.clone(),
+            execute_client: execute_client.clone(),
             rust_farem_client: rust_farem_client.clone(),
             cpp_farem_client: cpp_farem_client.clone(),
             go_farem_client: go_farem_client.clone(),
@@ -56,42 +56,38 @@ impl SupportedLanguage {
 }
 
 impl FaremService {
-    fn execute_wasm(&self, path: &PathBuf) -> String {
-        cmd!("wasmtime", path).read().unwrap()
+    async fn execute_wasm(&self, wasm: Vec<u8>) -> String {
+        self.execute_client
+            .post("/execute")
+            .body_bytes(wasm)
+            .recv_string()
+            .await
+            .unwrap()
     }
 
     async fn compile_source(&self, input: String, client: &Arc<HttpClient>) -> Vec<u8> {
-        let mut s = client
+        client
             .post("/farem")
             .body_json(&json!({ "code": input }))
             .unwrap()
+            .recv_bytes()
             .await
-            .unwrap();
-        s.body_bytes().await.unwrap()
-    }
-
-    fn write_wasm_to_temp_file(&self, wasm: Vec<u8>) -> PathBuf {
-        let (mut file, file_path) = generate_random_file(Some("wasm")).unwrap();
-        file.write_all(wasm.as_slice()).unwrap();
-        file_path
+            .unwrap()
     }
 
     async fn compile_rust(&self, input: String) -> String {
         let wasm = self.compile_source(input, &self.rust_farem_client).await;
-        let path = self.write_wasm_to_temp_file(wasm);
-        self.execute_wasm(&path)
+        self.execute_wasm(wasm).await
     }
 
     async fn compile_cpp(&self, input: String) -> String {
         let wasm = self.compile_source(input, &self.cpp_farem_client).await;
-        let path = self.write_wasm_to_temp_file(wasm);
-        self.execute_wasm(&path)
+        self.execute_wasm(wasm).await
     }
 
     async fn compile_go(&self, input: String) -> String {
         let wasm = self.compile_source(input, &self.go_farem_client).await;
-        let path = self.write_wasm_to_temp_file(wasm);
-        self.execute_wasm(&path)
+        self.execute_wasm(wasm).await
     }
 }
 

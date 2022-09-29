@@ -4,5 +4,6 @@ members = [
   "apps/farem-main",
   "libs/domains",
   "apps/farem-cpp",
-  "apps/farem-go"
+  "apps/farem-go",
+  "apps/farem-run",
 ]

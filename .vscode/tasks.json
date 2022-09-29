@@ -11,16 +11,9 @@
                 "farem-go",
                 "farem-main",
                 "farem-rs",
+                "farem-run",
                 "website"
             ]
-        },
-        {
-            "label": "website",
-            "type": "shell",
-            "isBackground": true,
-            "command": "pnpm nx start website",
-            "detail": "Run the main website server",
-            "options": {},
         },
         {
             "label": "farem-cpp",
@@ -47,6 +40,18 @@
             },
         },
         {
+            "label": "farem-main",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-main && cargo run'",
+            "detail": "Run main service",
+            "options": {
+                "env": {
+                    "ROCKET_PORT": "8000"
+                }
+            },
+        },
+        {
             "label": "farem-rs",
             "type": "shell",
             "isBackground": true,
@@ -59,16 +64,24 @@
             },
         },
         {
-            "label": "farem-main",
+            "label": "farem-run",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-main && cargo run'",
-            "detail": "Run main service",
+            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-run && cargo run'",
+            "detail": "Run wasm execution farem service",
             "options": {
                 "env": {
-                    "ROCKET_PORT": "8000"
+                    "ROCKET_PORT": "5004"
                 }
             },
+        },
+        {
+            "label": "website",
+            "type": "shell",
+            "isBackground": true,
+            "command": "pnpm nx start website",
+            "detail": "Run the main website server",
+            "options": {},
         },
     ]
 }

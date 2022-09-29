@@ -828,7 +828,6 @@ dependencies = [
  "async-graphql",
  "async-trait",
  "chrono",
- "duct",
  "edgedb-tokio",
  "rand 0.8.5",
  "serde_json",
@@ -1017,6 +1016,16 @@ dependencies = [
 
 [[package]]
 name = "farem-rs"
+version = "0.1.0"
+dependencies = [
+ "domains",
+ "duct",
+ "rocket",
+ "serde",
+]
+
+[[package]]
+name = "farem-run"
 version = "0.1.0"
 dependencies = [
  "domains",

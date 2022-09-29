@@ -1,0 +1,2 @@
+[global.limits]
+bytes = "100MiB"
