@@ -4,7 +4,9 @@ ENV UUID=1000
 ENV GUID=${UUID}
 ENV USERNAME=vscode
 
-RUN pacman -Syyu --noconfirm --needed base-devel git sudo
+RUN pacman -Syyu --noconfirm reflector ;\
+    reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist ;\
+    pacman -S --noconfirm --needed base-devel git sudo
 
 RUN groupadd -g ${GUID} ${USERNAME} ; \
     useradd -ms /bin/bash ${USERNAME} -u ${UUID} -g ${USERNAME} -g wheel ; \
@@ -36,6 +38,7 @@ RUN set -eu ;\
     cargo binstall cargo-nextest cargo-watch sccache --no-confirm
 
 RUN set -eu ;\
+    rustup default stable ;\
     git clone https://aur.archlinux.org/paru.git /tmp/paru ;\
     cd /tmp/paru && makepkg -si --noconfirm ;\
     paru -S --noconfirm emscripten
