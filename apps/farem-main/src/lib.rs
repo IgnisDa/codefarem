@@ -15,7 +15,7 @@ pub async fn init_application() -> Result<(
     Arc<HttpClient>,
     Arc<HttpClient>,
 )> {
-    let db = Arc::new(edgedb_tokio::create_client().await?);
+    let db = edgedb_tokio::create_client().await?;
     let execute_client: HttpClient = HttpConfig::new()
         .set_base_url(HttpUrl::parse(dotenv!("EXECUTE_FAREM_URL"))?)
         .try_into()?;
@@ -30,7 +30,7 @@ pub async fn init_application() -> Result<(
         .try_into()?;
     dotenv().ok();
     Ok((
-        db,
+        Arc::new(db),
         Arc::new(execute_client),
         Arc::new(rust_farem_client),
         Arc::new(cpp_farem_client),

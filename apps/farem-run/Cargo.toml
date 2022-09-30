@@ -6,7 +6,7 @@ description = "This crate is responsible for executing webassembly"
 
 
 [dependencies]
-domains = { path = "../../libs/domains" }
 duct = "0.13.5"
 rocket = "0.5.0-rc.2"
 serde = { version = "1.0.144", features = ["derive"] }
+utilities = { path = "../../libs/utilities" }

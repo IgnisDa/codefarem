@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.65"
-async-graphql = "4.0.13"
+async-graphql = { version = "4.0.14", features = ["log"] }
 async-graphql-rocket = "4.0.13"
 domains = { path = "../../libs/domains" }
 dotenv = "0.15.0"

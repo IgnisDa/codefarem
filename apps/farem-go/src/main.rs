@@ -1,8 +1,8 @@
-use domains::generate_random_file;
 use duct::cmd;
 use rocket::{fs::NamedFile, get, launch, post, routes, serde::json::Json};
 use serde::Deserialize;
 use std::fs;
+use utilities::generate_random_file;
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]
 struct FaremInput {

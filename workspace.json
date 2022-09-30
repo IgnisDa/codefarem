@@ -11,6 +11,7 @@
     "generated": "libs/generated",
     "graphql": "libs/graphql",
     "react-ui": "libs/react-ui",
+    "utilities": "libs/utilities",
     "website": "apps/website"
   }
 }

@@ -183,9 +183,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql"
-version = "4.0.13"
+version = "4.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b7b4acd72d35f568664599c2cde503228b29910ca36656b653984c31c5a28cd6"
+checksum = "af82ca20bc5a205231a504a0ca6dccd9d71665edcf73eaf14f2232da851cfb8b"
 dependencies = [
  "async-graphql-derive",
  "async-graphql-parser",
@@ -199,6 +199,7 @@ dependencies = [
  "futures-util",
  "http",
  "indexmap",
+ "log",
  "mime",
  "multer",
  "num-traits",
@@ -207,6 +208,7 @@ dependencies = [
  "regex",
  "serde",
  "serde_json",
+ "serde_urlencoded",
  "static_assertions",
  "tempfile",
  "thiserror",
@@ -214,9 +216,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-derive"
-version = "4.0.13"
+version = "4.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9cead3c5f127c89b0abb2434c250409b9fe75763ee72583d4a90a412a927c8a8"
+checksum = "66d47689c206c6234d3987b0ec406945ce832f45647d29f91054490ecc98a804"
 dependencies = [
  "Inflector",
  "async-graphql-parser",
@@ -230,9 +232,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-parser"
-version = "4.0.13"
+version = "4.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a2e30051a98bcecc8baab3f7a8b12e8e49b365afa81b598ad5dffa49d343f51"
+checksum = "7e1c7ef6924b3a7b056df47c44c000d18f53be84805354aed3682ae7cca5271a"
 dependencies = [
  "async-graphql-value",
  "pest",
@@ -255,9 +257,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-value"
-version = "4.0.13"
+version = "4.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "47c8c0d67fe10c7c49c6dcc9072b7a5c6c07af3b72b6e67cfb30ee070e2e940c"
+checksum = "89f16b1bfce66e9551ddc1d0c97f060b870b51a3aa5b7a7510f773c34f38b504"
 dependencies = [
  "bytes 1.2.1",
  "indexmap",
@@ -827,9 +829,8 @@ dependencies = [
  "anyhow",
  "async-graphql",
  "async-trait",
- "chrono",
  "edgedb-tokio",
- "rand 0.8.5",
+ "rocket",
  "serde_json",
  "surf",
 ]
@@ -980,20 +981,20 @@ checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
 name = "farem-cpp"
 version = "0.1.0"
 dependencies = [
- "domains",
  "duct",
  "rocket",
  "serde",
+ "utilities",
 ]
 
 [[package]]
 name = "farem-go"
 version = "0.1.0"
 dependencies = [
- "domains",
  "duct",
  "rocket",
  "serde",
+ "utilities",
 ]
 
 [[package]]
@@ -1018,20 +1019,20 @@ dependencies = [
 name = "farem-rs"
 version = "0.1.0"
 dependencies = [
- "domains",
  "duct",
  "rocket",
  "serde",
+ "utilities",
 ]
 
 [[package]]
 name = "farem-run"
 version = "0.1.0"
 dependencies = [
- "domains",
  "duct",
  "rocket",
  "serde",
+ "utilities",
 ]
 
 [[package]]
@@ -3569,6 +3570,14 @@ dependencies = [
  "idna",
  "percent-encoding",
  "serde",
+]
+
+[[package]]
+name = "utilities"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "rand 0.8.5",
 ]
 
 [[package]]
