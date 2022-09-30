@@ -1,8 +1,8 @@
 use std::io::Write;
 
-use domains::generate_random_file;
 use duct::cmd;
 use rocket::{launch, post, routes};
+use utilities::generate_random_file;
 
 #[post("/execute", data = "<wasm>")]
 async fn execute(wasm: Vec<u8>) -> String {
