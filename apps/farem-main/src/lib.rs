@@ -5,7 +5,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use dotenv::dotenv;
 use dotenv_codegen::dotenv;
-use edgedb_tokio::Client as DbClient;
+use edgedb_tokio::{Builder as DbBuilder, Client as DbClient};
 use surf::{Client as HttpClient, Config as HttpConfig, Url as HttpUrl};
 
 pub async fn init_application() -> Result<(
@@ -15,7 +15,14 @@ pub async fn init_application() -> Result<(
     Arc<HttpClient>,
     Arc<HttpClient>,
 )> {
-    let db = edgedb_tokio::create_client().await?;
+    let config = DbBuilder::uninitialized()
+        .read_instance("main_db")
+        .await
+        .unwrap()
+        .build()
+        .unwrap();
+    let db = DbClient::new(&config);
+    db.ensure_connected().await.unwrap();
     let execute_client: HttpClient = HttpConfig::new()
         .set_base_url(HttpUrl::parse(dotenv!("EXECUTE_FAREM_URL"))?)
         .try_into()?;
