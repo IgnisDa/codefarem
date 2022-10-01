@@ -13,5 +13,5 @@ module.exports = {
     : undefined,
   ignoredRouteFiles: ['**/.*'],
   serverBuildPath: IS_PRODUCTION ? `${outputPath}/index.js` : undefined,
-  watchPaths: ['../../libs'],
+  watchPaths: ['../../libs/react-ui/*'],
 };
