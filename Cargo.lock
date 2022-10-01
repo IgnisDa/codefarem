@@ -212,6 +212,7 @@ dependencies = [
  "static_assertions",
  "tempfile",
  "thiserror",
+ "uuid",
 ]
 
 [[package]]
@@ -738,6 +739,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive-getters"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0c5905670fd9c320154f3a4a01c9e609733cd7b753f3c58777ab7d5ce26686b3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "devise"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -829,10 +841,14 @@ dependencies = [
  "anyhow",
  "async-graphql",
  "async-trait",
+ "derive-getters",
+ "edgedb-derive 0.4.0",
+ "edgedb-protocol",
  "edgedb-tokio",
  "rocket",
  "serde_json",
  "surf",
+ "uuid",
 ]
 
 [[package]]
@@ -889,6 +905,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "edgedb-derive"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2c10e157a2852fe55eb733db86772aa1cd41f1d971f6eba577d1bc608eec89f5"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+ "trybuild",
+]
+
+[[package]]
 name = "edgedb-errors"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -921,7 +949,7 @@ dependencies = [
  "base16ct",
  "bytes 1.2.1",
  "dirs",
- "edgedb-derive",
+ "edgedb-derive 0.3.0",
  "edgedb-errors",
  "edgedb-protocol",
  "log",
@@ -3585,6 +3613,10 @@ name = "uuid"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd6469f4314d5f1ffec476e05f17cc9a78bc7a27a6a857842170bdf8d6f98d2f"
+dependencies = [
+ "getrandom 0.2.7",
+ "serde",
+]
 
 [[package]]
 name = "valuable"
