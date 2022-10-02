@@ -6,5 +6,6 @@ members = [
   "apps/farem-cpp",
   "apps/farem-go",
   "apps/farem-run",
-  "libs/utilities"
+  "libs/utilities",
+  "libs/auth"
 ]
