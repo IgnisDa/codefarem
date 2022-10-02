@@ -1,12 +1,12 @@
+mod jwt;
+
 use chrono::{Duration, Utc};
 use jsonwebtoken::{encode, EncodingKey, Header};
-use jwt::Claim;
+use jwt::{Claim, Role};
 use scrypt::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Scrypt,
 };
-
-mod jwt;
 
 /// Hashes the password using a randomly generated salt string
 pub fn get_hashed_password(password: &str) -> String {
@@ -34,6 +34,7 @@ pub fn create_jwt_token(secret: &[u8], user_id: &str) -> String {
         .timestamp();
     let claim = Claim {
         sub: user_id.to_string(),
+        role: Role::User,
         exp: expiration_time as usize,
     };
     encode(
