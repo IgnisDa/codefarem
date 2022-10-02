@@ -1,0 +1,19 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/examples/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "go vet go/example.go",
+          "clippy-driver rs/example.rs && rm example",
+          "g++ cpp/example.cpp && rm a.out"
+        ],
+        "cwd": "libs/examples/src"
+      }
+    }
+  },
+  "tags": []
+}
