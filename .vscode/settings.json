@@ -26,6 +26,7 @@
         "headlessui",
         "ignisda",
         "iostream",
+        "jsonwebtoken",
         "makepkg",
         "nextest",
         "nrwl",
