@@ -8,6 +8,7 @@ anyhow = "1.0.65"
 async-graphql = { version = "4.0.14", features = ["uuid"] }
 async-trait = "0.1.57"
 auth = { path = "../auth" }
+config = { path = "../config" }
 derive-getters = "0.2.0"
 edgedb-derive = "0.4.0"
 edgedb-errors = "0.3.0"
