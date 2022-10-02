@@ -6,8 +6,8 @@ use async_graphql::{
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
 use domains::{farem::service::FaremService, users::service::UserService, RequestData};
 use farem_main::{
+    get_app_config,
     graphql::{MutationRoot, QueryRoot},
-    init_application,
 };
 use rocket::{get, launch, post, response::content::RawHtml, routes, State};
 
@@ -33,16 +33,15 @@ async fn graphql_request(
 
 #[launch]
 async fn rocket() -> _ {
-    let (db, execute_client, rust_farem_client, cpp_farem_client, go_farem_client) =
-        init_application().await.unwrap();
+    let app_config = get_app_config().await.unwrap();
     let farem_service = FaremService::new(
-        &db,
-        &execute_client,
-        &rust_farem_client,
-        &cpp_farem_client,
-        &go_farem_client,
+        &app_config.db_conn,
+        &app_config.execute_client,
+        &app_config.rust_farem_client,
+        &app_config.cpp_farem_client,
+        &app_config.go_farem_client,
     );
-    let user_service = UserService::new(&db);
+    let user_service = UserService::new(&app_config.db_conn, &app_config.jwt_config);
     let schema = Schema::build(
         QueryRoot::default(),
         MutationRoot::default(),
