@@ -1,8 +1,8 @@
-use utilities::generate_random_file;
 use duct::cmd;
 use rocket::{fs::NamedFile, get, launch, post, routes, serde::json::Json};
 use serde::Deserialize;
 use std::fs;
+use utilities::generate_random_file;
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]
 struct FaremInput {
@@ -11,22 +11,9 @@ struct FaremInput {
 
 #[get("/example")]
 fn example() -> String {
-    r#"
-#include <iostream>
-#include <fstream>
-
-using std::cin;
-using std::cout;
-using std::endl;
-
-int main()
-{
-    cout << "hello world, and welcome to CodeFarem!" << endl;
-    return 0;
-}
-"#
-    .trim()
-    .to_string()
+    include_str!("../../../libs/examples/src/cpp/example.cpp")
+        .trim()
+        .to_string()
 }
 
 #[post("/farem", data = "<code_input>")]

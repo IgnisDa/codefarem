@@ -11,17 +11,9 @@ struct FaremInput {
 
 #[get("/example")]
 fn example() -> String {
-    r#"
-package main
-
-import "fmt"
-
-func main() {
-    fmt.Println("hello world, and welcome to CodeFarem!")
-}
-"#
-    .trim()
-    .to_string()
+    include_str!("../../../libs/examples/src/go/example.go")
+        .trim()
+        .to_string()
 }
 
 #[post("/farem", data = "<code_input>")]
