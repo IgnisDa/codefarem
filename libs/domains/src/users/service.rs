@@ -1,9 +1,13 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
+use auth::get_hashed_password;
 use edgedb_tokio::Client as DbClient;
 
-use super::dto::mutations::RegisterUserOutput;
+use super::dto::mutations::register_user::{RegisterUserError, RegisterUserOutput};
+
+const REGISTER_USER: &str = include_str!("../../../main-db/edgeql/register-user.edgeql");
+const CHECK_UNIQUENESS: &str = include_str!("../../../main-db/edgeql/check-uniqueness.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {
@@ -12,7 +16,7 @@ pub trait UserServiceTrait: Sync + Send {
         username: &'a str,
         email: &'a str,
         password: &'a str,
-    ) -> RegisterUserOutput;
+    ) -> Result<RegisterUserOutput, RegisterUserError>;
 }
 
 pub struct UserService {
@@ -36,27 +40,29 @@ impl UserServiceTrait for UserService {
         username: &'a str,
         email: &'a str,
         password: &'a str,
-    ) -> RegisterUserOutput {
-        self.db_conn
+    ) -> Result<RegisterUserOutput, RegisterUserError> {
+        // FIXME: For whatever reason, `query_required_single` does not work. This gets the
+        // result as JSON and then converts it to the required struct.
+        let check_uniqueness = serde_json::from_str::<RegisterUserError>(
+            self.db_conn
+                .query_required_single_json(CHECK_UNIQUENESS, &(username, email))
+                .await
+                .unwrap()
+                .to_string()
+                .as_str(),
+        )
+        .unwrap();
+        if check_uniqueness != RegisterUserError::default() {
+            return Err(check_uniqueness);
+        }
+        let password_hash = get_hashed_password(password);
+        Ok(self
+            .db_conn
             .query_required_single::<RegisterUserOutput, _>(
-                r#"
-SELECT (
-  INSERT User {
-    profile := (INSERT UserProfile {
-      username := <str>$0,
-      email := <str>$1,
-    }),
-    auth := (INSERT UserAuth {
-      password_hash := <str>$2
-    })
-  }
-) {
-    id
-}
-"#,
-                &(username, email, password),
+                REGISTER_USER,
+                &(username, email, password_hash),
             )
             .await
-            .unwrap()
+            .unwrap())
     }
 }
