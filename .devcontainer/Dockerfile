@@ -13,7 +13,7 @@ RUN groupadd -g ${GUID} ${USERNAME} ; \
     echo "ALL ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} ;\
     chmod 0440 /etc/sudoers.d/${USERNAME}
 
-RUN pacman -S --noconfirm rustup nodejs npm python3 go tinygo fish curl wget
+RUN pacman -S --noconfirm rustup nodejs npm python3 go tinygo fish curl wget python-pip
 
 RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
     chmod +x /etc/profile.d/cargo.sh

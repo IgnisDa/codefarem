@@ -5,6 +5,7 @@
     "auth": "libs/auth",
     "config": "libs/config",
     "domains": "libs/domains",
+    "examples": "libs/examples",
     "farem-cpp": "apps/farem-cpp",
     "farem-go": "apps/farem-go",
     "farem-main": "apps/farem-main",
