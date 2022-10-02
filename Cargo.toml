@@ -3,6 +3,7 @@ members = [
   "libs/auth",
   "libs/config",
   "libs/domains",
+  "libs/macros",
   "libs/utilities",
   "apps/farem-cpp",
   "apps/farem-go",

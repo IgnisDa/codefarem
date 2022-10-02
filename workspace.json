@@ -12,6 +12,7 @@
     "farem-run": "apps/farem-run",
     "generated": "libs/generated",
     "graphql": "libs/graphql",
+    "macros": "libs/macros",
     "main-db": "libs/main-db",
     "react-ui": "libs/react-ui",
     "utilities": "libs/utilities",

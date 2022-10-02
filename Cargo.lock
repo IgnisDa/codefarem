@@ -882,6 +882,7 @@ dependencies = [
  "edgedb-errors",
  "edgedb-protocol",
  "edgedb-tokio",
+ "macros",
  "rocket",
  "serde",
  "serde_json",
@@ -1857,6 +1858,10 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
 ]
+
+[[package]]
+name = "macros"
+version = "0.1.0"
 
 [[package]]
 name = "matchers"
