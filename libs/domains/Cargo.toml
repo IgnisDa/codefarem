@@ -14,6 +14,7 @@ edgedb-derive = "0.4.0"
 edgedb-errors = "0.3.0"
 edgedb-protocol = "0.4.0"
 edgedb-tokio = "0.3.0"
+macros = { path = "../macros" }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0.145", features = ["derive"] }
 serde_json = "1.0.85"

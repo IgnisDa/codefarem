@@ -1,4 +1,5 @@
 use async_graphql::{Context, Object, Result};
+use macros::to_result_union_response;
 
 use super::{
     dto::mutations::{
@@ -28,10 +29,7 @@ impl UserQuery {
             .data_unchecked::<UserService>()
             .login_user(input.email(), input.password())
             .await;
-        Ok(match output {
-            Ok(s) => LoginUserResultUnion::Result(s),
-            Err(s) => LoginUserResultUnion::Error(s),
-        })
+        to_result_union_response!(output, LoginUserResultUnion)
     }
 }
 
@@ -47,9 +45,6 @@ impl UserMutation {
             .data_unchecked::<UserService>()
             .register_user(input.username(), input.email(), input.password())
             .await;
-        Ok(match output {
-            Ok(s) => RegisterUserResultUnion::Result(s),
-            Err(s) => RegisterUserResultUnion::Error(s),
-        })
+        to_result_union_response!(output, RegisterUserResultUnion)
     }
 }
