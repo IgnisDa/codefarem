@@ -1,11 +1,12 @@
 [workspace]
 members = [
-  "apps/farem-rs",
-  "apps/farem-main",
+  "libs/auth",
+  "libs/config",
   "libs/domains",
+  "libs/utilities",
   "apps/farem-cpp",
   "apps/farem-go",
+  "apps/farem-main",
+  "apps/farem-rs",
   "apps/farem-run",
-  "libs/utilities",
-  "libs/auth"
 ]
