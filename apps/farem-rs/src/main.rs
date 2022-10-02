@@ -22,7 +22,7 @@ fn main() {
 
 #[post("/farem", data = "<code_input>")]
 async fn farem(code_input: Json<FaremInput>) -> Option<NamedFile> {
-    let (_, input_file_path) = generate_random_file(Some("cpp")).unwrap();
+    let (_, input_file_path) = generate_random_file(Some("rs")).unwrap();
     fs::write(&input_file_path, &code_input.code).unwrap();
     let (_, output_file_path) = generate_random_file(Some("wasm")).unwrap();
     cmd!(
