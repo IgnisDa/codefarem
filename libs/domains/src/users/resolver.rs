@@ -3,7 +3,7 @@ use async_graphql::{Context, Error, ErrorExtensions, Object, Result};
 use crate::RequestData;
 
 use super::{
-    dto::mutations::{RegisterUserInput, RegisterUserOutput},
+    dto::mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
     service::{UserService, UserServiceTrait},
 };
 
@@ -32,12 +32,15 @@ impl UserMutation {
         &self,
         ctx: &Context<'_>,
         input: RegisterUserInput,
-    ) -> Result<RegisterUserOutput> {
+    ) -> Result<RegisterUserResultUnion> {
         let output = ctx
             .data::<UserService>()
             .unwrap()
             .register_user(input.username(), input.email(), input.password())
             .await;
-        Ok(output)
+        Ok(match output {
+            Ok(s) => RegisterUserResultUnion::Result(s),
+            Err(s) => RegisterUserResultUnion::Error(s),
+        })
     }
 }

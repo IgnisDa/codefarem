@@ -7,11 +7,14 @@ edition = "2021"
 anyhow = "1.0.65"
 async-graphql = { version = "4.0.14", features = ["uuid"] }
 async-trait = "0.1.57"
+auth = { path = "../auth" }
 derive-getters = "0.2.0"
 edgedb-derive = "0.4.0"
+edgedb-errors = "0.3.0"
 edgedb-protocol = "0.4.0"
 edgedb-tokio = "0.3.0"
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
+serde = { version = "1.0.145", features = ["derive"] }
 serde_json = "1.0.85"
 surf = { version = "2.3.2", features = ["hyper-client"] }
 uuid = "1.1.2"

@@ -8,6 +8,4 @@ SELECT (
       password_hash := <str>$2
     })
   }
-) {
-    id
-}
+)
