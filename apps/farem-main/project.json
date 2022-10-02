@@ -1,5 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["main-db"],
   "projectType": "application",
   "sourceRoot": "apps/farem-main/src",
   "targets": {
