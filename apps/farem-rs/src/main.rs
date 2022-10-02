@@ -11,13 +11,9 @@ struct FaremInput {
 
 #[get("/example")]
 fn example() -> String {
-    r#"
-fn main() {
-  println!("hello world, and welcome to CodeFarem!");
-}
-"#
-    .trim()
-    .to_string()
+    include_str!("../../../libs/examples/src/rs/example.rs")
+        .trim()
+        .to_string()
 }
 
 #[post("/farem", data = "<code_input>")]
