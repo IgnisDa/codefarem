@@ -8,8 +8,8 @@
       "options": {
         "commands": [
           "go vet go/example.go",
-          "clippy-driver rs/example.rs && rm example",
-          "g++ cpp/example.cpp && rm a.out"
+          "clippy-driver rs/example.rs ; rimraf example",
+          "g++ cpp/example.cpp ; rimraf a.out"
         ],
         "cwd": "libs/examples/src"
       }
