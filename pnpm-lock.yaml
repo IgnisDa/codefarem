@@ -73,6 +73,7 @@ specifiers:
   regenerator-runtime: 0.13.7
   remix-forms: 0.18.2
   remix-utils: 3.3.0
+  rimraf: ^3.0.2
   routes-gen: 0.5.2
   tailwindcss: 3.1.8
   tiny-invariant: 1.2.0
@@ -165,6 +166,7 @@ devDependencies:
   postcss: 8.4.16
   prettier: 2.7.1
   react-test-renderer: 18.2.0_react@18.2.0
+  rimraf: 3.0.2
   routes-gen: 0.5.2
   tailwindcss: 3.1.8_57znarxsqwmnneadci5z5fd5gu
   ts-jest: 28.0.5_yjudtginvtlahiurkrr2akrgxy
