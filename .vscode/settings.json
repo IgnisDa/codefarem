@@ -38,6 +38,7 @@
         "rustup",
         "tailwindcss",
         "tempfile",
+        "thiserror",
         "tinygo",
         "tlsv",
         "tokei",
