@@ -1,7 +1,10 @@
-use anyhow::{Ok, Result};
-use async_graphql::{Context, Object};
+use async_graphql::{Context, Object, Result};
+use macros::to_result_union_response;
 
-use super::service::{FaremService, FaremServiceTrait, SupportedLanguage};
+use super::{
+    dto::mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
+    service::{FaremService, FaremServiceTrait, SupportedLanguage},
+};
 
 /// The query segment for Farem
 #[derive(Default)]
@@ -22,7 +25,7 @@ impl FaremQuery {
     async fn language_example(&self, ctx: &Context<'_>, language: SupportedLanguage) -> String {
         ctx.data::<FaremService>()
             .unwrap()
-            .language_example(language)
+            .language_example(&language)
             .await
     }
 }
@@ -34,14 +37,13 @@ impl FaremMutation {
     async fn execute_code(
         &self,
         ctx: &Context<'_>,
-        input: String,
-        language: SupportedLanguage,
-    ) -> Result<String> {
+        input: ExecuteCodeInput,
+    ) -> Result<ExecuteCodeResultUnion> {
         let output = ctx
             .data::<FaremService>()
             .unwrap()
-            .execute_code(input, language)
+            .execute_code(input.code(), input.language())
             .await;
-        Ok(output)
+        to_result_union_response!(output, ExecuteCodeResultUnion)
     }
 }

@@ -6,13 +6,21 @@ use edgedb_tokio::Client as DbClient;
 use serde_json::json;
 use surf::Client as HttpClient;
 
+use super::dto::mutations::execute_code::{
+    ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput,
+};
+
 #[async_trait]
 pub trait FaremServiceTrait: Sync + Send {
     fn supported_languages(&self) -> Vec<SupportedLanguage>;
 
-    async fn language_example(&self, language: SupportedLanguage) -> String;
+    async fn language_example(&self, language: &SupportedLanguage) -> String;
 
-    async fn execute_code(&self, input: String, language: SupportedLanguage) -> String;
+    async fn execute_code(
+        &self,
+        input: &'_ str,
+        language: &SupportedLanguage,
+    ) -> Result<ExecuteCodeOutput, ExecuteCodeError>;
 }
 
 pub struct FaremService {
@@ -56,38 +64,32 @@ impl SupportedLanguage {
 }
 
 impl FaremService {
-    async fn execute_wasm(&self, wasm: Vec<u8>) -> String {
+    async fn execute_wasm(&self, wasm: Vec<u8>) -> Result<String, String> {
         self.execute_client
             .post("/execute")
             .body_bytes(wasm)
             .recv_string()
             .await
-            .unwrap()
+            .map_err(|f| f.to_string())
     }
 
-    async fn compile_source(&self, input: String, client: &Arc<HttpClient>) -> Vec<u8> {
-        client
+    async fn compile_source(
+        &self,
+        input: &'_ str,
+        client: &Arc<HttpClient>,
+    ) -> Result<Vec<u8>, String> {
+        let mut response = client
             .post("/farem")
             .body_json(&json!({ "code": input }))
             .unwrap()
-            .recv_bytes()
             .await
-            .unwrap()
-    }
-
-    async fn compile_rust(&self, input: String) -> String {
-        let wasm = self.compile_source(input, &self.rust_farem_client).await;
-        self.execute_wasm(wasm).await
-    }
-
-    async fn compile_cpp(&self, input: String) -> String {
-        let wasm = self.compile_source(input, &self.cpp_farem_client).await;
-        self.execute_wasm(wasm).await
-    }
-
-    async fn compile_go(&self, input: String) -> String {
-        let wasm = self.compile_source(input, &self.go_farem_client).await;
-        self.execute_wasm(wasm).await
+            .unwrap();
+        let response_body = response.body_bytes().await.unwrap();
+        if response.status().is_client_error() {
+            Err(String::from_utf8(response_body).unwrap())
+        } else {
+            Ok(response_body)
+        }
     }
 }
 
@@ -97,7 +99,7 @@ impl FaremServiceTrait for FaremService {
         SupportedLanguage::variants()
     }
 
-    async fn language_example(&self, language: SupportedLanguage) -> String {
+    async fn language_example(&self, language: &SupportedLanguage) -> String {
         let farem_client = match language {
             SupportedLanguage::Rust => &self.rust_farem_client,
             SupportedLanguage::Cpp => &self.cpp_farem_client,
@@ -112,11 +114,26 @@ impl FaremServiceTrait for FaremService {
             .unwrap()
     }
 
-    async fn execute_code(&self, input: String, language: SupportedLanguage) -> String {
-        match language {
-            SupportedLanguage::Rust => self.compile_rust(input).await,
-            SupportedLanguage::Cpp => self.compile_cpp(input).await,
-            SupportedLanguage::Go => self.compile_go(input).await,
+    async fn execute_code(
+        &self,
+        input: &'_ str,
+        language: &SupportedLanguage,
+    ) -> Result<ExecuteCodeOutput, ExecuteCodeError> {
+        let wasm = match language {
+            SupportedLanguage::Rust => self.compile_source(input, &self.rust_farem_client).await,
+            SupportedLanguage::Cpp => self.compile_source(input, &self.cpp_farem_client).await,
+            SupportedLanguage::Go => self.compile_source(input, &self.go_farem_client).await,
         }
+        .map_err(|f| ExecuteCodeError {
+            error: f,
+            step: ExecuteCodeErrorStep::CompilationToWasm,
+        })?;
+        self.execute_wasm(wasm)
+            .await
+            .map(|f| ExecuteCodeOutput { output: f })
+            .map_err(|f| ExecuteCodeError {
+                error: f,
+                step: ExecuteCodeErrorStep::WasmExecution,
+            })
     }
 }
