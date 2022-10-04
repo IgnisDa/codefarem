@@ -9,17 +9,17 @@
             "dependsOn": [
                 "farem-cpp",
                 "farem-go",
-                "farem-main",
                 "farem-rs",
                 "farem-run",
-                "website"
+                "website",
+                "farem-main"
             ]
         },
         {
             "label": "farem-cpp",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-cpp && cargo run'",
+            "command": "cargo watch -cqx 'run --package farem-cpp'",
             "detail": "Run cpp farem service",
             "options": {
                 "env": {
@@ -31,7 +31,7 @@
             "label": "farem-go",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-go && cargo run'",
+            "command": "cargo watch -cqx 'run --package farem-go'",
             "detail": "Run go farem service",
             "options": {
                 "env": {
@@ -43,7 +43,7 @@
             "label": "farem-main",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-main && cargo run'",
+            "command": "cargo watch -cqx 'run --package farem-main'",
             "detail": "Run main service",
             "options": {
                 "env": {
@@ -55,7 +55,7 @@
             "label": "farem-rs",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-rs && cargo run'",
+            "command": "cargo watch -cqx 'run --package farem-rs'",
             "detail": "Run rust farem service",
             "options": {
                 "env": {
@@ -67,7 +67,7 @@
             "label": "farem-run",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqs 'cd ${workspaceFolder}/apps/farem-run && cargo run'",
+            "command": "cargo watch -cqx 'run --package farem-run'",
             "detail": "Run wasm execution farem service",
             "options": {
                 "env": {
