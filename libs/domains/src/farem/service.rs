@@ -4,6 +4,7 @@ use async_graphql::Enum;
 use async_trait::async_trait;
 use edgedb_tokio::Client as DbClient;
 use serde_json::json;
+use strum::{EnumIter, IntoEnumIterator};
 use surf::Client as HttpClient;
 
 use super::dto::mutations::execute_code::{
@@ -49,7 +50,7 @@ impl FaremService {
     }
 }
 
-#[derive(Enum, Clone, Copy, PartialEq, Eq)]
+#[derive(Enum, Clone, Copy, PartialEq, Eq, EnumIter)]
 #[graphql(rename_items = "lowercase")]
 pub enum SupportedLanguage {
     Rust,
@@ -59,7 +60,7 @@ pub enum SupportedLanguage {
 
 impl SupportedLanguage {
     fn variants() -> Vec<Self> {
-        vec![Self::Rust, Self::Go, Self::Cpp]
+        Self::iter().collect()
     }
 }
 

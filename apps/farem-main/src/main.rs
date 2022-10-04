@@ -1,10 +1,13 @@
+use std::sync::Arc;
+
 use async_graphql::{
     extensions::Analyzer,
     http::{playground_source, GraphQLPlaygroundConfig},
     EmptySubscription, Schema,
 };
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
-use domains::{farem::service::FaremService, users::service::UserService, RequestData};
+use config::JwtConfig;
+use domains::{farem::service::FaremService, users::service::UserService, RequestData, Token};
 use farem_main::{
     get_app_config,
     graphql::{MutationRoot, QueryRoot},
@@ -21,11 +24,14 @@ fn graphiql() -> RawHtml<String> {
 #[post("/graphql", data = "<graphql_request>", format = "application/json")]
 async fn graphql_request(
     schema: &State<GraphqlSchema>,
-    request_data: RequestData,
+    jwt_config: &State<Arc<JwtConfig>>,
+    user_token: Token,
     graphql_request: GraphQLRequest,
 ) -> GraphQLResponse {
-    // insert data here using a single struct since this method can only be called once
-    // dbg!(&graphql_request.0);
+    let request_data = RequestData {
+        user_token: user_token.0,
+        jwt_secret: jwt_config.jwt_secret().to_vec(),
+    };
     let request = graphql_request.data(request_data).0;
     let response = schema.execute(request).await;
     GraphQLResponse::from(response)
@@ -53,5 +59,6 @@ async fn rocket() -> _ {
     .finish();
     rocket::build()
         .manage(schema)
+        .manage(app_config.jwt_config)
         .mount("/", routes![graphiql, graphql_request])
 }

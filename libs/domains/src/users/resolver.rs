@@ -1,10 +1,16 @@
-use async_graphql::{Context, Object, Result};
-use macros::to_result_union_response;
+use async_graphql::{Context, ErrorExtensions, Object, Result};
+use auth::{get_user_id_from_authorization_token, AuthError};
+use macros::{to_result_union_response, user_id_from_request};
+
+use crate::RequestData;
 
 use super::{
-    dto::mutations::{
-        login_user::{LoginUserInput, LoginUserResultUnion},
-        register_user::{RegisterUserInput, RegisterUserResultUnion},
+    dto::{
+        mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
+        queries::{
+            login_user::{LoginUserInput, LoginUserResultUnion},
+            user_details::UserDetailsResultUnion,
+        },
     },
     service::{UserService, UserServiceTrait},
 };
@@ -19,6 +25,16 @@ pub struct UserMutation {}
 
 #[Object]
 impl UserQuery {
+    /// Get information about the current user
+    async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
+        let user_id = user_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<UserService>()
+            .user_details(user_id)
+            .await;
+        to_result_union_response!(output, UserDetailsResultUnion)
+    }
+
     /// Login a user to the service
     async fn login_user(
         &self,
