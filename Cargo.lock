@@ -135,6 +135,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98161a4e3e2184da77bb14f02184cdd111e83bbbcc9979dfee3c44b9a85f5602"
 
 [[package]]
+name = "arc-swap"
+version = "1.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "983cd8b9d4b02a6dc6ffa557262eb5858a27a0038ffffe21a0f133eaa819a164"
+
+[[package]]
 name = "ascii_utils"
 version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -391,10 +397,13 @@ dependencies = [
 name = "auth"
 version = "0.1.0"
 dependencies = [
+ "async-graphql",
  "chrono",
  "jsonwebtoken",
  "scrypt",
  "serde",
+ "strum",
+ "thiserror",
  "uuid",
 ]
 
@@ -878,7 +887,7 @@ dependencies = [
  "auth",
  "config",
  "derive-getters",
- "edgedb-derive 0.4.0",
+ "edgedb-derive",
  "edgedb-errors",
  "edgedb-protocol",
  "edgedb-tokio",
@@ -886,6 +895,7 @@ dependencies = [
  "rocket",
  "serde",
  "serde_json",
+ "strum",
  "surf",
  "uuid",
 ]
@@ -933,21 +943,8 @@ dependencies = [
 
 [[package]]
 name = "edgedb-derive"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "090a6b0804c4e71be2bd7e39af8b132991bbcd25b17a3820ce71274dea28807c"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
- "trybuild",
-]
-
-[[package]]
-name = "edgedb-derive"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c10e157a2852fe55eb733db86772aa1cd41f1d971f6eba577d1bc608eec89f5"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#b3d6636c85d71fa0e97bf744419a8c02978e3ad3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -958,8 +955,7 @@ dependencies = [
 [[package]]
 name = "edgedb-errors"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34fc3a52824eb09eaaf195f5d32ecbe37f3b21d084d26bb2fe6447bb8c54372f"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#b3d6636c85d71fa0e97bf744419a8c02978e3ad3"
 dependencies = [
  "bytes 1.2.1",
 ]
@@ -967,8 +963,7 @@ dependencies = [
 [[package]]
 name = "edgedb-protocol"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c01cfb9ff82f6db72c1fde22fffc23a30726059ab6e330a8ecea3f68d8eedba7"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#b3d6636c85d71fa0e97bf744419a8c02978e3ad3"
 dependencies = [
  "bitflags",
  "bytes 1.2.1",
@@ -980,15 +975,15 @@ dependencies = [
 [[package]]
 name = "edgedb-tokio"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8bc6549f7dccbaa28e75a90699727976a2baf0d325546e441aed4891e601900d"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#b3d6636c85d71fa0e97bf744419a8c02978e3ad3"
 dependencies = [
  "anyhow",
+ "arc-swap",
  "async-trait",
  "base16ct",
  "bytes 1.2.1",
  "dirs",
- "edgedb-derive 0.3.0",
+ "edgedb-derive",
  "edgedb-errors",
  "edgedb-protocol",
  "log",
@@ -1083,6 +1078,7 @@ dependencies = [
  "strum_macros",
  "surf",
  "tokio 1.21.1",
+ "uuid",
 ]
 
 [[package]]
@@ -3226,18 +3222,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.35"
+version = "1.0.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c53f98874615aea268107765aa1ed8f6116782501d18e53d08b471733bea6c85"
+checksum = "10deb33631e3c9018b9baf9dcbbc4f737320d2b576bac10f6aefa048fa407e3e"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.35"
+version = "1.0.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8b463991b4eab2d801e724172285ec4195c650e8ec79b149e6c2a8e6dd3f783"
+checksum = "982d17546b47146b28f7c22e3d08465f6b8903d0ea13c1660d9d84a6e7adcdbb"
 dependencies = [
  "proc-macro2",
  "quote",

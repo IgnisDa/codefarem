@@ -8,31 +8,35 @@ use edgedb_tokio::Client as DbClient;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::users::dto::mutations::login_user::LoginError;
-
-use super::dto::mutations::{
-    login_user::{LoginUserError, LoginUserOutput},
-    register_user::{RegisterUserError, RegisterUserOutput},
+use super::dto::{
+    mutations::register_user::{RegisterUserError, RegisterUserOutput},
+    queries::{
+        login_user::{LoginError, LoginUserError, LoginUserOutput},
+        user_details::{UserDetailsError, UserDetailsOutput},
+    },
 };
 
 const REGISTER_USER: &str = include_str!("../../../main-db/edgeql/register-user.edgeql");
 const CHECK_UNIQUENESS: &str = include_str!("../../../main-db/edgeql/check-uniqueness.edgeql");
 const LOGIN_USER: &str = include_str!("../../../main-db/edgeql/login-user.edgeql");
+const USER_DETAILS: &str = include_str!("../../../main-db/edgeql/user-details.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {
-    async fn register_user<'a>(
-        &self,
-        username: &'a str,
-        email: &'a str,
-        password: &'a str,
-    ) -> Result<RegisterUserOutput, RegisterUserError>;
+    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError>;
 
     async fn login_user<'a>(
         &self,
         email: &'a str,
         password: &'a str,
     ) -> Result<LoginUserOutput, LoginUserError>;
+
+    async fn register_user<'a>(
+        &self,
+        username: &'a str,
+        email: &'a str,
+        password: &'a str,
+    ) -> Result<RegisterUserOutput, RegisterUserError>;
 }
 
 pub struct UserService {
@@ -53,35 +57,13 @@ impl UserService {}
 
 #[async_trait]
 impl UserServiceTrait for UserService {
-    async fn register_user<'a>(
-        &self,
-        username: &'a str,
-        email: &'a str,
-        password: &'a str,
-    ) -> Result<RegisterUserOutput, RegisterUserError> {
-        // FIXME: For whatever reason, `query_required_single` does not work. This gets the
-        // result as JSON and then converts it to the required struct.
-        let check_uniqueness = serde_json::from_str::<RegisterUserError>(
-            self.db_conn
-                .query_required_single_json(CHECK_UNIQUENESS, &(username, email))
-                .await
-                .unwrap()
-                .to_string()
-                .as_str(),
-        )
-        .unwrap();
-        if check_uniqueness != RegisterUserError::default() {
-            return Err(check_uniqueness);
-        }
-        let password_hash = get_hashed_password(password);
-        Ok(self
-            .db_conn
-            .query_required_single::<RegisterUserOutput, _>(
-                REGISTER_USER,
-                &(username, email, password_hash),
-            )
+    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError> {
+        self.db_conn
+            .query_required_single::<UserDetailsOutput, _>(USER_DETAILS, &(user_id,))
             .await
-            .unwrap())
+            .map_err(|_| UserDetailsError {
+                error: format!("User with id={user_id} not found"),
+            })
     }
 
     async fn login_user<'a>(
@@ -98,15 +80,11 @@ impl UserServiceTrait for UserService {
             id: Uuid,
             auth: A,
         }
-        let login_details = serde_json::from_str::<Vec<B>>(
-            self.db_conn
-                .query_json(LOGIN_USER, &(email,))
-                .await
-                .unwrap()
-                .to_string()
-                .as_str(),
-        )
-        .unwrap();
+        let login_details = self
+            .db_conn
+            .query::<B, _>(LOGIN_USER, &(email,))
+            .await
+            .unwrap();
         if login_details.is_empty() {
             return Err(LoginUserError {
                 error: LoginError::CredentialsMismatch,
@@ -124,5 +102,30 @@ impl UserServiceTrait for UserService {
                 error: LoginError::CredentialsMismatch,
             })
         }
+    }
+
+    async fn register_user<'a>(
+        &self,
+        username: &'a str,
+        email: &'a str,
+        password: &'a str,
+    ) -> Result<RegisterUserOutput, RegisterUserError> {
+        let check_uniqueness = self
+            .db_conn
+            .query_required_single::<RegisterUserError, _>(CHECK_UNIQUENESS, &(username, email))
+            .await
+            .unwrap();
+        if check_uniqueness != RegisterUserError::default() {
+            return Err(check_uniqueness);
+        }
+        let password_hash = get_hashed_password(password);
+        Ok(self
+            .db_conn
+            .query_required_single::<RegisterUserOutput, _>(
+                REGISTER_USER,
+                &(username, email, password_hash),
+            )
+            .await
+            .unwrap())
     }
 }
