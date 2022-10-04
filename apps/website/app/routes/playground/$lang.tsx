@@ -1,10 +1,19 @@
-import { SupportedLanguage } from '@codefarem/generated/graphql/generic-sdk';
+import {
+  ExecuteCodeMutation,
+  SupportedLanguage,
+} from '@codefarem/generated/graphql/generic-sdk';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
 import { go } from '@codemirror/legacy-modes/mode/go';
 import { json } from '@remix-run/node';
-import { Form, Link, useActionData, useLoaderData } from '@remix-run/react';
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from '@remix-run/react';
 import EditorView from '@uiw/react-codemirror';
 import { makeDomainFunction } from 'domain-functions';
 import { useState } from 'react';
@@ -13,6 +22,7 @@ import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
+import { Loading } from '@codefarem/react-ui';
 
 import { graphqlSdk } from '../../lib/graphql.server';
 
@@ -36,7 +46,7 @@ export async function loader({ params }: LoaderArgs) {
 const schema = z.object({ input: z.string(), language: z.string() });
 
 const mutation = makeDomainFunction(schema)(async (values) => {
-  const { executeCode } = await graphqlSdk.ExecuteCode({
+  const executeCode = await graphqlSdk.ExecuteCode({
     input: {
       code: JSON.parse(values.input),
       language: values.language as SupportedLanguage,
@@ -47,15 +57,16 @@ const mutation = makeDomainFunction(schema)(async (values) => {
 
 export async function action({ request }: ActionArgs) {
   const executeCode = await formAction({ request, schema, mutation });
-  let output = await executeCode.json();
-  return json({ executeCode: output });
+  let output: ExecuteCodeMutation = await executeCode.json();
+  return json({ output: output });
 }
 
 export default () => {
   const { languageExample, supportedLanguages, selectedLanguage } =
     useLoaderData<typeof loader>();
-  const data = useActionData<typeof action>();
+  const actionData = useActionData<typeof action>();
   const [code, setCode] = useState(languageExample);
+  const transition = useTransition();
 
   const extensions = match(selectedLanguage)
     .with(SupportedLanguage.Cpp, () => [cpp()])
@@ -65,6 +76,13 @@ export default () => {
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 w-full h-full space-y-10">
+      <div>
+        {transition.state !== 'idle' ? (
+          <Loading />
+        ) : (
+          <div className="h-6"></div>
+        )}
+      </div>
       <div className="flex items-center space-x-3">
         {supportedLanguages.map((l, idx) => (
           <Link
@@ -97,8 +115,17 @@ export default () => {
         </button>
       </Form>
       <div className="flex w-full px-20 max-h-96">
-        <div className="flex-1 w-1/3 p-2 font-mono text-red-300 bg-slate-600">
-          {data && data.executeCode.output}
+        <div className="flex-1 w-1/3 p-2 font-mono bg-slate-600">
+          {actionData &&
+            (actionData.output.executeCode.__typename === 'ExecuteCodeError' ? (
+              <div className="text-red-300">
+                {actionData.output.executeCode.error}
+              </div>
+            ) : (
+              <div className="text-white">
+                {actionData.output.executeCode.output}
+              </div>
+            ))}
         </div>
         <div className="w-2/3 overflow-scroll">
           <EditorView

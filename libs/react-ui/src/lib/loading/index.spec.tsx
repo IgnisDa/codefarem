@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import { ToggleGroup } from '.';
+import { Loading } from '.';
 
 describe('ReactUi', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<ToggleGroup items={[]} />);
+    const { baseElement } = render(<Loading />);
     expect(baseElement).toBeTruthy();
   });
 });
