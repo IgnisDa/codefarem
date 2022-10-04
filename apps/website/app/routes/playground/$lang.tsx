@@ -37,15 +37,18 @@ const schema = z.object({ input: z.string(), language: z.string() });
 
 const mutation = makeDomainFunction(schema)(async (values) => {
   const { executeCode } = await graphqlSdk.ExecuteCode({
-    input: JSON.parse(values.input),
-    language: values.language as SupportedLanguage,
+    input: {
+      code: JSON.parse(values.input),
+      language: values.language as SupportedLanguage,
+    },
   });
   return executeCode;
 });
 
 export async function action({ request }: ActionArgs) {
   const executeCode = await formAction({ request, schema, mutation });
-  return json({ executeCode: await executeCode.json() });
+  let output = await executeCode.json();
+  return json({ executeCode: output });
 }
 
 export default () => {
@@ -95,7 +98,7 @@ export default () => {
       </Form>
       <div className="flex w-full px-20 max-h-96">
         <div className="flex-1 w-1/3 p-2 font-mono text-red-300 bg-slate-600">
-          {data && data.executeCode}
+          {data && data.executeCode.output}
         </div>
         <div className="w-2/3 overflow-scroll">
           <EditorView
