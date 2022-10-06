@@ -10,6 +10,7 @@ use super::{
         queries::{
             login_user::{LoginUserInput, LoginUserResultUnion},
             user_details::UserDetailsResultUnion,
+            user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
         },
     },
     service::{UserService, UserServiceTrait},
@@ -35,6 +36,19 @@ impl UserQuery {
         to_result_union_response!(output, UserDetailsResultUnion)
     }
 
+    /// Check whether a user with the provided email exists in the service
+    async fn user_with_email(
+        &self,
+        ctx: &Context<'_>,
+        input: UserWithEmailInput,
+    ) -> Result<UserWithEmailResultUnion> {
+        let output = ctx
+            .data_unchecked::<UserService>()
+            .user_with_email(input.email())
+            .await;
+        to_result_union_response!(output, UserWithEmailResultUnion)
+    }
+
     /// Login a user to the service
     async fn login_user(
         &self,
@@ -46,6 +60,15 @@ impl UserQuery {
             .login_user(input.email(), input.password())
             .await;
         to_result_union_response!(output, LoginUserResultUnion)
+    }
+
+    /// Logout a user from the service
+    async fn logout_user(&self, ctx: &Context<'_>) -> Result<bool> {
+        let user_id = user_id_from_request!(ctx);
+        Ok(ctx
+            .data_unchecked::<UserService>()
+            .logout_user(user_id)
+            .await)
     }
 }
 
