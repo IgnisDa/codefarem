@@ -7,7 +7,7 @@ import {
 } from 'urql';
 import { createUrqlRequester } from 'urql-generic-requester';
 
-import { ApplicationConfig } from './config.server';
+import { ApplicationConfig } from '../config.server';
 
 const client = createClient({
   url: `${ApplicationConfig.APPLICATION_API_URL}/graphql`,

@@ -24,7 +24,7 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { Loading } from '@codefarem/react-ui';
 
-import { graphqlSdk } from '../../lib/graphql.server';
+import { graphqlSdk } from '../../lib/services/graphql.server';
 
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
