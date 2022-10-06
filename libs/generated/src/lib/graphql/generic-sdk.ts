@@ -111,10 +111,14 @@ export type QueryRoot = {
   languageExample: Scalars['String'];
   /** Login a user to the service */
   loginUser: LoginUserResultUnion;
+  /** Logout a user from the service */
+  logoutUser: Scalars['Boolean'];
   /** Get a list of all the languages that the service supports. */
   supportedLanguages: Array<SupportedLanguage>;
   /** Get information about the current user */
   userDetails: UserDetailsResultUnion;
+  /** Check whether a user with the provided email exists in the service */
+  userWithEmail: UserWithEmailResultUnion;
 };
 
 /** The GraphQL top-level query type */
@@ -125,6 +129,11 @@ export type QueryRootLanguageExampleArgs = {
 /** The GraphQL top-level query type */
 export type QueryRootLoginUserArgs = {
   input: LoginUserInput;
+};
+
+/** The GraphQL top-level query type */
+export type QueryRootUserWithEmailArgs = {
+  input: UserWithEmailInput;
 };
 
 /** The result type if an error was encountered when creating a new user */
@@ -187,6 +196,29 @@ export type UserProfileInformation = {
   username: Scalars['String'];
 };
 
+/** The result type if a user with the provided email was not found */
+export type UserWithEmailError = {
+  __typename?: 'UserWithEmailError';
+  /** The error encountered while finding the user */
+  error: Scalars['String'];
+};
+
+/** The input object used to query for a user */
+export type UserWithEmailInput = {
+  /** The email of the user */
+  email: Scalars['String'];
+};
+
+/** The result type if the user was created successfully */
+export type UserWithEmailOutput = {
+  __typename?: 'UserWithEmailOutput';
+  /** The unique ID of the user */
+  id: Scalars['UUID'];
+};
+
+/** The output object when finding a user with the provided email */
+export type UserWithEmailResultUnion = UserWithEmailError | UserWithEmailOutput;
+
 export type ExecuteCodeMutationVariables = Exact<{
   input: ExecuteCodeInput;
 }>;
@@ -200,6 +232,21 @@ export type ExecuteCodeMutation = {
         step: ExecuteCodeErrorStep;
       }
     | { __typename: 'ExecuteCodeOutput'; output: string };
+};
+
+export type RegisterUserMutationVariables = Exact<{
+  input: RegisterUserInput;
+}>;
+
+export type RegisterUserMutation = {
+  __typename?: 'MutationRoot';
+  registerUser:
+    | {
+        __typename: 'RegisterUserError';
+        usernameNotUnique: boolean;
+        emailNotUnique: boolean;
+      }
+    | { __typename: 'RegisterUserOutput'; id: string };
 };
 
 export type SupportedLanguagesQueryVariables = Exact<{ [key: string]: never }>;
@@ -218,6 +265,48 @@ export type LanguageExampleQuery = {
   languageExample: string;
 };
 
+export type LoginUserQueryVariables = Exact<{
+  input: LoginUserInput;
+}>;
+
+export type LoginUserQuery = {
+  __typename?: 'QueryRoot';
+  loginUser:
+    | { __typename: 'LoginUserError'; error: LoginError }
+    | { __typename: 'LoginUserOutput'; token: string };
+};
+
+export type UserDetailsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UserDetailsQuery = {
+  __typename?: 'QueryRoot';
+  userDetails:
+    | { __typename: 'UserDetailsError'; error: string }
+    | {
+        __typename: 'UserDetailsOutput';
+        profile: {
+          __typename?: 'UserProfileInformation';
+          email: string;
+          username: string;
+        };
+      };
+};
+
+export type LogoutUserQueryVariables = Exact<{ [key: string]: never }>;
+
+export type LogoutUserQuery = { __typename?: 'QueryRoot'; logoutUser: boolean };
+
+export type UserWithEmailQueryVariables = Exact<{
+  input: UserWithEmailInput;
+}>;
+
+export type UserWithEmailQuery = {
+  __typename?: 'QueryRoot';
+  userWithEmail:
+    | { __typename: 'UserWithEmailError'; error: string }
+    | { __typename: 'UserWithEmailOutput'; id: string };
+};
+
 export const ExecuteCodeDocument = gql`
   mutation ExecuteCode($input: ExecuteCodeInput!) {
     executeCode(input: $input) {
@@ -232,6 +321,20 @@ export const ExecuteCodeDocument = gql`
     }
   }
 `;
+export const RegisterUserDocument = gql`
+  mutation RegisterUser($input: RegisterUserInput!) {
+    registerUser(input: $input) {
+      __typename
+      ... on RegisterUserOutput {
+        id
+      }
+      ... on RegisterUserError {
+        usernameNotUnique
+        emailNotUnique
+      }
+    }
+  }
+`;
 export const SupportedLanguagesDocument = gql`
   query SupportedLanguages {
     supportedLanguages
@@ -240,6 +343,53 @@ export const SupportedLanguagesDocument = gql`
 export const LanguageExampleDocument = gql`
   query LanguageExample($language: SupportedLanguage!) {
     languageExample(language: $language)
+  }
+`;
+export const LoginUserDocument = gql`
+  query LoginUser($input: LoginUserInput!) {
+    loginUser(input: $input) {
+      __typename
+      ... on LoginUserOutput {
+        token
+      }
+      ... on LoginUserError {
+        error
+      }
+    }
+  }
+`;
+export const UserDetailsDocument = gql`
+  query UserDetails {
+    userDetails {
+      __typename
+      ... on UserDetailsOutput {
+        profile {
+          email
+          username
+        }
+      }
+      ... on UserDetailsError {
+        error
+      }
+    }
+  }
+`;
+export const LogoutUserDocument = gql`
+  query LogoutUser {
+    logoutUser
+  }
+`;
+export const UserWithEmailDocument = gql`
+  query UserWithEmail($input: UserWithEmailInput!) {
+    userWithEmail(input: $input) {
+      __typename
+      ... on UserWithEmailOutput {
+        id
+      }
+      ... on UserWithEmailError {
+        error
+      }
+    }
   }
 `;
 export type Requester<C = {}, E = unknown> = <R, V>(
@@ -258,6 +408,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<ExecuteCodeMutation>;
+    },
+    RegisterUser(
+      variables: RegisterUserMutationVariables,
+      options?: C
+    ): Promise<RegisterUserMutation> {
+      return requester<RegisterUserMutation, RegisterUserMutationVariables>(
+        RegisterUserDocument,
+        variables,
+        options
+      ) as Promise<RegisterUserMutation>;
     },
     SupportedLanguages(
       variables?: SupportedLanguagesQueryVariables,
@@ -281,6 +441,46 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<LanguageExampleQuery>;
+    },
+    LoginUser(
+      variables: LoginUserQueryVariables,
+      options?: C
+    ): Promise<LoginUserQuery> {
+      return requester<LoginUserQuery, LoginUserQueryVariables>(
+        LoginUserDocument,
+        variables,
+        options
+      ) as Promise<LoginUserQuery>;
+    },
+    UserDetails(
+      variables?: UserDetailsQueryVariables,
+      options?: C
+    ): Promise<UserDetailsQuery> {
+      return requester<UserDetailsQuery, UserDetailsQueryVariables>(
+        UserDetailsDocument,
+        variables,
+        options
+      ) as Promise<UserDetailsQuery>;
+    },
+    LogoutUser(
+      variables?: LogoutUserQueryVariables,
+      options?: C
+    ): Promise<LogoutUserQuery> {
+      return requester<LogoutUserQuery, LogoutUserQueryVariables>(
+        LogoutUserDocument,
+        variables,
+        options
+      ) as Promise<LogoutUserQuery>;
+    },
+    UserWithEmail(
+      variables: UserWithEmailQueryVariables,
+      options?: C
+    ): Promise<UserWithEmailQuery> {
+      return requester<UserWithEmailQuery, UserWithEmailQueryVariables>(
+        UserWithEmailDocument,
+        variables,
+        options
+      ) as Promise<UserWithEmailQuery>;
     },
   };
 }
