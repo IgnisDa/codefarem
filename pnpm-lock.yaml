@@ -37,6 +37,7 @@ specifiers:
   '@testing-library/react': 13.4.0
   '@types/jest': 28.1.1
   '@types/lodash': 4.14.185
+  '@types/luxon': 3.0.1
   '@types/node': 18.7.18
   '@types/react': 18.0.20
   '@types/react-dom': 18.0.6
@@ -45,6 +46,7 @@ specifiers:
   '@uiw/react-codemirror': 4.12.3
   autoprefixer: 10.4.12
   babel-jest: 28.1.1
+  clsx: 1.2.1
   codemirror: 6.0.1
   commitizen: 4.2.5
   core-js: 3.25.2
@@ -62,6 +64,7 @@ specifiers:
   jest: 28.1.1
   jest-environment-jsdom: 28.1.1
   lodash: 4.17.21
+  luxon: 3.0.1
   nx: 14.8.2
   postcss: 8.4.16
   prettier: 2.7.1
@@ -71,6 +74,8 @@ specifiers:
   react-icons: 4.4.0
   react-test-renderer: 18.2.0
   regenerator-runtime: 0.13.7
+  remix-auth: 3.3.0
+  remix-auth-form: 1.2.0
   remix-forms: 0.18.2
   remix-utils: 3.3.0
   rimraf: 3.0.2
@@ -98,17 +103,21 @@ dependencies:
   '@remix-run/react': 1.7.2_biqbaboplfbrettd7655fr4n2y
   '@remix-run/serve': 1.7.2_biqbaboplfbrettd7655fr4n2y
   '@uiw/react-codemirror': 4.12.3_os2i4b4c4r6ynotuwzkce5wzcu
+  clsx: 1.2.1
   codemirror: 6.0.1_@lezer+common@1.0.1
   core-js: 3.25.2
   domain-functions: 1.1.0
   env-var: 7.3.0
   graphql: 16.6.0
   lodash: 4.17.21
+  luxon: 3.0.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.36.1_react@18.2.0
   react-icons: 4.4.0_react@18.2.0
   regenerator-runtime: 0.13.7
+  remix-auth: 3.3.0_muvmnmki5626wgm6kkfcaei6zi
+  remix-auth-form: 1.2.0_muvmnmki5626wgm6kkfcaei6zi
   remix-forms: 0.18.2_lpdo34dlerxe7ev7xovdqbssrq
   remix-utils: 3.3.0_pqza7jbp5ekgievnaooqxawnlq
   tailwindcss-animation-delay: 1.0.7_tailwindcss@3.1.8
@@ -146,6 +155,7 @@ devDependencies:
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@types/jest': 28.1.1
   '@types/lodash': 4.14.185
+  '@types/luxon': 3.0.1
   '@types/node': 18.7.18
   '@types/react': 18.0.20
   '@types/react-dom': 18.0.6
@@ -5039,6 +5049,10 @@ packages:
     resolution: {integrity: sha512-evMDG1bC4rgQg4ku9tKpuMh5iBNEwNa3tf9zRHdP1qlv+1WUg44xat4IxCE14gIpZRGUUWAx2VhItCZc25NfMA==}
     dev: true
 
+  /@types/luxon/3.0.1:
+    resolution: {integrity: sha512-/LAvk1cMOJt0ghzMFrZEvByUhsiEfeeT2IF53Le+Ki3A538yEL9pRZ7a6MuCxdrYK+YNqNIDmrKU/r2nnw04zQ==}
+    dev: true
+
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
     dependencies:
@@ -6747,6 +6761,11 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
     dev: true
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
 
   /co/4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
@@ -11491,6 +11510,11 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /luxon/3.0.1:
+    resolution: {integrity: sha512-hF3kv0e5gwHQZKz4wtm4c+inDtyc7elkanAsBq+fundaCdUBNJB1dHEGUZIM6SfSBUlbVFduPwEtNjFK8wLtcw==}
+    engines: {node: '>=12'}
+    dev: false
+
   /lz-string/1.4.4:
     resolution: {integrity: sha512-0ckx7ZHRPqb0oUm8zNr+90mtf9DQB60H1wMCjBtfi62Kl3a7JbHob6gA2bC+xRvZoOL+1hzUK8jeuEIQE8svEQ==}
     hasBin: true
@@ -13886,6 +13910,28 @@ packages:
   /remedial/1.0.8:
     resolution: {integrity: sha512-/62tYiOe6DzS5BqVsNpH/nkGlX45C/Sp6V+NtiN6JQNS1Viay7cWkazmRkrQrdFj2eshDe96SIQNIoMxqhzBOg==}
     dev: true
+
+  /remix-auth-form/1.2.0_muvmnmki5626wgm6kkfcaei6zi:
+    resolution: {integrity: sha512-iJyDhvRBctP9cJBTsU54X9K+E03XzPCVxtXRCq/+Fd4A+yqSKPAfmnSP5MnIHOnjlCGwOino8XQcj5m+UFN7QQ==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.0.0
+    dependencies:
+      '@remix-run/server-runtime': 1.7.2_biqbaboplfbrettd7655fr4n2y
+      remix-auth: 3.3.0_muvmnmki5626wgm6kkfcaei6zi
+    transitivePeerDependencies:
+      - '@remix-run/react'
+    dev: false
+
+  /remix-auth/3.3.0_muvmnmki5626wgm6kkfcaei6zi:
+    resolution: {integrity: sha512-sLY5s6DQF4OJp03HM/dIEw3tLfSOIowerS2QDTuvEVXoEA3IHVmk7QkvOKosWdVPbcnlRfwF6PbeBLKgo6vqsg==}
+    peerDependencies:
+      '@remix-run/react': ^1.0.0
+      '@remix-run/server-runtime': ^1.0.0
+    dependencies:
+      '@remix-run/react': 1.7.2_biqbaboplfbrettd7655fr4n2y
+      '@remix-run/server-runtime': 1.7.2_biqbaboplfbrettd7655fr4n2y
+      uuid: 8.3.2
+    dev: false
 
   /remix-forms/0.18.2_lpdo34dlerxe7ev7xovdqbssrq:
     resolution: {integrity: sha512-npTGm2JV/7kH/Jw/e+Qtr5mmFCGK6kwRIw61BKssSfCXC0S8pQ9RBYwKT2H0GuIkKzH23qcL6bm2a1WH2gyhDA==}
