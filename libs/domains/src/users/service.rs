@@ -13,17 +13,26 @@ use super::dto::{
     queries::{
         login_user::{LoginError, LoginUserError, LoginUserOutput},
         user_details::{UserDetailsError, UserDetailsOutput},
+        user_with_email::{UserWithEmailError, UserWithEmailOutput},
     },
 };
 
+const USER_DETAILS: &str = include_str!("../../../main-db/edgeql/user-details.edgeql");
+const USER_WITH_EMAIL: &str = include_str!("../../../main-db/edgeql/user-with-email.edgeql");
 const REGISTER_USER: &str = include_str!("../../../main-db/edgeql/register-user.edgeql");
 const CHECK_UNIQUENESS: &str = include_str!("../../../main-db/edgeql/check-uniqueness.edgeql");
 const LOGIN_USER: &str = include_str!("../../../main-db/edgeql/login-user.edgeql");
-const USER_DETAILS: &str = include_str!("../../../main-db/edgeql/user-details.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {
     async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError>;
+
+    async fn user_with_email<'a>(
+        &self,
+        email: &'a str,
+    ) -> Result<UserWithEmailOutput, UserWithEmailError>;
+
+    async fn logout_user<'a>(&self, user_id: Uuid) -> bool;
 
     async fn login_user<'a>(
         &self,
@@ -64,6 +73,28 @@ impl UserServiceTrait for UserService {
             .map_err(|_| UserDetailsError {
                 error: format!("User with id={user_id} not found"),
             })
+    }
+
+    async fn user_with_email<'a>(
+        &self,
+        email: &'a str,
+    ) -> Result<UserWithEmailOutput, UserWithEmailError> {
+        let all_users = self
+            .db_conn
+            .query::<UserWithEmailOutput, _>(USER_WITH_EMAIL, &(email,))
+            .await
+            .unwrap();
+        if all_users.is_empty() {
+            return Err(UserWithEmailError {
+                error: format!("User with email={email} not found"),
+            });
+        }
+        Ok(all_users.get(0).unwrap().to_owned())
+    }
+
+    async fn logout_user<'a>(&self, user_id: Uuid) -> bool {
+        println!("Logging out user with id={user_id}");
+        true
     }
 
     async fn login_user<'a>(
