@@ -1,5 +1,6 @@
-use compilers::{generate_input_and_output_files, main_function, run_command_and_capture_output};
+use compilers::{generate_input_and_output_files, run_command_and_capture_output};
 use duct::cmd;
+use macros::main_function;
 
 async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/rs/example.rs").trim()

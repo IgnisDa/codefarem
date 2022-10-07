@@ -1,14 +1,14 @@
 [workspace]
 members = [
+  # libraries
   "libs/auth",
   "libs/config",
   "libs/domains",
   "libs/macros",
   "libs/utilities",
-  "apps/farem-cpp",
-  "apps/farem-go",
-  "apps/orchestrator",
-  "apps/farem-rs",
-  "apps/farem-run",
+
+  # binaries
   "apps/compilers",
+  "apps/farem-run",
+  "apps/orchestrator",
 ]
