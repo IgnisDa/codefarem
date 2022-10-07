@@ -10,4 +10,5 @@ members = [
   "apps/orchestrator",
   "apps/farem-rs",
   "apps/farem-run",
+  "apps/compilers",
 ]

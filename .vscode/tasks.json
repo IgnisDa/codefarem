@@ -19,11 +19,11 @@
             "label": "farem-cpp",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package farem-cpp'",
-            "detail": "Run cpp farem service",
+            "command": "pnpm nx run compilers:run --bin cpp-compiler --watch",
+            "detail": "Run cpp compiler service",
             "options": {
                 "env": {
-                    "ROCKET_PORT": "5002"
+                    "PORT": "5002"
                 }
             },
         },
@@ -31,11 +31,11 @@
             "label": "farem-go",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package farem-go'",
-            "detail": "Run go farem service",
+            "command": "pnpm nx run compilers:run --bin go-compiler --watch",
+            "detail": "Run go compiler service",
             "options": {
                 "env": {
-                    "ROCKET_PORT": "5003"
+                    "PORT": "5003"
                 }
             },
         },
@@ -55,11 +55,11 @@
             "label": "farem-rs",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package farem-rs'",
-            "detail": "Run rust farem service",
+            "command": "pnpm nx run compilers:run --bin rs-compiler --watch",
+            "detail": "Run rust compiler service",
             "options": {
                 "env": {
-                    "ROCKET_PORT": "5001"
+                    "PORT": "5001"
                 }
             },
         },

@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "auth": "libs/auth",
+    "compilers": "apps/compilers",
     "config": "libs/config",
     "domains": "libs/domains",
     "examples": "libs/examples",
