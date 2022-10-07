@@ -41,4 +41,4 @@ RUN set -eu ;\
     rustup default stable ;\
     git clone https://aur.archlinux.org/paru.git /tmp/paru ;\
     cd /tmp/paru && makepkg -si --noconfirm ;\
-    paru -S --noconfirm emscripten
+    paru -S --noconfirm emscripten protobuf
