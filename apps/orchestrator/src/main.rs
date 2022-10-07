@@ -8,7 +8,7 @@ use async_graphql::{
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
 use config::JwtConfig;
 use domains::{farem::service::FaremService, users::service::UserService, RequestData, Token};
-use farem_main::{
+use orchestrator::{
     get_app_config,
     graphql::{MutationRoot, QueryRoot},
 };
