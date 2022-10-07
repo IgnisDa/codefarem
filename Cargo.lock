@@ -1061,28 +1061,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "farem-main"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-graphql",
- "async-graphql-rocket",
- "config",
- "domains",
- "dotenv",
- "dotenv_codegen",
- "edgedb-tokio",
- "figment",
- "rocket",
- "serde",
- "strum",
- "strum_macros",
- "surf",
- "tokio 1.21.1",
- "uuid",
-]
-
-[[package]]
 name = "farem-rs"
 version = "0.1.0"
 dependencies = [
@@ -2087,6 +2065,28 @@ dependencies = [
  "libc",
  "pkg-config",
  "vcpkg",
+]
+
+[[package]]
+name = "orchestrator"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-graphql",
+ "async-graphql-rocket",
+ "config",
+ "domains",
+ "dotenv",
+ "dotenv_codegen",
+ "edgedb-tokio",
+ "figment",
+ "rocket",
+ "serde",
+ "strum",
+ "strum_macros",
+ "surf",
+ "tokio 1.21.1",
+ "uuid",
 ]
 
 [[package]]

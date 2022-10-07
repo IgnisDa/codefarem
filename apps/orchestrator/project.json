@@ -1,8 +1,9 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "orchestrator",
   "implicitDependencies": ["main-db"],
   "projectType": "application",
-  "sourceRoot": "apps/farem-main/src",
+  "sourceRoot": "apps/orchestrator/src",
   "targets": {
     "build": {
       "executor": "@ignisda/nx-rust:build",

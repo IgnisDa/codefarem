@@ -12,7 +12,7 @@
                 "farem-rs",
                 "farem-run",
                 "website",
-                "farem-main"
+                "orchestrator"
             ]
         },
         {
@@ -40,11 +40,11 @@
             },
         },
         {
-            "label": "farem-main",
+            "label": "orchestrator",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package farem-main'",
-            "detail": "Run main service",
+            "command": "cargo watch -cqx 'run --package orchestrator'",
+            "detail": "Run the orchestrator service",
             "options": {
                 "env": {
                     "ROCKET_PORT": "8000"
