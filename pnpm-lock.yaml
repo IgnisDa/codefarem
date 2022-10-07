@@ -18,7 +18,7 @@ specifiers:
   '@graphql-codegen/typescript-generic-sdk': 3.0.1
   '@graphql-codegen/typescript-operations': 2.5.3
   '@headlessui/react': 1.7.2
-  '@ignisda/nx-rust': 14.7.0
+  '@ignisda/nx-rust': 14.8.1
   '@nrwl/cli': 14.8.2
   '@nrwl/eslint-plugin-nx': 14.8.2
   '@nrwl/jest': 14.8.2
@@ -140,7 +140,7 @@ devDependencies:
   '@graphql-codegen/typescript': 2.7.3_graphql@16.6.0
   '@graphql-codegen/typescript-generic-sdk': 3.0.1_sy4knu3obj4ys7pjcqbyfxmqle
   '@graphql-codegen/typescript-operations': 2.5.3_graphql@16.6.0
-  '@ignisda/nx-rust': 14.7.0
+  '@ignisda/nx-rust': 14.8.1
   '@nrwl/cli': 14.8.2
   '@nrwl/eslint-plugin-nx': 14.8.2_dk2kf3yiaeuju5who6jsruvkim
   '@nrwl/jest': 14.8.2_qy76hzvrfqp7rlpc7i4bqjuhjm
@@ -2872,8 +2872,8 @@ packages:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
 
-  /@ignisda/nx-rust/14.7.0:
-    resolution: {integrity: sha512-SFqjJHPVZqrHdLl3/+agRSTznts0OgQVLAUCQCdHxChLC/1ys15oyvUJAJrcobUzgYb+I1V/8BETTyiOimwwnQ==}
+  /@ignisda/nx-rust/14.8.1:
+    resolution: {integrity: sha512-OPL/WJAlIDTlyprs/m560s8nfdKMkVFzRERj6nc2gkd3MFf/PV28muX9j1cLNNpZPnwzj0C7egPrDygIRE7/3w==}
     dependencies:
       '@iarna/toml': 2.2.5
       '@swc/helpers': 0.3.17

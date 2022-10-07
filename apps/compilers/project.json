@@ -1,0 +1,42 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "compilers",
+  "implicitDependencies": ["examples"],
+  "projectType": "application",
+  "sourceRoot": "apps/compilers/src",
+  "targets": {
+    "build": {
+      "executor": "@ignisda/nx-rust:build",
+      "outputs": [
+        "target/debug/{cpp,go,rs}-compiler",
+        "target/release/{cpp,go,rs}-compiler"
+      ],
+      "options": {
+        "bins": true,
+        "release": false
+      },
+      "configurations": {
+        "production": {
+          "release": true
+        }
+      }
+    },
+    "test": {
+      "executor": "@ignisda/nx-rust:nextest",
+      "options": {}
+    },
+    "lint": {
+      "executor": "@ignisda/nx-rust:clippy",
+      "options": {
+        "fix": false,
+        "failOnWarnings": true,
+        "noDeps": true
+      }
+    },
+    "run": {
+      "executor": "@ignisda/nx-rust:run",
+      "options": {}
+    }
+  },
+  "tags": []
+}
