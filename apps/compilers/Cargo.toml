@@ -10,6 +10,7 @@ actix-web = "4.2.1"
 duct = "0.13.5"
 env_logger = "0.9.1"
 log = "0.4.17"
+macros = { path = "../../libs/macros" }
 serde = { version = "1.0.144", features = ["derive"] }
 tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
 utilities = { path = "../../libs/utilities" }
