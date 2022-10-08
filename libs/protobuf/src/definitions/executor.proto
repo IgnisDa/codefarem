@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package executor;
+
+// The input required when executing a wasm source.
+message ExecutorInput {
+  bytes data = 1;
+}
+
+// The output of executing a wasm source.
+message ExecutorOutput {
+  bytes data = 1;
+}
+
+// The service definition.
+service ExecutorService {
+  rpc Execute(ExecutorInput) returns (ExecutorOutput) {};
+}

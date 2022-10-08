@@ -7,6 +7,10 @@ description = "This crate is responsible for executing webassembly"
 
 [dependencies]
 duct = "0.13.5"
-rocket = "0.5.0-rc.2"
-serde = { version = "1.0.144", features = ["derive"] }
+env_logger = "0.9.1"
+log = "0.4.17"
+macros = { path = "../../libs/macros" }
+protobuf = { path = "../../libs/protobuf" }
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+tonic = "0.8"
 utilities = { path = "../../libs/utilities" }
