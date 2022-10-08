@@ -1,8 +1,8 @@
-use async_graphql::MergedObject;
-use domains::{
+use super::{
     farem::resolver::{FaremMutation, FaremQuery},
     users::resolver::{UserMutation, UserQuery},
 };
+use async_graphql::MergedObject;
 
 /// The GraphQL top-level query type
 #[derive(MergedObject, Default)]

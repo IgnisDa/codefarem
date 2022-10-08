@@ -5,7 +5,6 @@
     "auth": "libs/auth",
     "compilers": "apps/compilers",
     "config": "libs/config",
-    "domains": "libs/domains",
     "examples": "libs/examples",
     "farem-run": "apps/farem-run",
     "generated": "libs/generated",

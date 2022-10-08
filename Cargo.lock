@@ -939,31 +939,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 
 [[package]]
-name = "domains"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-graphql",
- "async-trait",
- "auth",
- "config",
- "derive-getters",
- "edgedb-derive",
- "edgedb-errors",
- "edgedb-protocol",
- "edgedb-tokio",
- "macros",
- "protobuf",
- "rocket",
- "serde",
- "serde_json",
- "strum",
- "surf",
- "tonic",
- "uuid",
-]
-
-[[package]]
 name = "dotenv"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2171,15 +2146,22 @@ dependencies = [
  "anyhow",
  "async-graphql",
  "async-graphql-rocket",
+ "async-trait",
+ "auth",
  "config",
- "domains",
+ "derive-getters",
  "dotenv",
  "dotenv_codegen",
+ "edgedb-derive",
+ "edgedb-errors",
+ "edgedb-protocol",
  "edgedb-tokio",
  "figment",
+ "macros",
  "protobuf",
  "rocket",
  "serde",
+ "serde_json",
  "strum",
  "strum_macros",
  "surf",
