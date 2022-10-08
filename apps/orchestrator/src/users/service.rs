@@ -17,11 +17,13 @@ use super::dto::{
     },
 };
 
-const USER_DETAILS: &str = include_str!("../../../main-db/edgeql/user-details.edgeql");
-const USER_WITH_EMAIL: &str = include_str!("../../../main-db/edgeql/user-with-email.edgeql");
-const REGISTER_USER: &str = include_str!("../../../main-db/edgeql/register-user.edgeql");
-const CHECK_UNIQUENESS: &str = include_str!("../../../main-db/edgeql/check-uniqueness.edgeql");
-const LOGIN_USER: &str = include_str!("../../../main-db/edgeql/login-user.edgeql");
+const USER_DETAILS: &str = include_str!("../../../../libs/main-db/edgeql/user-details.edgeql");
+const USER_WITH_EMAIL: &str =
+    include_str!("../../../../libs/main-db/edgeql/user-with-email.edgeql");
+const REGISTER_USER: &str = include_str!("../../../../libs/main-db/edgeql/register-user.edgeql");
+const CHECK_UNIQUENESS: &str =
+    include_str!("../../../../libs/main-db/edgeql/check-uniqueness.edgeql");
+const LOGIN_USER: &str = include_str!("../../../../libs/main-db/edgeql/login-user.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {

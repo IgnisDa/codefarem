@@ -2,11 +2,9 @@
 members = [
   "libs/auth",
   "libs/config",
-  "libs/domains",
   "libs/macros",
   "libs/protobuf",
   "libs/utilities",
-
   "apps/compilers",
   "apps/farem-run",
   "apps/orchestrator",
