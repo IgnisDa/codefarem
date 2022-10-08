@@ -5,7 +5,6 @@
             "label": "Run farem services",
             "detail": "Starts all the farem services",
             "type": "shell",
-            "command": "echo 'Stopping services...'",
             "dependsOn": [
                 "cpp-compiler",
                 "go-compiler",

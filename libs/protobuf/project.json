@@ -4,11 +4,32 @@
   "sourceRoot": "libs/protobuf/src",
   "projectType": "library",
   "targets": {
-    "lint": {
+    "lint-proto": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "libs/protobuf",
         "command": "protolint **/**/*.proto"
+      }
+    },
+    "lint-rs": {
+      "executor": "@ignisda/nx-rust:clippy",
+      "options": {}
+    },
+
+    "lint": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        {
+          "target": "lint-proto",
+          "projects": "self"
+        },
+        {
+          "target": "lint-rs",
+          "projects": "self"
+        }
+      ],
+      "options": {
+        "command": "echo"
       }
     },
     "build": {
