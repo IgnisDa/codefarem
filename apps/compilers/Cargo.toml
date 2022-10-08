@@ -2,23 +2,22 @@
 name = "compilers"
 version = "0.1.0"
 edition = "2021"
-description = "This crate is responsible for compiling the different sources to webassembly"
-
+description = "This crate is responsible for compiling the source code into webassembly"
 
 [dependencies]
-actix-protobuf = "0.9.0"
-actix-web = "4.2.1"
 duct = "0.13.5"
 env_logger = "0.9.1"
 log = "0.4.17"
 macros = { path = "../../libs/macros" }
-prost = "0.11.0"
-serde = { version = "1.0.144", features = ["derive"] }
-tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+prost = "0.11"
+protobuf = { path = "../../libs/protobuf" }
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+tonic = "0.8"
 utilities = { path = "../../libs/utilities" }
 
 [build-dependencies]
-prost-build = { version = "0.11.0", features = ["cleanup-markdown"] }
+tonic-build = "0.8"
+
 
 [[bin]]
 name = "cpp-compiler"

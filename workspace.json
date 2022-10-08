@@ -14,7 +14,6 @@
     "main-db": "libs/main-db",
     "orchestrator": "apps/orchestrator",
     "protobuf": "libs/protobuf",
-    "protos": "apps/protos",
     "react-ui": "libs/react-ui",
     "utilities": "libs/utilities",
     "website": "apps/website"
