@@ -84,3 +84,55 @@ macro_rules! main_function {
         }
     };
 }
+
+#[macro_export]
+macro_rules! proto_server {
+    ($example_handler:ident, $compiler_handler:ident) => {
+        use log::info;
+        use protobuf::generated::compilers::{
+            compiler_service_server::{CompilerService, CompilerServiceServer},
+            CompileResponse, Example, Input, VoidParams,
+        };
+        use tonic::{async_trait, transport::Server, Request, Response, Status};
+
+        #[derive(Debug, Default)]
+        pub struct CompilerHandler {}
+
+        #[async_trait]
+        impl CompilerService for CompilerHandler {
+            async fn example_code(
+                &self,
+                request: Request<VoidParams>,
+            ) -> Result<Response<Example>, Status> {
+                Ok(Response::new(Example {
+                    data: $example_handler().await.into(),
+                }))
+            }
+
+            async fn compile_code(
+                &self,
+                request: Request<Input>,
+            ) -> Result<Response<CompileResponse>, Status> {
+                let resp = $compiler_handler(&request.into_inner().code);
+                match resp {
+                    Ok(s) => Ok(Response::new(CompileResponse { data: s.into() })),
+                    Err(e) => Err(Status::invalid_argument(String::from_utf8(e).unwrap())),
+                }
+            }
+        }
+
+        #[tokio::main]
+        async fn main() -> Result<(), Box<dyn std::error::Error>> {
+            env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+            let port = std::env::var("PORT").expect("Expected PORT to be set");
+            info!("Starting server on port {port:?}");
+            let compiler = CompilerHandler::default();
+            Server::builder()
+                .add_service(CompilerServiceServer::new(compiler))
+                .serve(format!("0.0.0.0:{port}").parse()?)
+                .await?;
+
+            Ok(())
+        }
+    };
+}

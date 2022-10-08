@@ -10,6 +10,9 @@
         "cwd": "libs/protobuf",
         "command": "protolint **/*.proto"
       }
+    },
+    "build": {
+      "executor": "@ignisda/nx-rust:run"
     }
   },
   "tags": []
