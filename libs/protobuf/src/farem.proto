@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package farem;
+
+message Example {
+    string data = 1;
+}
+
+message Input {
+    string code = 1;
+}
+
+message SuccessResponse {
+    bytes data = 1;
+}
+
+message ErrorResponse {
+    bytes data = 1;
+}
