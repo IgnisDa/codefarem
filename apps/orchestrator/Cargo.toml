@@ -19,4 +19,5 @@ strum = { version = "0.24.1", features = ["derive"] }
 strum_macros = "0.24.3"
 surf = { version = "2.3.2", features = ["hyper-client"] }
 tokio = { version = "1.21.1", features = ["rt", "macros"] }
+tonic = "0.8.2"
 uuid = "1.1.2"
