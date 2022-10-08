@@ -7,20 +7,20 @@
             "type": "shell",
             "command": "echo 'Stopping services...'",
             "dependsOn": [
-                "farem-cpp",
-                "farem-go",
-                "farem-rs",
-                "farem-run",
+                "cpp-compiler",
+                "go-compiler",
+                "rs-compiler",
+                "executor",
                 "website",
                 "orchestrator"
             ]
         },
         {
-            "label": "farem-cpp",
+            "label": "cpp-compiler",
             "type": "shell",
             "isBackground": true,
             "command": "pnpm nx run compilers:run --bin cpp-compiler --watch",
-            "detail": "Run cpp compiler service",
+            "detail": "Run the cpp compiler service",
             "options": {
                 "env": {
                     "PORT": "5002"
@@ -28,11 +28,11 @@
             },
         },
         {
-            "label": "farem-go",
+            "label": "go-compiler",
             "type": "shell",
             "isBackground": true,
             "command": "pnpm nx run compilers:run --bin go-compiler --watch",
-            "detail": "Run go compiler service",
+            "detail": "Run the go compiler service",
             "options": {
                 "env": {
                     "PORT": "5003"
@@ -52,11 +52,11 @@
             },
         },
         {
-            "label": "farem-rs",
+            "label": "rs-compiler",
             "type": "shell",
             "isBackground": true,
             "command": "pnpm nx run compilers:run --bin rs-compiler --watch",
-            "detail": "Run rust compiler service",
+            "detail": "Run the rust compiler service",
             "options": {
                 "env": {
                     "PORT": "5001"
@@ -64,14 +64,14 @@
             },
         },
         {
-            "label": "farem-run",
+            "label": "executor",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package farem-run'",
-            "detail": "Run wasm execution farem service",
+            "command": "cargo watch -cqx 'run --package executor'",
+            "detail": "Run the wasm execution service",
             "options": {
                 "env": {
-                    "ROCKET_PORT": "5004"
+                    "PORT": "5004"
                 }
             },
         },

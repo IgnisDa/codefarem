@@ -6,7 +6,7 @@
     "compilers": "apps/compilers",
     "config": "libs/config",
     "examples": "libs/examples",
-    "farem-run": "apps/farem-run",
+    "executor": "apps/executor",
     "generated": "libs/generated",
     "graphql": "libs/graphql",
     "macros": "libs/macros",
