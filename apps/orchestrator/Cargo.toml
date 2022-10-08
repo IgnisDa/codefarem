@@ -13,6 +13,7 @@ dotenv = "0.15.0"
 dotenv_codegen = "0.15.0"
 edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 figment = { version = "0.10.7", features = ["env"] }
+protobuf = { path = "../../libs/protobuf" }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0.145", features = ["derive"] }
 strum = { version = "0.24.1", features = ["derive"] }

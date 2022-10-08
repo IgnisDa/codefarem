@@ -1,6 +1,6 @@
 use compilers::{generate_input_and_output_files, run_command_and_capture_output};
 use duct::cmd;
-use macros::main_function;
+use macros::proto_server;
 
 async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/go/example.go").trim()
@@ -20,4 +20,4 @@ fn farem(code: &'_ str) -> Result<Vec<u8>, Vec<u8>> {
     run_command_and_capture_output(command, &output_file_path)
 }
 
-main_function!(example, farem);
+proto_server!(example, farem);

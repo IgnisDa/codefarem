@@ -43,9 +43,9 @@ async fn rocket() -> _ {
     let farem_service = FaremService::new(
         &app_config.db_conn,
         &app_config.execute_client,
-        &app_config.rust_farem_client,
-        &app_config.cpp_farem_client,
-        &app_config.go_farem_client,
+        &app_config.cpp_compiler_service,
+        &app_config.go_compiler_service,
+        &app_config.rust_compiler_service,
     );
     let user_service = UserService::new(&app_config.db_conn, &app_config.jwt_config);
     let schema = Schema::build(

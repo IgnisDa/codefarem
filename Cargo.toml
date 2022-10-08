@@ -6,8 +6,8 @@ members = [
   "libs/macros",
   "libs/protobuf",
   "libs/utilities",
+
   "apps/compilers",
   "apps/farem-run",
   "apps/orchestrator",
-  "apps/protos",
 ]
