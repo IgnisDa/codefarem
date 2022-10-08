@@ -6,6 +6,6 @@ members = [
   "libs/protobuf",
   "libs/utilities",
   "apps/compilers",
-  "apps/farem-run",
+  "apps/executor",
   "apps/orchestrator",
 ]

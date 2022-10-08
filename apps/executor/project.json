@@ -1,7 +1,8 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "executor",
   "projectType": "application",
-  "sourceRoot": "apps/farem-run/src",
+  "sourceRoot": "apps/executor/src",
   "targets": {
     "build": {
       "executor": "@ignisda/nx-rust:build",
