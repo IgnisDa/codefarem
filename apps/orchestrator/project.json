@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "orchestrator",
-  "implicitDependencies": ["main-db"],
+  "implicitDependencies": ["main-db", "protobuf"],
   "projectType": "application",
   "sourceRoot": "apps/orchestrator/src",
   "targets": {

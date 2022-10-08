@@ -1,0 +1,16 @@
+{
+  "name": "protobuf",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/protobuf/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "libs/protobuf",
+        "command": "protolint **/*.proto"
+      }
+    }
+  },
+  "tags": []
+}
