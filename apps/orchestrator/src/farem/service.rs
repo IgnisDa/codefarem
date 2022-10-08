@@ -3,11 +3,11 @@ use std::sync::Arc;
 use async_graphql::Enum;
 use async_trait::async_trait;
 use edgedb_tokio::Client as DbClient;
-use protobuf::generated::compilers::{
-    compiler_service_client::CompilerServiceClient, Input, VoidParams,
+use protobuf::generated::{
+    compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
+    executor::{executor_service_client::ExecutorServiceClient, ExecutorInput},
 };
 use strum::{EnumIter, IntoEnumIterator};
-use surf::Client as HttpClient;
 use tonic::{transport::Channel, Request};
 
 use super::dto::mutations::execute_code::{
@@ -29,9 +29,7 @@ pub trait FaremServiceTrait: Sync + Send {
 
 pub struct FaremService {
     pub db_conn: Arc<DbClient>,
-    pub execute_client: Arc<HttpClient>,
-
-    //
+    pub executor_service: ExecutorServiceClient<Channel>,
     pub cpp_compiler_service: CompilerServiceClient<Channel>,
     pub go_compiler_service: CompilerServiceClient<Channel>,
     pub rust_compiler_service: CompilerServiceClient<Channel>,
@@ -40,14 +38,14 @@ pub struct FaremService {
 impl FaremService {
     pub fn new(
         db_conn: &Arc<DbClient>,
-        execute_client: &Arc<HttpClient>,
+        executor_service: &ExecutorServiceClient<Channel>,
         cpp_compiler_service: &CompilerServiceClient<Channel>,
         go_compiler_service: &CompilerServiceClient<Channel>,
         rust_compiler_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
             db_conn: db_conn.clone(),
-            execute_client: execute_client.clone(),
+            executor_service: executor_service.clone(),
             cpp_compiler_service: cpp_compiler_service.clone(),
             go_compiler_service: go_compiler_service.clone(),
             rust_compiler_service: rust_compiler_service.clone(),
@@ -71,12 +69,21 @@ impl SupportedLanguage {
 
 impl FaremService {
     async fn execute_wasm(&self, wasm: Vec<u8>) -> Result<String, String> {
-        self.execute_client
-            .post("/execute")
-            .body_bytes(wasm)
-            .recv_string()
-            .await
-            .map_err(|f| f.to_string())
+        let execute_result = self
+            .executor_service
+            .clone()
+            .execute(ExecutorInput { data: wasm })
+            .await;
+        match execute_result {
+            Ok(s) => {
+                let wasm = String::from_utf8(s.get_ref().data.clone()).unwrap();
+                Ok(wasm)
+            }
+            Err(e) => {
+                let error = e.message().to_string();
+                Err(error)
+            }
+        }
     }
 
     async fn compile_source(
@@ -84,13 +91,13 @@ impl FaremService {
         input: &'_ str,
         compiler_service: &CompilerServiceClient<Channel>,
     ) -> Result<Vec<u8>, String> {
-        let a = compiler_service
+        let compile_result = compiler_service
             .clone()
             .compile_code(Input {
                 code: input.to_string(),
             })
             .await;
-        match a {
+        match compile_result {
             Ok(s) => {
                 let wasm = s.get_ref().data.clone();
                 Ok(wasm)

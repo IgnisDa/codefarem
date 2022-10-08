@@ -12,7 +12,6 @@ auth = { path = "../../libs/auth" }
 config = { path = "../../libs/config" }
 derive-getters = "0.2.0"
 dotenv = "0.15.0"
-dotenv_codegen = "0.15.0"
 edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-errors = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
@@ -25,7 +24,6 @@ serde = { version = "1.0.145", features = ["derive"] }
 serde_json = "1.0.85"
 strum = { version = "0.24.1", features = ["derive"] }
 strum_macros = "0.24.3"
-surf = { version = "2.3.2", features = ["hyper-client"] }
 tokio = { version = "1.21.1", features = ["rt", "macros"] }
 tonic = "0.8.2"
 uuid = { version = "1.1.2", features = ["serde"] }

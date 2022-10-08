@@ -44,7 +44,7 @@ async fn rocket() -> _ {
     let app_config = get_app_config().await.unwrap();
     let farem_service = FaremService::new(
         &app_config.db_conn,
-        &app_config.execute_client,
+        &app_config.executor_service,
         &app_config.cpp_compiler_service,
         &app_config.go_compiler_service,
         &app_config.rust_compiler_service,
