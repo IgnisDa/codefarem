@@ -8,6 +8,14 @@
       "options": {
         "command": "echo 'linting successful'"
       }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/main-db"],
+      "options": {
+        "jestConfig": "libs/main-db/jest.config.ts",
+        "passWithNoTests": true
+      }
     }
   },
   "tags": []
