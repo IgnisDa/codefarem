@@ -8,5 +8,5 @@ git config --global user.email "${GIT_AUTHOR_EMAIL}"
 rustup default nightly
 
 # initialize edgedb project
-cd apps/farem-main
+cd libs/main-db
 edgedb project init --non-interactive
