@@ -11,6 +11,7 @@
         "commitlint",
         "cout",
         "cssmodule",
+        "dbschema",
         "dedup",
         "devcontainer",
         "devcontainers",
