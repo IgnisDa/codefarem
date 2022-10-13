@@ -3,10 +3,26 @@
   "sourceRoot": "libs/main-db/src",
   "projectType": "library",
   "targets": {
-    "lint": {
+    "lint-js": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/main-db/**/*.ts"]
+      }
+    },
+    "lint-edgeql": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "echo 'linting successful'"
+        "command": "echo"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        { "projects": "self", "target": "lint-js" },
+        { "projects": "self", "target": "lint-edgeql" }
+      ],
+      "options": {
+        "command": "echo"
       }
     },
     "test": {

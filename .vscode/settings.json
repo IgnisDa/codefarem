@@ -54,5 +54,6 @@
         "wasi",
         "wasmtime",
         "zxvf"
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
