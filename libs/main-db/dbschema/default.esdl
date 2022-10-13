@@ -1,43 +1,43 @@
 module default {
-    TYPE User {
-        REQUIRED LINK profile -> UserProfile {
-            ON TARGET DELETE DELETE SOURCE;
-            ON SOURCE DELETE DELETE TARGET;
+    abstract type User {
+        required link profile -> UserProfile {
+            on target delete delete source;
+            on source delete delete target;
         };
-        REQUIRED LINK auth -> UserAuth {
-            ON TARGET DELETE DELETE SOURCE;
-            ON SOURCE DELETE DELETE TARGET;
-        };
-    }
-
-    TYPE UserProfile {
-        REQUIRED PROPERTY email ->  str {
-            CONSTRAINT exclusive;
-        };
-        REQUIRED PROPERTY username -> str {
-            CONSTRAINT exclusive;
+        required link auth -> UserAuth {
+            on target delete delete source;
+            on source delete delete target;
         };
     }
 
-    TYPE UserAuth {
-        PROPERTY password_hash -> str;
+    type UserProfile {
+        required property email ->  str {
+            constraint exclusive;
+        };
+        required property username -> str {
+            constraint exclusive;
+        };
     }
 
-    TYPE Class {
-        REQUIRED PROPERTY name -> str;
-        MULTI LINK students -> Student;
+    type UserAuth {
+        property password_hash -> str;
+    }
+
+    type Class {
+        required property name -> str;
+        multi link students -> Student;
         # must have one or more teachers
-        REQUIRED MULTI LINK teachers -> Teacher {
+        required multi link teachers -> Teacher {
             # if a teacher is deleted, silently remove them from the class
-            ON TARGET DELETE ALLOW;
+            on target delete allow;
         };
     }
 
-    TYPE Student extends User {
+    type Student extending User {
 
     }
 
-    TYPE Teacher extends User {
+    type Teacher extending User {
 
     }
 }
