@@ -1,5 +1,4 @@
 import { createCookieSessionStorage } from '@remix-run/node';
-import { DateTime } from 'luxon';
 
 import { ApplicationConfig } from '../config.server';
 import { SESSION_KEY } from '../constants';
@@ -13,7 +12,6 @@ export const sessionStorage = createCookieSessionStorage({
     httpOnly: true, // for security reasons, make this cookie http only
     secrets: [ApplicationConfig.SESSION_SECRET_KEY],
     secure: ApplicationConfig.NODE_ENV === 'production', // enable this in prod only
-    expires: DateTime.local().plus({ days: 60 }).toJSDate(),
   },
 });
 
