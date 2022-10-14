@@ -22,7 +22,7 @@ import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
-import { Loading } from '@codefarem/react-ui';
+import { Button } from '@codefarem/react-ui';
 
 import { graphqlSdk } from '../../lib/services/graphql.server';
 
@@ -76,13 +76,6 @@ export default () => {
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 w-full h-full space-y-10">
-      <div>
-        {transition.state !== 'idle' ? (
-          <Loading />
-        ) : (
-          <div className="h-6"></div>
-        )}
-      </div>
       <div className="flex items-center space-x-3">
         {supportedLanguages.map((l, idx) => (
           <Link
@@ -110,9 +103,7 @@ export default () => {
           readOnly
           hidden
         />
-        <button type="submit" className="p-2 border-2 rounded-lg bg-blue-50">
-          Submit
-        </button>
+        <Button isLoading={transition.state !== 'idle'}>Submit</Button>
       </Form>
       <div className="flex w-full px-20 max-h-96">
         <div className="flex-1 w-1/3 p-2 font-mono bg-slate-600">
