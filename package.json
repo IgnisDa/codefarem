@@ -17,7 +17,6 @@
     "clsx": "1.2.1",
     "codemirror": "6.0.1",
     "core-js": "3.25.2",
-    "domain-functions": "1.1.0",
     "env-var": "7.3.0",
     "graphql": "16.6.0",
     "lodash": "4.17.21",
@@ -29,14 +28,14 @@
     "regenerator-runtime": "0.13.7",
     "remix-auth": "3.3.0",
     "remix-auth-form": "1.2.0",
-    "remix-forms": "0.18.2",
     "remix-utils": "3.3.0",
     "tailwindcss-animation-delay": "1.0.7",
     "tiny-invariant": "1.2.0",
     "ts-pattern": "4.0.5",
     "urql": "3.0.3",
     "urql-generic-requester": "0.0.2",
-    "zod": "3.19.1"
+    "zod": "3.19.1",
+    "zodix": "0.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "17.1.2",

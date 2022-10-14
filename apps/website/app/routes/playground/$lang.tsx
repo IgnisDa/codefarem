@@ -1,7 +1,5 @@
-import {
-  ExecuteCodeMutation,
-  SupportedLanguage,
-} from '@codefarem/generated/graphql/generic-sdk';
+import { SupportedLanguage } from '@codefarem/generated/graphql/generic-sdk';
+import { Button } from '@codefarem/react-ui';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
@@ -15,14 +13,12 @@ import {
   useTransition,
 } from '@remix-run/react';
 import EditorView from '@uiw/react-codemirror';
-import { makeDomainFunction } from 'domain-functions';
 import { useState } from 'react';
-import { formAction } from 'remix-forms';
 import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
-import { Button } from '@codefarem/react-ui';
+import { zx } from 'zodix';
 
 import { graphqlSdk } from '../../lib/services/graphql.server';
 
@@ -43,22 +39,15 @@ export async function loader({ params }: LoaderArgs) {
   return json({ languageExample, supportedLanguages, selectedLanguage });
 }
 
-const schema = z.object({ input: z.string(), language: z.string() });
-
-const mutation = makeDomainFunction(schema)(async (values) => {
-  const executeCode = await graphqlSdk.ExecuteCode({
-    input: {
-      code: JSON.parse(values.input),
-      language: values.language as SupportedLanguage,
-    },
-  });
-  return executeCode;
-});
-
 export async function action({ request }: ActionArgs) {
-  const executeCode = await formAction({ request, schema, mutation });
-  let output: ExecuteCodeMutation = await executeCode.json();
-  return json({ output: output });
+  const { input, language } = await zx.parseForm(request, {
+    input: z.string(),
+    language: z.nativeEnum(SupportedLanguage),
+  });
+  const executeCode = await graphqlSdk.ExecuteCode({
+    input: { code: JSON.parse(input), language: language },
+  });
+  return json({ output: executeCode.executeCode });
 }
 
 export default () => {
@@ -108,14 +97,10 @@ export default () => {
       <div className="flex w-full px-20 max-h-96">
         <div className="flex-1 w-1/3 p-2 font-mono bg-slate-600">
           {actionData &&
-            (actionData.output.executeCode.__typename === 'ExecuteCodeError' ? (
-              <div className="text-red-300">
-                {actionData.output.executeCode.error}
-              </div>
+            (actionData.output.__typename === 'ExecuteCodeError' ? (
+              <div className="text-red-300">{actionData.output.error}</div>
             ) : (
-              <div className="text-white">
-                {actionData.output.executeCode.output}
-              </div>
+              <div className="text-white">{actionData.output.output}</div>
             ))}
         </div>
         <div className="w-2/3 overflow-scroll">

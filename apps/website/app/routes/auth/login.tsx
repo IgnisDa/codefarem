@@ -15,14 +15,17 @@ import type {
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
+import { z } from 'zod';
+import { zx } from 'zodix';
 
 export const meta: MetaFunction = () => {
-  return { title: 'Get started' };
+  return { title: 'Login' };
 };
 
 export const action = async ({ request }: ActionArgs) => {
-  const formData = await request.formData();
-  const email = formData.get(FORM_EMAIL_KEY) as string;
+  const { email } = await zx.parseForm(request.clone(), {
+    [FORM_EMAIL_KEY]: z.string().email(),
+  });
   const { userWithEmail } = await graphqlSdk.UserWithEmail({
     input: { email },
   });
@@ -30,7 +33,7 @@ export const action = async ({ request }: ActionArgs) => {
     throw new Error(`User does not exist. Please register first.`);
   await authenticator.authenticate('form', request, {
     successRedirect: SUCCESSFUL_REDIRECT_PATH,
-    context: { formData },
+    context: { formData: request.clone().formData() },
   });
 };
 

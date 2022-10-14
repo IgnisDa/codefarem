@@ -53,6 +53,7 @@
         "urql",
         "wasi",
         "wasmtime",
+        "zodix",
         "zxvf"
     ],
     "typescript.tsdk": "node_modules/typescript/lib"

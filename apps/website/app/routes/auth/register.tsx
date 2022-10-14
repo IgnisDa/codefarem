@@ -4,7 +4,9 @@ import { RadioGroup } from '@headlessui/react';
 import { json, redirect } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
 import clsx from 'clsx';
-import { match } from 'ts-pattern';
+import { route } from 'routes-gen';
+import { z } from 'zod';
+import { zx } from 'zodix';
 
 import {
   FORM_EMAIL_KEY,
@@ -19,19 +21,17 @@ import type {
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
-import { route } from 'routes-gen';
 
 export const meta: MetaFunction = () => {
-  return { title: 'Get started' };
+  return { title: 'Register' };
 };
 
 export const action = async ({ request }: ActionArgs) => {
-  const formData = await request.formData();
-  let accountType = match(formData.get('accountType') as string)
-    .with('teacher', () => AccountType.Teacher)
-    .otherwise(() => AccountType.Student);
-  const email = formData.get(FORM_EMAIL_KEY) as string;
-  const password = formData.get(FORM_PASSWORD_KEY) as string;
+  const { email, password, accountType } = await zx.parseForm(request, {
+    [FORM_EMAIL_KEY]: z.string().email(),
+    [FORM_PASSWORD_KEY]: z.string().min(8),
+    accountType: z.nativeEnum(AccountType),
+  });
   const username = new Date().toISOString();
   const { userWithEmail } = await graphqlSdk.UserWithEmail({
     input: { email },
@@ -54,7 +54,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
   return json({});
 };
 
-const accountTypes = ['student', 'teacher'];
+const accountTypes = ['STUDENT', 'TEACHER'];
 
 export default () => {
   const transition = useTransition();
@@ -89,9 +89,9 @@ export default () => {
             defaultValue={accountTypes[0]}
             className="flex items-center space-x-6"
           >
-            {accountTypes.map((accountType) => (
-              <div key={accountType}>
-                <RadioGroup.Option value={accountType}>
+            {accountTypes.map((at) => (
+              <div key={at}>
+                <RadioGroup.Option value={at}>
                   {({ checked }) => (
                     <div className="flex items-center space-x-2">
                       <div
@@ -101,7 +101,7 @@ export default () => {
                         )}
                       />
                       <RadioGroup.Label className="capitalize">
-                        {accountType}
+                        {at}
                       </RadioGroup.Label>
                     </div>
                   )}
