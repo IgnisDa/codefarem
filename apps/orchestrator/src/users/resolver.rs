@@ -82,7 +82,12 @@ impl UserMutation {
     ) -> Result<RegisterUserResultUnion> {
         let output = ctx
             .data_unchecked::<UserService>()
-            .register_user(input.username(), input.email(), input.password())
+            .register_user(
+                input.username(),
+                input.email(),
+                input.password(),
+                input.account_type(),
+            )
             .await;
         to_result_union_response!(output, RegisterUserResultUnion)
     }

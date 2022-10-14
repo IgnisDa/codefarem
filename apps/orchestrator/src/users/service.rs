@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::dto::{
-    mutations::register_user::{RegisterUserError, RegisterUserOutput},
+    mutations::register_user::{AccountType, RegisterUserError, RegisterUserOutput},
     queries::{
         login_user::{LoginError, LoginUserError, LoginUserOutput},
         user_details::{UserDetailsError, UserDetailsOutput},
@@ -47,6 +47,7 @@ pub trait UserServiceTrait: Sync + Send {
         username: &'a str,
         email: &'a str,
         password: &'a str,
+        account_type: &AccountType,
     ) -> Result<RegisterUserOutput, RegisterUserError>;
 }
 
@@ -142,6 +143,7 @@ impl UserServiceTrait for UserService {
         username: &'a str,
         email: &'a str,
         password: &'a str,
+        account_type: &AccountType,
     ) -> Result<RegisterUserOutput, RegisterUserError> {
         let check_uniqueness = self
             .db_conn
@@ -151,11 +153,14 @@ impl UserServiceTrait for UserService {
         if check_uniqueness != RegisterUserError::default() {
             return Err(check_uniqueness);
         }
+        let account_type_string = account_type.to_string();
+        // replace `User` in REGISTER_USER with the correct account_type
+        let new_query = REGISTER_USER.replacen("User", account_type_string.as_str(), 1);
         let password_hash = get_hashed_password(password);
         Ok(self
             .db_conn
             .query_required_single::<RegisterUserOutput, _>(
-                REGISTER_USER,
+                new_query.as_str(),
                 &(username, email, password_hash),
             )
             .await

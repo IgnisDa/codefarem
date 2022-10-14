@@ -1,8 +1,16 @@
-use async_graphql::{InputObject, SimpleObject, Union};
+use async_graphql::{Enum, InputObject, SimpleObject, Union};
 use derive_getters::Getters;
 use edgedb_derive::Queryable;
 use serde::{Deserialize, Serialize};
+use strum::Display;
 use uuid::Uuid;
+
+/// The types of accounts a user can create
+#[derive(Enum, Clone, Copy, PartialEq, Eq, Display)]
+pub enum AccountType {
+    Student,
+    Teacher,
+}
 
 /// The input object used to create a new user
 #[derive(InputObject, Getters)]
@@ -16,6 +24,9 @@ pub struct RegisterUserInput {
     /// The password that the user wants to set
     #[graphql(secret)]
     password: String,
+
+    /// The type of account the user wants to create
+    account_type: AccountType,
 }
 
 /// The result type if the user was created successfully
