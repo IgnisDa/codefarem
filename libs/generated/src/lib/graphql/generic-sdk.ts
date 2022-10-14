@@ -21,6 +21,12 @@ export type Scalars = {
   UUID: string;
 };
 
+/** The types of accounts a user can create */
+export enum AccountType {
+  Student = 'STUDENT',
+  Teacher = 'TEACHER',
+}
+
 /** The result type if an error was encountered when executing code */
 export type ExecuteCodeError = {
   __typename?: 'ExecuteCodeError';
@@ -147,6 +153,8 @@ export type RegisterUserError = {
 
 /** The input object used to create a new user */
 export type RegisterUserInput = {
+  /** The type of account the user wants to create */
+  accountType: AccountType;
   /** The email of the user */
   email: Scalars['String'];
   /** The password that the user wants to set */
