@@ -46,4 +46,39 @@ describe('Database behavior testing', () => {
     cppClass = await e.select(e.Class, (c) => classShape(c)).run(client);
     expect(cppClass.numTeachers).toBe(3);
   });
+
+  test('Deleting a class removes them from a teacher without an errors', async () => {
+    const teacherData = createUserInfo();
+    const { id } = await e
+      .insert(e.Teacher, {
+        profile: e.insert(e.UserProfile, teacherData.profile),
+        auth: e.insert(e.UserAuth, teacherData.auth),
+      })
+      .run(client);
+    // create 4 classes
+    for (let i = 0; i < 4; i++) {
+      await e
+        .insert(e.Class, {
+          name: `CPP-#${i}`,
+          teachers: e.select(e.Teacher, (t) => ({
+            filter: e.op(t.id, '=', e.uuid(id)),
+          })),
+        })
+        .run(client);
+    }
+    const teacherShape = e.shape(e.Teacher, (c) => ({
+      numClasses: e.count(c.classes),
+      classes: true,
+      filter: e.op(c.id, '=', e.uuid(id)),
+    }));
+    let teacher = await e.select(e.Teacher, (c) => teacherShape(c)).run(client);
+    expect(teacher.numClasses).toBe(4);
+    await e
+      .delete(e.Class, (c) => ({
+        filter: e.op(c.id, '=', e.uuid(teacher.classes[0].id)),
+      }))
+      .run(client);
+    teacher = await e.select(e.Teacher, (c) => teacherShape(c)).run(client);
+    expect(teacher.numClasses).toBe(3);
+  });
 });
