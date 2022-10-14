@@ -7,7 +7,7 @@ export default async () => {
     throw new Error('`TESTING_EDGEDB_DSN` is not set');
   process.env.EDGEDB_DSN = process.env.TESTING_EDGEDB_DSN;
 
-  const database = faker.word.noun();
+  const database = faker.lorem.word();
   globalThis.DATABASE_NAME = database;
   process.env.EDGEDB_DATABASE = database;
 
