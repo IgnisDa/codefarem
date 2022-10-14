@@ -34,10 +34,12 @@ module default {
     }
 
     type Student extending User {
-
+        # the classes that this student is a part of
+        multi link classes := .<students[is Class];
     }
 
     type Teacher extending User {
-
+        # the classes that this teacher teachers
+        multi link classes := .<teachers[is Class];
     }
 }
