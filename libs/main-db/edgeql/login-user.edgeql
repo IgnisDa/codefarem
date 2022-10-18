@@ -1,4 +1,4 @@
-SELECT User {
+SELECT users::User {
   id,
   auth: {
     password_hash

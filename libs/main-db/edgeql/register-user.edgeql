@@ -1,10 +1,10 @@
 SELECT (
-  INSERT User {
-    profile := (INSERT UserProfile {
+  INSERT users::{User} {
+    profile := (INSERT users::UserProfile {
       username := <str>$0,
       email := <str>$1,
     }),
-    auth := (INSERT UserAuth {
+    auth := (INSERT users::UserAuth {
       password_hash := <str>$2
     })
   }

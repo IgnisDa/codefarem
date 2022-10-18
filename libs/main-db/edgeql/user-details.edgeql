@@ -1,4 +1,4 @@
-SELECT User {
+SELECT users::User {
   profile: {
     email,
     username
