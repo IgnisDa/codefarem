@@ -155,7 +155,7 @@ impl UserServiceTrait for UserService {
         }
         let account_type_string = account_type.to_string();
         // replace `User` in REGISTER_USER with the correct account_type
-        let new_query = REGISTER_USER.replacen("User", account_type_string.as_str(), 1);
+        let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
         let password_hash = get_hashed_password(password);
         Ok(self
             .db_conn
