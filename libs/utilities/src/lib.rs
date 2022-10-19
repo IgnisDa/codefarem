@@ -1,3 +1,5 @@
+pub mod graphql;
+
 use std::{
     env,
     fs::{self, File},
