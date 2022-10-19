@@ -6,28 +6,31 @@ use config::JwtConfig;
 use edgedb_derive::Queryable;
 use edgedb_tokio::Client as DbClient;
 use serde::{Deserialize, Serialize};
+use utilities::graphql::ApiError;
 use uuid::Uuid;
 
 use super::dto::{
     mutations::register_user::{AccountType, RegisterUserError, RegisterUserOutput},
     queries::{
         login_user::{LoginError, LoginUserError, LoginUserOutput},
-        user_details::{UserDetailsError, UserDetailsOutput},
+        user_details::UserDetailsOutput,
         user_with_email::{UserWithEmailError, UserWithEmailOutput},
     },
 };
 
-const USER_DETAILS: &str = include_str!("../../../../libs/main-db/edgeql/user-details.edgeql");
+const USER_DETAILS: &str =
+    include_str!("../../../../libs/main-db/edgeql/users/user-details.edgeql");
 const USER_WITH_EMAIL: &str =
-    include_str!("../../../../libs/main-db/edgeql/user-with-email.edgeql");
-const REGISTER_USER: &str = include_str!("../../../../libs/main-db/edgeql/register-user.edgeql");
+    include_str!("../../../../libs/main-db/edgeql/users/user-with-email.edgeql");
+const REGISTER_USER: &str =
+    include_str!("../../../../libs/main-db/edgeql/users/register-user.edgeql");
 const CHECK_UNIQUENESS: &str =
-    include_str!("../../../../libs/main-db/edgeql/check-uniqueness.edgeql");
-const LOGIN_USER: &str = include_str!("../../../../libs/main-db/edgeql/login-user.edgeql");
+    include_str!("../../../../libs/main-db/edgeql/users/check-uniqueness.edgeql");
+const LOGIN_USER: &str = include_str!("../../../../libs/main-db/edgeql/users/login-user.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {
-    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError>;
+    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError>;
 
     async fn user_with_email<'a>(
         &self,
@@ -69,11 +72,11 @@ impl UserService {}
 
 #[async_trait]
 impl UserServiceTrait for UserService {
-    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError> {
+    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError> {
         self.db_conn
             .query_required_single::<UserDetailsOutput, _>(USER_DETAILS, &(user_id,))
             .await
-            .map_err(|_| UserDetailsError {
+            .map_err(|_| ApiError {
                 error: format!("User with id={user_id} not found"),
             })
     }

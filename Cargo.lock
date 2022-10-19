@@ -1366,6 +1366,7 @@ dependencies = [
  "strum_macros",
  "tokio",
  "tonic",
+ "utilities",
  "uuid",
 ]
 
@@ -2857,8 +2858,10 @@ dependencies = [
 name = "utilities"
 version = "0.1.0"
 dependencies = [
+ "async-graphql",
  "chrono",
  "rand 0.8.5",
+ "serde",
 ]
 
 [[package]]

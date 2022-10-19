@@ -27,3 +27,4 @@ strum_macros = "0.24.3"
 tokio = { version = "1.21.1", features = ["rt", "macros"] }
 tonic = "0.8.2"
 uuid = { version = "1.1.2", features = ["serde"] }
+utilities = { path = "../../libs/utilities" }
