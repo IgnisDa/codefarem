@@ -9,8 +9,10 @@ use serde::{Deserialize, Serialize};
 use utilities::graphql::ApiError;
 use uuid::Uuid;
 
+use crate::common::users::AccountType;
+
 use super::dto::{
-    mutations::register_user::{AccountType, RegisterUserError, RegisterUserOutput},
+    mutations::register_user::{RegisterUserError, RegisterUserOutput},
     queries::{
         login_user::{LoginError, LoginUserError, LoginUserOutput},
         user_details::UserDetailsOutput,

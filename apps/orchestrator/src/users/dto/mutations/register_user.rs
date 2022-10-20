@@ -1,16 +1,10 @@
-use async_graphql::{Enum, InputObject, SimpleObject, Union};
+use async_graphql::{InputObject, SimpleObject, Union};
 use derive_getters::Getters;
 use edgedb_derive::Queryable;
 use serde::{Deserialize, Serialize};
-use strum::Display;
 use uuid::Uuid;
 
-/// The types of accounts a user can create
-#[derive(Enum, Clone, Copy, PartialEq, Eq, Display)]
-pub enum AccountType {
-    Student,
-    Teacher,
-}
+use crate::common::users::AccountType;
 
 /// The input object used to create a new user
 #[derive(InputObject, Getters)]

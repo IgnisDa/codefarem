@@ -11,12 +11,13 @@ use orchestrator::{
     farem::service::FaremService,
     get_app_config,
     graphql::{MutationRoot, QueryRoot},
+    learning::service::LearningService,
     users::service::UserService,
     RequestData, Token,
 };
 use rocket::{get, launch, post, response::content::RawHtml, routes, State};
 
-pub type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
+type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
 #[get("/graphiql")]
 fn graphiql() -> RawHtml<String> {
@@ -50,6 +51,7 @@ async fn rocket() -> _ {
         &app_config.rust_compiler_service,
     );
     let user_service = UserService::new(&app_config.db_conn, &app_config.jwt_config);
+    let learning_service = LearningService::new(&app_config.db_conn);
     let schema = Schema::build(
         QueryRoot::default(),
         MutationRoot::default(),
@@ -57,6 +59,7 @@ async fn rocket() -> _ {
     )
     .data(farem_service)
     .data(user_service)
+    .data(learning_service)
     .extension(Analyzer)
     .finish();
     rocket::build()

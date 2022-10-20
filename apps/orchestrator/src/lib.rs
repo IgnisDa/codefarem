@@ -1,6 +1,9 @@
 pub mod farem;
 pub mod graphql;
+pub mod learning;
 pub mod users;
+
+mod common;
 
 use std::{env, sync::Arc};
 
