@@ -1,31 +1,11 @@
 use std::{str::FromStr, sync::Arc};
 
-use async_graphql::Enum;
 use edgedb_tokio::Client as DbClient;
-use strum::Display;
+use utilities::users::AccountType;
 use uuid::Uuid;
 
 const USER_TYPE: &str =
     include_str!("../../../../libs/main-db/edgeql/users/get-typeof-user.edgeql");
-
-/// The types of accounts a user can create
-#[derive(Enum, Clone, Copy, PartialEq, Eq, Display)]
-pub enum AccountType {
-    Student,
-    Teacher,
-}
-
-impl FromStr for AccountType {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "Student" | "users::Student" => Ok(Self::Student),
-            "Teacher" | "users::Teacher" => Ok(Self::Teacher),
-            _ => Err(()),
-        }
-    }
-}
 
 pub async fn get_account_type_from_user_id(
     db_conn: &Arc<DbClient>,

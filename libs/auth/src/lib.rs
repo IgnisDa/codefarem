@@ -10,6 +10,7 @@ use scrypt::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Scrypt,
 };
+use uuid::Uuid;
 
 /// Hashes the password using a randomly generated salt string
 pub fn get_hashed_password(password: &str) -> String {
@@ -62,4 +63,3 @@ pub fn get_user_id_from_authorization_token(secret: &[u8], token: &str) -> Resul
 }
 
 pub use errors::AuthError;
-use uuid::Uuid;

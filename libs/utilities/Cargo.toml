@@ -8,3 +8,5 @@ async-graphql = "4.0.14"
 chrono = "0.4.22"
 rand = "0.8.5"
 serde = { version = "1.0.145", features = ["derive"] }
+strum = { version = "0.24.1", features = ["derive"] }
+strum_macros = "0.24.3"

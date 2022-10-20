@@ -6,10 +6,8 @@ use config::JwtConfig;
 use edgedb_derive::Queryable;
 use edgedb_tokio::Client as DbClient;
 use serde::{Deserialize, Serialize};
-use utilities::graphql::ApiError;
+use utilities::{graphql::ApiError, users::AccountType};
 use uuid::Uuid;
-
-use crate::common::users::AccountType;
 
 use super::dto::{
     mutations::register_user::{RegisterUserError, RegisterUserOutput},

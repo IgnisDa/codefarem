@@ -2,9 +2,8 @@ use async_graphql::{InputObject, SimpleObject, Union};
 use derive_getters::Getters;
 use edgedb_derive::Queryable;
 use serde::{Deserialize, Serialize};
+use utilities::users::AccountType;
 use uuid::Uuid;
-
-use crate::common::users::AccountType;
 
 /// The input object used to create a new user
 #[derive(InputObject, Getters)]

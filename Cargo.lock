@@ -2862,6 +2862,8 @@ dependencies = [
  "chrono",
  "rand 0.8.5",
  "serde",
+ "strum",
+ "strum_macros",
 ]
 
 [[package]]

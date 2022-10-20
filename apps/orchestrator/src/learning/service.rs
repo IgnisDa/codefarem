@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use edgedb_tokio::Client as DbClient;
-use utilities::graphql::ApiError;
+use utilities::{graphql::ApiError, users::AccountType};
 use uuid::Uuid;
 
-use crate::common::users::{get_account_type_from_user_id, AccountType};
+use crate::common::users::get_account_type_from_user_id;
 
 use super::dto::{
     mutations::create_class::CreateClassOutput, queries::class_details::ClassDetailsOutput,
