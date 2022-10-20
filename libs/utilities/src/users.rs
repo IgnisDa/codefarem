@@ -1,10 +1,11 @@
 use std::str::FromStr;
 
 use async_graphql::Enum;
+use serde::{Deserialize, Serialize};
 use strum::Display;
 
 /// The types of accounts a user can create
-#[derive(Enum, Clone, Copy, PartialEq, Eq, Display)]
+#[derive(Enum, Clone, Copy, PartialEq, Eq, Display, Serialize, Debug, Deserialize)]
 pub enum AccountType {
     Student,
     Teacher,

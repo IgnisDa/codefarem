@@ -45,10 +45,10 @@ impl LearningMutation {
         ctx: &Context<'_>,
         input: CreateClassInput,
     ) -> Result<CreateClassResultUnion> {
-        let user_id = user_id_from_request!(ctx);
+        let (user_id, account_type) = user_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(&user_id, input.name(), input.teacher_ids())
+            .create_class(&user_id, &account_type, input.name(), input.teacher_ids())
             .await;
         to_result_union_response!(output, CreateClassResultUnion)
     }

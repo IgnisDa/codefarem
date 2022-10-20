@@ -5,8 +5,6 @@ use edgedb_tokio::Client as DbClient;
 use utilities::{graphql::ApiError, users::AccountType};
 use uuid::Uuid;
 
-use crate::common::users::get_account_type_from_user_id;
-
 use super::dto::{
     mutations::create_class::CreateClassOutput, queries::class_details::ClassDetailsOutput,
 };
@@ -22,6 +20,7 @@ pub trait LearningServiceTrait: Sync + Send {
     async fn create_class<'a>(
         &self,
         user_id: &Uuid,
+        account_type: &AccountType,
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError>;
@@ -55,14 +54,10 @@ impl LearningServiceTrait for LearningService {
     async fn create_class<'a>(
         &self,
         user_id: &Uuid,
+        account_type: &AccountType,
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError> {
-        let account_type = get_account_type_from_user_id(&self.db_conn, user_id)
-            .await
-            .map_err(|_| ApiError {
-                error: "Could not get account type".to_string(),
-            })?;
         if !matches!(account_type, AccountType::Teacher) {
             return Err(ApiError {
                 error: "Only teachers can create classes".to_string(),

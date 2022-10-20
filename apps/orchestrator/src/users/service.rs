@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{str::FromStr, sync::Arc};
 
 use async_trait::async_trait;
 use auth::{create_jwt_token, get_hashed_password, verify_password};
@@ -113,9 +113,14 @@ impl UserServiceTrait for UserService {
             password_hash: String,
         }
         #[derive(Debug, Deserialize, Queryable, Serialize)]
+        struct C {
+            name: String,
+        }
+        #[derive(Debug, Deserialize, Queryable, Serialize)]
         struct B {
             id: Uuid,
             auth: A,
+            __type__: C,
         }
         let login_details = self
             .db_conn
@@ -132,6 +137,7 @@ impl UserServiceTrait for UserService {
             let token = create_jwt_token(
                 self.jwt_config.jwt_secret(),
                 login_details[0].id.to_string().as_str(),
+                &AccountType::from_str(login_details[0].__type__.name.as_str()).unwrap(),
             );
             Ok(LoginUserOutput { token })
         } else {

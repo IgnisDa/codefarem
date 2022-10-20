@@ -11,4 +11,5 @@ scrypt = "0.10.0"
 serde = { version = "1.0.145", features = ["derive"] }
 strum = { version = "0.24.1", features = ["derive"] }
 thiserror = "1.0.37"
+utilities = { path = "../utilities" }
 uuid = "1.1.2"

@@ -242,6 +242,7 @@ dependencies = [
  "serde",
  "strum",
  "thiserror",
+ "utilities",
  "uuid",
 ]
 

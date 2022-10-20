@@ -28,7 +28,7 @@ pub struct UserMutation {}
 impl UserQuery {
     /// Get information about the current user
     async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
-        let user_id = user_id_from_request!(ctx);
+        let (user_id, _) = user_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<UserService>()
             .user_details(user_id)
@@ -64,7 +64,7 @@ impl UserQuery {
 
     /// Logout a user from the service
     async fn logout_user(&self, ctx: &Context<'_>) -> Result<bool> {
-        let user_id = user_id_from_request!(ctx);
+        let (user_id, _) = user_id_from_request!(ctx);
         Ok(ctx
             .data_unchecked::<UserService>()
             .logout_user(user_id)

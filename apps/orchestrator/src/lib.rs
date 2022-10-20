@@ -3,14 +3,12 @@ pub mod graphql;
 pub mod learning;
 pub mod users;
 
-mod common;
-
 use std::{env, sync::Arc};
 
 use anyhow::Result;
 use config::JwtConfig;
 use dotenv::dotenv;
-use edgedb_tokio::{Builder as DbBuilder, Client as DbClient};
+use edgedb_tokio::Client as DbClient;
 use figment::{providers::Env, Figment};
 use protobuf::generated::{
     compilers::compiler_service_client::CompilerServiceClient,
@@ -34,14 +32,7 @@ pub struct AppConfig {
 
 impl AppConfig {
     pub async fn new() -> Result<Self> {
-        let db_conn = DbClient::new(
-            &DbBuilder::uninitialized()
-                .read_instance("main_db")
-                .await
-                .unwrap()
-                .build()
-                .unwrap(),
-        );
+        let db_conn = edgedb_tokio::create_client().await?;
         db_conn
             .ensure_connected()
             .await
