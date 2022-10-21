@@ -5,26 +5,24 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.65"
-async-graphql = { version = "4.0.14", features = ["log", "uuid"] }
+async-graphql = { workspace = true }
 async-graphql-rocket = "4.0.13"
-async-trait = "0.1.57"
+async-trait = { workspace = true }
 auth = { path = "../../libs/auth" }
 config = { path = "../../libs/config" }
 derive-getters = "0.2.0"
 dotenv = "0.15.0"
-edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
-edgedb-errors = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
-edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
-edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
+edgedb-derive = { workspace = true }
+edgedb-protocol = { workspace = true }
+edgedb-tokio = { workspace = true }
 figment = { version = "0.10.7", features = ["env"] }
 macros = { path = "../../libs/macros" }
 protobuf = { path = "../../libs/protobuf" }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
-serde = { version = "1.0.145", features = ["derive"] }
-serde_json = "1.0.85"
-strum = { version = "0.24.1", features = ["derive"] }
-strum_macros = "0.24.3"
-tokio = { version = "1.21.1", features = ["rt", "macros"] }
-tonic = "0.8.2"
-uuid = { version = "1.1.2", features = ["serde"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+strum = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+uuid = { workspace = true }
 utilities = { path = "../../libs/utilities" }
