@@ -24,7 +24,7 @@ export const USER_DETAILS = gql`
           username
         }
       }
-      ... on UserDetailsError {
+      ... on ApiError {
         error
       }
     }

@@ -27,6 +27,41 @@ export enum AccountType {
   Teacher = 'TEACHER',
 }
 
+/** An error type with an attached field to tell what went wrong */
+export type ApiError = {
+  __typename?: 'ApiError';
+  /** The error describing what went wrong */
+  error: Scalars['String'];
+};
+
+/** The result type if details about the class were found successfully */
+export type ClassDetailsOutput = {
+  __typename?: 'ClassDetailsOutput';
+  /** The name of the class */
+  name: Scalars['String'];
+};
+
+/** The output object when getting details about a class */
+export type ClassDetailsResultUnion = ApiError | ClassDetailsOutput;
+
+/** The input object used to create a new class */
+export type CreateClassInput = {
+  /** The name of the class */
+  name: Scalars['String'];
+  /** The teachers who are teaching the class */
+  teacherIds: Array<Scalars['UUID']>;
+};
+
+/** The result type if the class was created successfully */
+export type CreateClassOutput = {
+  __typename?: 'CreateClassOutput';
+  /** The ID of the class */
+  id: Scalars['UUID'];
+};
+
+/** The output object when creating a new class */
+export type CreateClassResultUnion = ApiError | CreateClassOutput;
+
 /** The result type if an error was encountered when executing code */
 export type ExecuteCodeError = {
   __typename?: 'ExecuteCodeError';
@@ -94,10 +129,17 @@ export type LoginUserResultUnion = LoginUserError | LoginUserOutput;
 /** The GraphQL top-level mutation type */
 export type MutationRoot = {
   __typename?: 'MutationRoot';
+  /** Create a new class */
+  createClass: CreateClassResultUnion;
   /** Takes some code as input and compiles it to wasm before executing it */
   executeCode: ExecuteCodeResultUnion;
   /** Create a new user for the service */
   registerUser: RegisterUserResultUnion;
+};
+
+/** The GraphQL top-level mutation type */
+export type MutationRootCreateClassArgs = {
+  input: CreateClassInput;
 };
 
 /** The GraphQL top-level mutation type */
@@ -113,6 +155,8 @@ export type MutationRootRegisterUserArgs = {
 /** The GraphQL top-level query type */
 export type QueryRoot = {
   __typename?: 'QueryRoot';
+  /** Get information about a class */
+  classDetails: ClassDetailsResultUnion;
   /** Get an example code snippet for a particular language */
   languageExample: Scalars['String'];
   /** Login a user to the service */
@@ -125,6 +169,11 @@ export type QueryRoot = {
   userDetails: UserDetailsResultUnion;
   /** Check whether a user with the provided email exists in the service */
   userWithEmail: UserWithEmailResultUnion;
+};
+
+/** The GraphQL top-level query type */
+export type QueryRootClassDetailsArgs = {
+  classId: Scalars['UUID'];
 };
 
 /** The GraphQL top-level query type */
@@ -179,13 +228,6 @@ export enum SupportedLanguage {
   Rust = 'rust',
 }
 
-/** The result type if an error was encountered when getting details of a user */
-export type UserDetailsError = {
-  __typename?: 'UserDetailsError';
-  /** The error describing what went wrong */
-  error: Scalars['String'];
-};
-
 /** The result type if details about the user were found successfully */
 export type UserDetailsOutput = {
   __typename?: 'UserDetailsOutput';
@@ -194,7 +236,7 @@ export type UserDetailsOutput = {
 };
 
 /** The output object when creating a new user */
-export type UserDetailsResultUnion = UserDetailsError | UserDetailsOutput;
+export type UserDetailsResultUnion = ApiError | UserDetailsOutput;
 
 export type UserProfileInformation = {
   __typename?: 'UserProfileInformation';
@@ -240,6 +282,17 @@ export type ExecuteCodeMutation = {
         step: ExecuteCodeErrorStep;
       }
     | { __typename: 'ExecuteCodeOutput'; output: string };
+};
+
+export type CreateClassMutationVariables = Exact<{
+  input: CreateClassInput;
+}>;
+
+export type CreateClassMutation = {
+  __typename?: 'MutationRoot';
+  createClass:
+    | { __typename: 'ApiError'; error: string }
+    | { __typename: 'CreateClassOutput'; id: string };
 };
 
 export type RegisterUserMutationVariables = Exact<{
@@ -289,7 +342,7 @@ export type UserDetailsQueryVariables = Exact<{ [key: string]: never }>;
 export type UserDetailsQuery = {
   __typename?: 'QueryRoot';
   userDetails:
-    | { __typename: 'UserDetailsError'; error: string }
+    | { __typename: 'ApiError'; error: string }
     | {
         __typename: 'UserDetailsOutput';
         profile: {
@@ -325,6 +378,19 @@ export const ExecuteCodeDocument = gql`
       ... on ExecuteCodeError {
         error
         step
+      }
+    }
+  }
+`;
+export const CreateClassDocument = gql`
+  mutation CreateClass($input: CreateClassInput!) {
+    createClass(input: $input) {
+      __typename
+      ... on CreateClassOutput {
+        id
+      }
+      ... on ApiError {
+        error
       }
     }
   }
@@ -376,7 +442,7 @@ export const UserDetailsDocument = gql`
           username
         }
       }
-      ... on UserDetailsError {
+      ... on ApiError {
         error
       }
     }
@@ -416,6 +482,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<ExecuteCodeMutation>;
+    },
+    CreateClass(
+      variables: CreateClassMutationVariables,
+      options?: C
+    ): Promise<CreateClassMutation> {
+      return requester<CreateClassMutation, CreateClassMutationVariables>(
+        CreateClassDocument,
+        variables,
+        options
+      ) as Promise<CreateClassMutation>;
     },
     RegisterUser(
       variables: RegisterUserMutationVariables,

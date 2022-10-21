@@ -32,6 +32,33 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "ApiError",
+        "description": "An error type with an attached field to tell what went wrong",
+        "fields": [
+          {
+            "name": "error",
+            "description": "The error describing what went wrong",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "Boolean",
         "description": "The `Boolean` scalar type represents `true` or `false`.",
@@ -40,6 +67,153 @@
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ClassDetailsOutput",
+        "description": "The result type if details about the class were found successfully",
+        "fields": [
+          {
+            "name": "name",
+            "description": "The name of the class",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "ClassDetailsResultUnion",
+        "description": "The output object when getting details about a class",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "ApiError",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ClassDetailsOutput",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateClassInput",
+        "description": "The input object used to create a new class",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "name",
+            "description": "The name of the class",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "teacherIds",
+            "description": "The teachers who are teaching the class",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateClassOutput",
+        "description": "The result type if the class was created successfully",
+        "fields": [
+          {
+            "name": "id",
+            "description": "The ID of the class",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "CreateClassResultUnion",
+        "description": "The output object when creating a new class",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "ApiError",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "CreateClassOutput",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "OBJECT",
@@ -369,6 +543,39 @@
         "description": "The GraphQL top-level mutation type",
         "fields": [
           {
+            "name": "createClass",
+            "description": "Create a new class",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateClassInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "UNION",
+                "name": "CreateClassResultUnion",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "executeCode",
             "description": "Takes some code as input and compiles it to wasm before executing it",
             "args": [
@@ -445,6 +652,39 @@
         "name": "QueryRoot",
         "description": "The GraphQL top-level query type",
         "fields": [
+          {
+            "name": "classDetails",
+            "description": "Get information about a class",
+            "args": [
+              {
+                "name": "classId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "UUID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "UNION",
+                "name": "ClassDetailsResultUnion",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "languageExample",
             "description": "Get an example code snippet for a particular language",
@@ -823,33 +1063,6 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserDetailsError",
-        "description": "The result type if an error was encountered when getting details of a user",
-        "fields": [
-          {
-            "name": "error",
-            "description": "The error describing what went wrong",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
         "name": "UserDetailsOutput",
         "description": "The result type if details about the user were found successfully",
         "fields": [
@@ -886,7 +1099,7 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "UserDetailsError",
+            "name": "ApiError",
             "ofType": null
           },
           {
