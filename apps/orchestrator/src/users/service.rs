@@ -73,12 +73,17 @@ impl UserService {}
 #[async_trait]
 impl UserServiceTrait for UserService {
     async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError> {
-        self.db_conn
-            .query_required_single::<UserDetailsOutput, _>(USER_DETAILS, &(user_id,))
-            .await
-            .map_err(|_| ApiError {
-                error: format!("User with id={user_id} not found"),
-            })
+        Ok(serde_json::from_str::<UserDetailsOutput>(
+            self.db_conn
+                .query_required_single_json(USER_DETAILS, &(user_id,))
+                .await
+                .map_err(|_| ApiError {
+                    error: format!("User with id={user_id} not found"),
+                })?
+                .to_string()
+                .as_str(),
+        )
+        .unwrap())
     }
 
     async fn user_with_email<'a>(

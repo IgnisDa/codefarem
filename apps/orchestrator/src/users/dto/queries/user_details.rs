@@ -1,8 +1,9 @@
 use async_graphql::{SimpleObject, Union};
 use edgedb_derive::Queryable;
-use utilities::graphql::ApiError;
+use serde::Deserialize;
+use utilities::{graphql::ApiError, users::AccountType};
 
-#[derive(Debug, SimpleObject, Queryable)]
+#[derive(Debug, SimpleObject, Queryable, Deserialize)]
 pub struct UserProfileInformation {
     /// The email of the user
     email: String,
@@ -12,10 +13,13 @@ pub struct UserProfileInformation {
 }
 
 /// The result type if details about the user were found successfully
-#[derive(Debug, SimpleObject, Queryable)]
+#[derive(Debug, SimpleObject, Deserialize)]
 pub struct UserDetailsOutput {
     /// Profile details about the user
     profile: UserProfileInformation,
+
+    /// The type of account the user has
+    account_type: AccountType,
 }
 
 /// The output object when creating a new user
