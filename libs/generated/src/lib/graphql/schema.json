@@ -1067,6 +1067,22 @@
         "description": "The result type if details about the user were found successfully",
         "fields": [
           {
+            "name": "accountType",
+            "description": "The type of account the user has",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "AccountType",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "profile",
             "description": "Profile details about the user",
             "args": [],

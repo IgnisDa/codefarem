@@ -231,6 +231,8 @@ export enum SupportedLanguage {
 /** The result type if details about the user were found successfully */
 export type UserDetailsOutput = {
   __typename?: 'UserDetailsOutput';
+  /** The type of account the user has */
+  accountType: AccountType;
   /** Profile details about the user */
   profile: UserProfileInformation;
 };
@@ -345,6 +347,7 @@ export type UserDetailsQuery = {
     | { __typename: 'ApiError'; error: string }
     | {
         __typename: 'UserDetailsOutput';
+        accountType: AccountType;
         profile: {
           __typename?: 'UserProfileInformation';
           email: string;
@@ -437,6 +440,7 @@ export const UserDetailsDocument = gql`
     userDetails {
       __typename
       ... on UserDetailsOutput {
+        accountType
         profile {
           email
           username

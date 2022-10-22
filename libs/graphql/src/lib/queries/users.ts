@@ -19,6 +19,7 @@ export const USER_DETAILS = gql`
     userDetails {
       __typename
       ... on UserDetailsOutput {
+        accountType
         profile {
           email
           username
