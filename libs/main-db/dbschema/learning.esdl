@@ -54,6 +54,7 @@ module learning {
         required link data -> learning::CaseUnit;
     }
     abstract type CaseUnit {}
+    type EmptyUnit extending learning::CaseUnit {}
     type NumberUnit extending learning::CaseUnit {
         required property value -> float64;
     }
