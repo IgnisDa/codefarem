@@ -9,6 +9,7 @@
     "@codemirror/language": "6.2.1",
     "@codemirror/legacy-modes": "6.1.0",
     "@headlessui/react": "1.7.2",
+    "@nextui-org/react": "1.0.0-beta.10",
     "@remix-run/node": "1.7.2",
     "@remix-run/react": "1.7.2",
     "@remix-run/serve": "1.7.2",
