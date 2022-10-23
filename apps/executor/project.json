@@ -1,16 +1,16 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "executor",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/executor/src",
   "targets": {
     "build": {
       "executor": "@ignisda/nx-rust:build",
       "outputs": [
-        "target/debug/farem-run*",
-        "target/debug/*/farem-run*",
-        "target/release/farem-run*",
-        "target/release/*/farem-run*"
+        "{workspaceRoot}/target/debug/farem-run*",
+        "{workspaceRoot}/target/debug/*/farem-run*",
+        "{workspaceRoot}/target/release/farem-run*",
+        "{workspaceRoot}/target/release/*/farem-run*"
       ],
       "options": {
         "release": false

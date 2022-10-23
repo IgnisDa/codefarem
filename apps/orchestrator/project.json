@@ -1,6 +1,6 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "orchestrator",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "implicitDependencies": ["main-db", "protobuf"],
   "projectType": "application",
   "sourceRoot": "apps/orchestrator/src",
@@ -11,10 +11,10 @@
         "release": false
       },
       "outputs": [
-        "target/debug/farem-main*",
-        "target/debug/*/farem-main*",
-        "target/release/farem-main*",
-        "target/release/*/farem-main*"
+        "{workspaceRoot}/target/debug/farem-main*",
+        "{workspaceRoot}/target/debug/*/farem-main*",
+        "{workspaceRoot}/target/release/farem-main*",
+        "{workspaceRoot}/target/release/*/farem-main*"
       ],
       "configurations": {
         "production": {

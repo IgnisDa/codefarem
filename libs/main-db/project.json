@@ -25,8 +25,14 @@
     "lint": {
       "executor": "nx:run-commands",
       "dependsOn": [
-        { "projects": "self", "target": "lint-js" },
-        { "projects": "self", "target": "lint-edgeql" }
+        {
+          "projects": "self",
+          "target": "lint-js"
+        },
+        {
+          "projects": "self",
+          "target": "lint-edgeql"
+        }
       ],
       "options": {
         "command": "echo"
@@ -34,7 +40,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/main-db"],
+      "outputs": ["{workspaceRoot}/coverage/libs/main-db"],
       "options": {
         "jestConfig": "libs/main-db/jest.config.ts",
         "passWithNoTests": true

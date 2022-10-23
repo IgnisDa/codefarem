@@ -64,7 +64,7 @@
           "cross-env NODE_ENV='production' remix build"
         ]
       },
-      "outputs": ["dist/apps/website"]
+      "outputs": ["{workspaceRoot}/dist/apps/website"]
     }
   },
   "tags": []
