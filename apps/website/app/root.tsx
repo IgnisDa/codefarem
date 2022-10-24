@@ -8,15 +8,11 @@ import {
 } from '@remix-run/react';
 import { NextUIProvider } from '@nextui-org/react';
 
-// import tailwindStyles from './tailwind.css';
-
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 
 export const links: LinksFunction = () => {
-  return [
-    // { rel: 'stylesheet', href: tailwindStyles }
-  ];
+  return [];
 };
 
 export const meta: MetaFunction = () => ({

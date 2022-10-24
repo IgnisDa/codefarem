@@ -3,13 +3,6 @@
   "sourceRoot": "apps/website",
   "projectType": "application",
   "targets": {
-    "__tailwindcss": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm tailwindcss -i app/styles/tailwind.scss -o app/tailwind.css",
-        "cwd": "apps/website"
-      }
-    },
     "lint": {
       "executor": "nx:run-commands",
       "options": {
@@ -24,13 +17,7 @@
         "cwd": "apps/website"
       }
     },
-    "__dev-tailwindcss": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm nx run website:__tailwindcss -- --watch",
-        "cwd": "apps/website"
-      }
-    },
+
     "__dev-routes": {
       "executor": "nx:run-commands",
       "options": {
@@ -42,7 +29,6 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "pnpm nx run website:__dev-tailwindcss",
           "pnpm nx run website:__dev-routes",
           "pnpm nx run website:__dev-server"
         ],
@@ -59,10 +45,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/website",
-        "commands": [
-          "pnpm nx run website:__tailwindcss -- --minify",
-          "cross-env NODE_ENV='production' remix build"
-        ]
+        "commands": ["cross-env NODE_ENV='production' remix build"]
       },
       "outputs": ["{workspaceRoot}/dist/apps/website"]
     }

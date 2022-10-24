@@ -76,7 +76,6 @@
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.38.1",
     "@typescript-eslint/parser": "5.38.1",
-    "autoprefixer": "10.4.12",
     "babel-jest": "28.1.1",
     "commitizen": "4.2.5",
     "cross-env": "7.0.3",
@@ -91,12 +90,10 @@
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "nx": "15.0.1",
-    "postcss": "8.4.16",
     "prettier": "2.7.1",
     "react-test-renderer": "18.2.0",
     "rimraf": "3.0.2",
     "routes-gen": "0.5.2",
-    "tailwindcss": "3.1.8",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
     "tslib": "2.4.0",
@@ -113,4 +110,3 @@
     }
   }
 }
-
