@@ -1,6 +1,8 @@
 import { Button, Input } from '@codefarem/react-ui';
 import { json } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
+import { z } from 'zod';
+import { zx } from 'zodix';
 
 import {
   FORM_EMAIL_KEY,
@@ -8,15 +10,13 @@ import {
   SUCCESSFUL_REDIRECT_PATH,
 } from '../../lib/constants';
 import { authenticator } from '../../lib/services/auth.server';
-import { graphqlSdk, graphqlSdk } from '../../lib/services/graphql.server';
+import { graphqlSdk } from '../../lib/services/graphql.server';
 
 import type {
   ActionArgs,
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
-import { z } from 'zod';
-import { zx } from 'zodix';
 
 export const meta: MetaFunction = () => {
   return { title: 'Login' };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Chain, Thunder } from '@codefarem/generated/graphql/zeus';
+import { Thunder } from '@codefarem/generated/graphql/zeus';
 
 import { ApplicationConfig } from '../config.server';
 

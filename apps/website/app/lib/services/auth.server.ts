@@ -13,7 +13,6 @@ authenticator.use(
   new FormStrategy(async ({ form }) => {
     const email = form.get(FORM_EMAIL_KEY) as string;
     const password = form.get(FORM_PASSWORD_KEY) as string;
-    console.log({ email, password });
     const { loginUser } = await graphqlSdk()('query')({
       loginUser: [
         { input: { email, password } },
