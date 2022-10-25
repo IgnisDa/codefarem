@@ -8,7 +8,6 @@
     "examples": "libs/examples",
     "executor": "apps/executor",
     "generated": "libs/generated",
-    "graphql": "libs/graphql",
     "macros": "libs/macros",
     "main-db": "libs/main-db",
     "orchestrator": "apps/orchestrator",

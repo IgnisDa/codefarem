@@ -1,26 +1,22 @@
-import { getSdk } from '@codefarem/generated/graphql/generic-sdk';
-import {
-  cacheExchange,
-  createClient,
-  dedupExchange,
-  fetchExchange,
-} from 'urql';
-import { createUrqlRequester } from 'urql-generic-requester';
+import axios from 'axios';
+import { Chain, Thunder } from '@codefarem/generated/graphql/zeus';
 
 import { ApplicationConfig } from '../config.server';
 
-const client = createClient({
-  url: `${ApplicationConfig.APPLICATION_API_URL}/graphql`,
-  exchanges: [dedupExchange, cacheExchange, fetchExchange],
-});
-
-const requestHandler = createUrqlRequester(client);
-
-// FIXME: Incompatible types
-export const graphqlSdk = getSdk(requestHandler as any);
-
-export const getFetchOptions = (
-  token: string
-): { fetchOptions: RequestInit } => ({
-  fetchOptions: { headers: { Authorization: `Bearer ${token}` } },
-});
+/**
+ * The graphql requester
+ */
+export const graphqlSdk = (token = '') => {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (token !== '') headers['Authorization'] = `Bearer ${token}`;
+  return Thunder(async (query) => {
+    const response = await axios.post(
+      `${ApplicationConfig.APPLICATION_API_URL}/graphql`,
+      JSON.stringify({ query }),
+      { headers }
+    );
+    return response.data.data;
+  });
+};

@@ -8,7 +8,7 @@ import {
   SUCCESSFUL_REDIRECT_PATH,
 } from '../../lib/constants';
 import { authenticator } from '../../lib/services/auth.server';
-import { graphqlSdk } from '../../lib/services/graphql.server';
+import { graphqlSdk, graphqlSdk } from '../../lib/services/graphql.server';
 
 import type {
   ActionArgs,
@@ -26,8 +26,15 @@ export const action = async ({ request }: ActionArgs) => {
   const { email } = await zx.parseForm(request.clone(), {
     [FORM_EMAIL_KEY]: z.string().email(),
   });
-  const { userWithEmail } = await graphqlSdk.UserWithEmail({
-    input: { email },
+  const { userWithEmail } = await graphqlSdk()('query')({
+    userWithEmail: [
+      { input: { email } },
+      {
+        __typename: true,
+        '...on UserWithEmailOutput': { __typename: true },
+        '...on UserWithEmailError': { __typename: true },
+      },
+    ],
   });
   if (userWithEmail.__typename === 'UserWithEmailError')
     throw new Error(`User does not exist. Please register first.`);
