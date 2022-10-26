@@ -13,16 +13,17 @@ module learning {
         required property name -> str;
         # A unique slug for this question
         required property slug -> str {
-            # https://github.com/edgedb/edgedb/issues/4473
-            # default := utilities::slugify(.name);
             constraint exclusive;
+            constraint expression on (len(__subject__) = 8);
         };
         # the actual question text in markdown
-        required property text -> str;
+        required property problem -> str;
         # the classes in which this question is used
-        multi link class -> learning::Class;
+        multi link classes -> learning::Class;
         # the test cases (and their expected outputs)
-        multi link test_cases -> learning::TestCase;
+        multi link test_cases -> learning::TestCase {
+            on source delete delete target;
+        };
         # the people who created/edited the question
         multi link authored_by -> users::User {
             # allow deleting the author
@@ -34,37 +35,43 @@ module learning {
             default := (SELECT datetime_current());
         }
     }
-    scalar type CaseUnitSequence extending sequence;
+
     type TestCase {
         # the inputs that are passed to the question
-        multi link input -> learning::InputCaseUnit {
-            property order -> learning::CaseUnitSequence;
+        multi link inputs -> learning::InputCaseUnit {
+            on source delete delete target;
         };
         # the expected outputs of the question
-        required multi link output -> learning::OutputCaseUnit {
-            property order -> learning::CaseUnitSequence;
+        multi link outputs -> learning::OutputCaseUnit {
+            on source delete delete target;
         };
     }
-    type InputCaseUnit {
+
+    abstract type CommonCaseUnit {
+        required link data -> learning::CaseUnit {
+            on source delete delete target;
+        };
+        # the order in which the inputs are passed
+        required property seq -> int32;
+    }
+    type InputCaseUnit extending CommonCaseUnit {
         # the name of the input, to be used as a variable in the codegen
         required property name -> str;
-        required link data -> learning::CaseUnit;
     }
-    type OutputCaseUnit {
-        required link data -> learning::CaseUnit;
-    }
+    type OutputCaseUnit extending CommonCaseUnit {}
+
     abstract type CaseUnit {}
     type EmptyUnit extending learning::CaseUnit {}
     type NumberUnit extending learning::CaseUnit {
-        required property value -> float64;
+        required property number_value -> float64;
     }
     type StringUnit extending learning::CaseUnit {
-        required property value -> str;
+        required property string_value -> str;
     }
     type NumberCollectionUnit extending learning::CaseUnit {
-        required property value -> array<float64>;
+        required property number_collection_value -> array<float64>;
     }
     type StringCollectionUnit extending learning::CaseUnit {
-        required property value -> array<str>;
+        required property string_collection_value -> array<str>;
     }
 }
