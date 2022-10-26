@@ -6,11 +6,12 @@ import { ApplicationConfig } from '../config.server';
 /**
  * The graphql requester
  */
-export const graphqlSdk = (token = '') => {
+export const graphqlSdk = (authorizationToken = '') => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
-  if (token !== '') headers['Authorization'] = `Bearer ${token}`;
+  if (authorizationToken)
+    headers['Authorization'] = `Bearer ${authorizationToken}`;
   return Thunder(async (query) => {
     const response = await axios.post(
       `${ApplicationConfig.APPLICATION_API_URL}/graphql`,

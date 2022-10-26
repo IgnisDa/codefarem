@@ -1,15 +1,23 @@
+import { AccountType } from '@codefarem/generated/graphql/zeus';
 import { Button, Input } from '@codefarem/react-ui';
-import { redirect } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
+import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
 import { FAILURE_REDIRECT_PATH } from '../../lib/constants';
 import { authenticator } from '../../lib/services/auth.server';
-import { getFetchOptions, graphqlSdk } from '../../lib/services/graphql.server';
+import { graphqlSdk } from '../../lib/services/graphql.server';
 
-import type { ActionArgs } from '@remix-run/node';
+import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+
+export async function loader({ request }: LoaderArgs) {
+  const user = await authenticator.isAuthenticated(request);
+  if (user?.userDetails.accountType !== AccountType.TEACHER) throw notFound({});
+  return json({});
+}
 
 export async function action({ request }: ActionArgs) {
   const user = await authenticator.isAuthenticated(request, {
@@ -18,10 +26,16 @@ export async function action({ request }: ActionArgs) {
   const { name } = await zx.parseForm(request.clone(), {
     name: z.string(),
   });
-  const { createClass } = await graphqlSdk.CreateClass(
-    { input: { name: name, teacherIds: [] } },
-    getFetchOptions(user.token)
-  );
+  const { createClass } = await graphqlSdk(user.token)('mutation')({
+    createClass: [
+      { input: { name, teacherIds: [] } },
+      {
+        __typename: true,
+        '...on ApiError': { error: true },
+        '...on CreateClassOutput': { id: true },
+      },
+    ],
+  });
   if (createClass.__typename === 'ApiError') throw new Error(createClass.error);
   return redirect(route('/classes/:id', { id: createClass.id }));
 }

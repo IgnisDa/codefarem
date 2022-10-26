@@ -30,6 +30,7 @@ specifiers:
   '@remix-run/node': 1.7.3
   '@remix-run/react': 1.7.3
   '@remix-run/serve': 1.7.3
+  '@remix-run/server-runtime': 1.7.3
   '@routes-gen/remix': 0.3.3
   '@swc/core': 1.3.7
   '@swc/jest': 0.2.23
@@ -99,6 +100,7 @@ dependencies:
   '@remix-run/node': 1.7.3_biqbaboplfbrettd7655fr4n2y
   '@remix-run/react': 1.7.3_biqbaboplfbrettd7655fr4n2y
   '@remix-run/serve': 1.7.3_biqbaboplfbrettd7655fr4n2y
+  '@remix-run/server-runtime': 1.7.3_biqbaboplfbrettd7655fr4n2y
   '@uiw/react-codemirror': 4.12.3_os2i4b4c4r6ynotuwzkce5wzcu
   axios: 1.1.3
   change-case: 4.1.2
