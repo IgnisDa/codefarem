@@ -26,3 +26,5 @@ tokio = { workspace = true }
 tonic = { workspace = true }
 uuid = { workspace = true }
 utilities = { path = "../../libs/utilities" }
+slug = "0.1.4"
+rand = { workspace = true }

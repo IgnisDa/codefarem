@@ -132,13 +132,16 @@ impl UserServiceTrait for UserService {
             .query::<B, _>(LOGIN_USER, &(email,))
             .await
             .unwrap();
+        let do_passwords_match = verify_password(
+            password,
+            login_details.get(0).unwrap().auth.password_hash.as_str(),
+        );
         if login_details.is_empty() {
             return Err(LoginUserError {
                 error: LoginError::CredentialsMismatch,
             });
         }
-        let password_hash = &login_details[0].auth.password_hash;
-        if verify_password(password, password_hash) {
+        if do_passwords_match {
             let token = create_jwt_token(
                 self.jwt_config.jwt_secret(),
                 login_details[0].id.to_string().as_str(),

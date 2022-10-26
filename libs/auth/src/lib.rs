@@ -1,6 +1,8 @@
 mod errors;
 mod jwt;
 
+pub use errors::AuthError;
+
 use std::str::FromStr;
 
 use chrono::{Duration, Utc};
@@ -10,7 +12,7 @@ use scrypt::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Scrypt,
 };
-use utilities::users::AccountType;
+use utilities::{graphql::ApiError, users::AccountType};
 use uuid::Uuid;
 
 /// Hashes the password using a randomly generated salt string
@@ -70,4 +72,15 @@ pub fn get_user_id_from_authorization_token(
     ))
 }
 
-pub use errors::AuthError;
+/// Checks if the user is allowed to access the resource
+pub fn validate_user_role(
+    required_account_type: &AccountType,
+    received_account_type: &AccountType,
+) -> Result<(), ApiError> {
+    if required_account_type != received_account_type {
+        return Err(ApiError {
+            error: format!("Only {required_account_type} can perform this action"),
+        });
+    }
+    Ok(())
+}

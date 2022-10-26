@@ -1,4 +1,5 @@
 pub mod graphql;
+pub mod models;
 pub mod users;
 
 use std::{
