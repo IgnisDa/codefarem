@@ -9,7 +9,7 @@ import { zx } from 'zodix';
 
 import { FAILURE_REDIRECT_PATH } from '../../lib/constants';
 import { authenticator } from '../../lib/services/auth.server';
-import { graphqlSdk } from '../../lib/services/graphql.server';
+import { graphqlScalars, graphqlSdk } from '../../lib/services/graphql.server';
 
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 
@@ -26,7 +26,9 @@ export async function action({ request }: ActionArgs) {
   const { name } = await zx.parseForm(request.clone(), {
     name: z.string(),
   });
-  const { createClass } = await graphqlSdk(user.token)('mutation')({
+  const { createClass } = await graphqlSdk(user.token)('mutation', {
+    scalars: graphqlScalars,
+  })({
     createClass: [
       { input: { name, teacherIds: [] } },
       {

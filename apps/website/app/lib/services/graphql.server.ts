@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Thunder } from '@codefarem/generated/graphql/zeus';
+import { Thunder, ZeusScalars } from '@codefarem/generated/graphql/zeus';
 
 import { ApplicationConfig } from '../config.server';
 
@@ -21,3 +21,10 @@ export const graphqlSdk = (authorizationToken = '') => {
     return response.data.data;
   });
 };
+
+export const graphqlScalars = ZeusScalars({
+  UUID: {
+    encode: (e: unknown) => e as string,
+    decode: (e: unknown) => e as string,
+  },
+});
