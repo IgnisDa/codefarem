@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
-
-import { Input } from '.';
+import { Input } from '../lib/input';
 
 describe('ReactUi', () => {
   it('should render successfully', () => {

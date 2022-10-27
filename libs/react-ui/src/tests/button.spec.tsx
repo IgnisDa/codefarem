@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
-
-import { Button } from '.';
+import { Button } from '../lib/button';
 
 describe('ReactUi', () => {
   it('should render successfully', () => {

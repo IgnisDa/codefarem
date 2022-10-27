@@ -1,0 +1,8 @@
+{
+    "extends": "tsconfig-moon/tsconfig.projects.json",
+    "compilerOptions": {
+        // Your custom options
+        "moduleResolution": "nodenext",
+        "target": "es2022"
+    }
+}

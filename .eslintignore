@@ -1,0 +1,7 @@
+node_modules/
+*.min.js
+*.map
+*.snap
+dts
+coverage
+jest.config.*

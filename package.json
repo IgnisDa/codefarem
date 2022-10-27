@@ -49,7 +49,6 @@
     "@ignisda/nx-rust": "14.8.1",
     "@nrwl/cli": "15.0.1",
     "@nrwl/devkit": "15.0.1",
-    "@nrwl/eslint-plugin-nx": "15.0.1",
     "@nrwl/jest": "15.0.1",
     "@nrwl/linter": "15.0.1",
     "@nrwl/react": "15.0.1",
@@ -74,12 +73,8 @@
     "commitizen": "4.2.5",
     "cross-env": "7.0.3",
     "edgedb": "0.22.8",
-    "eslint": "8.20.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jsx-a11y": "6.6.1",
-    "eslint-plugin-react": "7.31.8",
-    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint": "8.26.0",
+    "eslint-config-moon": "^1.2.0",
     "husky": "8.0.1",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
@@ -90,17 +85,22 @@
     "routes-gen": "0.5.2",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
+    "tsconfig-moon": "^1.1.0",
     "tslib": "2.4.0",
     "typescript": "4.8.4"
   },
   "scripts": {
-    "prepare": "husky install",
     "commit": "git-cz",
-    "postinstall": "pnpm nx postinstall website"
+    "postinstall": "pnpm nx postinstall website",
+    "prepare": "husky install"
   },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
-  }
+  },
+  "engines": {
+    "node": "18.12.0"
+  },
+  "packageManager": "pnpm@7.13.0"
 }

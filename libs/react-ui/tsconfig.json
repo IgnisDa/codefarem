@@ -1,25 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.options.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "allowJs": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "outDir": "dts",
+    "rootDir": "."
   },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+  "exclude": [
+    "dts"
+  ],
+  "include": [
+    "**/*"
+  ],
+  "references": []
 }
