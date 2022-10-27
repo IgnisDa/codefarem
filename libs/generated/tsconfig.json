@@ -5,6 +5,8 @@
     "lib": [
       "ESNext"
     ],
+    "preserveConstEnums": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,

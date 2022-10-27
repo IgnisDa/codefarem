@@ -4,11 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-async-graphql = { version = "4.0.14", features = ["log"] }
+async-graphql = { workspace = true }
 chrono = "0.4.22"
 jsonwebtoken = "8.1.1"
 scrypt = "0.10.0"
-serde = { version = "1.0.145", features = ["derive"] }
-strum = { version = "0.24.1", features = ["derive"] }
+serde = { workspace = true }
+strum = { workspace = true }
 thiserror = "1.0.37"
-uuid = "1.1.2"
+utilities = { path = "../utilities" }
+uuid = { workspace = true }

@@ -1,8 +1,16 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["graphql"],
+  "implicitDependencies": [],
   "sourceRoot": "libs/generated/src",
   "projectType": "library",
-  "targets": {},
+  "targets": {
+    "generate-graphql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx zeus http://localhost:8000/graphql ./src/lib/graphql --typescript",
+        "cwd": "libs/generated"
+      }
+    }
+  },
   "tags": []
 }

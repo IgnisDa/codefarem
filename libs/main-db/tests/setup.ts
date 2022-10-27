@@ -3,10 +3,6 @@ import { execSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 
 export default async () => {
-  if (!process.env.TESTING_EDGEDB_DSN)
-    throw new Error('`TESTING_EDGEDB_DSN` is not set');
-  process.env.EDGEDB_DSN = process.env.TESTING_EDGEDB_DSN;
-
   const database = faker.lorem.word();
   globalThis.DATABASE_NAME = database;
   process.env.EDGEDB_DATABASE = database;

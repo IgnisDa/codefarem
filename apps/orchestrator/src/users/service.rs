@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{str::FromStr, sync::Arc};
 
 use async_trait::async_trait;
 use auth::{create_jwt_token, get_hashed_password, verify_password};
@@ -6,28 +6,31 @@ use config::JwtConfig;
 use edgedb_derive::Queryable;
 use edgedb_tokio::Client as DbClient;
 use serde::{Deserialize, Serialize};
+use utilities::{graphql::ApiError, users::AccountType};
 use uuid::Uuid;
 
 use super::dto::{
-    mutations::register_user::{AccountType, RegisterUserError, RegisterUserOutput},
+    mutations::register_user::{RegisterUserError, RegisterUserOutput},
     queries::{
         login_user::{LoginError, LoginUserError, LoginUserOutput},
-        user_details::{UserDetailsError, UserDetailsOutput},
+        user_details::UserDetailsOutput,
         user_with_email::{UserWithEmailError, UserWithEmailOutput},
     },
 };
 
-const USER_DETAILS: &str = include_str!("../../../../libs/main-db/edgeql/user-details.edgeql");
+const USER_DETAILS: &str =
+    include_str!("../../../../libs/main-db/edgeql/users/user-details.edgeql");
 const USER_WITH_EMAIL: &str =
-    include_str!("../../../../libs/main-db/edgeql/user-with-email.edgeql");
-const REGISTER_USER: &str = include_str!("../../../../libs/main-db/edgeql/register-user.edgeql");
+    include_str!("../../../../libs/main-db/edgeql/users/user-with-email.edgeql");
+const REGISTER_USER: &str =
+    include_str!("../../../../libs/main-db/edgeql/users/register-user.edgeql");
 const CHECK_UNIQUENESS: &str =
-    include_str!("../../../../libs/main-db/edgeql/check-uniqueness.edgeql");
-const LOGIN_USER: &str = include_str!("../../../../libs/main-db/edgeql/login-user.edgeql");
+    include_str!("../../../../libs/main-db/edgeql/users/check-uniqueness.edgeql");
+const LOGIN_USER: &str = include_str!("../../../../libs/main-db/edgeql/users/login-user.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {
-    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError>;
+    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError>;
 
     async fn user_with_email<'a>(
         &self,
@@ -69,13 +72,18 @@ impl UserService {}
 
 #[async_trait]
 impl UserServiceTrait for UserService {
-    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, UserDetailsError> {
-        self.db_conn
-            .query_required_single::<UserDetailsOutput, _>(USER_DETAILS, &(user_id,))
-            .await
-            .map_err(|_| UserDetailsError {
-                error: format!("User with id={user_id} not found"),
-            })
+    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError> {
+        Ok(serde_json::from_str::<UserDetailsOutput>(
+            self.db_conn
+                .query_required_single_json(USER_DETAILS, &(user_id,))
+                .await
+                .map_err(|_| ApiError {
+                    error: format!("User with id={user_id} not found"),
+                })?
+                .to_string()
+                .as_str(),
+        )
+        .unwrap())
     }
 
     async fn user_with_email<'a>(
@@ -110,25 +118,34 @@ impl UserServiceTrait for UserService {
             password_hash: String,
         }
         #[derive(Debug, Deserialize, Queryable, Serialize)]
+        struct C {
+            name: String,
+        }
+        #[derive(Debug, Deserialize, Queryable, Serialize)]
         struct B {
             id: Uuid,
             auth: A,
+            __type__: C,
         }
         let login_details = self
             .db_conn
             .query::<B, _>(LOGIN_USER, &(email,))
             .await
             .unwrap();
+        let do_passwords_match = verify_password(
+            password,
+            login_details.get(0).unwrap().auth.password_hash.as_str(),
+        );
         if login_details.is_empty() {
             return Err(LoginUserError {
                 error: LoginError::CredentialsMismatch,
             });
         }
-        let password_hash = &login_details[0].auth.password_hash;
-        if verify_password(password, password_hash) {
+        if do_passwords_match {
             let token = create_jwt_token(
                 self.jwt_config.jwt_secret(),
                 login_details[0].id.to_string().as_str(),
+                &AccountType::from_str(login_details[0].__type__.name.as_str()).unwrap(),
             );
             Ok(LoginUserOutput { token })
         } else {
@@ -155,7 +172,7 @@ impl UserServiceTrait for UserService {
         }
         let account_type_string = account_type.to_string();
         // replace `User` in REGISTER_USER with the correct account_type
-        let new_query = REGISTER_USER.replacen("User", account_type_string.as_str(), 1);
+        let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
         let password_hash = get_hashed_password(password);
         Ok(self
             .db_conn

@@ -242,6 +242,7 @@ dependencies = [
  "serde",
  "strum",
  "thiserror",
+ "utilities",
  "uuid",
 ]
 
@@ -526,6 +527,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "deunicode"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "850878694b7933ca4c9569d30a34b55031b9b139ee1fc7b94a527c4ef960d690"
+
+[[package]]
 name = "devise"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -616,7 +623,7 @@ dependencies = [
 [[package]]
 name = "edgedb-derive"
 version = "0.4.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#48624f2a7fb0b672393998a4a3af9b17ee48c742"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#675cf0a329b2bbc134cfba324ac752a9e5599823"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -627,7 +634,7 @@ dependencies = [
 [[package]]
 name = "edgedb-errors"
 version = "0.3.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#48624f2a7fb0b672393998a4a3af9b17ee48c742"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#675cf0a329b2bbc134cfba324ac752a9e5599823"
 dependencies = [
  "bytes",
 ]
@@ -635,7 +642,7 @@ dependencies = [
 [[package]]
 name = "edgedb-protocol"
 version = "0.4.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#48624f2a7fb0b672393998a4a3af9b17ee48c742"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#675cf0a329b2bbc134cfba324ac752a9e5599823"
 dependencies = [
  "bitflags",
  "bytes",
@@ -647,7 +654,7 @@ dependencies = [
 [[package]]
 name = "edgedb-tokio"
 version = "0.3.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#48624f2a7fb0b672393998a4a3af9b17ee48c742"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#675cf0a329b2bbc134cfba324ac752a9e5599823"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -1353,19 +1360,20 @@ dependencies = [
  "derive-getters",
  "dotenv",
  "edgedb-derive",
- "edgedb-errors",
  "edgedb-protocol",
  "edgedb-tokio",
  "figment",
  "macros",
  "protobuf",
+ "rand 0.8.5",
  "rocket",
  "serde",
  "serde_json",
+ "slug",
  "strum",
- "strum_macros",
  "tokio",
  "tonic",
+ "utilities",
  "uuid",
 ]
 
@@ -1902,9 +1910,9 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.20.6"
+version = "0.20.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5aab8ee6c7097ed6057f43c187a62418d0c05a4bd5f18b3571db50ee0f9ce033"
+checksum = "539a2bfe908f471bfa933876bd1eb6a19cf2176d375f82ef7f99530a40e48c2c"
 dependencies = [
  "log",
  "ring",
@@ -2157,6 +2165,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "slug"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3bc762e6a4b6c6fcaade73e77f9ebc6991b676f88bb2358bddb56560f073373"
+dependencies = [
+ "deunicode",
+]
+
+[[package]]
 name = "smallvec"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2164,9 +2181,9 @@ checksum = "2fd0db749597d91ff862fd1d55ea87f7855a744a8425a64695b6fca237d1dad1"
 
 [[package]]
 name = "snafu"
-version = "0.7.1"
+version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5177903bf45656592d9eb5c0e22f408fc023aae51dbe2088889b71633ba451f2"
+checksum = "a152ba99b054b22972ee794cf04e5ef572da1229e33b65f3c57abbff0525a454"
 dependencies = [
  "doc-comment",
  "snafu-derive",
@@ -2174,9 +2191,9 @@ dependencies = [
 
 [[package]]
 name = "snafu-derive"
-version = "0.7.1"
+version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "410b26ed97440d90ced3e2488c868d56a86e2064f5d7d6f417909b286afe25e5"
+checksum = "d5e79cdebbabaebb06a9bdbaedc7f159b410461f63611d4d0e3fb0fab8fed850"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -2798,9 +2815,9 @@ checksum = "c4f5b37a154999a8f3f98cc23a628d850e154479cd94decf3414696e12e31aaf"
 
 [[package]]
 name = "unicode-normalization"
-version = "0.1.21"
+version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "854cbdc4f7bc6ae19c820d44abdc3277ac3e1b2b93db20a636825d9322fb60e6"
+checksum = "5c5713f0fc4b5db668a2ac63cdb7bb4469d8c9fed047b1d0292cc7b0ce2ba921"
 dependencies = [
  "tinyvec",
 ]
@@ -2857,8 +2874,14 @@ dependencies = [
 name = "utilities"
 version = "0.1.0"
 dependencies = [
+ "async-graphql",
  "chrono",
+ "edgedb-derive",
+ "edgedb-protocol",
  "rand 0.8.5",
+ "serde",
+ "strum",
+ "uuid",
 ]
 
 [[package]]
@@ -2987,9 +3010,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "0.22.4"
+version = "0.22.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f1c760f0d366a6c24a02ed7816e23e691f5d92291f94d15e836006fd11b04daf"
+checksum = "368bfe657969fb01238bb756d351dcade285e0f6fcbd36dcb23359a5169975be"
 dependencies = [
  "webpki",
 ]

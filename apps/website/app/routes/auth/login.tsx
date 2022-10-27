@@ -1,6 +1,8 @@
 import { Button, Input } from '@codefarem/react-ui';
 import { json } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
+import { z } from 'zod';
+import { zx } from 'zodix';
 
 import {
   FORM_EMAIL_KEY,
@@ -15,8 +17,6 @@ import type {
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
-import { z } from 'zod';
-import { zx } from 'zodix';
 
 export const meta: MetaFunction = () => {
   return { title: 'Login' };
@@ -26,8 +26,15 @@ export const action = async ({ request }: ActionArgs) => {
   const { email } = await zx.parseForm(request.clone(), {
     [FORM_EMAIL_KEY]: z.string().email(),
   });
-  const { userWithEmail } = await graphqlSdk.UserWithEmail({
-    input: { email },
+  const { userWithEmail } = await graphqlSdk()('query')({
+    userWithEmail: [
+      { input: { email } },
+      {
+        __typename: true,
+        '...on UserWithEmailOutput': { __typename: true },
+        '...on UserWithEmailError': { __typename: true },
+      },
+    ],
   });
   if (userWithEmail.__typename === 'UserWithEmailError')
     throw new Error(`User does not exist. Please register first.`);

@@ -1,12 +1,10 @@
-import { AccountType } from '@codefarem/generated/graphql/generic-sdk';
 import { Button, Input } from '@codefarem/react-ui';
-import { RadioGroup } from '@headlessui/react';
 import { json, redirect } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
-import clsx from 'clsx';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
+import { AccountType } from '@codefarem/generated/graphql/zeus';
 
 import {
   FORM_EMAIL_KEY,
@@ -27,19 +25,39 @@ export const meta: MetaFunction = () => {
 };
 
 export const action = async ({ request }: ActionArgs) => {
-  const { email, password, accountType } = await zx.parseForm(request, {
+  const { email, password } = await zx.parseForm(request, {
     [FORM_EMAIL_KEY]: z.string().email(),
     [FORM_PASSWORD_KEY]: z.string().min(8),
-    accountType: z.nativeEnum(AccountType),
   });
   const username = new Date().toISOString();
-  const { userWithEmail } = await graphqlSdk.UserWithEmail({
-    input: { email },
+  const { userWithEmail } = await graphqlSdk()('query')({
+    userWithEmail: [
+      { input: { email } },
+      {
+        __typename: true,
+        '...on UserWithEmailOutput': { __typename: true },
+        '...on UserWithEmailError': { __typename: true },
+      },
+    ],
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
     // user does not exist, we create one here
-    const { registerUser } = await graphqlSdk.RegisterUser({
-      input: { email, password, username, accountType },
+    const { registerUser } = await graphqlSdk()('mutation')({
+      registerUser: [
+        {
+          input: {
+            email,
+            password,
+            username,
+            accountType: AccountType.STUDENT,
+          },
+        },
+        {
+          __typename: true,
+          '...on RegisterUserError': { __typename: true },
+          '...on RegisterUserOutput': { __typename: true },
+        },
+      ],
     });
     if (registerUser.__typename === 'RegisterUserError')
       throw new Error(`There was a problem registering the user`);
@@ -53,8 +71,6 @@ export const loader = async ({ request }: DataFunctionArgs) => {
   });
   return json({});
 };
-
-const accountTypes = ['STUDENT', 'TEACHER'];
 
 export default () => {
   const transition = useTransition();
@@ -84,31 +100,6 @@ export default () => {
             required
             label="Password"
           />
-          <RadioGroup
-            name="accountType"
-            defaultValue={accountTypes[0]}
-            className="flex items-center space-x-6"
-          >
-            {accountTypes.map((at) => (
-              <div key={at}>
-                <RadioGroup.Option value={at}>
-                  {({ checked }) => (
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className={clsx(
-                          'w-4 h-4 bg-black rounded-full',
-                          checked && '!bg-yellow-400'
-                        )}
-                      />
-                      <RadioGroup.Label className="capitalize">
-                        {at}
-                      </RadioGroup.Label>
-                    </div>
-                  )}
-                </RadioGroup.Option>
-              </div>
-            ))}
-          </RadioGroup>
           <div className="w-full">
             <Button isLoading={transition.state !== 'idle'}>Continue</Button>
           </div>

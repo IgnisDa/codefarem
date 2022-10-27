@@ -1,3 +1,7 @@
+pub mod graphql;
+pub mod models;
+pub mod users;
+
 use std::{
     env,
     fs::{self, File},

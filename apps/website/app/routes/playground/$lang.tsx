@@ -1,4 +1,4 @@
-import { SupportedLanguage } from '@codefarem/generated/graphql/generic-sdk';
+import { SupportedLanguage } from '@codefarem/generated/graphql/zeus';
 import { Button } from '@codefarem/react-ui';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
@@ -25,7 +25,9 @@ import { graphqlSdk } from '../../lib/services/graphql.server';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
 export async function loader({ params }: LoaderArgs) {
-  const { supportedLanguages } = await graphqlSdk.SupportedLanguages();
+  const { supportedLanguages } = await graphqlSdk()('query')({
+    supportedLanguages: true,
+  });
   const selectedLanguage = params.lang as SupportedLanguage;
   invariant(
     supportedLanguages.includes(selectedLanguage as any),
@@ -33,8 +35,8 @@ export async function loader({ params }: LoaderArgs) {
       ', '
     )}'`
   );
-  const { languageExample } = await graphqlSdk.LanguageExample({
-    language: selectedLanguage,
+  const { languageExample } = await graphqlSdk()('query')({
+    languageExample: [{ language: selectedLanguage }, true],
   });
   return json({ languageExample, supportedLanguages, selectedLanguage });
 }
@@ -42,10 +44,22 @@ export async function loader({ params }: LoaderArgs) {
 export async function action({ request }: ActionArgs) {
   const { input, language } = await zx.parseForm(request, {
     input: z.string(),
-    language: z.nativeEnum(SupportedLanguage),
+    language: z.string(),
   });
-  const executeCode = await graphqlSdk.ExecuteCode({
-    input: { code: JSON.parse(input), language: language },
+  const executeCode = await graphqlSdk()('mutation')({
+    executeCode: [
+      {
+        input: {
+          code: JSON.parse(input),
+          language: language as SupportedLanguage,
+        },
+      },
+      {
+        __typename: true,
+        '...on ExecuteCodeError': { error: true, step: true },
+        '...on ExecuteCodeOutput': { output: true },
+      },
+    ],
   });
   return json({ output: executeCode.executeCode });
 }
@@ -58,9 +72,9 @@ export default () => {
   const transition = useTransition();
 
   const extensions = match(selectedLanguage)
-    .with(SupportedLanguage.Cpp, () => [cpp()])
-    .with(SupportedLanguage.Rust, () => [rust()])
-    .with(SupportedLanguage.Go, () => [StreamLanguage.define(go)])
+    .with(SupportedLanguage.cpp, () => [cpp()])
+    .with(SupportedLanguage.rust, () => [rust()])
+    .with(SupportedLanguage.go, () => [StreamLanguage.define(go)])
     .exhaustive();
 
   return (

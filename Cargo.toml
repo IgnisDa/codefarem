@@ -9,3 +9,17 @@ members = [
   "apps/executor",
   "apps/orchestrator",
 ]
+
+[workspace.dependencies]
+async-graphql = { version = "4.0.14", features = ["log", "uuid"] }
+async-trait = { version = "0.1.57" }
+edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
+edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
+edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
+rand = { version = "0.8.5" }
+serde = { version = "1.0.145", features = ["derive"] }
+serde_json = { version = "1.0.85" }
+strum = { version = "0.24.1", features = ["derive"] }
+tokio = { version = "1.21.1", features = ["rt", "macros", "rt-multi-thread"] }
+tonic = { version = "0.8" }
+uuid = { version = "1.1.2", features = ["serde"] }

@@ -1,6 +1,8 @@
 mod errors;
 mod jwt;
 
+pub use errors::AuthError;
+
 use std::str::FromStr;
 
 use chrono::{Duration, Utc};
@@ -10,6 +12,8 @@ use scrypt::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Scrypt,
 };
+use utilities::{graphql::ApiError, users::AccountType};
+use uuid::Uuid;
 
 /// Hashes the password using a randomly generated salt string
 pub fn get_hashed_password(password: &str) -> String {
@@ -30,13 +34,14 @@ pub fn verify_password(password: &str, password_hash: &str) -> bool {
 }
 
 /// Create a JWT token using the given id
-pub fn create_jwt_token(secret: &[u8], user_id: &str) -> String {
+pub fn create_jwt_token(secret: &[u8], user_id: &str, account_type: &AccountType) -> String {
     let expiration_time = Utc::now()
         .checked_add_signed(Duration::days(60))
         .expect("invalid timestamp")
         .timestamp();
     let claim = Claim {
         sub: user_id.to_string(),
+        at: *account_type,
         exp: expiration_time as usize,
     };
     encode(
@@ -48,7 +53,10 @@ pub fn create_jwt_token(secret: &[u8], user_id: &str) -> String {
 }
 
 ///.Returns the user ID from the given JWT
-pub fn get_user_id_from_authorization_token(secret: &[u8], token: &str) -> Result<Uuid, AuthError> {
+pub fn get_user_id_from_authorization_token(
+    secret: &[u8],
+    token: &str,
+) -> Result<(Uuid, AccountType), AuthError> {
     let jwt = token
         .strip_prefix("Bearer ")
         .ok_or(AuthError::InvalidAuthHeader)?;
@@ -58,8 +66,21 @@ pub fn get_user_id_from_authorization_token(secret: &[u8], token: &str) -> Resul
         &Validation::default(),
     )
     .map_err(|x| AuthError::InvalidJwtToken(x.to_string()))?;
-    Ok(Uuid::from_str(decoded.claims.sub.as_str()).unwrap())
+    Ok((
+        Uuid::from_str(decoded.claims.sub.as_str()).unwrap(),
+        decoded.claims.at,
+    ))
 }
 
-pub use errors::AuthError;
-use uuid::Uuid;
+/// Checks if the user is allowed to access the resource
+pub fn validate_user_role(
+    required_account_type: &AccountType,
+    received_account_type: &AccountType,
+) -> Result<(), ApiError> {
+    if required_account_type != received_account_type {
+        return Err(ApiError {
+            error: format!("Only {required_account_type} can perform this action"),
+        });
+    }
+    Ok(())
+}

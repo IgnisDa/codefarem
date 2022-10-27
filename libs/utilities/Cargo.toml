@@ -4,5 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+async-graphql = { workspace = true }
 chrono = "0.4.22"
+edgedb-derive = { workspace = true }
+edgedb-protocol = { workspace = true }
 rand = "0.8.5"
+serde = { workspace = true }
+strum = { workspace = true }
+uuid = { workspace = true }
