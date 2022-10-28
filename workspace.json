@@ -7,11 +7,9 @@
     "config": "libs/config",
     "examples": "libs/examples",
     "executor": "apps/executor",
-    "generated": "libs/generated",
     "macros": "libs/macros",
     "orchestrator": "apps/orchestrator",
     "protobuf": "libs/protobuf",
-    "utilities": "libs/utilities",
-    "website": "apps/website"
+    "utilities": "libs/utilities"
   }
 }

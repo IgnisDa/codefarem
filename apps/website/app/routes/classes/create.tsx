@@ -1,4 +1,4 @@
-import { AccountType } from '@codefarem/generated/graphql/zeus';
+import { AccountType } from '@codefarem/generated/orchestrator-graphql';
 import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';

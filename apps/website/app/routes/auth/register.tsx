@@ -4,7 +4,7 @@ import { Form, useTransition } from '@remix-run/react';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
-import { AccountType } from '@codefarem/generated/graphql/zeus';
+import { AccountType } from '@codefarem/generated/orchestrator-graphql';
 
 import {
   FORM_EMAIL_KEY,

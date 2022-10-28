@@ -1,0 +1,21 @@
+type: 'library'
+
+tasks:
+  generate-orchestrator-graphql:
+    command:
+      - 'ts-node'
+      - 'src/generate-graphql.ts'
+      - 'http://127.0.0.1:8000/graphql'
+      - 'orchestrator'
+    outputs:
+      - 'src/graphql/orchestrator.ts'
+
+  generate-graphql:
+    deps:
+      - '~:generate-orchestrator-graphql'
+
+workspace:
+  inheritedTasks:
+    exclude:
+      - 'lint' # generated files do not need to be linted
+      - 'test'

@@ -89,16 +89,7 @@
     "tslib": "2.4.0",
     "typescript": "4.8.4"
   },
-  "scripts": {
-    "commit": "git-cz",
-    "postinstall": "pnpm nx postinstall website",
-    "prepare": "husky install"
-  },
-  "config": {
-    "commitizen": {
-      "path": "@commitlint/cz-commitlint"
-    }
-  },
+  "scripts": {},
   "engines": {
     "node": "18.12.0"
   },

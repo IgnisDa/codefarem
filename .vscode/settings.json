@@ -44,6 +44,7 @@
         "protobuf",
         "protolint",
         "protos",
+        "rimraf",
         "rustc",
         "rustup",
         "tailwindcss",

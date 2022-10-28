@@ -1,4 +1,7 @@
-import { AccountType, TestCaseUnit } from '@codefarem/generated/graphql/zeus';
+import {
+  AccountType,
+  TestCaseUnit,
+} from '@codefarem/generated/orchestrator-graphql';
 import { Listbox } from '@headlessui/react';
 import {
   Button,

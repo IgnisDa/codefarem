@@ -3,6 +3,12 @@
   "files": [],
   "references": [
     {
+      "path": "apps/website"
+    },
+    {
+      "path": "libs/generated"
+    },
+    {
       "path": "libs/main-db"
     },
     {

@@ -1,0 +1,38 @@
+type: 'application'
+
+fileGroups:
+  remix:
+    - 'app/**/*'
+    - 'public/**/*'
+    - 'remix.env.d.ts'
+    - 'remix.config.*'
+
+tasks:
+  dev-routes:
+    command: 'routes-gen -d @routes-gen/remix --watch --output app/lib/routes.d.ts'
+    inputs:
+      - '@group(remix)'
+    outputs:
+      - 'app/lib/routes.d.ts'
+    local: true
+
+  dev:
+    command: 'remix dev'
+    inputs:
+      - '@group(remix)'
+    local: true
+
+  build:
+    command: 'remix build'
+    inputs:
+      - '@group(remix)'
+    outputs:
+      - 'build'
+
+  start:
+    command: 'remix-serve ./build'
+    deps:
+      - '~:build'
+    inputs:
+      - '@group(remix)'
+    local: true

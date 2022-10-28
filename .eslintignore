@@ -6,3 +6,4 @@ dts
 coverage
 jest.config.*
 dbschema
+build

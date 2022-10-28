@@ -1,0 +1,20 @@
+{
+  "name": "@codefarem/generated",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "graphql-zeus": "5.1.9",
+    "graphql-js-tree": "0.1.9",
+    "move-cli": "2.0.0",
+    "rimraf": "3.0.2",
+    "ts-node": "10.9.1"
+  },
+  "main": "./src/index.ts",
+  "exports": {
+    "./orchestrator-graphql": {
+      "import": "./src/graphql/orchestrator.ts",
+      "types": "./src/graphql/orchestrator.ts"
+    }
+  }
+}

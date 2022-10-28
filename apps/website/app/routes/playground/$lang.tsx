@@ -1,4 +1,4 @@
-import { SupportedLanguage } from '@codefarem/generated/graphql/zeus';
+import { SupportedLanguage } from '@codefarem/generated/orchestrator-graphql';
 import { Button } from '@codefarem/react-ui';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
