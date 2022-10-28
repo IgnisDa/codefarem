@@ -23,8 +23,9 @@ tasks:
       - 'edgeql/**/*.edgeql'
   lint:
     deps:
-      - '~:lint-js'
       - '~:lint-edgeql'
+      - '~:lint-js'
+    command: 'echo done'
 
 workspace:
   inheritedTasks:
