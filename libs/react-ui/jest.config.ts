@@ -16,5 +16,6 @@ export default {
       },
     ],
   },
+  testPathIgnorePatterns: ['<rootDir>/dist'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 };
