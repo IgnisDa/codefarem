@@ -22,6 +22,7 @@ tasks:
     inputs:
       - '@group(dbschema)'
       - 'edgeql/**/*.edgeql'
+
   lint:
     deps:
       - '~:lint-edgeql'
