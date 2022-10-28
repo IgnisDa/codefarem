@@ -1,7 +1,7 @@
 import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
-import { route } from 'routes-gen';
+import { $path } from 'remix-routes';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { AccountType } from '@codefarem/generated/orchestrator-graphql';
@@ -62,7 +62,7 @@ export const action = async ({ request }: ActionArgs) => {
     if (registerUser.__typename === 'RegisterUserError')
       throw new Error(`There was a problem registering the user`);
   }
-  return redirect(route('/auth/login'));
+  return redirect($path('/auth/login'));
 };
 
 export const loader = async ({ request }: DataFunctionArgs) => {

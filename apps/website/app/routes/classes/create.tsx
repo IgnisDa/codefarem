@@ -3,7 +3,7 @@ import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { notFound } from 'remix-utils';
-import { route } from 'routes-gen';
+import { $path } from 'remix-routes';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
@@ -39,7 +39,7 @@ export async function action({ request }: ActionArgs) {
     ],
   });
   if (createClass.__typename === 'ApiError') throw new Error(createClass.error);
-  return redirect(route('/classes/:id', { id: createClass.id }));
+  return redirect($path('/classes/:id', { id: createClass.id }));
 }
 
 export default () => {

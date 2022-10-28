@@ -14,7 +14,7 @@ import {
 } from '@remix-run/react';
 import EditorView from '@uiw/react-codemirror';
 import { useState } from 'react';
-import { route } from 'routes-gen';
+import { $path } from 'remix-routes';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
@@ -83,7 +83,7 @@ export default () => {
         {supportedLanguages.map((l, idx) => (
           <Link
             key={idx}
-            to={route('/playground/:lang', { lang: l })}
+            to={$path('/playground/:lang', { lang: l })}
             className="px-4 py-1 text-lg tracking-wider border border-purple-600 rounded-lg bg-purple-50"
             reloadDocument
           >

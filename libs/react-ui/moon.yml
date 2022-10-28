@@ -1,1 +1,12 @@
 type: 'library'
+
+tasks:
+  build:
+    command: 'swc'
+    args:
+      - 'src'
+      - '--out-dir'
+      - 'dist'
+      - '--sync'
+    outputs:
+      - 'dist'

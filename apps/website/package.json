@@ -12,6 +12,8 @@
     "@codemirror/legacy-modes": "6.1.0",
     "@headlessui/react": "1.7.2",
     "@nextui-org/react": "1.0.0-beta.10",
+    "@react-stately/collections": "^3.4.4",
+    "@react-stately/menu": "^3.4.2",
     "@remix-run/node": "1.7.3",
     "@remix-run/react": "1.7.3",
     "@remix-run/serve": "1.7.3",
@@ -29,6 +31,7 @@
     "react-icons": "4.4.0",
     "remix-auth": "3.3.0",
     "remix-auth-form": "1.2.0",
+    "remix-routes": "^1.0.0",
     "remix-utils": "3.3.0",
     "tiny-invariant": "1.2.0",
     "ts-pattern": "4.0.5",
@@ -38,13 +41,10 @@
   "devDependencies": {
     "@remix-run/dev": "1.7.3",
     "@remix-run/eslint-config": "1.7.3",
-    "@routes-gen/remix": "0.3.3",
     "@types/lodash": "4.14.185",
     "@types/luxon": "3.0.1",
-    "@types/node": "18.7.18",
     "@types/react": "18.0.20",
-    "@types/react-dom": "18.0.6",
-    "routes-gen": "0.5.2"
+    "@types/react-dom": "18.0.6"
   },
   "scripts": {
     "postinstall": "npx remix setup node"

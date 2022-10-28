@@ -2,6 +2,7 @@ type: 'library'
 
 tasks:
   generate-orchestrator-graphql:
+    local: true
     command:
       - 'ts-node'
       - 'src/generate-graphql.ts'
@@ -11,8 +12,19 @@ tasks:
       - 'src/graphql/orchestrator.ts'
 
   generate-graphql:
+    local: true
     deps:
       - '~:generate-orchestrator-graphql'
+
+  build:
+    command: 'swc'
+    args:
+      - 'src'
+      - '--out-dir'
+      - 'dist'
+      - '--sync'
+    outputs:
+      - 'dist'
 
 workspace:
   inheritedTasks:
