@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for p in vec!["compilers", "executor"].iter() {
         let path = definitions_path.join(format!("{p}.proto"));
         tonic_build::configure()
-            .out_dir(&output_path)
+            .out_dir(output_path.clone())
             .compile(&[path], &[&definitions_path])?;
     }
     Ok(())
