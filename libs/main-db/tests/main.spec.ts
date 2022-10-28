@@ -1,12 +1,11 @@
 import * as edgedb from 'edgedb';
-
 import e from '../dbschema/edgeql-js';
 import { createUserInfo } from '../generators';
 
 describe('Database behavior testing', () => {
   let client: edgedb.Client;
 
-  beforeAll(async () => {
+  beforeAll(() => {
     client = edgedb.createClient();
   });
 
@@ -14,8 +13,8 @@ describe('Database behavior testing', () => {
     await client.close();
   });
 
-  test('Deleting a teacher removes them from their associated class without an error', async () => {
-    for (let i = 0; i < 4; i++) {
+  it('Deleting a teacher removes them from their associated class without an error', async () => {
+    for (let i = 0; i < 4; i+=1) {
       const teacherData = createUserInfo();
       await e
         .insert(e.users.Teacher, {
@@ -36,22 +35,23 @@ describe('Database behavior testing', () => {
       teachers: true,
       filter: e.op(c.id, '=', e.uuid(id)),
     }));
-    let cppClass = await e
+    let cppClass = (await e
       .select(e.learning.Class, (c) => classShape(c))
-      .run(client);
+      .run(client))!;
     expect(cppClass.numTeachers).toBe(4);
     await e
       .delete(e.users.Teacher, (t) => ({
         filter: e.op(t.id, '=', e.uuid(cppClass.teachers[0].id)),
       }))
       .run(client);
-    cppClass = await e
+    // eslint-disable-next-line require-atomic-updates
+    cppClass = (await e
       .select(e.learning.Class, (c) => classShape(c))
-      .run(client);
+      .run(client))!;
     expect(cppClass.numTeachers).toBe(3);
   });
 
-  test('Deleting a class removes them from a teacher without an errors', async () => {
+  it('Deleting a class removes them from a teacher without an errors', async () => {
     const teacherData = createUserInfo();
     const { id } = await e
       .insert(e.users.Teacher, {
@@ -60,7 +60,7 @@ describe('Database behavior testing', () => {
       })
       .run(client);
     // create 4 classes
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i+=1) {
       await e
         .insert(e.learning.Class, {
           name: `CPP-#${i}`,
@@ -75,18 +75,19 @@ describe('Database behavior testing', () => {
       classes: true,
       filter: e.op(c.id, '=', e.uuid(id)),
     }));
-    let teacher = await e
+    let teacher = (await e
       .select(e.users.Teacher, (c) => teacherShape(c))
-      .run(client);
+      .run(client))!;
     expect(teacher.numClasses).toBe(4);
     await e
       .delete(e.learning.Class, (c) => ({
         filter: e.op(c.id, '=', e.uuid(teacher.classes[0].id)),
       }))
       .run(client);
-    teacher = await e
+    // eslint-disable-next-line require-atomic-updates
+    teacher = (await e
       .select(e.users.Teacher, (c) => teacherShape(c))
-      .run(client);
+      .run(client))!;
     expect(teacher.numClasses).toBe(3);
   });
 });

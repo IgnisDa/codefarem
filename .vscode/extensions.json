@@ -18,6 +18,7 @@
     "firsttris.vscode-jest-runner",
     "ms-vscode.cpptools",
     "zxh404.vscode-proto3",
-    "rvest.vs-code-prettier-eslint"
+    "rvest.vs-code-prettier-eslint",
+    "moonrepo.moon-console"
   ]
 }

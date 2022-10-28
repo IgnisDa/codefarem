@@ -3,6 +3,9 @@
   "files": [],
   "references": [
     {
+      "path": "libs/main-db"
+    },
+    {
       "path": "libs/react-ui"
     }
   ]

@@ -9,7 +9,6 @@
     "executor": "apps/executor",
     "generated": "libs/generated",
     "macros": "libs/macros",
-    "main-db": "libs/main-db",
     "orchestrator": "apps/orchestrator",
     "protobuf": "libs/protobuf",
     "utilities": "libs/utilities",

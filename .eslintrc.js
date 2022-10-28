@@ -1,17 +1,16 @@
 module.exports = {
-  root: true, // Required!
+  root: true,
   extends: ['moon'],
   rules: {
-    'no-console': 'error',
     'import/no-extraneous-dependencies': [
       'error',
       {
         devDependencies: true,
       },
     ],
+    'no-console': 'error',
+    'no-await-in-loop': 'off',
   },
-
-  // TypeScript support
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.eslint.json',
