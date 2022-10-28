@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cargo clippy
+cargo clippy -- -D warnings
 
 for target in "lint" "build" "test"; do
     moon run :$target
