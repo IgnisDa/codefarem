@@ -7,9 +7,9 @@ import { $path } from 'remix-routes';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
-import { FAILURE_REDIRECT_PATH } from '../../lib/constants';
-import { authenticator } from '../../lib/services/auth.server';
-import { graphqlScalars, graphqlSdk } from '../../lib/services/graphql.server';
+import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
+import { authenticator } from '~/lib/services/auth.server';
+import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 

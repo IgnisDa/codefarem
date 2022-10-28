@@ -5,7 +5,7 @@ import { FORM_EMAIL_KEY, FORM_PASSWORD_KEY } from '../constants';
 import { graphqlSdk } from './graphql.server';
 import { sessionStorage } from './session.server';
 
-import type { User } from '../types';
+import type { User } from '~/lib/types';
 
 export const authenticator = new Authenticator<User>(sessionStorage);
 

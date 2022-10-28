@@ -1,6 +1,6 @@
-import { FAILURE_REDIRECT_PATH, LOGOUT_PATH } from '../../lib/constants';
-import { authenticator } from '../../lib/services/auth.server';
-import { graphqlSdk } from '../../lib/services/graphql.server';
+import { FAILURE_REDIRECT_PATH, LOGOUT_PATH } from '~/lib/constants';
+import { authenticator } from '~/lib/services/auth.server';
+import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { DataFunctionArgs } from '@remix-run/node';
 

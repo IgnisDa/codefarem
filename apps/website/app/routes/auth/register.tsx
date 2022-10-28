@@ -10,9 +10,9 @@ import {
   FORM_EMAIL_KEY,
   FORM_PASSWORD_KEY,
   SUCCESSFUL_REDIRECT_PATH,
-} from '../../lib/constants';
-import { authenticator } from '../../lib/services/auth.server';
-import { graphqlSdk } from '../../lib/services/graphql.server';
+} from '~/lib/constants';
+import { authenticator } from '~/lib/services/auth.server';
+import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type {
   ActionArgs,
