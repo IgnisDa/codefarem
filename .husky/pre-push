@@ -3,6 +3,4 @@
 
 cargo clippy -- -D warnings
 
-for target in "lint" "build" "test"; do
-    moon run :$target
-done
+moon check "website" "react-ui" "generated" "main-db"

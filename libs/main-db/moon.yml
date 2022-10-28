@@ -12,6 +12,7 @@ tasks:
       - '@group(dbschema)'
     outputs:
       - 'dbschema/edgeql-js'
+    local: true
 
   lint-edgeql:
     command:

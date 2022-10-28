@@ -2,7 +2,6 @@ type: 'library'
 
 tasks:
   generate-orchestrator-graphql:
-    local: true
     command:
       - 'ts-node'
       - 'src/generate-graphql.ts'
@@ -10,11 +9,12 @@ tasks:
       - 'orchestrator'
     outputs:
       - 'src/graphql/orchestrator.ts'
+    local: true
 
   generate-graphql:
-    local: true
     deps:
       - '~:generate-orchestrator-graphql'
+    local: true
 
   build:
     command: 'swc'
