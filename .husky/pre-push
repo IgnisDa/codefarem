@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cargo clippy -- -D warnings
+cargo clippy --release -- -D warnings
+cargo check --release
 
 moon check "website" "react-ui" "generated" "main-db"
