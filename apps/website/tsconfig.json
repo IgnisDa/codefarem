@@ -1,27 +1,45 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": [
-    "remix.env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "extends": "../../tsconfig.projectOptions.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "emitDeclarationOnly": false,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "paths": {
+      "~/*": [
+        "./app/*"
+      ]
+    },
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": [
       "DOM",
       "DOM.Iterable",
       "ES2019"
     ],
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "moduleResolution": "node",
-    "preserveConstEnums": true,
-    "resolveJsonModule": true,
-    "target": "ES2019",
     "strict": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    // Remix takes care of building everything in `remix build`.
-    "noEmit": true
-  }
+    "target": "ES2019",
+    "esModuleInterop": true,
+    "isolatedModules": true
+  },
+  "include": [
+    ".eslintrc.js",
+    "remix.env.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    ".cache",
+    "build",
+    "public"
+  ],
+  "references": [
+    {
+      "path": "../../libs/generated"
+    },
+    {
+      "path": "../../libs/react-ui"
+    }
+  ]
 }

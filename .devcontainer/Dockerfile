@@ -19,7 +19,7 @@ RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/c
     chmod +x /etc/profile.d/cargo.sh
 
 RUN set -eu ;\
-    npm install --global pnpm ;\
+    npm install --global pnpm @moonrepo/cli ;\
     curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
     mv "/root/.local/bin/edgedb" "/usr/local/bin/edgedb" ;\
     chmod +x "/usr/local/bin/edgedb" ;\

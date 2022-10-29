@@ -18,7 +18,7 @@
             "label": "cpp-compiler",
             "type": "shell",
             "isBackground": true,
-            "command": "pnpm nx run compilers:run --bin cpp-compiler --watch",
+            "command": "cargo watch -cqx 'run --bin cpp-compiler'",
             "detail": "Run the cpp compiler service",
             "options": {
                 "env": {
@@ -30,7 +30,7 @@
             "label": "go-compiler",
             "type": "shell",
             "isBackground": true,
-            "command": "pnpm nx run compilers:run --bin go-compiler --watch",
+            "command": "cargo watch -cqx 'run --bin go-compiler'",
             "detail": "Run the go compiler service",
             "options": {
                 "env": {
@@ -39,22 +39,10 @@
             },
         },
         {
-            "label": "orchestrator",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --package orchestrator'",
-            "detail": "Run the orchestrator service",
-            "options": {
-                "env": {
-                    "ROCKET_PORT": "8000"
-                }
-            },
-        },
-        {
             "label": "rs-compiler",
             "type": "shell",
             "isBackground": true,
-            "command": "pnpm nx run compilers:run --bin rs-compiler --watch",
+            "command": "cargo watch -cqx 'run --bin rs-compiler'",
             "detail": "Run the rust compiler service",
             "options": {
                 "env": {
@@ -75,10 +63,22 @@
             },
         },
         {
+            "label": "orchestrator",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --package orchestrator'",
+            "detail": "Run the orchestrator service",
+            "options": {
+                "env": {
+                    "ROCKET_PORT": "8000"
+                }
+            },
+        },
+        {
             "label": "website",
             "type": "shell",
             "isBackground": true,
-            "command": "pnpm nx start website",
+            "command": "moon run website:dev website:dev-routes",
             "detail": "Run the main website server",
             "options": {},
         },

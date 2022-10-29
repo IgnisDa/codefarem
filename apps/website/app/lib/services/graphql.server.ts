@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { Thunder, ZeusScalars } from '@codefarem/generated/graphql/zeus';
-
+import { Thunder, ZeusScalars } from '@codefarem/generated/orchestrator-graphql';
 import { ApplicationConfig } from '../config.server';
 
 /**
@@ -11,7 +10,7 @@ export const graphqlSdk = (authorizationToken = '') => {
     'Content-Type': 'application/json',
   };
   if (authorizationToken)
-    headers['Authorization'] = `Bearer ${authorizationToken}`;
+    headers.Authorization = `Bearer ${authorizationToken}`;
   return Thunder(async (query) => {
     const response = await axios.post(
       `${ApplicationConfig.APPLICATION_API_URL}/graphql`,

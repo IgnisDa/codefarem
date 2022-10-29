@@ -1,0 +1,37 @@
+# https://moonrepo.dev/docs/config/global-project
+$schema: 'https://moonrepo.dev/schemas/global-project.json'
+
+tasks:
+  lint:
+    command:
+      - 'eslint'
+      - '--ext'
+      - '.js,.jsx,.ts,.tsx'
+      - '--fix'
+      - '--report-unused-disable-directives'
+      - '--no-error-on-unmatched-pattern'
+      - '--exit-on-fatal-error'
+      - '--ignore-path'
+      - '@in(4)'
+      - '.'
+    inputs:
+      - 'src/**/*'
+      - 'tests/**/*'
+      - '*.config.*'
+      - '**/.eslintrc.*'
+      - '/.eslintignore'
+      - '/.eslintrc.*'
+      - 'types/**/*'
+      - 'tsconfig.json'
+      - '/tsconfig.eslint.json'
+      - '/tsconfig.options.json'
+
+  test:
+    command:
+      - 'jest'
+      - '--coverage'
+      - '--passWithNoTests'
+    inputs:
+      - 'src/**/*'
+      - 'tests/**/*'
+      - 'jest.config.*'

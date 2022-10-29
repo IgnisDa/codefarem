@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.options.json",
+  "files": [],
+  "references": [
+    {
+      "path": "apps/website"
+    },
+    {
+      "path": "libs/generated"
+    },
+    {
+      "path": "libs/main-db"
+    },
+    {
+      "path": "libs/react-ui"
+    }
+  ]
+}

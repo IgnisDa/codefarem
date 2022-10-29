@@ -1,0 +1,25 @@
+{
+  "name": "@codefarem/generated",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "clsx": "1.2.1",
+    "react": "18.2.0"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "1.3.7",
+    "graphql-js-tree": "0.1.9",
+    "graphql-zeus": "5.1.9",
+    "rimraf": "3.0.2"
+  },
+  "main": "./src/index.ts",
+  "exports": {
+    "./orchestrator-graphql": {
+      "import": "./src/graphql/orchestrator.ts",
+      "require": "./dist/graphql/orchestrator.js",
+      "types": "./src/graphql/orchestrator.ts"
+    }
+  }
+}

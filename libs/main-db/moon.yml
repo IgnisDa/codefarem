@@ -1,0 +1,32 @@
+type: 'library'
+
+fileGroups:
+  dbschema:
+    - 'dbschema/**/*.esdl'
+
+tasks:
+  generate:
+    command:
+      - edgeql-js
+    inputs:
+      - '@group(dbschema)'
+    outputs:
+      - 'dbschema/edgeql-js'
+    local: true
+
+  lint-edgeql:
+    command: 'noop'
+    inputs:
+      - '@group(dbschema)'
+      - 'edgeql/**/*.edgeql'
+
+  lint:
+    deps:
+      - '~:lint-edgeql'
+      - '~:lint-js'
+    command: 'noop'
+
+workspace:
+  inheritedTasks:
+    rename:
+      lint: 'lint-js'

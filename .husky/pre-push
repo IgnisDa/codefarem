@@ -1,30 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-two_commits_ago="$(git log --format="%H" -n 2 | tail -n 1)"
-# check if remotes exist
-if [ "$(git remote)" ]; then
-    branch_exists=$(git ls-remote --heads origin $(git branch --show-current))
-    # if branch_exists is empty, then the branch does not exist in the remote
-    if [ -z "$branch_exists" ]; then
-        # use $two_commits_ago if the current branch does not exist in the remote
-        last_remote_commit=$two_commits_ago
-    else
-        # a remote may exist but it might not have commits, so we will use the last local one
-        last_remote_commit=$(git rev-parse origin/"$(git branch --show-current)") || $two_commits_ago
-    fi
-fi
-last_local_commit=$(git log --format="%H" -n 1 | tail -n 1)
-# detect force push, ref: https://github.com/kyanny/git-hooks-detect-force-update
-if [ "$(git rev-list "$last_remote_commit" ^"$last_local_commit")" ]; then
-    echo "Force push detected..."
-    last_remote_commit="$two_commits_ago"
-fi
-echo "Setting base=\"$last_remote_commit\" and head=\"$last_local_commit\""
-for target in "lint" "build" "test"; do
-    pnpm nx affected \
-        --base="$last_remote_commit" \
-        --target="$target" \
-        --nx-bail \
-        --parallel=6
-done
+cargo clippy -- -D warnings
+
+moon check "website" "react-ui" "generated" "main-db"

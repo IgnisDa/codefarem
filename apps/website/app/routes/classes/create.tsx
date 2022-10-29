@@ -1,15 +1,15 @@
-import { AccountType } from '@codefarem/generated/graphql/zeus';
+import { AccountType } from '@codefarem/generated/orchestrator-graphql';
 import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { notFound } from 'remix-utils';
-import { route } from 'routes-gen';
+import { $path } from 'remix-routes';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
-import { FAILURE_REDIRECT_PATH } from '../../lib/constants';
-import { authenticator } from '../../lib/services/auth.server';
-import { graphqlScalars, graphqlSdk } from '../../lib/services/graphql.server';
+import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
+import { authenticator } from '~/lib/services/auth.server';
+import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 
@@ -39,7 +39,7 @@ export async function action({ request }: ActionArgs) {
     ],
   });
   if (createClass.__typename === 'ApiError') throw new Error(createClass.error);
-  return redirect(route('/classes/:id', { id: createClass.id }));
+  return redirect($path('/classes/:id', { id: createClass.id }));
 }
 
 export default () => {

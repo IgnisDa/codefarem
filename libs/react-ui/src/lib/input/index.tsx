@@ -1,11 +1,11 @@
-import clsx from 'clsx';
 import { forwardRef, HTMLProps, ReactElement } from 'react';
+import clsx from 'clsx';
 
-type InputProps = {
+type InputProps = HTMLProps<HTMLInputElement> & {
   labelSlot?: ReactElement;
   isValid?: boolean;
   iconSlot?: ReactElement;
-} & HTMLProps<HTMLInputElement>;
+};
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
@@ -28,9 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => (
     <div className={clsx(!isValid && 'input-error')}>
-      {labelSlot ? (
-        labelSlot
-      ) : (
+      {labelSlot ?? (
         <label
           htmlFor={name}
           className="block mb-2 text-lg font-medium text-gray-700 font-circular-book"
@@ -55,9 +53,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           required={required}
           step={step}
           className="w-full py-3 border-none outline-none appearance-none autofill:bg-yellow-200"
-          disabled={disabled === undefined || disabled === false ? false : true}
-          onChange={onChange ? (e) => onChange(e) : undefined}
-          onBlur={onBlur ? (e) => onBlur(e) : undefined}
+          disabled={!(disabled === undefined || !disabled)}
+          onChange={onChange ? (e) => void onChange(e) : undefined}
+          onBlur={onBlur ? (e) => void onBlur(e) : undefined}
         />
       </div>
     </div>

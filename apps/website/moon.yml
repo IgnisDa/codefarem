@@ -1,0 +1,52 @@
+type: 'application'
+
+fileGroups:
+  remix:
+    - 'app/**/*'
+    - 'public/**/*'
+    - 'remix.env.d.ts'
+    - 'remix.config.*'
+
+tasks:
+  dev-routes:
+    command: 'remix-routes'
+    args:
+      - '--watch'
+    inputs:
+      - '@group(remix)'
+    local: true
+
+  routes:
+    command: 'remix-routes'
+    inputs:
+      - '@group(remix)'
+
+  dev:
+    command: 'remix dev'
+    inputs:
+      - '@group(remix)'
+    local: true
+
+  build:
+    command: 'remix build'
+    deps:
+      - 'react-ui:build'
+      - 'generated:build'
+      - '~:routes'
+    inputs:
+      - '@group(remix)'
+    outputs:
+      - 'build'
+
+  start:
+    command: 'remix-serve ./build'
+    deps:
+      - '~:build'
+    inputs:
+      - '@group(remix)'
+    local: true
+
+workspace:
+  inheritedTasks:
+    exclude:
+      - 'test'

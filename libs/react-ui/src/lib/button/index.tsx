@@ -1,15 +1,15 @@
-import clsx from 'clsx';
 import { FC, HTMLProps, ReactElement, ReactNode } from 'react';
+import clsx from 'clsx';
 
-type ButtonProps = {
+type ButtonProps = HTMLProps<HTMLButtonElement> & {
   isLoading?: boolean;
-  buttonType?: 'submit' | 'button' | 'reset';
+  buttonType?: 'button' | 'reset' | 'submit';
   isDisabled?: boolean;
   isSecondary?: boolean;
   leftSlot?: ReactElement;
-  classes?: string | string[];
+  classes?: string[] | string;
   children?: ReactNode;
-} & HTMLProps<HTMLButtonElement>;
+};
 
 export const Button: FC<ButtonProps> = ({
   isLoading,
@@ -27,7 +27,7 @@ export const Button: FC<ButtonProps> = ({
       isSecondary ? 'text-blue-600 border' : 'bg-yellow-500',
       classes
     )}
-    disabled={isLoading || isDisabled}
+    disabled={isLoading ?? isDisabled}
     type={buttonType}
     onClick={onClick}
   >

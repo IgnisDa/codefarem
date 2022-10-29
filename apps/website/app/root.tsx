@@ -39,7 +39,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export default () => {
+export default function App() {
   return (
     <Document>
       <NextUIProvider>
@@ -47,4 +47,4 @@ export default () => {
       </NextUIProvider>
     </Document>
   );
-};
+}

@@ -1,10 +1,21 @@
 /* eslint-disable */
 export default {
+  testEnvironment: 'jsdom',
   displayName: 'react-ui',
-  preset: '../../jest.preset.js',
   transform: {
-    '^.+\\.[tj]sx?$': 'babel-jest',
+    '^.+\\.[tj]sx?$': [
+      '@swc/jest',
+      {
+        jsc: {
+          transform: {
+            react: {
+              runtime: 'automatic',
+            },
+          },
+        },
+      },
+    ],
   },
+  testPathIgnorePatterns: ['<rootDir>/dist'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/react-ui',
 };
