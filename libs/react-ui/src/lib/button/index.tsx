@@ -1,4 +1,4 @@
-import { FC, HTMLProps, ReactElement, ReactNode } from 'react';
+import React, { FC, HTMLProps, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 
 type ButtonProps = HTMLProps<HTMLButtonElement> & {

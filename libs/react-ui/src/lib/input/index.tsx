@@ -1,4 +1,4 @@
-import { forwardRef, HTMLProps, ReactElement } from 'react';
+import React, { forwardRef, HTMLProps, ReactElement } from 'react';
 import clsx from 'clsx';
 
 type InputProps = HTMLProps<HTMLInputElement> & {
