@@ -15,10 +15,7 @@ tasks:
     local: true
 
   lint-edgeql:
-    command:
-      - 'echo'
-      - 'linting'
-      - 'EdgeQL...'
+    command: 'noop'
     inputs:
       - '@group(dbschema)'
       - 'edgeql/**/*.edgeql'
@@ -27,7 +24,7 @@ tasks:
     deps:
       - '~:lint-edgeql'
       - '~:lint-js'
-    command: 'echo done'
+    command: 'noop'
 
 workspace:
   inheritedTasks:
