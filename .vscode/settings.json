@@ -13,6 +13,7 @@
         "cssmodule",
         "dbschema",
         "dedup",
+        "dedupe",
         "devcontainer",
         "devcontainers",
         "devel",
