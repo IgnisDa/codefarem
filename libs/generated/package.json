@@ -8,7 +8,7 @@
     "react": "18.2.0"
   },
   "devDependencies": {
-    "@swc/cli": "^0.1.57",
+    "@swc/cli": "0.1.57",
     "@swc/core": "1.3.7",
     "graphql-js-tree": "0.1.9",
     "graphql-zeus": "5.1.9",
