@@ -63,6 +63,7 @@ importers:
       '@types/luxon': 3.0.1
       '@types/react': 18.0.20
       '@types/react-dom': 18.0.6
+      '@types/uuid': 8.3.4
       '@uiw/react-codemirror': 4.12.3
       axios: 1.1.3
       change-case: 4.1.2
@@ -80,6 +81,7 @@ importers:
       routes-gen: 0.5.2
       tiny-invariant: 1.2.0
       ts-pattern: 4.0.5
+      uuid: 9.0.0
       zod: 3.19.1
       zodix: 0.1.0
     dependencies:
@@ -98,6 +100,7 @@ importers:
       '@remix-run/serve': 1.7.4_biqbaboplfbrettd7655fr4n2y
       '@remix-run/server-runtime': 1.7.4_biqbaboplfbrettd7655fr4n2y
       '@routes-gen/remix': 0.3.5_@remix-run+dev@1.7.4
+      '@types/uuid': 8.3.4
       '@uiw/react-codemirror': 4.12.3_os2i4b4c4r6ynotuwzkce5wzcu
       axios: 1.1.3
       change-case: 4.1.2
@@ -115,6 +118,7 @@ importers:
       routes-gen: 0.5.2
       tiny-invariant: 1.2.0
       ts-pattern: 4.0.5
+      uuid: 9.0.0
       zod: 3.19.1
       zodix: 0.1.0_zod@3.19.1
     devDependencies:
@@ -3799,6 +3803,10 @@ packages:
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+
+  /@types/uuid/8.3.4:
+    resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
+    dev: false
 
   /@types/yargs-parser/21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
@@ -11347,6 +11355,11 @@ packages:
 
   /uuid/8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+    dev: false
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
     dev: false
 
