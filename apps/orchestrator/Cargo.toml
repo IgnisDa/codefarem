@@ -9,6 +9,7 @@ async-graphql = { workspace = true }
 async-graphql-rocket = "4.0.13"
 async-trait = { workspace = true }
 auth = { path = "../../libs/auth" }
+chrono = { workspace = true }
 config = { path = "../../libs/config" }
 derive-getters = "0.2.0"
 dotenv = "0.15.0"
