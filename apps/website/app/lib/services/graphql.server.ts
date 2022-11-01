@@ -17,13 +17,17 @@ export const graphqlSdk = (authorizationToken = '') => {
       JSON.stringify({ query }),
       { headers }
     );
+    if (!response?.data?.data) {
+      console.dir(response?.data?.errors, { depth: Infinity })
+      throw new Error(`There was an error in the graphql request, please check developer logs`)
+    }
     return response.data.data;
   });
 };
 
 export const graphqlScalars = ZeusScalars({
   UUID: {
-    encode: (e: unknown) => e as string,
+    encode: (e: unknown) => `"${e}"` ,
     decode: (e: unknown) => e as string,
   },
 });

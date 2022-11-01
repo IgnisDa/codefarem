@@ -3,6 +3,7 @@ import {
   TestCaseUnit,
 } from '@codefarem/generated/orchestrator-graphql';
 import { Listbox } from '@headlessui/react';
+import { v4 as uuid4 } from 'uuid';
 import {
   Button,
   Col,
@@ -45,7 +46,9 @@ export async function action({ request }: ActionArgs) {
   for (const [key, value] of await request.formData()) {
     set(input, key, value);
   }
-  input.classIds = [];
+  // TODO: Allow to add multiple classes Also, there is a problem with the graphql scalar library
+  // where it is unable to parse empty arrays of custom scalars.
+  input.classIds = [uuid4()];
   const { createQuestion } = await graphqlSdk(user.token)('mutation', {
     scalars: graphqlScalars,
   })({

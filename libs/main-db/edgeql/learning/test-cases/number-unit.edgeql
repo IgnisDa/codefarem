@@ -1,3 +1,3 @@
 INSERT learning::NumberUnit {
-    number_value := <float64>$0
+    number_value := to_float64(<str>$0)
 };

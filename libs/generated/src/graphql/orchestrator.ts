@@ -49,6 +49,9 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		classDetails:{
 			classId:"UUID"
+		},
+		questionDetails:{
+			questionId:"UUID"
 		}
 	},
 	RegisterUserInput:{
@@ -69,6 +72,12 @@ export const AllTypesProps: Record<string,any> = {
 export const ReturnTypes: Record<string,any> = {
 	ApiError:{
 		error:"String"
+	},
+	AuthoredByInformation:{
+		profile:"AuthoredByProfile"
+	},
+	AuthoredByProfile:{
+		username:"String"
 	},
 	ClassDetailsOutput:{
 		name:"String"
@@ -126,7 +135,31 @@ export const ReturnTypes: Record<string,any> = {
 		loginUser:"LoginUserResultUnion",
 		logoutUser:"Boolean",
 		testCaseUnits:"TestCaseUnit",
-		classDetails:"ClassDetailsResultUnion"
+		classDetails:"ClassDetailsResultUnion",
+		questionDetails:"QuestionDetailsResultUnion"
+	},
+	QuestionDetailsOutput:{
+		name:"String",
+		problem:"String",
+		numClasses:"Int",
+		authoredBy:"AuthoredByInformation",
+		testCases:"QuestionTestCase"
+	},
+	QuestionDetailsResultUnion:{
+		"...on QuestionDetailsOutput":"QuestionDetailsOutput",
+		"...on ApiError":"ApiError"
+	},
+	QuestionInput:{
+		name:"String",
+		data:"TestCaseData"
+	},
+	QuestionOutput:{
+		data:"TestCaseData"
+	},
+	QuestionTestCase:{
+		id:"UUID",
+		inputs:"QuestionInput",
+		outputs:"QuestionOutput"
 	},
 	RegisterUserError:{
 		usernameNotUnique:"Boolean",
@@ -138,6 +171,13 @@ export const ReturnTypes: Record<string,any> = {
 	RegisterUserResultUnion:{
 		"...on RegisterUserOutput":"RegisterUserOutput",
 		"...on RegisterUserError":"RegisterUserError"
+	},
+	TestCaseData:{
+		unitType:"TestCaseUnit",
+		stringValue:"String",
+		stringCollectionValue:"String",
+		numberValue:"Float",
+		numberCollectionValue:"Float"
 	},
 	UUID: `scalar.UUID` as const,
 	UserDetailsOutput:{
@@ -992,7 +1032,7 @@ type ZEUS_INTERFACES = never
 export type ScalarCoders = {
 	UUID?: ScalarResolver;
 }
-type ZEUS_UNIONS = GraphQLTypes["ClassDetailsResultUnion"] | GraphQLTypes["CreateClassResultUnion"] | GraphQLTypes["CreateQuestionResultUnion"] | GraphQLTypes["ExecuteCodeResultUnion"] | GraphQLTypes["LoginUserResultUnion"] | GraphQLTypes["RegisterUserResultUnion"] | GraphQLTypes["UserDetailsResultUnion"] | GraphQLTypes["UserWithEmailResultUnion"]
+type ZEUS_UNIONS = GraphQLTypes["ClassDetailsResultUnion"] | GraphQLTypes["CreateClassResultUnion"] | GraphQLTypes["CreateQuestionResultUnion"] | GraphQLTypes["ExecuteCodeResultUnion"] | GraphQLTypes["LoginUserResultUnion"] | GraphQLTypes["QuestionDetailsResultUnion"] | GraphQLTypes["RegisterUserResultUnion"] | GraphQLTypes["UserDetailsResultUnion"] | GraphQLTypes["UserWithEmailResultUnion"]
 
 export type ValueTypes = {
     /** The types of accounts a user can create */
@@ -1001,6 +1041,14 @@ export type ValueTypes = {
 ["ApiError"]: AliasType<{
 	/** The error describing what went wrong */
 	error?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["AuthoredByInformation"]: AliasType<{
+	profile?:ValueTypes["AuthoredByProfile"],
+		__typename?: boolean | `@${string}`
+}>;
+	["AuthoredByProfile"]: AliasType<{
+	username?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	/** The result type if details about the class were found successfully */
@@ -1142,6 +1190,47 @@ loginUser?: [{	input: ValueTypes["LoginUserInput"] | Variable<any, string>},Valu
 	/** Get all the types of test case units possible */
 	testCaseUnits?:boolean | `@${string}`,
 classDetails?: [{	classId: ValueTypes["UUID"] | Variable<any, string>},ValueTypes["ClassDetailsResultUnion"]],
+questionDetails?: [{	questionId: ValueTypes["UUID"] | Variable<any, string>},ValueTypes["QuestionDetailsResultUnion"]],
+		__typename?: boolean | `@${string}`
+}>;
+	/** The input object used to get details about a question */
+["QuestionDetailsOutput"]: AliasType<{
+	/** The name/title of the question */
+	name?:boolean | `@${string}`,
+	/** The detailed text explaining the question */
+	problem?:boolean | `@${string}`,
+	/** The number of classes that have this question */
+	numClasses?:boolean | `@${string}`,
+	/** The users who have created/edited this question */
+	authoredBy?:ValueTypes["AuthoredByInformation"],
+	/** All the test cases that are related to this question */
+	testCases?:ValueTypes["QuestionTestCase"],
+		__typename?: boolean | `@${string}`
+}>;
+	/** The output object when creating a new question */
+["QuestionDetailsResultUnion"]: AliasType<{		["...on QuestionDetailsOutput"] : ValueTypes["QuestionDetailsOutput"],
+		["...on ApiError"] : ValueTypes["ApiError"]
+		__typename?: boolean | `@${string}`
+}>;
+	["QuestionInput"]: AliasType<{
+	/** The name of the variable */
+	name?:boolean | `@${string}`,
+	/** The data related to this input */
+	data?:ValueTypes["TestCaseData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["QuestionOutput"]: AliasType<{
+	/** The data related to this output */
+	data?:ValueTypes["TestCaseData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["QuestionTestCase"]: AliasType<{
+	/** The unique ID for this test case */
+	id?:boolean | `@${string}`,
+	/** The ordered inputs for this test case */
+	inputs?:ValueTypes["QuestionInput"],
+	/** The ordered outputs for this test case */
+	outputs?:ValueTypes["QuestionOutput"],
 		__typename?: boolean | `@${string}`
 }>;
 	/** The result type if an error was encountered when creating a new user */
@@ -1181,6 +1270,14 @@ classDetails?: [{	classId: ValueTypes["UUID"] | Variable<any, string>},ValueType
 	/** The outputs related to this test case */
 	outputs: Array<ValueTypes["OutputCaseUnit"]> | Variable<any, string>
 };
+	["TestCaseData"]: AliasType<{
+	unitType?:boolean | `@${string}`,
+	stringValue?:boolean | `@${string}`,
+	stringCollectionValue?:boolean | `@${string}`,
+	numberValue?:boolean | `@${string}`,
+	numberCollectionValue?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["TestCaseUnit"]:TestCaseUnit;
 	/** A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
 Strings within GraphQL. UUIDs are used to assign unique identifiers to
@@ -1242,6 +1339,14 @@ export type ResolverInputTypes = {
 ["ApiError"]: AliasType<{
 	/** The error describing what went wrong */
 	error?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["AuthoredByInformation"]: AliasType<{
+	profile?:ResolverInputTypes["AuthoredByProfile"],
+		__typename?: boolean | `@${string}`
+}>;
+	["AuthoredByProfile"]: AliasType<{
+	username?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	/** The result type if details about the class were found successfully */
@@ -1388,6 +1493,48 @@ loginUser?: [{	input: ResolverInputTypes["LoginUserInput"]},ResolverInputTypes["
 	/** Get all the types of test case units possible */
 	testCaseUnits?:boolean | `@${string}`,
 classDetails?: [{	classId: ResolverInputTypes["UUID"]},ResolverInputTypes["ClassDetailsResultUnion"]],
+questionDetails?: [{	questionId: ResolverInputTypes["UUID"]},ResolverInputTypes["QuestionDetailsResultUnion"]],
+		__typename?: boolean | `@${string}`
+}>;
+	/** The input object used to get details about a question */
+["QuestionDetailsOutput"]: AliasType<{
+	/** The name/title of the question */
+	name?:boolean | `@${string}`,
+	/** The detailed text explaining the question */
+	problem?:boolean | `@${string}`,
+	/** The number of classes that have this question */
+	numClasses?:boolean | `@${string}`,
+	/** The users who have created/edited this question */
+	authoredBy?:ResolverInputTypes["AuthoredByInformation"],
+	/** All the test cases that are related to this question */
+	testCases?:ResolverInputTypes["QuestionTestCase"],
+		__typename?: boolean | `@${string}`
+}>;
+	/** The output object when creating a new question */
+["QuestionDetailsResultUnion"]: AliasType<{
+	QuestionDetailsOutput?:ResolverInputTypes["QuestionDetailsOutput"],
+	ApiError?:ResolverInputTypes["ApiError"],
+		__typename?: boolean | `@${string}`
+}>;
+	["QuestionInput"]: AliasType<{
+	/** The name of the variable */
+	name?:boolean | `@${string}`,
+	/** The data related to this input */
+	data?:ResolverInputTypes["TestCaseData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["QuestionOutput"]: AliasType<{
+	/** The data related to this output */
+	data?:ResolverInputTypes["TestCaseData"],
+		__typename?: boolean | `@${string}`
+}>;
+	["QuestionTestCase"]: AliasType<{
+	/** The unique ID for this test case */
+	id?:boolean | `@${string}`,
+	/** The ordered inputs for this test case */
+	inputs?:ResolverInputTypes["QuestionInput"],
+	/** The ordered outputs for this test case */
+	outputs?:ResolverInputTypes["QuestionOutput"],
 		__typename?: boolean | `@${string}`
 }>;
 	/** The result type if an error was encountered when creating a new user */
@@ -1428,6 +1575,14 @@ classDetails?: [{	classId: ResolverInputTypes["UUID"]},ResolverInputTypes["Class
 	/** The outputs related to this test case */
 	outputs: Array<ResolverInputTypes["OutputCaseUnit"]>
 };
+	["TestCaseData"]: AliasType<{
+	unitType?:boolean | `@${string}`,
+	stringValue?:boolean | `@${string}`,
+	stringCollectionValue?:boolean | `@${string}`,
+	numberValue?:boolean | `@${string}`,
+	numberCollectionValue?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["TestCaseUnit"]:TestCaseUnit;
 	/** A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
 Strings within GraphQL. UUIDs are used to assign unique identifiers to
@@ -1490,6 +1645,12 @@ export type ModelTypes = {
 ["ApiError"]: {
 		/** The error describing what went wrong */
 	error: string
+};
+	["AuthoredByInformation"]: {
+		profile: ModelTypes["AuthoredByProfile"]
+};
+	["AuthoredByProfile"]: {
+		username: string
 };
 	/** The result type if details about the class were found successfully */
 ["ClassDetailsOutput"]: {
@@ -1612,7 +1773,42 @@ export type ModelTypes = {
 	/** Get all the types of test case units possible */
 	testCaseUnits: Array<ModelTypes["TestCaseUnit"]>,
 	/** Get information about a class */
-	classDetails: ModelTypes["ClassDetailsResultUnion"]
+	classDetails: ModelTypes["ClassDetailsResultUnion"],
+	/** Get information about a question and the test cases related to it */
+	questionDetails: ModelTypes["QuestionDetailsResultUnion"]
+};
+	/** The input object used to get details about a question */
+["QuestionDetailsOutput"]: {
+		/** The name/title of the question */
+	name: string,
+	/** The detailed text explaining the question */
+	problem: string,
+	/** The number of classes that have this question */
+	numClasses: number,
+	/** The users who have created/edited this question */
+	authoredBy: Array<ModelTypes["AuthoredByInformation"]>,
+	/** All the test cases that are related to this question */
+	testCases: Array<ModelTypes["QuestionTestCase"]>
+};
+	/** The output object when creating a new question */
+["QuestionDetailsResultUnion"]:ModelTypes["QuestionDetailsOutput"] | ModelTypes["ApiError"];
+	["QuestionInput"]: {
+		/** The name of the variable */
+	name: string,
+	/** The data related to this input */
+	data: ModelTypes["TestCaseData"]
+};
+	["QuestionOutput"]: {
+		/** The data related to this output */
+	data: ModelTypes["TestCaseData"]
+};
+	["QuestionTestCase"]: {
+		/** The unique ID for this test case */
+	id: ModelTypes["UUID"],
+	/** The ordered inputs for this test case */
+	inputs: Array<ModelTypes["QuestionInput"]>,
+	/** The ordered outputs for this test case */
+	outputs: Array<ModelTypes["QuestionOutput"]>
 };
 	/** The result type if an error was encountered when creating a new user */
 ["RegisterUserError"]: {
@@ -1645,6 +1841,13 @@ export type ModelTypes = {
 	inputs: Array<ModelTypes["InputCaseUnit"]>,
 	/** The outputs related to this test case */
 	outputs: Array<ModelTypes["OutputCaseUnit"]>
+};
+	["TestCaseData"]: {
+		unitType: ModelTypes["TestCaseUnit"],
+	stringValue?: string | undefined,
+	stringCollectionValue?: Array<string> | undefined,
+	numberValue?: number | undefined,
+	numberCollectionValue?: Array<number> | undefined
 };
 	["TestCaseUnit"]:TestCaseUnit;
 	/** A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
@@ -1698,6 +1901,14 @@ export type GraphQLTypes = {
 	__typename: "ApiError",
 	/** The error describing what went wrong */
 	error: string
+};
+	["AuthoredByInformation"]: {
+	__typename: "AuthoredByInformation",
+	profile: GraphQLTypes["AuthoredByProfile"]
+};
+	["AuthoredByProfile"]: {
+	__typename: "AuthoredByProfile",
+	username: string
 };
 	/** The result type if details about the class were found successfully */
 ["ClassDetailsOutput"]: {
@@ -1851,7 +2062,50 @@ export type GraphQLTypes = {
 	/** Get all the types of test case units possible */
 	testCaseUnits: Array<GraphQLTypes["TestCaseUnit"]>,
 	/** Get information about a class */
-	classDetails: GraphQLTypes["ClassDetailsResultUnion"]
+	classDetails: GraphQLTypes["ClassDetailsResultUnion"],
+	/** Get information about a question and the test cases related to it */
+	questionDetails: GraphQLTypes["QuestionDetailsResultUnion"]
+};
+	/** The input object used to get details about a question */
+["QuestionDetailsOutput"]: {
+	__typename: "QuestionDetailsOutput",
+	/** The name/title of the question */
+	name: string,
+	/** The detailed text explaining the question */
+	problem: string,
+	/** The number of classes that have this question */
+	numClasses: number,
+	/** The users who have created/edited this question */
+	authoredBy: Array<GraphQLTypes["AuthoredByInformation"]>,
+	/** All the test cases that are related to this question */
+	testCases: Array<GraphQLTypes["QuestionTestCase"]>
+};
+	/** The output object when creating a new question */
+["QuestionDetailsResultUnion"]:{
+        	__typename:"QuestionDetailsOutput" | "ApiError"
+        	['...on QuestionDetailsOutput']: '__union' & GraphQLTypes["QuestionDetailsOutput"];
+	['...on ApiError']: '__union' & GraphQLTypes["ApiError"];
+};
+	["QuestionInput"]: {
+	__typename: "QuestionInput",
+	/** The name of the variable */
+	name: string,
+	/** The data related to this input */
+	data: GraphQLTypes["TestCaseData"]
+};
+	["QuestionOutput"]: {
+	__typename: "QuestionOutput",
+	/** The data related to this output */
+	data: GraphQLTypes["TestCaseData"]
+};
+	["QuestionTestCase"]: {
+	__typename: "QuestionTestCase",
+	/** The unique ID for this test case */
+	id: GraphQLTypes["UUID"],
+	/** The ordered inputs for this test case */
+	inputs: Array<GraphQLTypes["QuestionInput"]>,
+	/** The ordered outputs for this test case */
+	outputs: Array<GraphQLTypes["QuestionOutput"]>
 };
 	/** The result type if an error was encountered when creating a new user */
 ["RegisterUserError"]: {
@@ -1890,6 +2144,14 @@ export type GraphQLTypes = {
 	inputs: Array<GraphQLTypes["InputCaseUnit"]>,
 	/** The outputs related to this test case */
 	outputs: Array<GraphQLTypes["OutputCaseUnit"]>
+};
+	["TestCaseData"]: {
+	__typename: "TestCaseData",
+	unitType: GraphQLTypes["TestCaseUnit"],
+	stringValue?: string | undefined,
+	stringCollectionValue?: Array<string> | undefined,
+	numberValue?: number | undefined,
+	numberCollectionValue?: Array<number> | undefined
 };
 	["TestCaseUnit"]: TestCaseUnit;
 	/** A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
@@ -1966,7 +2228,6 @@ export const enum SupportedLanguage {
 	cpp = "cpp"
 }
 export const enum TestCaseUnit {
-	EMPTY = "EMPTY",
 	NUMBER = "NUMBER",
 	STRING = "STRING",
 	NUMBER_COLLECTION = "NUMBER_COLLECTION",
