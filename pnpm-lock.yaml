@@ -8,6 +8,7 @@ importers:
       '@commitlint/config-conventional': 17.1.0
       '@commitlint/cz-commitlint': 17.1.2
       '@commitlint/types': 17.0.0
+      '@moonrepo/cli': ^0.18.0
       '@types/node': 18.7.18
       '@typescript-eslint/eslint-plugin': 5.38.1
       '@typescript-eslint/parser': 5.38.1
@@ -25,6 +26,7 @@ importers:
       '@commitlint/config-conventional': 17.1.0
       '@commitlint/cz-commitlint': 17.1.2_yes7iyjckc3rubj3ixzwc3ince
       '@commitlint/types': 17.0.0
+      '@moonrepo/cli': 0.18.0
       '@types/node': 18.7.18
       '@typescript-eslint/eslint-plugin': 5.38.1_bo4l7fgcg3ndxqoiamfzgiaxey
       '@typescript-eslint/parser': 5.38.1_wyqvi574yv7oiwfeinomdzmc3m
@@ -2345,6 +2347,78 @@ packages:
   /@mdn/browser-compat-data/4.2.1:
     resolution: {integrity: sha512-EWUguj2kd7ldmrF9F+vI5hUOralPd+sdsUnYbRy33vZTuZkduC1shE9TtEMEjAQwyfyMb4ole5KtjF8MsnQOlA==}
     dev: true
+
+  /@moonrepo/cli/0.18.0:
+    resolution: {integrity: sha512-fFYctHjlAGeCC8ja6MZGNZ4m2YUCnW6mFyMquSc0BiTgz47S+K7y5h2qdiouKfc6ZcOVnX26tgL6frUlvsv9zw==}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      detect-libc: 2.0.1
+    optionalDependencies:
+      '@moonrepo/core-linux-arm64-gnu': 0.18.0
+      '@moonrepo/core-linux-arm64-musl': 0.18.0
+      '@moonrepo/core-linux-x64-gnu': 0.18.0
+      '@moonrepo/core-linux-x64-musl': 0.18.0
+      '@moonrepo/core-macos-arm64': 0.18.0
+      '@moonrepo/core-macos-x64': 0.18.0
+      '@moonrepo/core-windows-x64-msvc': 0.18.0
+    dev: true
+
+  /@moonrepo/core-linux-arm64-gnu/0.18.0:
+    resolution: {integrity: sha512-DN7b53AKfT+tq83eAG+4LfPARV5p6JhkErku6/cAM/2KzmIG7TmHPh+1rNxIPMyEywc3snmf9UmSJGv+LvwLsQ==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@moonrepo/core-linux-arm64-musl/0.18.0:
+    resolution: {integrity: sha512-3xBcavnlwspp7ibuePCnCwepbBaGlBhai7EwWcituCkSYV9zp7/CQ7aokkvM5x3huZQC+RipHqFGhi0KqaXz4g==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@moonrepo/core-linux-x64-gnu/0.18.0:
+    resolution: {integrity: sha512-HCvTIYFCa8sV6YrhHj5YGWpjf3pcS6zi7uiN1zK9uEaowivit9mWzrLM7nC8/87UWXFMTIRl8BZmxxsgEFd7tg==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@moonrepo/core-linux-x64-musl/0.18.0:
+    resolution: {integrity: sha512-6XuD/2rjrF8PQ8k92aTBzQQjeeNMhBlvvXbm61XieiBUWfwftbmGJIxdC9mVlzrYo9x+Q9cuLl5Uzx6/6jwhoQ==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@moonrepo/core-macos-arm64/0.18.0:
+    resolution: {integrity: sha512-FdXRqe5X6pcn8y2c4ExjErcDwuxhN2PE9CZLe+vABiOLMFGzT/nxiJyu9oG8WerwsjLmrVIn8B1k2XRJSp0RcQ==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@moonrepo/core-macos-x64/0.18.0:
+    resolution: {integrity: sha512-AmpV2OugQXm1oHVsmMcrUppYlisgHycpKI68vPKygUkg3tlUw8NkVTk7hW44TEHcFp7VhqjwZfMgHF9jcbvFmA==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@moonrepo/core-windows-x64-msvc/0.18.0:
+    resolution: {integrity: sha512-sZKygd4iuQEg8bX2LkeNvB6IZbf1Yv1ZvicuKOqNpZV+f7vQ+eWkukDLyVHlvw5DPSmuI3iwtc7PiKy2mnmwxw==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /@moonrepo/dev/1.2.0:
     resolution: {integrity: sha512-w79KJrQU1qKfpxoviYp3006nZHZyulAdO07kvMFuUdKaep8+iCBjIAo+KbETtUWaO8m+5AuaQxiqngklP9sVbA==}
@@ -5570,6 +5644,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /detect-libc/2.0.1:
+    resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==}
+    engines: {node: '>=8'}
+    dev: true
+
   /detect-newline/3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
@@ -6126,35 +6205,6 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-module-utils/2.7.4_pz3cez6sklduddwkjesjihuniu:
-    resolution: {integrity: sha512-j4GT+rqzCoRKHwURX7pddtIPGySnX9Si/cgMI5ztrcqOPtk5dDEeZ34CQVPphnqkJytlc97Vuk05Um2mJ3gEQA==}
-    engines: {node: '>=4'}
-    peerDependencies:
-      '@typescript-eslint/parser': '*'
-      eslint: '*'
-      eslint-import-resolver-node: '*'
-      eslint-import-resolver-typescript: '*'
-      eslint-import-resolver-webpack: '*'
-    peerDependenciesMeta:
-      '@typescript-eslint/parser':
-        optional: true
-      eslint:
-        optional: true
-      eslint-import-resolver-node:
-        optional: true
-      eslint-import-resolver-typescript:
-        optional: true
-      eslint-import-resolver-webpack:
-        optional: true
-    dependencies:
-      '@typescript-eslint/parser': 5.41.0_wyqvi574yv7oiwfeinomdzmc3m
-      debug: 3.2.7
-      eslint: 8.26.0
-      eslint-import-resolver-node: 0.3.6
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /eslint-plugin-compat/4.0.2_eslint@8.26.0:
     resolution: {integrity: sha512-xqvoO54CLTVaEYGMzhu35Wzwk/As7rCvz/2dqwnFiWi0OJccEtGIn+5qq3zqIu9nboXlpdBN579fZcItC73Ycg==}
     engines: {node: '>=9.x'}
@@ -6200,7 +6250,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.26.0
       eslint-import-resolver-node: 0.3.6
-      eslint-module-utils: 2.7.4_pz3cez6sklduddwkjesjihuniu
+      eslint-module-utils: 2.7.4_nmfyd32pwyfwzmk7gcn6ynbe5u
       has: 1.0.3
       is-core-module: 2.10.0
       is-glob: 4.0.3
