@@ -13,7 +13,7 @@ node:
   pnpm:
     version: '7.14.0'
   addEnginesConstraint: true
-  dedupeOnLockfileChange: true
+  dedupeOnLockfileChange: false
   syncProjectWorkspaceDependencies: true
 
 typescript:
@@ -23,3 +23,6 @@ typescript:
 vcs:
   manager: 'git'
   defaultBranch: 'origin/main'
+
+runner:
+  logRunningCommand: true

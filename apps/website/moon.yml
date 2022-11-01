@@ -20,6 +20,7 @@ tasks:
     command: 'remix-routes'
     inputs:
       - '@group(remix)'
+    local: true
 
   dev:
     command: 'remix dev'
