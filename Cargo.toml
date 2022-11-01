@@ -3,6 +3,7 @@ members = [
   "libs/auth",
   "libs/config",
   "libs/macros",
+  "libs/main-db",
   "libs/protobuf",
   "libs/utilities",
   "apps/compilers",

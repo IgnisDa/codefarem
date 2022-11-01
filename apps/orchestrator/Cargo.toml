@@ -18,6 +18,7 @@ edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
 figment = { version = "0.10.7", features = ["env"] }
 macros = { path = "../../libs/macros" }
+main_db = { path = "../../libs/main-db" }
 protobuf = { path = "../../libs/protobuf" }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { workspace = true }

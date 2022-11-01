@@ -1216,6 +1216,14 @@ name = "macros"
 version = "0.1.0"
 
 [[package]]
+name = "main_db"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "matchers"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1365,6 +1373,7 @@ dependencies = [
  "edgedb-tokio",
  "figment",
  "macros",
+ "main_db",
  "protobuf",
  "rand 0.8.5",
  "rocket",
