@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "preserveConstEnums": true,
     "strict": true

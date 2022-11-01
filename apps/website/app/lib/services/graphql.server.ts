@@ -27,7 +27,7 @@ export const graphqlSdk = (authorizationToken = '') => {
 
 export const graphqlScalars = ZeusScalars({
   UUID: {
-    encode: (e: unknown) => `"${e}"` ,
+    encode: (e: unknown) => String(`"${e}"`),
     decode: (e: unknown) => e as string,
   },
 });
