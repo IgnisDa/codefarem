@@ -9,18 +9,28 @@ fileGroups:
 
 tasks:
   dev-routes:
-    command: 'remix-routes'
+    command: 'routes-gen'
     args:
+      - '--driver'
+      - '@routes-gen/remix'
+      - '--output'
+      - 'app/lib/routes.d.ts'
       - '--watch'
     inputs:
       - '@group(remix)'
     local: true
 
   routes:
-    command: 'remix-routes'
+    command: 'routes-gen'
+    args:
+      - '--driver'
+      - '@routes-gen/remix'
+      - '--output'
+      - 'app/lib/routes.d.ts'
     inputs:
       - '@group(remix)'
-    local: true
+    output:
+      - 'app/lib/routes.d.ts'
 
   dev:
     command: 'remix dev'

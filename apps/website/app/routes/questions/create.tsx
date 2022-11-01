@@ -20,8 +20,7 @@ import { set } from 'lodash';
 import { useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { notFound } from 'remix-utils';
-import { $path } from 'remix-routes';
-
+import { route } from 'routes-gen';
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
 import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
@@ -61,7 +60,7 @@ export async function action({ request }: ActionArgs) {
   });
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
-  return redirect($path('/questions/:id', { id: createQuestion.id }));
+  return redirect(route('/questions/:id', { id: createQuestion.id }));
 }
 
 const SelectUnitCase = ({

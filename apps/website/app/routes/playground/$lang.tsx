@@ -4,7 +4,7 @@ import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
 import { go } from '@codemirror/legacy-modes/mode/go';
-import { json } from '@remix-run/node';
+import { json } from '@remix-run/node'
 import {
   Form,
   Link,
@@ -14,13 +14,13 @@ import {
 } from '@remix-run/react';
 import EditorView from '@uiw/react-codemirror';
 import { useState } from 'react';
-import { $path } from 'remix-routes';
+import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
-import { graphqlSdk } from '../../lib/services/graphql.server';
+import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -83,7 +83,7 @@ export default () => {
         {supportedLanguages.map((l, idx) => (
           <Link
             key={idx}
-            to={$path('/playground/:lang', { lang: l })}
+            to={route('/playground/:lang', { lang: l })}
             className="px-4 py-1 text-lg tracking-wider border border-purple-600 rounded-lg bg-purple-50"
             reloadDocument
           >

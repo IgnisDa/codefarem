@@ -3,10 +3,9 @@ import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { notFound } from 'remix-utils';
-import { $path } from 'remix-routes';
+import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
-
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
 import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
@@ -39,7 +38,7 @@ export async function action({ request }: ActionArgs) {
     ],
   });
   if (createClass.__typename === 'ApiError') throw new Error(createClass.error);
-  return redirect($path('/classes/:id', { id: createClass.id }));
+  return redirect(route('/classes/:id', { id: createClass.id }));
 }
 
 export default () => {

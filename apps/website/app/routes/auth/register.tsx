@@ -1,11 +1,10 @@
+import { AccountType } from '@codefarem/generated/orchestrator-graphql';
 import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
-import { $path } from 'remix-routes';
+import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
-import { AccountType } from '@codefarem/generated/orchestrator-graphql';
-
 import {
   FORM_EMAIL_KEY,
   FORM_PASSWORD_KEY,
@@ -62,7 +61,7 @@ export const action = async ({ request }: ActionArgs) => {
     if (registerUser.__typename === 'RegisterUserError')
       throw new Error(`There was a problem registering the user`);
   }
-  return redirect($path('/auth/login'));
+  return redirect(route('/auth/login'));
 };
 
 export const loader = async ({ request }: DataFunctionArgs) => {
