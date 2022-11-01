@@ -4,4 +4,4 @@
 cargo clippy --release -- -D warnings
 cargo check --release
 
-moon --log trace check --all
+moon check --all
