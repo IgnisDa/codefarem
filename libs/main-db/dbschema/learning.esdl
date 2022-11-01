@@ -61,7 +61,6 @@ module learning {
     type OutputCaseUnit extending CommonCaseUnit {}
 
     abstract type CaseUnit {}
-    type EmptyUnit extending learning::CaseUnit {}
     type NumberUnit extending learning::CaseUnit {
         required property number_value -> float64;
     }
