@@ -4,4 +4,4 @@
 cargo clippy --release -- -D warnings
 cargo check --release
 
-moon check "website" "react-ui" "generated" "main-db"
+moon --log trace check --all
