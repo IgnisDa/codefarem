@@ -13,20 +13,21 @@ use super::dto::{
     mutations::{create_class::CreateClassOutput, create_question::CreateQuestionOutput},
     queries::{
         class_details::ClassDetailsOutput,
+        question_details::QuestionDetailsOutput,
         test_case::{TestCase, TestCaseUnit},
     },
 };
 
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
+const QUESTION_DETAILS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/question-details.edgeql");
 const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
 const CREATE_CLASS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/create-class.edgeql");
 const CREATE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/create-question.edgeql");
-const INSERT_EMPTY_UNIT: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/test-cases/empty-unit.edgeql");
 const INSERT_NUMBER_COLLECTION_UNIT: &str = include_str!(
     "../../../../libs/main-db/edgeql/learning/test-cases/number-collection-unit.edgeql"
 );
@@ -50,6 +51,10 @@ const UPDATE_QUESTION: &str =
 pub trait LearningServiceTrait: Sync + Send {
     fn test_case_units(&self) -> Vec<TestCaseUnit>;
     async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError>;
+    async fn question_details<'a>(
+        &self,
+        question_id: Uuid,
+    ) -> Result<QuestionDetailsOutput, ApiError>;
     async fn create_class<'a>(
         &self,
         user_id: &Uuid,
@@ -95,6 +100,22 @@ impl LearningServiceTrait for LearningService {
             .map_err(|_| ApiError {
                 error: format!("Class with id={class_id} not found"),
             })
+    }
+
+    async fn question_details<'a>(
+        &self,
+        question_id: Uuid,
+    ) -> Result<QuestionDetailsOutput, ApiError> {
+        let question_model = self
+            .db_conn
+            .query_single_json(QUESTION_DETAILS, &(question_id,))
+            .await
+            .map_err(|_| ApiError {
+                error: format!("Question with id={question_id} not found"),
+            })?
+            .unwrap();
+        let question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();
+        Ok(question)
     }
 
     async fn create_class<'a>(
@@ -173,7 +194,6 @@ impl LearningServiceTrait for LearningService {
             })?;
         fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
             match test_case {
-                TestCaseUnit::Empty => INSERT_EMPTY_UNIT,
                 TestCaseUnit::Number => INSERT_NUMBER_UNIT,
                 TestCaseUnit::NumberCollection => INSERT_NUMBER_COLLECTION_UNIT,
                 TestCaseUnit::String => INSERT_STRING_UNIT,

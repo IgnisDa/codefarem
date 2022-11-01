@@ -11,7 +11,10 @@ use super::{
             create_class::{CreateClassInput, CreateClassResultUnion},
             create_question::{CreateQuestionInput, CreateQuestionResultUnion},
         },
-        queries::{class_details::ClassDetailsResultUnion, test_case::TestCaseUnit},
+        queries::{
+            class_details::ClassDetailsResultUnion, question_details::QuestionDetailsResultUnion,
+            test_case::TestCaseUnit,
+        },
     },
     service::{LearningService, LearningServiceTrait},
 };
@@ -42,6 +45,19 @@ impl LearningQuery {
             .class_details(class_id)
             .await;
         to_result_union_response!(output, ClassDetailsResultUnion)
+    }
+
+    /// Get information about a question and the test cases related to it
+    async fn question_details(
+        &self,
+        ctx: &Context<'_>,
+        question_id: Uuid,
+    ) -> Result<QuestionDetailsResultUnion> {
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .question_details(question_id)
+            .await;
+        to_result_union_response!(output, QuestionDetailsResultUnion)
     }
 }
 
