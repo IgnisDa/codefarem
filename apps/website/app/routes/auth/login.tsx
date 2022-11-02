@@ -1,13 +1,7 @@
-import {
-  Button,
-  Container,
-  Input,
-  Loading,
-  Row,
-  Text,
-} from '@nextui-org/react';
+import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json } from '@remix-run/node';
-import { Form, useTransition } from '@remix-run/react';
+import { Form, Link, useActionData, useTransition } from '@remix-run/react';
+import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import {
@@ -43,11 +37,24 @@ export const action = async ({ request }: ActionArgs) => {
     ],
   });
   if (userWithEmail.__typename === 'UserWithEmailError')
-    throw new Error(`User does not exist. Please register first.`);
-  await authenticator.authenticate('form', request, {
-    successRedirect: SUCCESSFUL_REDIRECT_PATH,
-    context: { formData: request.clone().formData() },
-  });
+    return json(
+      { message: `User does not exist. Please register first.` },
+      { status: 400 }
+    );
+  try {
+    await authenticator.authenticate('form', request, {
+      successRedirect: SUCCESSFUL_REDIRECT_PATH,
+      context: { formData: request.clone().formData() },
+    });
+    return json({ message: '' });
+  } catch {
+    return json(
+      {
+        message: 'Either email or password was not correct.',
+      },
+      { status: 400 }
+    );
+  }
 };
 
 export const loader = async ({ request }: DataFunctionArgs) => {
@@ -58,42 +65,52 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 };
 
 export default () => {
+  const actionData = useActionData<typeof action>();
   const transition = useTransition();
 
   return (
-    <>
-      <Container gap={0}>
-        <Text h1>Login</Text>
-      </Container>
-      <Form method="post">
-        <Container gap={0}>
-          <Row gap={0}>
-            <Input
-              name={FORM_EMAIL_KEY}
-              type="email"
-              required
-              placeholder="ana@skywalk.com"
-              label="Email Address"
-              width="100%"
-            />
-          </Row>
-          <Row gap={0}>
-            <Input
-              name={FORM_PASSWORD_KEY}
-              type="password"
-              required
-              label="Password"
-              width="100%"
-            />
-          </Row>
-          <Row gap={0}>
-            <Button type="submit">
-              {transition.state !== 'idle' && <Loading />}
-              Submit
-            </Button>
-          </Row>
-        </Container>
-      </Form>
-    </>
+    <Card>
+      <Card.Header>
+        <Text h2>Login</Text>
+      </Card.Header>
+      <Card.Divider />
+      <Card.Body>
+        {actionData && <Text color="error">{actionData.message}</Text>}
+        <Form method="post">
+          <Input
+            name={FORM_EMAIL_KEY}
+            type="email"
+            required
+            placeholder="ana@skywalk.com"
+            label="Email Address"
+            width="100%"
+          />
+          <Input.Password
+            name={FORM_PASSWORD_KEY}
+            required
+            label="Password"
+            width="100%"
+          />
+          <Spacer y={1} />
+          <Button
+            type="submit"
+            css={{ width: '100%' }}
+            disabled={transition.state !== 'idle'}
+          >
+            {transition.state === 'idle' ? (
+              'Submit'
+            ) : (
+              <Loading type="points" color="currentColor" />
+            )}
+          </Button>
+        </Form>
+      </Card.Body>
+      <Card.Divider />
+      <Card.Footer>
+        <Text>
+          Need to register? <Link to={route('/auth/register')}>Click here</Link>
+        </Text>
+      </Card.Footer>
+    </Card>
   );
 };

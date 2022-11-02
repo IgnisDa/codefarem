@@ -1,7 +1,7 @@
 import { AccountType } from '@codefarem/generated/orchestrator-graphql';
-import { Button, Input, Loading } from '@nextui-org/react';
+import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
-import { Form, useTransition } from '@remix-run/react';
+import { Form, Link, useActionData, useTransition } from '@remix-run/react';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -41,7 +41,7 @@ export const action = async ({ request }: ActionArgs) => {
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
     // user does not exist, we create one here
-    const { registerUser } = await graphqlSdk()('mutation')({
+    await graphqlSdk()('mutation')({
       registerUser: [
         {
           input: {
@@ -53,15 +53,17 @@ export const action = async ({ request }: ActionArgs) => {
         },
         {
           __typename: true,
-          '...on RegisterUserError': { __typename: true },
+          '...on RegisterUserError': { emailNotUnique: true },
           '...on RegisterUserOutput': { __typename: true },
         },
       ],
     });
-    if (registerUser.__typename === 'RegisterUserError')
-      throw new Error(`There was a problem registering the user`);
+    return redirect(route('/auth/login'));
   }
-  return redirect(route('/auth/login'));
+  return json(
+    { message: 'The email you entered was not unique' },
+    { status: 400 }
+  );
 };
 
 export const loader = async ({ request }: DataFunctionArgs) => {
@@ -72,15 +74,17 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 };
 
 export default () => {
+  const actionData = useActionData<typeof action>();
   const transition = useTransition();
 
   return (
-    <div>
-      <div>
-        <h1>Register</h1>
-        <h2>Please provide the following details</h2>
-      </div>
-      <div>
+    <Card>
+      <Card.Header>
+        <Text h2>Register</Text>
+      </Card.Header>
+      <Card.Divider />
+      <Card.Body>
+        {actionData && <Text color="error">{actionData.message}</Text>}
         <Form method="post">
           <Input
             name={FORM_EMAIL_KEY}
@@ -88,19 +92,34 @@ export default () => {
             required
             placeholder="ana@skywalk.com"
             label="Email Address"
+            width="100%"
           />
-          <Input
+          <Input.Password
             name={FORM_PASSWORD_KEY}
-            type="password"
             required
             label="Password"
+            width="100%"
           />
-          <Button type="submit">
-            {transition.state !== 'idle' && <Loading />}
-            Submit
+          <Spacer y={1} />
+          <Button
+            type="submit"
+            css={{ width: '100%' }}
+            disabled={transition.state !== 'idle'}
+          >
+            {transition.state === 'idle' ? (
+              'Submit'
+            ) : (
+              <Loading type="points" color="currentColor" />
+            )}
           </Button>
         </Form>
-      </div>
-    </div>
+      </Card.Body>
+      <Card.Divider />
+      <Card.Footer>
+        <Text>
+          Need to login? <Link to={route('/auth/login')}>Click here</Link>
+        </Text>
+      </Card.Footer>
+    </Card>
   );
 };
