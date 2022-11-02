@@ -1,3 +1,4 @@
+import { Container, NextUIProvider } from '@nextui-org/react';
 import {
   Links,
   LiveReload,
@@ -6,7 +7,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-import { NextUIProvider } from '@nextui-org/react';
 
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
@@ -29,8 +29,18 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         <Links />
         {typeof document === 'undefined' ? '__STYLES__' : null}
       </head>
-      <body className="flex flex-col min-h-screen">
-        {children}
+      <body
+        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
+        <Container
+          display="flex"
+          direction="column"
+          alignItems="center"
+          justify="center"
+          css={{ flexGrow: '1' }}
+        >
+          {children}
+        </Container>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}

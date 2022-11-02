@@ -1,9 +1,15 @@
-import { Button, Input } from '@codefarem/react-ui';
+import {
+  Button,
+  Container,
+  Input,
+  Loading,
+  Row,
+  Text,
+} from '@nextui-org/react';
 import { json } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
 import { z } from 'zod';
 import { zx } from 'zodix';
-
 import {
   FORM_EMAIL_KEY,
   FORM_PASSWORD_KEY,
@@ -55,35 +61,39 @@ export default () => {
   const transition = useTransition();
 
   return (
-    <div className="flex-auto md:max-w-lg">
-      <div className="space-y-4">
-        <h1 className="w-full text-2xl font-semibold font-circular-book text-primary-heading">
-          Login
-        </h1>
-        <h2 className="text-lg font-circular-book text-grayed">
-          Please provide the following details
-        </h2>
-      </div>
-      <div className="mt-10">
-        <Form className="flex flex-col mb-10 space-y-2" method="post">
-          <Input
-            name={FORM_EMAIL_KEY}
-            type="email"
-            required
-            placeholder="ana@skywalk.com"
-            label="Email Address"
-          />
-          <Input
-            name={FORM_PASSWORD_KEY}
-            type="password"
-            required
-            label="Password"
-          />
-          <div className="w-full">
-            <Button isLoading={transition.state !== 'idle'}>Continue</Button>
-          </div>
-        </Form>
-      </div>
-    </div>
+    <>
+      <Container gap={0}>
+        <Text h1>Login</Text>
+      </Container>
+      <Form method="post">
+        <Container gap={0}>
+          <Row gap={0}>
+            <Input
+              name={FORM_EMAIL_KEY}
+              type="email"
+              required
+              placeholder="ana@skywalk.com"
+              label="Email Address"
+              width="100%"
+            />
+          </Row>
+          <Row gap={0}>
+            <Input
+              name={FORM_PASSWORD_KEY}
+              type="password"
+              required
+              label="Password"
+              width="100%"
+            />
+          </Row>
+          <Row gap={0}>
+            <Button type="submit">
+              {transition.state !== 'idle' && <Loading />}
+              Submit
+            </Button>
+          </Row>
+        </Container>
+      </Form>
+    </>
   );
 };

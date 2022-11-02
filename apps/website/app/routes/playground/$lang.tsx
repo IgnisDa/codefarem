@@ -4,7 +4,7 @@ import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
 import { go } from '@codemirror/legacy-modes/mode/go';
-import { json } from '@remix-run/node'
+import { json } from '@remix-run/node';
 import {
   Form,
   Link,
@@ -78,13 +78,12 @@ export default () => {
     .exhaustive();
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 w-full h-full space-y-10">
-      <div className="flex items-center space-x-3">
+    <div>
+      <div>
         {supportedLanguages.map((l, idx) => (
           <Link
             key={idx}
             to={route('/playground/:lang', { lang: l })}
-            className="px-4 py-1 text-lg tracking-wider border border-purple-600 rounded-lg bg-purple-50"
             reloadDocument
           >
             {l}
@@ -108,21 +107,20 @@ export default () => {
         />
         <Button isLoading={transition.state !== 'idle'}>Submit</Button>
       </Form>
-      <div className="flex w-full px-20 max-h-96">
-        <div className="flex-1 w-1/3 p-2 font-mono bg-slate-600">
+      <div>
+        <div>
           {actionData &&
             (actionData.output.__typename === 'ExecuteCodeError' ? (
-              <div className="text-red-300">{actionData.output.error}</div>
+              <div>{actionData.output.error}</div>
             ) : (
-              <div className="text-white">{actionData.output.output}</div>
+              <div>{actionData.output.output}</div>
             ))}
         </div>
-        <div className="w-2/3 overflow-scroll">
+        <div>
           <EditorView
             extensions={extensions}
             value={code}
             theme="dark"
-            className="text-lg"
             onChange={(val) => setCode(val)}
           />
         </div>

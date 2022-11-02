@@ -101,8 +101,8 @@ export default () => {
   const [totalTestCases, setTotalTestCases] = useState([[1, 1]]);
 
   return (
-    <div className="max-w-md">
-      <h1 className="text-2xl">Create Question</h1>
+    <div>
+      <h1>Create Question</h1>
       <Form method="post">
         <Input name="name" type="text" required labelPlaceholder="Name" />
         <Textarea
@@ -190,7 +190,7 @@ export default () => {
             ))}
           </Grid.Container>
         </div>
-        <div className="w-full">
+        <div>
           <Button type="submit">Create Class</Button>
         </div>
       </Form>

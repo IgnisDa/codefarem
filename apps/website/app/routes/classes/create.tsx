@@ -43,11 +43,11 @@ export async function action({ request }: ActionArgs) {
 
 export default () => {
   return (
-    <div className="max-w-md">
-      <h1 className="text-2xl">Create Class</h1>
+    <div>
+      <h1>Create Class</h1>
       <Form method="post">
         <Input name="name" type="text" required label="Name" />
-        <div className="w-full">
+        <div>
           <Button>Create Class</Button>
         </div>
       </Form>

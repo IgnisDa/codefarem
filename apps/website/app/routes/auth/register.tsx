@@ -1,5 +1,5 @@
 import { AccountType } from '@codefarem/generated/orchestrator-graphql';
-import { Button, Input } from '@codefarem/react-ui';
+import { Button, Input, Loading } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
 import { Form, useTransition } from '@remix-run/react';
 import { route } from 'routes-gen';
@@ -75,17 +75,13 @@ export default () => {
   const transition = useTransition();
 
   return (
-    <div className="flex-auto md:max-w-lg">
-      <div className="space-y-4">
-        <h1 className="w-full text-2xl font-semibold font-circular-book text-primary-heading">
-          Register
-        </h1>
-        <h2 className="text-lg font-circular-book text-grayed">
-          Please provide the following details
-        </h2>
+    <div>
+      <div>
+        <h1>Register</h1>
+        <h2>Please provide the following details</h2>
       </div>
-      <div className="mt-10">
-        <Form className="flex flex-col mb-10 space-y-2" method="post">
+      <div>
+        <Form method="post">
           <Input
             name={FORM_EMAIL_KEY}
             type="email"
@@ -99,9 +95,10 @@ export default () => {
             required
             label="Password"
           />
-          <div className="w-full">
-            <Button isLoading={transition.state !== 'idle'}>Continue</Button>
-          </div>
+          <Button type="submit">
+            {transition.state !== 'idle' && <Loading />}
+            Submit
+          </Button>
         </Form>
       </div>
     </div>
