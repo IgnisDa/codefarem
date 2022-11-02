@@ -8,5 +8,8 @@
     ],
     "preserveConstEnums": true,
     "strict": true
-  }
+  },
+  "exclude": [
+    "src/graphql/*"
+  ]
 }

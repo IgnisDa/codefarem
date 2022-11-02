@@ -53,6 +53,7 @@
         "tinygo",
         "tlsv",
         "tokei",
+        "typecheck",
         "urql",
         "wasi",
         "wasmtime",

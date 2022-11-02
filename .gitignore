@@ -52,3 +52,5 @@ libs/main-db/dbschema/edgeql-js
 .moon/cache
 .moon/docker
 
+# generated tsconfig
+tsconfig.tsbuildinfo

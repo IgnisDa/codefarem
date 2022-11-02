@@ -6,9 +6,9 @@ import { faker } from '@faker-js/faker';
 // eslint-disable-next-line import/no-default-export
 export default () => {
   const database = faker.lorem.word();
-  globalThis.DATABASE_NAME = database;
   process.env.EDGEDB_DATABASE = database;
 
+  // @ts-expect-error - This is needed to get the correct schema path
   const directoryPath = join(dirname(dirname(fileURLToPath(import.meta.url))), 'dbschema');
 
   // first create the testing database using CLI

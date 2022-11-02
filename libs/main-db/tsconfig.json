@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.options.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "noUnusedLocals": false,
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "module": "Node16",
     "types": [
       "jest",
       "node"
@@ -13,5 +16,6 @@
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.d.ts"
-  ]
+  ],
+  "exclude": []
 }
