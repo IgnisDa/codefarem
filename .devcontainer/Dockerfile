@@ -19,7 +19,6 @@ RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/c
     chmod +x /etc/profile.d/cargo.sh
 
 RUN set -eu ;\
-    npm install --global pnpm @moonrepo/cli ;\
     curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
     mv "/root/.local/bin/edgedb" "/usr/local/bin/edgedb" ;\
     chmod +x "/usr/local/bin/edgedb" ;\
@@ -35,6 +34,7 @@ RUN set -eu ;\
     sudo cp "$HOME/.wasmtime/bin/wasmtime" "/usr/bin/" ;\
     rustup default nightly ;\
     rustup target add wasm32-wasi ;\
+    cargo install moon_cli --git https://github.com/moonrepo/moon.git ;\
     cargo binstall cargo-nextest cargo-watch --no-confirm
 
 RUN set -eu ;\
