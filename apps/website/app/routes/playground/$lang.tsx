@@ -1,5 +1,4 @@
 import { SupportedLanguage } from '@codefarem/generated/orchestrator-graphql';
-import { Button } from '@codefarem/react-ui';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
@@ -23,6 +22,7 @@ import { zx } from 'zodix';
 import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
+import { Button, Loading } from '@nextui-org/react';
 
 export async function loader({ params }: LoaderArgs) {
   const { supportedLanguages } = await graphqlSdk()('query')({
@@ -105,7 +105,10 @@ export default () => {
           readOnly
           hidden
         />
-        <Button isLoading={transition.state !== 'idle'}>Submit</Button>
+        <Button type="submit">
+          {transition.state !== 'idle' && <Loading />}
+          Submit
+        </Button>
       </Form>
       <div>
         <div>

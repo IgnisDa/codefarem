@@ -1,5 +1,4 @@
 import { AccountType } from '@codefarem/generated/orchestrator-graphql';
-import { Button, Input } from '@codefarem/react-ui';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { notFound } from 'remix-utils';
@@ -11,6 +10,7 @@ import { authenticator } from '~/lib/services/auth.server';
 import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import { Button, Input } from '@nextui-org/react';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await authenticator.isAuthenticated(request);
@@ -48,7 +48,7 @@ export default () => {
       <Form method="post">
         <Input name="name" type="text" required label="Name" />
         <div>
-          <Button>Create Class</Button>
+          <Button type="submit">Create Class</Button>
         </div>
       </Form>
     </div>
