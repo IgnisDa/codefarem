@@ -48,9 +48,6 @@ Thumbs.db
 # edgedb
 libs/main-db/dbschema/edgeql-js
 
-# website
-!apps/website/app/lib
-
 # Moon
 .moon/cache
 .moon/docker

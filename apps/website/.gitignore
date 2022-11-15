@@ -5,3 +5,4 @@ public/build
 
 app/tailwind.css
 app/lib/routes.d.ts
+!app/lib

@@ -1,5 +1,7 @@
-import axios from 'axios';
-import { Thunder, ZeusScalars } from '@codefarem/generated/orchestrator-graphql';
+import {
+  Thunder,
+  ZeusScalars,
+} from '@codefarem/generated/orchestrator-graphql';
 import { ApplicationConfig } from '../config.server';
 
 /**
@@ -8,20 +10,17 @@ import { ApplicationConfig } from '../config.server';
 export const graphqlSdk = (authorizationToken = '') => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    connection: 'keep-alive',
   };
   if (authorizationToken)
     headers.Authorization = `Bearer ${authorizationToken}`;
   return Thunder(async (query) => {
-    const response = await axios.post(
+    const response = await fetch(
       `${ApplicationConfig.APPLICATION_API_URL}/graphql`,
-      JSON.stringify({ query }),
-      { headers }
+      { method: 'POST', body: JSON.stringify({ query }), headers }
     );
-    if (!response?.data?.data) {
-      console.dir(response?.data?.errors, { depth: Infinity })
-      throw new Error(`There was an error in the graphql request, please check developer logs`)
-    }
-    return response.data.data;
+    const data = await response.json();
+    return data.data;
   });
 };
 
