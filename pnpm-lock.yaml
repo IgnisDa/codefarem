@@ -132,10 +132,12 @@ importers:
   libs/faker:
     specifiers:
       '@faker-js/faker': 7.6.0
+      chokidar: 3.5.3
       packemon: ^2.4.1
     devDependencies:
       '@faker-js/faker': 7.6.0
-      packemon: 2.4.1
+      chokidar: 3.5.3
+      packemon: 2.4.1_chokidar@3.5.3
 
   libs/generated:
     specifiers:
@@ -10203,7 +10205,7 @@ packages:
       ip: 1.1.8
       netmask: 2.0.2
 
-  /packemon/2.4.1:
+  /packemon/2.4.1_chokidar@3.5.3:
     resolution: {integrity: sha512-0K5auxwNXYFXpr9qNDP+5rJWPSxSgpaBUCor/TV9FE+1o37ar6OMu+fFhg1Hz6YhJeKaG78i5jgr4lX2ImHXgQ==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     hasBin: true
@@ -10239,6 +10241,7 @@ packages:
       babel-plugin-env-constants: 2.0.2_@babel+core@7.19.1
       babel-preset-solid: 1.6.2_@babel+core@7.19.1
       browserslist: 4.21.4
+      chokidar: 3.5.3
       execa: 5.1.1
       fast-glob: 3.2.12
       filesize: 9.0.11

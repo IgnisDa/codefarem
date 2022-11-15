@@ -84,3 +84,9 @@ tasks:
       - 'tsconfig.json'
       - 'tsconfig.*.json'
       - '/tsconfig.options.json'
+
+  watch:
+    command:
+      - packemon
+      - watch
+    local: true
