@@ -1,6 +1,6 @@
 import * as edgedb from 'edgedb';
+import { createUserInfo } from '@codefarem/faker';
 import e from '../dbschema/edgeql-js';
-import { createUserInfo } from '../generators';
 
 describe('Database behavior testing', () => {
   let client: edgedb.Client;
@@ -14,7 +14,7 @@ describe('Database behavior testing', () => {
   });
 
   it('Deleting a teacher removes them from their associated class without an error', async () => {
-    for (let i = 0; i < 4; i+=1) {
+    for (let i = 0; i < 4; i += 1) {
       const teacherData = createUserInfo();
       await e
         .insert(e.users.Teacher, {
@@ -60,7 +60,7 @@ describe('Database behavior testing', () => {
       })
       .run(client);
     // create 4 classes
-    for (let i = 0; i < 4; i+=1) {
+    for (let i = 0; i < 4; i += 1) {
       await e
         .insert(e.learning.Class, {
           name: `CPP-#${i}`,

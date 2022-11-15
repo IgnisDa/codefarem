@@ -17,5 +17,10 @@
     "**/*.spec.ts",
     "**/*.d.ts"
   ],
-  "exclude": []
+  "exclude": [],
+  "references": [
+    {
+      "path": "../faker"
+    }
+  ]
 }
