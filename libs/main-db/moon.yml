@@ -25,10 +25,6 @@ tasks:
       - '~:lint-js'
     command: 'noop'
 
-  test:
-    deps:
-      - '~:generate'
-
 workspace:
   inheritedTasks:
     exclude:
