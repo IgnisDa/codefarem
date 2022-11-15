@@ -16,6 +16,20 @@ fileGroups:
     - '**/__tests__/**/*'
 
 tasks:
+  build:
+    command: 'packemon build --addFiles --addExports --declaration --declarationConfig tsconfig.build.json'
+    env:
+      NODE_ENV: 'production'
+    inputs:
+      - '@globs(sources)'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'tsconfig.build.json'
+      - '/tsconfig.options.json'
+    outputs:
+      - 'cjs'
+      - 'dts'
+
   lint:
     command:
       - 'eslint'
