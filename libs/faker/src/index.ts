@@ -12,6 +12,11 @@ export const createUserInfo = () => ({
 });
 
 /**
+ * Returns a random word
+ */
+export const getRandomWord = () => faker.random.word();
+
+/**
  * Generates fake data only in development mode using the given function.
  */
 export const fakeDataDevelopmentMode = <T>(fn: () => T): T | undefined => {
