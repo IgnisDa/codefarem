@@ -16,6 +16,7 @@ importers:
       eslint: 8.26.0
       eslint-config-moon: 1.2.0
       husky: 8.0.1
+      packemon: ^2.4.1
       prettier: 2.7.1
       ts-node: 10.9.1
       tsconfig-moon: 1.1.0
@@ -34,6 +35,7 @@ importers:
       eslint: 8.26.0
       eslint-config-moon: 1.2.0_wyqvi574yv7oiwfeinomdzmc3m
       husky: 8.0.1
+      packemon: 2.4.1_typescript@4.8.4
       prettier: 2.7.1
       ts-node: 10.9.1_2cnt46lw4tdywdelgueo3bh3pq
       tsconfig-moon: 1.1.0
@@ -133,11 +135,9 @@ importers:
     specifiers:
       '@faker-js/faker': 7.6.0
       chokidar: 3.5.3
-      packemon: ^2.4.1
     devDependencies:
       '@faker-js/faker': 7.6.0
       chokidar: 3.5.3
-      packemon: 2.4.1_chokidar@3.5.3
 
   libs/generated:
     specifiers:
@@ -161,7 +161,6 @@ importers:
   libs/main-db:
     specifiers:
       '@codefarem/faker': workspace:*
-      '@faker-js/faker': 7.6.0
       '@swc/core': 1.3.7
       '@swc/jest': 0.2.23
       '@types/jest': 28.1.1
@@ -169,7 +168,6 @@ importers:
       jest: 28.1.1
     devDependencies:
       '@codefarem/faker': link:../faker
-      '@faker-js/faker': 7.6.0
       '@swc/core': 1.3.7
       '@swc/jest': 0.2.23_@swc+core@1.3.7
       '@types/jest': 28.1.1
@@ -1557,7 +1555,7 @@ packages:
       - supports-color
     dev: true
 
-  /@boost/cli/4.0.0_ink@3.2.0+react@17.0.2:
+  /@boost/cli/4.0.0_iqu7exnyc62z6usiwvy5ghlz4q:
     resolution: {integrity: sha512-wpKJi2rjk/Mq8HN9AMzRIt/E4RoPlmz/4k/jN21dpRdOQvHxWeoaJoME8A/XYfBCn362U0L7PEsZ7i3JMvDDcQ==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     peerDependencies:
@@ -1565,12 +1563,12 @@ packages:
       react: ^16.8.0 || ^17.0.0
     dependencies:
       '@boost/args': 4.0.0
-      '@boost/common': 4.0.0
+      '@boost/common': 4.0.0_typescript@4.8.4
       '@boost/event': 4.0.0
       '@boost/internal': 4.0.0
-      '@boost/log': 4.0.0
+      '@boost/log': 4.0.0_typescript@4.8.4
       '@boost/terminal': 4.0.0
-      '@boost/translate': 4.0.0
+      '@boost/translate': 4.0.0_typescript@4.8.4
       execa: 5.1.1
       ink: 3.2.0_react@17.0.2
       levenary: 1.1.1
@@ -1581,7 +1579,7 @@ packages:
       - typescript
     dev: true
 
-  /@boost/common/4.0.0:
+  /@boost/common/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-xsLLsovUZLmvp03v0u1F6ELP5D5Rk6ZsCebLwHkODuP4XuUsOvqz+QFQR7U0hZSzaMSiRXuZK/CbsmYEZ065CQ==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     peerDependencies:
@@ -1597,31 +1595,32 @@ packages:
       optimal: 5.1.1
       pretty-ms: 7.0.1
       resolve: 1.22.1
+      typescript: 4.8.4
       yaml: 2.1.3
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@boost/config/4.0.0:
+  /@boost/config/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-Ioq5fQLnoKKVHWPEa5+qyXVVt54iJVO5xWNALjoppFtSdfOva+m3SK60tEsOSIFA4YTxBVBDExeceqsLm2qESg==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     dependencies:
-      '@boost/common': 4.0.0
-      '@boost/debug': 4.0.0
+      '@boost/common': 4.0.0_typescript@4.8.4
+      '@boost/debug': 4.0.0_typescript@4.8.4
       '@boost/event': 4.0.0
       '@boost/internal': 4.0.0
-      '@boost/module': 4.0.0
+      '@boost/module': 4.0.0_typescript@4.8.4
       minimatch: 5.1.0
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /@boost/debug/4.0.0:
+  /@boost/debug/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-rwrOB9AiJZXgS/oj4xHrQQPmfuMyasus+BmoXCRKn5YG1kmlimLzCp8EgZsnbzCPe4Ts88xFGjwz3gLXcrDNDA==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     dependencies:
-      '@boost/common': 4.0.0
+      '@boost/common': 4.0.0_typescript@4.8.4
       '@boost/internal': 4.0.0
       '@types/debug': 4.1.7
       debug: 4.3.4
@@ -1655,20 +1654,20 @@ packages:
       - supports-color
     dev: true
 
-  /@boost/log/4.0.0:
+  /@boost/log/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-jXmjQ/9sBhrVD0PUzih/MbuYDA1NM31FnaFhT2XnIvBP4saDL5Nooj5MmmSw/4UhbhgWAa3CSUkCgTRCYWQpPw==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     dependencies:
-      '@boost/common': 4.0.0
+      '@boost/common': 4.0.0_typescript@4.8.4
       '@boost/internal': 4.0.0
-      '@boost/translate': 4.0.0
+      '@boost/translate': 4.0.0_typescript@4.8.4
       chalk: 4.1.2
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /@boost/module/4.0.0:
+  /@boost/module/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-YyW8uhOrZsb6BTXi+46G3M9ThSg3TuHaUTSCWwYaHanaUygxQnYx2YWA6s8S3wUtUcqzNfs+PMSy7NAsUtUx3w==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     peerDependencies:
@@ -1676,17 +1675,19 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+    dependencies:
+      typescript: 4.8.4
     dev: true
 
-  /@boost/pipeline/4.0.0:
+  /@boost/pipeline/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-0xVSGNnjI6ZCIyvdyxHqTQe+LyqfKz3nw+PJLY0dNDtBFMMIR6GDIzfKy1yJXhUn5wHpBjW8oHw9vGPOId4g4g==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     dependencies:
-      '@boost/common': 4.0.0
-      '@boost/debug': 4.0.0
+      '@boost/common': 4.0.0_typescript@4.8.4
+      '@boost/debug': 4.0.0_typescript@4.8.4
       '@boost/event': 4.0.0
       '@boost/internal': 4.0.0
-      '@boost/translate': 4.0.0
+      '@boost/translate': 4.0.0_typescript@4.8.4
       execa: 5.1.1
       lodash: 4.17.21
       split: 1.0.1
@@ -1712,11 +1713,11 @@ packages:
       wrap-ansi: 7.0.0
     dev: true
 
-  /@boost/translate/4.0.0:
+  /@boost/translate/4.0.0_typescript@4.8.4:
     resolution: {integrity: sha512-3IZPaiy6EuekDZ6rAN/Si38eif6tS45fIu5dNaaw5SSh4c9sgK3YQJBONE5iq1Muk0DnuLU/Mh6g1jry3BB1dg==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     dependencies:
-      '@boost/common': 4.0.0
+      '@boost/common': 4.0.0_typescript@4.8.4
       '@boost/internal': 4.0.0
       i18next: 21.10.0
       os-locale: 5.0.0
@@ -10207,7 +10208,7 @@ packages:
       ip: 1.1.8
       netmask: 2.0.2
 
-  /packemon/2.4.1_chokidar@3.5.3:
+  /packemon/2.4.1_typescript@4.8.4:
     resolution: {integrity: sha512-0K5auxwNXYFXpr9qNDP+5rJWPSxSgpaBUCor/TV9FE+1o37ar6OMu+fFhg1Hz6YhJeKaG78i5jgr4lX2ImHXgQ==}
     engines: {node: '>=14.15.0', npm: '>=6.14.0'}
     hasBin: true
@@ -10226,12 +10227,12 @@ packages:
       '@babel/preset-flow': 7.18.6_@babel+core@7.19.1
       '@babel/preset-react': 7.18.6_@babel+core@7.19.1
       '@babel/preset-typescript': 7.18.6_@babel+core@7.19.1
-      '@boost/cli': 4.0.0_ink@3.2.0+react@17.0.2
-      '@boost/common': 4.0.0
-      '@boost/config': 4.0.0
-      '@boost/debug': 4.0.0
+      '@boost/cli': 4.0.0_iqu7exnyc62z6usiwvy5ghlz4q
+      '@boost/common': 4.0.0_typescript@4.8.4
+      '@boost/config': 4.0.0_typescript@4.8.4
+      '@boost/debug': 4.0.0_typescript@4.8.4
       '@boost/event': 4.0.0
-      '@boost/pipeline': 4.0.0
+      '@boost/pipeline': 4.0.0_typescript@4.8.4
       '@boost/terminal': 4.0.0
       '@rollup/plugin-babel': 5.3.1_r56fldxoyazzliugjcx2ns4pma
       '@rollup/plugin-commonjs': 22.0.2_rollup@2.79.1
@@ -10243,7 +10244,6 @@ packages:
       babel-plugin-env-constants: 2.0.2_@babel+core@7.19.1
       babel-preset-solid: 1.6.2_@babel+core@7.19.1
       browserslist: 4.21.4
-      chokidar: 3.5.3
       execa: 5.1.1
       fast-glob: 3.2.12
       filesize: 9.0.11
@@ -10262,6 +10262,7 @@ packages:
       rollup-plugin-polyfill-node: 0.10.2_rollup@2.79.1
       semver: 7.3.7
       spdx-license-list: 6.6.0
+      typescript: 4.8.4
     transitivePeerDependencies:
       - '@types/babel__core'
       - '@types/react'

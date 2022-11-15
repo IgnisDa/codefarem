@@ -8,8 +8,7 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "7.6.0",
-    "chokidar": "3.5.3",
-    "packemon": "^2.4.1"
+    "chokidar": "3.5.3"
   },
   "packemon": {
     "format": "cjs",

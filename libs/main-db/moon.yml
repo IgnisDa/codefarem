@@ -31,5 +31,7 @@ tasks:
 
 workspace:
   inheritedTasks:
+    exclude:
+      - 'build'
     rename:
       lint: 'lint-js'
