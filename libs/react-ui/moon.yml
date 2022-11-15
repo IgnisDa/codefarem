@@ -10,3 +10,8 @@ tasks:
       - '--sync'
     outputs:
       - 'dist'
+
+workspace:
+  inheritedTasks:
+    exclude:
+      - 'build'

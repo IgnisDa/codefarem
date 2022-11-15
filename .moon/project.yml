@@ -17,7 +17,14 @@ fileGroups:
 
 tasks:
   build:
-    command: 'packemon build --addFiles --addExports --declaration --declarationConfig tsconfig.build.json'
+    command:
+      - packemon
+      - build
+      - '--addFiles'
+      - '--addExports'
+      - '--declaration'
+      - '--declarationConfig'
+      - 'tsconfig.build.json'
     env:
       NODE_ENV: 'production'
     inputs:
@@ -29,6 +36,8 @@ tasks:
     outputs:
       - 'cjs'
       - 'dts'
+      - 'esm'
+      - 'lib'
 
   lint:
     command:

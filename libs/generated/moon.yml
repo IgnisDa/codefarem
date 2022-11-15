@@ -29,5 +29,6 @@ tasks:
 workspace:
   inheritedTasks:
     exclude:
+      - 'build'
       - 'lint' # generated files do not need to be linted
       - 'test'
