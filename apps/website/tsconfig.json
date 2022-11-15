@@ -36,6 +36,9 @@
   ],
   "references": [
     {
+      "path": "../../libs/faker"
+    },
+    {
       "path": "../../libs/generated"
     },
     {

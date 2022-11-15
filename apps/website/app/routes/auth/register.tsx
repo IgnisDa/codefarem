@@ -1,7 +1,18 @@
+import {
+  fakeDataDevelopmentMode,
+  getFakeEmail,
+  getFakePassword,
+} from '@codefarem/faker';
 import { AccountType } from '@codefarem/generated/orchestrator-graphql';
 import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
-import { Form, Link, useActionData, useTransition } from '@remix-run/react';
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from '@remix-run/react';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -70,10 +81,14 @@ export const loader = async ({ request }: DataFunctionArgs) => {
   await authenticator.isAuthenticated(request, {
     successRedirect: SUCCESSFUL_REDIRECT_PATH,
   });
-  return json({});
+  return json({
+    email: fakeDataDevelopmentMode(getFakeEmail),
+    password: fakeDataDevelopmentMode(getFakePassword),
+  });
 };
 
 export default () => {
+  const { email, password } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const transition = useTransition();
 
@@ -93,12 +108,14 @@ export default () => {
             placeholder="ana@skywalk.com"
             label="Email Address"
             width="100%"
+            initialValue={email}
           />
           <Input.Password
             name={FORM_PASSWORD_KEY}
             required
             label="Password"
             width="100%"
+            initialValue={password}
           />
           <Spacer y={1} />
           <Button

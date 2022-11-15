@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@codefarem/faker": "workspace:*",
     "@codefarem/generated": "workspace:*",
     "@codefarem/react-ui": "workspace:*",
     "@codemirror/lang-cpp": "6.0.1",
