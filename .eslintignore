@@ -8,3 +8,16 @@ jest.config.*
 dbschema
 build
 dist
+
+# Build folders
+coverage/
+build/
+cjs/
+dts/
+esm/
+mjs/
+umd/
+lib
+
+# website
+!apps/website/app/lib
