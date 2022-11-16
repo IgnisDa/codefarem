@@ -5,23 +5,19 @@ import {
 } from '@codefarem/faker';
 import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json } from '@remix-run/node';
-import {
-  Form,
-  Link,
-  useActionData,
-  useLoaderData,
-  useTransition,
-} from '@remix-run/react';
+import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import {
+  FAILURE_REDIRECT_PATH,
   FORM_EMAIL_KEY,
   FORM_PASSWORD_KEY,
   SUCCESSFUL_REDIRECT_PATH,
 } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
 import { graphqlSdk } from '~/lib/services/graphql.server';
+import { getSession } from '~/lib/services/session.server';
 
 import type {
   ActionArgs,
@@ -52,35 +48,29 @@ export const action = async ({ request }: ActionArgs) => {
       { message: `User does not exist. Please register first.` },
       { status: 400 }
     );
-  try {
-    await authenticator.authenticate('form', request, {
-      successRedirect: SUCCESSFUL_REDIRECT_PATH,
-      context: { formData: request.clone().formData() },
-    });
-    return json({ message: '' });
-  } catch {
-    return json(
-      {
-        message: 'Either email or password was not correct.',
-      },
-      { status: 400 }
-    );
-  }
+  return await authenticator.authenticate('form', request, {
+    successRedirect: SUCCESSFUL_REDIRECT_PATH,
+    failureRedirect: FAILURE_REDIRECT_PATH,
+  });
 };
 
 export const loader = async ({ request }: DataFunctionArgs) => {
   await authenticator.isAuthenticated(request, {
     successRedirect: SUCCESSFUL_REDIRECT_PATH,
   });
+  let session = await getSession(request.headers.get('cookie'));
+  let errorMsg: { message: string } = session.get(
+    authenticator.sessionErrorKey
+  );
   return json({
     email: fakeDataDevelopmentMode(getFakeEmail),
     password: fakeDataDevelopmentMode(getFakePassword),
+    error: errorMsg,
   });
 };
 
 export default () => {
-  const { email, password } = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
+  const { email, password, error } = useLoaderData<typeof loader>();
   const transition = useTransition();
 
   return (
@@ -90,7 +80,9 @@ export default () => {
       </Card.Header>
       <Card.Divider />
       <Card.Body>
-        {actionData && <Text color="error">{actionData.message}</Text>}
+        {error && transition.state !== 'submitting' && (
+          <Text color="error">{error.message}</Text>
+        )}
         <Form method="post">
           <Input
             name={FORM_EMAIL_KEY}
