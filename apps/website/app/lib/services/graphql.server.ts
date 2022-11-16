@@ -1,8 +1,28 @@
+import type { GraphQLResponse } from '@codefarem/generated/orchestrator-graphql';
 import {
+  GraphQLError,
   Thunder,
   ZeusScalars,
 } from '@codefarem/generated/orchestrator-graphql';
 import { ApplicationConfig } from '../config.server';
+
+const handleFetchResponse = (response: Response): Promise<GraphQLResponse> => {
+  if (!response.ok) {
+    return new Promise((_, reject) => {
+      response
+        .text()
+        .then((text) => {
+          try {
+            reject(JSON.parse(text));
+          } catch (err) {
+            reject(text);
+          }
+        })
+        .catch(reject);
+    });
+  }
+  return response.json();
+};
 
 /**
  * The graphql requester
@@ -15,12 +35,16 @@ export const graphqlSdk = (authorizationToken = '') => {
   if (authorizationToken)
     headers.Authorization = `Bearer ${authorizationToken}`;
   return Thunder(async (query) => {
-    const response = await fetch(
-      `${ApplicationConfig.APPLICATION_API_URL}/graphql`,
-      { method: 'POST', body: JSON.stringify({ query }), headers }
-    );
-    const data = await response.json();
-    return data.data;
+    return fetch(`${ApplicationConfig.APPLICATION_API_URL}/graphql`, {
+      method: 'POST',
+      body: JSON.stringify({ query }),
+      headers,
+    })
+      .then(handleFetchResponse)
+      .then((response: GraphQLResponse) => {
+        if (response.errors) throw new GraphQLError(response);
+        return response.data;
+      });
   });
 };
 
