@@ -10,7 +10,7 @@ import type { User } from '~/lib/types';
 export const authenticator = new Authenticator<User>(sessionStorage);
 
 authenticator.use(
-  new FormStrategy(async ({ form }) => {
+  new FormStrategy(async ({ form }): Promise<User> => {
     const email = form.get(FORM_EMAIL_KEY) as string;
     const password = form.get(FORM_PASSWORD_KEY) as string;
     const { loginUser } = await graphqlSdk()('query')({
@@ -36,6 +36,8 @@ authenticator.use(
         },
       },
     });
-    return { token, userDetails } as User;
+    if (userDetails.__typename === 'ApiError')
+      throw new Error(userDetails.error);
+    return { token, userDetails };
   })
 );
