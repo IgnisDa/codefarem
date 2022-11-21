@@ -191,7 +191,7 @@ export default () => {
           </Grid.Container>
         </div>
         <div>
-          <Button type="submit">Create Class</Button>
+          <Button type="submit">Create Question</Button>
         </div>
       </Form>
     </div>
