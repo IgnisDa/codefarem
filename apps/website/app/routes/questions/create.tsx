@@ -19,7 +19,7 @@ import { Form, useLoaderData } from '@remix-run/react';
 import { capitalCase } from 'change-case';
 import { set } from 'lodash';
 import { useState } from 'react';
-import { HiPlusCircle } from 'react-icons/hi';
+import { HiMinusCircle, HiPlusCircle } from 'react-icons/hi';
 import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
@@ -56,14 +56,16 @@ export async function action({ request }: ActionArgs) {
       { input: input },
       {
         '...on ApiError': { error: true },
-        '...on CreateQuestionOutput': { id: true },
+        '...on CreateQuestionOutput': { slug: true },
         __typename: true,
       },
     ],
   });
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
-  return redirect(route('/questions/:id', { id: createQuestion.id }));
+  return redirect(
+    route('/questions/solve/:slug', { slug: createQuestion.slug })
+  );
 }
 
 const SelectUnitCase = ({
@@ -156,6 +158,16 @@ export default () => {
                           hidden
                         />
                       </Col>
+                      <Col>
+                        <HiMinusCircle
+                          size={30}
+                          onClick={() => {
+                            const newTestCases = [...totalTestCases];
+                            newTestCases[tIdx][0]--;
+                            setTotalTestCases(newTestCases);
+                          }}
+                        />
+                      </Col>
                     </Row>
                   ))}
                   <Text h4>Output</Text>
@@ -181,6 +193,16 @@ export default () => {
                           name={`testCases[${tIdx}].outputs[${oIdx}].data`}
                           type="text"
                           label="Data"
+                        />
+                      </Col>
+                      <Col>
+                        <HiMinusCircle
+                          size={30}
+                          onClick={() => {
+                            const newTestCases = [...totalTestCases];
+                            newTestCases[tIdx][1]--;
+                            setTotalTestCases(newTestCases);
+                          }}
                         />
                       </Col>
                     </Row>

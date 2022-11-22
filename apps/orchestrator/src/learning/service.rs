@@ -53,7 +53,7 @@ pub trait LearningServiceTrait: Sync + Send {
     async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError>;
     async fn question_details<'a>(
         &self,
-        question_id: Uuid,
+        question_slug: String,
     ) -> Result<QuestionDetailsOutput, ApiError>;
     async fn create_class<'a>(
         &self,
@@ -104,14 +104,14 @@ impl LearningServiceTrait for LearningService {
 
     async fn question_details<'a>(
         &self,
-        question_id: Uuid,
+        question_slug: String,
     ) -> Result<QuestionDetailsOutput, ApiError> {
         let question_model = self
             .db_conn
-            .query_single_json(QUESTION_DETAILS, &(question_id,))
+            .query_single_json(QUESTION_DETAILS, &(&question_slug,))
             .await
             .map_err(|_| ApiError {
-                error: format!("Question with id={question_id} not found"),
+                error: format!("Question with slug={question_slug} not found"),
             })?
             .unwrap();
         let question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();

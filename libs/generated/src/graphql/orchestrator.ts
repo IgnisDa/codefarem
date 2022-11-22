@@ -51,7 +51,7 @@ export const AllTypesProps: Record<string,any> = {
 			classId:"UUID"
 		},
 		questionDetails:{
-			questionId:"UUID"
+
 		}
 	},
 	RegisterUserInput:{
@@ -94,7 +94,8 @@ export const ReturnTypes: Record<string,any> = {
 		"...on ApiError":"ApiError"
 	},
 	CreateQuestionOutput:{
-		id:"UUID"
+		id:"UUID",
+		slug:"String"
 	},
 	CreateQuestionResultUnion:{
 		"...on CreateQuestionOutput":"CreateQuestionOutput",
@@ -1095,6 +1096,8 @@ export type ValueTypes = {
 ["CreateQuestionOutput"]: AliasType<{
 	/** The ID of the question */
 	id?:boolean | `@${string}`,
+	/** The slug of the newly created question */
+	slug?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	/** The output object when creating a new question */
@@ -1190,7 +1193,7 @@ loginUser?: [{	input: ValueTypes["LoginUserInput"] | Variable<any, string>},Valu
 	/** Get all the types of test case units possible */
 	testCaseUnits?:boolean | `@${string}`,
 classDetails?: [{	classId: ValueTypes["UUID"] | Variable<any, string>},ValueTypes["ClassDetailsResultUnion"]],
-questionDetails?: [{	questionId: ValueTypes["UUID"] | Variable<any, string>},ValueTypes["QuestionDetailsResultUnion"]],
+questionDetails?: [{	questionSlug: string | Variable<any, string>},ValueTypes["QuestionDetailsResultUnion"]],
 		__typename?: boolean | `@${string}`
 }>;
 	/** The input object used to get details about a question */
@@ -1395,6 +1398,8 @@ export type ResolverInputTypes = {
 ["CreateQuestionOutput"]: AliasType<{
 	/** The ID of the question */
 	id?:boolean | `@${string}`,
+	/** The slug of the newly created question */
+	slug?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	/** The output object when creating a new question */
@@ -1493,7 +1498,7 @@ loginUser?: [{	input: ResolverInputTypes["LoginUserInput"]},ResolverInputTypes["
 	/** Get all the types of test case units possible */
 	testCaseUnits?:boolean | `@${string}`,
 classDetails?: [{	classId: ResolverInputTypes["UUID"]},ResolverInputTypes["ClassDetailsResultUnion"]],
-questionDetails?: [{	questionId: ResolverInputTypes["UUID"]},ResolverInputTypes["QuestionDetailsResultUnion"]],
+questionDetails?: [{	questionSlug: string},ResolverInputTypes["QuestionDetailsResultUnion"]],
 		__typename?: boolean | `@${string}`
 }>;
 	/** The input object used to get details about a question */
@@ -1687,7 +1692,9 @@ export type ModelTypes = {
 	/** The result type if the question was created successfully */
 ["CreateQuestionOutput"]: {
 		/** The ID of the question */
-	id: ModelTypes["UUID"]
+	id: ModelTypes["UUID"],
+	/** The slug of the newly created question */
+	slug: string
 };
 	/** The output object when creating a new question */
 ["CreateQuestionResultUnion"]:ModelTypes["CreateQuestionOutput"] | ModelTypes["ApiError"];
@@ -1956,7 +1963,9 @@ export type GraphQLTypes = {
 ["CreateQuestionOutput"]: {
 	__typename: "CreateQuestionOutput",
 	/** The ID of the question */
-	id: GraphQLTypes["UUID"]
+	id: GraphQLTypes["UUID"],
+	/** The slug of the newly created question */
+	slug: string
 };
 	/** The output object when creating a new question */
 ["CreateQuestionResultUnion"]:{

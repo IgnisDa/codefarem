@@ -15,11 +15,11 @@ const testCaseData = Selector('TestCaseData')({
 });
 
 export const loader = async ({ params }: LoaderArgs) => {
-  const id = params.id;
-  invariant(id, 'An ID should be present');
+  const slug = params.slug;
+  invariant(typeof slug === 'string', 'Slug should be a string');
   const { questionDetails } = await graphqlSdk()('query')({
     questionDetails: [
-      { questionId: id },
+      { questionSlug: slug },
       {
         __typename: true,
         '...on ApiError': { error: true },

@@ -35,4 +35,4 @@ SELECT learning::Question {
     )
   }
 }
-FILTER .id = <uuid>$0
+FILTER .slug = <str>$0

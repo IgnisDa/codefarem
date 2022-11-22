@@ -51,11 +51,11 @@ impl LearningQuery {
     async fn question_details(
         &self,
         ctx: &Context<'_>,
-        question_id: Uuid,
+        question_slug: String,
     ) -> Result<QuestionDetailsResultUnion> {
         let output = ctx
             .data_unchecked::<LearningService>()
-            .question_details(question_id)
+            .question_details(question_slug)
             .await;
         to_result_union_response!(output, QuestionDetailsResultUnion)
     }
