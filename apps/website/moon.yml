@@ -62,4 +62,3 @@ workspace:
     exclude:
       - 'build'
       - 'test'
-      - 'typecheck'

@@ -5,7 +5,7 @@
     "emitDeclarationOnly": false,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "moduleResolution": "Node16",
+    "moduleResolution": "Node",
     "noEmit": true,
     "paths": {
       ":faker/*": [
