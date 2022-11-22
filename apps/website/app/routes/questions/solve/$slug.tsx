@@ -5,6 +5,7 @@ import invariant from 'tiny-invariant';
 import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { LoaderArgs } from '@remix-run/server-runtime';
+import { notFound } from 'remix-utils';
 
 const testCaseData = Selector('TestCaseData')({
   numberCollectionValue: true,
@@ -12,6 +13,10 @@ const testCaseData = Selector('TestCaseData')({
   numberValue: true,
   stringValue: true,
   unitType: true,
+});
+
+export const meta = ({ data }: { data: { title: string } }) => ({
+  title: data.title,
 });
 
 export const loader = async ({ params }: LoaderArgs) => {
@@ -41,7 +46,10 @@ export const loader = async ({ params }: LoaderArgs) => {
       },
     ],
   });
-  return json({ questionDetails });
+  if (questionDetails.__typename === 'ApiError')
+    throw notFound({ title: 'Not found' });
+  const title = questionDetails.name;
+  return json({ questionDetails, title });
 };
 
 export default () => {

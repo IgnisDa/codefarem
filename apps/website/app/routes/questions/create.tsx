@@ -1,3 +1,4 @@
+import type { ResolverInputTypes } from '@codefarem/generated/orchestrator-graphql';
 import {
   AccountType,
   TestCaseUnit,
@@ -42,10 +43,18 @@ export async function action({ request }: ActionArgs) {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: FAILURE_REDIRECT_PATH,
   });
-  const input: any = {};
-  for (const [key, value] of await request.formData()) {
-    set(input, key, value);
-  }
+  let input: ResolverInputTypes['CreateQuestionInput'] = {} as any;
+  for (const [key, value] of await request.formData()) set(input, key, value);
+
+  // if there are no test cases at all
+  if (!input.testCases?.length) input.testCases = [];
+
+  // handle the case when input/output is empty for a test case
+  input.testCases.forEach((tCase, idx, theArr) => {
+    if (!tCase.inputs) theArr[idx].inputs = [];
+    if (!tCase.outputs) theArr[idx].outputs = [];
+  });
+
   // TODO: Allow to add multiple classes Also, there is a problem with the graphql scalar library
   // where it is unable to parse empty arrays of custom scalars.
   input.classIds = [uuid4()];
