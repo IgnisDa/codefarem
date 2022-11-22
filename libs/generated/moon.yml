@@ -3,12 +3,11 @@ type: 'library'
 tasks:
   generate-orchestrator-graphql:
     command:
-      - 'ts-node'
-      - 'src/generate-graphql.ts'
-      - 'http://127.0.0.1:8000/graphql'
-      - 'orchestrator'
+      - 'graphql-codegen'
+      - '--config'
+      - 'src/graphql/orchestrator/codegen.ts'
     outputs:
-      - 'src/graphql/orchestrator.ts'
+      - 'src/graphql/orchestrator-generated'
     local: true
 
   generate-graphql:
