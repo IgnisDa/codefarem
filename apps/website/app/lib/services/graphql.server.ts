@@ -1,9 +1,9 @@
-import type { GraphQLResponse } from '@codefarem/generated/orchestrator-graphql';
+import type { GraphQLResponse } from ':generated/graphql/orchestrator';
 import {
   GraphQLError,
   Thunder,
   ZeusScalars,
-} from '@codefarem/generated/orchestrator-graphql';
+} from ':generated/graphql/orchestrator';
 import { ApplicationConfig } from '../config.server';
 
 const handleFetchResponse = (response: Response): Promise<GraphQLResponse> => {

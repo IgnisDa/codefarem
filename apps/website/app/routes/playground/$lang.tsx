@@ -1,4 +1,4 @@
-import { SupportedLanguage } from '@codefarem/generated/orchestrator-graphql';
+import { SupportedLanguage } from ':generated/graphql/orchestrator';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';

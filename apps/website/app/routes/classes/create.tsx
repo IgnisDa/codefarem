@@ -1,4 +1,4 @@
-import { AccountType } from '@codefarem/generated/orchestrator-graphql';
+import { AccountType } from ':generated/graphql/orchestrator';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { notFound } from 'remix-utils';

@@ -1,8 +1,5 @@
-import type { ResolverInputTypes } from '@codefarem/generated/orchestrator-graphql';
-import {
-  AccountType,
-  TestCaseUnit,
-} from '@codefarem/generated/orchestrator-graphql';
+import type { ResolverInputTypes } from ':generated/graphql/orchestrator';
+import { AccountType, TestCaseUnit } from ':generated/graphql/orchestrator';
 import { Listbox } from '@headlessui/react';
 import { v4 as uuid4 } from 'uuid';
 import {

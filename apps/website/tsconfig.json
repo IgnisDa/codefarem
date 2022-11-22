@@ -8,6 +8,12 @@
     "moduleResolution": "Node16",
     "noEmit": true,
     "paths": {
+      ":faker/*": [
+        "../../libs/faker/src/*"
+      ],
+      ":generated/*": [
+        "../../libs/generated/src/*"
+      ],
       "~/*": [
         "./app/*"
       ]

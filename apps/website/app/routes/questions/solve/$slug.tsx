@@ -1,4 +1,4 @@
-import { Selector } from '@codefarem/generated/orchestrator-graphql';
+import { Selector } from ':generated/graphql/orchestrator';
 import { useLoaderData } from '@remix-run/react';
 import { json } from '@remix-run/server-runtime';
 import invariant from 'tiny-invariant';

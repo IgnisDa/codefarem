@@ -2,8 +2,8 @@ import {
   fakeDataDevelopmentMode,
   getFakeEmail,
   getFakePassword,
-} from '@codefarem/faker';
-import { AccountType } from '@codefarem/generated/orchestrator-graphql';
+} from ':faker/index';
+import { AccountType } from ':generated/graphql/orchestrator';
 import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
 import {

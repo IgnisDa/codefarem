@@ -1,4 +1,4 @@
-import type { AccountType } from '@codefarem/generated/orchestrator-graphql';
+import type { AccountType } from ':generated/graphql/orchestrator';
 
 export type AppUserData = {
   accountType: AccountType;
