@@ -110,10 +110,10 @@ impl LearningServiceTrait for LearningService {
             .db_conn
             .query_single_json(QUESTION_DETAILS, &(&question_slug,))
             .await
-            .map_err(|_| ApiError {
+            .unwrap()
+            .ok_or_else(|| ApiError {
                 error: format!("Question with slug={question_slug} not found"),
-            })?
-            .unwrap();
+            })?;
         let question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();
         Ok(question)
     }
