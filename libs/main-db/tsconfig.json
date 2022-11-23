@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.options.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "noUnusedLocals": false,
     "noEmit": true,
     "emitDeclarationOnly": false,
@@ -8,7 +9,12 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      ":faker/*": [
+        "../faker/src/*"
+      ]
+    }
   },
   "include": [
     "jest.config.ts",

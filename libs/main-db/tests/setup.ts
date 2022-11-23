@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getRandomWord } from '@codefarem/faker';
+import { getRandomWord } from ':faker/index';
 
 // eslint-disable-next-line import/no-default-export
 export default () => {

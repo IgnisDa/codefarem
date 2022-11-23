@@ -21,3 +21,5 @@ lib
 
 # website
 !apps/website/app/lib
+
+.eslintrc.js

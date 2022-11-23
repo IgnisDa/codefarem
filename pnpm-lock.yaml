@@ -150,14 +150,12 @@ importers:
 
   libs/main-db:
     specifiers:
-      '@codefarem/faker': workspace:*
       '@swc/core': 1.3.7
       '@swc/jest': 0.2.23
       '@types/jest': 28.1.1
       edgedb: 0.22.8
       jest: 28.1.1
     devDependencies:
-      '@codefarem/faker': link:../faker
       '@swc/core': 1.3.7
       '@swc/jest': 0.2.23_@swc+core@1.3.7
       '@types/jest': 28.1.1
@@ -7150,6 +7148,35 @@ packages:
       - supports-color
     dev: true
 
+  /eslint-module-utils/2.7.4_pz3cez6sklduddwkjesjihuniu:
+    resolution: {integrity: sha512-j4GT+rqzCoRKHwURX7pddtIPGySnX9Si/cgMI5ztrcqOPtk5dDEeZ34CQVPphnqkJytlc97Vuk05Um2mJ3gEQA==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      '@typescript-eslint/parser': '*'
+      eslint: '*'
+      eslint-import-resolver-node: '*'
+      eslint-import-resolver-typescript: '*'
+      eslint-import-resolver-webpack: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+      eslint:
+        optional: true
+      eslint-import-resolver-node:
+        optional: true
+      eslint-import-resolver-typescript:
+        optional: true
+      eslint-import-resolver-webpack:
+        optional: true
+    dependencies:
+      '@typescript-eslint/parser': 5.41.0_wyqvi574yv7oiwfeinomdzmc3m
+      debug: 3.2.7
+      eslint: 8.26.0
+      eslint-import-resolver-node: 0.3.6
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /eslint-plugin-compat/4.0.2_eslint@8.26.0:
     resolution: {integrity: sha512-xqvoO54CLTVaEYGMzhu35Wzwk/As7rCvz/2dqwnFiWi0OJccEtGIn+5qq3zqIu9nboXlpdBN579fZcItC73Ycg==}
     engines: {node: '>=9.x'}
@@ -7195,7 +7222,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.26.0
       eslint-import-resolver-node: 0.3.6
-      eslint-module-utils: 2.7.4_nmfyd32pwyfwzmk7gcn6ynbe5u
+      eslint-module-utils: 2.7.4_pz3cez6sklduddwkjesjihuniu
       has: 1.0.3
       is-core-module: 2.10.0
       is-glob: 4.0.3

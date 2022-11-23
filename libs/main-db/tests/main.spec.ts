@@ -1,5 +1,5 @@
 import * as edgedb from 'edgedb';
-import { createUserInfo } from '@codefarem/faker';
+import { createUserInfo } from ':faker/index';
 import e from '../dbschema/edgeql-js';
 
 describe('Database behavior testing', () => {
