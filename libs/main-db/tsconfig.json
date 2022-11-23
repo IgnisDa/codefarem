@@ -5,6 +5,7 @@
     "noUnusedLocals": false,
     "noEmit": true,
     "emitDeclarationOnly": false,
+    "resolveJsonModule": true,
     "module": "Node16",
     "types": [
       "jest",
@@ -21,7 +22,8 @@
     "**/*.ts",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "tsconfig.json"
   ],
   "exclude": [],
   "references": [
