@@ -48,6 +48,7 @@ export const LOGOUT_USER = graphql(`
 
 export const TEST_CASE_DATA_FRAGMENT = graphql(`
   fragment TestCase on TestCaseData {
+    __typename
     numberCollectionValue
     stringCollectionValue
     numberValue
@@ -66,6 +67,7 @@ export const QUESTION_DETAILS = graphql(`
       ... on QuestionDetailsOutput {
         name
         problem
+        renderedProblem
         numClasses
         authoredBy {
           profile {

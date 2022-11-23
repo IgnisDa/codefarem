@@ -9,8 +9,10 @@ const config: CodegenConfig = {
     documents: ["./src/graphql/orchestrator/{queries,mutations}.ts"],
     generates: {
         './src/graphql/orchestrator/generated/': {
+            config: { skipTypename: true },
             plugins: [],
             preset: 'client',
+
         },
     },
     ignoreNoDocuments: true,
