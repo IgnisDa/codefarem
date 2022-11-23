@@ -3,7 +3,6 @@ import {
   getFakeEmail,
   getFakePassword,
 } from ':faker/index';
-import { AccountType } from ':generated/graphql/orchestrator';
 import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
 import {
@@ -22,13 +21,16 @@ import {
   SUCCESSFUL_REDIRECT_PATH,
 } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
-import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type {
   ActionArgs,
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
+import { gqlClient } from '~/lib/services/graphql.server';
+import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
+import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
+import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 
 export const meta: MetaFunction = () => {
   return { title: 'Register' };
@@ -40,34 +42,18 @@ export const action = async ({ request }: ActionArgs) => {
     [FORM_PASSWORD_KEY]: z.string().min(8),
   });
   const username = new Date().toISOString();
-  const { userWithEmail } = await graphqlSdk()('query')({
-    userWithEmail: [
-      { input: { email } },
-      {
-        __typename: true,
-        '...on UserWithEmailOutput': { __typename: true },
-        '...on UserWithEmailError': { __typename: true },
-      },
-    ],
+  const { userWithEmail } = await gqlClient.request(USER_WITH_EMAIL, {
+    input: { email },
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
     // user does not exist, we create one here
-    await graphqlSdk()('mutation')({
-      registerUser: [
-        {
-          input: {
-            email,
-            password,
-            username,
-            accountType: AccountType.STUDENT,
-          },
-        },
-        {
-          __typename: true,
-          '...on RegisterUserError': { emailNotUnique: true },
-          '...on RegisterUserOutput': { __typename: true },
-        },
-      ],
+    await gqlClient.request(REGISTER_USER, {
+      input: {
+        email,
+        password,
+        username,
+        accountType: AccountType.Student,
+      },
     });
     return redirect(route('/auth/login'));
   }

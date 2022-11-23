@@ -1,4 +1,9 @@
-import { SupportedLanguage } from ':generated/graphql/orchestrator';
+import {
+  LANGUAGE_EXAMPLE,
+  SUPPORTED_LANGUAGES,
+} from ':generated/graphql/orchestrator/queries';
+import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
+import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
@@ -19,15 +24,13 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
-import { graphqlSdk } from '~/lib/services/graphql.server';
+import { gqlClient } from '~/lib/services/graphql.server';
 
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 import { Button, Loading } from '@nextui-org/react';
 
 export async function loader({ params }: LoaderArgs) {
-  const { supportedLanguages } = await graphqlSdk()('query')({
-    supportedLanguages: true,
-  });
+  const { supportedLanguages } = await gqlClient.request(SUPPORTED_LANGUAGES);
   const selectedLanguage = params.lang as SupportedLanguage;
   invariant(
     supportedLanguages.includes(selectedLanguage as any),
@@ -35,8 +38,8 @@ export async function loader({ params }: LoaderArgs) {
       ', '
     )}'`
   );
-  const { languageExample } = await graphqlSdk()('query')({
-    languageExample: [{ language: selectedLanguage }, true],
+  const { languageExample } = await gqlClient.request(LANGUAGE_EXAMPLE, {
+    language: selectedLanguage,
   });
   return json({ languageExample, supportedLanguages, selectedLanguage });
 }
@@ -46,20 +49,11 @@ export async function action({ request }: ActionArgs) {
     input: z.string(),
     language: z.string(),
   });
-  const executeCode = await graphqlSdk()('mutation')({
-    executeCode: [
-      {
-        input: {
-          code: JSON.parse(input),
-          language: language as SupportedLanguage,
-        },
-      },
-      {
-        __typename: true,
-        '...on ExecuteCodeError': { error: true, step: true },
-        '...on ExecuteCodeOutput': { output: true },
-      },
-    ],
+  const executeCode = await gqlClient.request(EXECUTE_CODE, {
+    input: {
+      code: JSON.parse(input),
+      language: language as SupportedLanguage,
+    },
   });
   return json({ output: executeCode.executeCode });
 }
@@ -72,9 +66,9 @@ export default () => {
   const transition = useTransition();
 
   const extensions = match(selectedLanguage)
-    .with(SupportedLanguage.cpp, () => [cpp()])
-    .with(SupportedLanguage.rust, () => [rust()])
-    .with(SupportedLanguage.go, () => [StreamLanguage.define(go)])
+    .with(SupportedLanguage.Cpp, () => [cpp()])
+    .with(SupportedLanguage.Rust, () => [rust()])
+    .with(SupportedLanguage.Go, () => [StreamLanguage.define(go)])
     .exhaustive();
 
   return (

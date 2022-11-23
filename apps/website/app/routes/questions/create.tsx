@@ -1,7 +1,4 @@
-import type { ResolverInputTypes } from ':generated/graphql/orchestrator';
-import { AccountType, TestCaseUnit } from ':generated/graphql/orchestrator';
 import { Listbox } from '@headlessui/react';
-import { v4 as uuid4 } from 'uuid';
 import {
   Button,
   Col,
@@ -22,17 +19,23 @@ import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
-import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
-
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import {
+  AccountType,
+  TestCaseUnit,
+} from ':generated/graphql/orchestrator/generated/graphql';
+import type { CreateQuestionInput } from ':generated/graphql/orchestrator/generated/graphql';
+import { getAuthHeader, gqlClient } from '~/lib/services/graphql.server';
+import {
+  CREATE_QUESTION,
+  TEST_CASE_UNITS,
+} from ':generated/graphql/orchestrator/mutations';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await authenticator.isAuthenticated(request);
-  if (user?.userDetails.accountType !== AccountType.TEACHER)
+  if (user?.userDetails.accountType !== AccountType.Teacher)
     throw notFound({ message: 'Route not found' });
-  const { testCaseUnits } = await graphqlSdk()('query')({
-    testCaseUnits: true,
-  });
+  const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
   return json({ testCaseUnits });
 }
 
@@ -40,7 +43,7 @@ export async function action({ request }: ActionArgs) {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: FAILURE_REDIRECT_PATH,
   });
-  let input: ResolverInputTypes['CreateQuestionInput'] = {} as any;
+  let input: CreateQuestionInput = {} as any;
   for (const [key, value] of await request.formData()) set(input, key, value);
 
   // if there are no test cases at all
@@ -52,21 +55,12 @@ export async function action({ request }: ActionArgs) {
     if (!tCase.outputs) theArr[idx].outputs = [];
   });
 
-  // TODO: Allow to add multiple classes Also, there is a problem with the graphql scalar library
-  // where it is unable to parse empty arrays of custom scalars.
-  input.classIds = [uuid4()];
-  const { createQuestion } = await graphqlSdk(user.token)('mutation', {
-    scalars: graphqlScalars,
-  })({
-    createQuestion: [
-      { input: input },
-      {
-        '...on ApiError': { error: true },
-        '...on CreateQuestionOutput': { slug: true },
-        __typename: true,
-      },
-    ],
-  });
+  input.classIds = [];
+  const { createQuestion } = await gqlClient.request(
+    CREATE_QUESTION,
+    { input },
+    getAuthHeader(user.token)
+  );
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
   return redirect(
@@ -84,7 +78,7 @@ const SelectUnitCase = ({
   testCaseUnits: TestCaseUnit[];
 }) => {
   return (
-    <Listbox name={name} defaultValue={TestCaseUnit.STRING}>
+    <Listbox name={name} defaultValue={TestCaseUnit.String}>
       {({ value }) => (
         <>
           <Text>{heading}</Text>

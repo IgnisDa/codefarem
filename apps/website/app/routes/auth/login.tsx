@@ -16,7 +16,6 @@ import {
   SUCCESSFUL_REDIRECT_PATH,
 } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
-import { graphqlSdk } from '~/lib/services/graphql.server';
 import { getSession } from '~/lib/services/session.server';
 
 import type {
@@ -24,6 +23,8 @@ import type {
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
+import { gqlClient } from '~/lib/services/graphql.server';
+import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
 
 export const meta: MetaFunction = () => {
   return { title: 'Login' };
@@ -33,15 +34,8 @@ export const action = async ({ request }: ActionArgs) => {
   const { email } = await zx.parseForm(request.clone(), {
     [FORM_EMAIL_KEY]: z.string().email(),
   });
-  const { userWithEmail } = await graphqlSdk()('query')({
-    userWithEmail: [
-      { input: { email } },
-      {
-        __typename: true,
-        '...on UserWithEmailOutput': { __typename: true },
-        '...on UserWithEmailError': { __typename: true },
-      },
-    ],
+  const { userWithEmail } = await gqlClient.request(USER_WITH_EMAIL, {
+    input: { email },
   });
   if (userWithEmail.__typename === 'UserWithEmailError')
     return json(

@@ -1,50 +1,21 @@
-import { Selector } from ':generated/graphql/orchestrator';
 import { useLoaderData } from '@remix-run/react';
 import { json } from '@remix-run/server-runtime';
 import invariant from 'tiny-invariant';
-import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type { LoaderArgs } from '@remix-run/server-runtime';
 import { notFound } from 'remix-utils';
-
-const testCaseData = Selector('TestCaseData')({
-  numberCollectionValue: true,
-  stringCollectionValue: true,
-  numberValue: true,
-  stringValue: true,
-  unitType: true,
-});
+import { gqlClient } from '~/lib/services/graphql.server';
+import { QUESTION_DETAILS } from ':generated/graphql/orchestrator/queries';
 
 export const meta = ({ data }: { data: { title: string } }) => ({
   title: data.title,
 });
 
 export const loader = async ({ params }: LoaderArgs) => {
-  const slug = params.slug;
-  invariant(typeof slug === 'string', 'Slug should be a string');
-  const { questionDetails } = await graphqlSdk()('query')({
-    questionDetails: [
-      { questionSlug: slug },
-      {
-        __typename: true,
-        '...on ApiError': { error: true },
-        '...on QuestionDetailsOutput': {
-          name: true,
-          problem: true,
-          numClasses: true,
-          authoredBy: { profile: { username: true } },
-          testCases: {
-            inputs: {
-              name: true,
-              data: testCaseData,
-            },
-            outputs: {
-              data: testCaseData,
-            },
-          },
-        },
-      },
-    ],
+  const questionSlug = params.slug;
+  invariant(typeof questionSlug === 'string', 'Slug should be a string');
+  const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
+    questionSlug,
   });
   if (questionDetails.__typename === 'ApiError')
     throw notFound({ title: 'Not found' });
