@@ -100,7 +100,7 @@ export default () => {
           hidden
         />
         <Button type="submit">
-          {transition.state !== 'idle' && <Loading />}
+          {transition.state !== 'idle' && <Loading color={'secondary'} />}
           Submit
         </Button>
       </Form>
