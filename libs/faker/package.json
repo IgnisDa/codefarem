@@ -1,45 +1,11 @@
 {
   "name": "@codefarem/faker",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./cjs/index.cjs",
-  "keywords": [],
-  "author": "",
+  "version": "0.0.0",
+  "private": true,
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "28.1.1",
     "@faker-js/faker": "7.6.0",
-    "chokidar": "3.5.3"
-  },
-  "packemon": {
-    "format": "cjs",
-    "platform": [
-      "browser",
-      "node"
-    ]
-  },
-  "types": "./dts/index.d.ts",
-  "module": "./esm/index.js",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dts/index.d.ts",
-      "browser": {
-        "module": "./esm/index.js",
-        "import": "./esm/index.js",
-        "default": "./lib/index.js"
-      },
-      "node": {
-        "import": "./cjs/index-wrapper.mjs",
-        "require": "./cjs/index.cjs"
-      },
-      "default": "./lib/index.js"
-    }
-  },
-  "files": [
-    "cjs/**/*.{cjs,mjs,map}",
-    "dts/**/*.d.ts",
-    "esm/**/*.{js,map}",
-    "lib/**/*.{js,map}",
-    "src/**/*.{ts,tsx,json}"
-  ]
+    "jest": "28.1.1"
+  }
 }

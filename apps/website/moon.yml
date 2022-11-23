@@ -41,8 +41,6 @@ tasks:
   build:
     command: 'remix build'
     deps:
-      - 'react-ui:build'
-      - 'generated:build'
       - '~:routes'
     inputs:
       - '@group(remix)'

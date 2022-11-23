@@ -15,16 +15,6 @@ tasks:
       - '~:generate-orchestrator-graphql'
     local: true
 
-  build:
-    command: 'swc'
-    args:
-      - 'src'
-      - '--out-dir'
-      - 'dist'
-      - '--sync'
-    outputs:
-      - 'dist'
-
 workspace:
   inheritedTasks:
     exclude:

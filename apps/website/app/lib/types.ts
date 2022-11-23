@@ -1,4 +1,4 @@
-import type { AccountType } from ':generated/graphql/orchestrator';
+import type { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 
 export type AppUserData = {
   accountType: AccountType;
