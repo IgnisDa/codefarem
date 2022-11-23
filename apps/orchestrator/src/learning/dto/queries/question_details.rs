@@ -54,8 +54,11 @@ pub struct QuestionDetailsOutput {
     /// The name/title of the question
     name: String,
 
-    /// The detailed text explaining the question
-    problem: String,
+    /// The detailed markdown text explaining the question
+    pub problem: String,
+
+    /// The html version of the problem that can be safely rendered
+    pub rendered_problem: String,
 
     /// The number of classes that have this question
     num_classes: u8,

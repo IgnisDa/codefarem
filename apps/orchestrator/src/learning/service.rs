@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use auth::validate_user_role;
+use comrak::{markdown_to_html, ComrakOptions};
 use edgedb_tokio::Client as DbClient;
 use rand::{distributions::Alphanumeric, Rng};
 use slug::slugify;
@@ -114,7 +115,8 @@ impl LearningServiceTrait for LearningService {
             .ok_or_else(|| ApiError {
                 error: format!("Question with slug={question_slug} not found"),
             })?;
-        let question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();
+        let mut question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();
+        question.rendered_problem = markdown_to_html(&question.problem, &ComrakOptions::default());
         Ok(question)
     }
 
