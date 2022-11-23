@@ -22,6 +22,7 @@ import { authenticator } from '~/lib/services/auth.server';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import {
   AccountType,
+  SupportedLanguage,
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import type { CreateQuestionInput } from ':generated/graphql/orchestrator/generated/graphql';
@@ -64,7 +65,10 @@ export async function action({ request }: ActionArgs) {
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
   return redirect(
-    route('/questions/solve/:slug', { slug: createQuestion.slug })
+    route('/questions/solve/:slug/:lang', {
+      slug: createQuestion.slug,
+      lang: SupportedLanguage.Cpp,
+    })
   );
 }
 
