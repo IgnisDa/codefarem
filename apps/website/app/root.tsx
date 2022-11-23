@@ -32,15 +32,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
       <body
         style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
       >
-        <Container
-          display="flex"
-          direction="column"
-          alignItems="center"
-          justify="center"
-          css={{ flexGrow: '1' }}
-        >
-          {children}
-        </Container>
+        <Container>{children}</Container>
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
