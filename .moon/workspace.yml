@@ -20,6 +20,7 @@ node:
 typescript:
   createMissingConfig: true
   syncProjectReferences: true
+  routeOutDirToCache: true
 
 vcs:
   manager: 'git'

@@ -4,7 +4,7 @@
     "**/*"
   ],
   "compilerOptions": {
-    "outDir": "../../.moon/cache/types/packages/faker",
+    "outDir": "../../.moon/cache/types/libs/faker",
     "rootDir": "."
   },
   "references": []

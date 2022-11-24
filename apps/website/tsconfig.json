@@ -28,7 +28,8 @@
     "strict": true,
     "target": "ES2019",
     "esModuleInterop": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "outDir": "../../.moon/cache/types/apps/website"
   },
   "include": [
     ".eslintrc.js",

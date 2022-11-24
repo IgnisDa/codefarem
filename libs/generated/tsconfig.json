@@ -6,6 +6,7 @@
       "ESNext",
       "DOM"
     ],
+    "outDir": "../../.moon/cache/types/libs/generated",
     "preserveConstEnums": true,
     "strict": true
   },
