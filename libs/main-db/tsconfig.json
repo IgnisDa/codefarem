@@ -11,8 +11,8 @@
       "node"
     ],
     "paths": {
-      ":faker/*": [
-        "../faker/src/*"
+      ":faker": [
+        "../faker/src/index.ts"
       ]
     },
     "outDir": "../../.moon/cache/types/libs/main-db"

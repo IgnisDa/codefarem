@@ -40,7 +40,7 @@ import {
   Card,
   Badge,
 } from '@nextui-org/react';
-import { ClientOnly, notFound } from 'remix-utils';
+import { notFound } from 'remix-utils';
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) return {};
@@ -80,10 +80,12 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
-  const { input, language } = await zx.parseForm(request, {
+  const { input, language, questionSlug } = await zx.parseForm(request, {
     input: z.string(),
     language: z.string(),
+    questionSlug: z.string(),
   });
+  console.log({ input, language, questionSlug });
   const executeCode = await gqlClient.request(EXECUTE_CODE, {
     input: {
       code: JSON.parse(input),
@@ -133,16 +135,12 @@ export default () => {
         <Text h1 transform="capitalize">
           {questionDetails.name}
         </Text>
-        <ClientOnly fallback={'Loading...'}>
-          {() => (
-            <Text
-              dangerouslySetInnerHTML={{
-                __html: questionDetails.renderedProblem,
-              }}
-            />
-          )}
-        </ClientOnly>
         <Collapse.Group css={{ margin: 0, padding: 0 }}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: questionDetails.renderedProblem,
+            }}
+          />
           {questionDetails.testCases.map((testCase, idx) => (
             <Collapse
               key={idx}
@@ -203,6 +201,13 @@ export default () => {
             value={selectedLanguage}
             readOnly
             hidden
+          />
+          <input
+            type="text"
+            name="questionSlug"
+            value={questionSlug}
+            hidden
+            readOnly
           />
           <Button type="submit">
             {transition.state !== 'idle' && <Loading color={'secondary'} />}

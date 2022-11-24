@@ -1,3 +1,4 @@
+import 'tsconfig-paths/register';
 import { execSync } from 'node:child_process';
 
 // eslint-disable-next-line import/no-default-export

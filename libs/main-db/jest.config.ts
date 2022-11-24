@@ -1,12 +1,11 @@
 import { pathsToModuleNameMapper } from 'ts-jest'
 import { compilerOptions } from './tsconfig.json'
 
-const mappings = pathsToModuleNameMapper(compilerOptions.paths)
+const mappings = pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' })
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default
   {
-    roots: ['<rootDir>'],
     moduleNameMapper: mappings,
     displayName: 'main-db',
     globals: {
