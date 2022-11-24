@@ -94,11 +94,9 @@ export async function action({ request }: ActionArgs) {
 }
 
 const DisplayData = (data: TestCaseFragment) => {
-  const render = match(data.unitType)
-    .with(
-      TestCaseUnit.Number,
-      TestCaseUnit.String,
-      () => data.numberValue || data.stringValue || data.unitType
+  return match(data.unitType)
+    .with(TestCaseUnit.Number, TestCaseUnit.String, () =>
+      String(data.numberValue || data.stringValue)
     )
     .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
       (data.numberCollectionValue || data.stringCollectionValue || []).join(
@@ -106,7 +104,6 @@ const DisplayData = (data: TestCaseFragment) => {
       )
     )
     .exhaustive();
-  return render;
 };
 
 export default () => {
@@ -155,13 +152,13 @@ export default () => {
               <Text b>Inputs</Text>
               {testCase.inputs.map((input, idxI) => (
                 <div key={idxI}>
-                  <Code>{DisplayData(input.data!)}</Code>
+                  <Code>{DisplayData(input.data as TestCaseFragment)}</Code>
                 </div>
               ))}
               <Text b>Outputs</Text>
               {testCase.outputs.map((output, idxI) => (
                 <div key={idxI}>
-                  <Code>{DisplayData(output.data!)}</Code>
+                  <Code>{DisplayData(output.data as TestCaseFragment)}</Code>
                 </div>
               ))}
             </Collapse>
