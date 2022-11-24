@@ -16,32 +16,9 @@ fileGroups:
     - '**/__tests__/**/*'
 
 tasks:
-  build:
-    command:
-      - packemon
-      - build
-      - '--addFiles'
-      - '--addExports'
-      - '--declaration'
-      - '--declarationConfig'
-      - 'tsconfig.build.json'
-    env:
-      NODE_ENV: 'production'
-    inputs:
-      - '@globs(sources)'
-      - 'package.json'
-      - 'tsconfig.json'
-      - 'tsconfig.build.json'
-      - '/tsconfig.options.json'
-    outputs:
-      - 'cjs'
-      - 'dts'
-      - 'esm'
-      - 'lib'
-
   lint:
     command:
-      - 'eslint'
+      - eslint
       - '--ext'
       - '.js,.jsx,.ts,.tsx'
       - '--fix'
@@ -65,7 +42,7 @@ tasks:
 
   test:
     command:
-      - 'jest'
+      - jest
       - '--coverage'
       - '--passWithNoTests'
     inputs:
@@ -75,8 +52,9 @@ tasks:
 
   typecheck:
     command:
-      - 'tsc'
+      - tsc
       - '--build'
+      - '--verbose'
     inputs:
       - '@group(app)'
       - '@globs(sources)'
@@ -84,9 +62,3 @@ tasks:
       - 'tsconfig.json'
       - 'tsconfig.*.json'
       - '/tsconfig.options.json'
-
-  watch:
-    command:
-      - packemon
-      - watch
-    local: true

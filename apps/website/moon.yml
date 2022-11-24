@@ -55,6 +55,10 @@ tasks:
       - '@group(remix)'
     local: true
 
+  typecheck:
+    inputs:
+      - '@group(remix)'
+
 workspace:
   inheritedTasks:
     exclude:
