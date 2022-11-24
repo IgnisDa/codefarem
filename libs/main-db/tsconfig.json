@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.options.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "noUnusedLocals": false,
     "noEmit": true,
     "emitDeclarationOnly": false,
@@ -15,7 +14,8 @@
       ":faker/*": [
         "../faker/src/*"
       ]
-    }
+    },
+    "outDir": "../../.moon/cache/types/libs/main-db"
   },
   "include": [
     "jest.config.ts",

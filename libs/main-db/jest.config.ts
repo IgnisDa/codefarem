@@ -8,7 +8,6 @@ export default
   {
     roots: ['<rootDir>'],
     moduleNameMapper: mappings,
-    modulePaths: [compilerOptions.baseUrl],
     displayName: 'main-db',
     globals: {
       'ts-jest': {
