@@ -8,8 +8,8 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "paths": {
-      ":faker/*": [
-        "../../libs/faker/src/*"
+      ":faker": [
+        "../../libs/faker/src/index.ts"
       ],
       ":generated/*": [
         "../../libs/generated/src/*"

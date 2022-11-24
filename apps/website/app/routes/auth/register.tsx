@@ -1,8 +1,4 @@
-import {
-  fakeDataDevelopmentMode,
-  getFakeEmail,
-  getFakePassword,
-} from ':faker/index';
+import { fakeDataDevelopmentMode, getFakeEmail, getFakePassword } from ':faker';
 import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
 import {
