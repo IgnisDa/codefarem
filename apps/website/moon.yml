@@ -1,5 +1,10 @@
 type: 'application'
 
+dependsOn:
+  - faker
+  - generated
+  - react-ui
+
 fileGroups:
   remix:
     - 'app/**/*'

@@ -8,6 +8,10 @@ projects:
   react-ui: 'libs/react-ui'
   faker: 'libs/faker'
   examples: 'libs/examples'
+  # rust projects
+  compilers: 'apps/compilers'
+  executor: 'apps/executor'
+  orchestrator: 'apps/orchestrator'
 
 node:
   version: '19.0.0'
