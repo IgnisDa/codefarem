@@ -3,7 +3,7 @@ import {
   QUESTION_DETAILS,
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
-import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
+import { EXECUTE_CODE_FOR_QUESTION } from ':generated/graphql/orchestrator/mutations';
 import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import {
   SupportedLanguage,
@@ -37,8 +37,7 @@ import {
   Loading,
   Collapse,
   Code,
-  Card,
-  Badge,
+  Container,
 } from '@nextui-org/react';
 import { notFound } from 'remix-utils';
 
@@ -85,14 +84,20 @@ export async function action({ request }: ActionArgs) {
     language: z.string(),
     questionSlug: z.string(),
   });
-  console.log({ input, language, questionSlug });
-  const executeCode = await gqlClient.request(EXECUTE_CODE, {
-    input: {
-      code: JSON.parse(input),
-      language: language as SupportedLanguage,
-    },
-  });
-  return json({ output: executeCode.executeCode });
+  const { executeCodeForQuestion } = await gqlClient.request(
+    EXECUTE_CODE_FOR_QUESTION,
+    {
+      input: {
+        questionSlug: questionSlug,
+        executeInput: {
+          arguments: [],
+          code: JSON.parse(input),
+          language: language as SupportedLanguage,
+        },
+      },
+    }
+  );
+  return json({ executeCodeForQuestion });
 }
 
 const DisplayData = (data: TestCaseFragment) => {
@@ -119,9 +124,6 @@ export default () => {
   const actionData = useActionData<typeof action>();
   const [code, setCode] = useState(languageExample);
   const transition = useTransition();
-  const isCodeExecutionSuccessful =
-    actionData &&
-    (actionData.output.__typename === 'ExecuteCodeOutput' || false);
 
   const extensions = match(selectedLanguage)
     .with(SupportedLanguage.Cpp, () => [cpp()])
@@ -214,27 +216,17 @@ export default () => {
             Submit
           </Button>
         </Form>
-        {actionData && (
-          <Card variant="flat">
-            <Card.Header>
-              <Text>Output</Text>
-            </Card.Header>
-            <Card.Body css={{ py: '$2' }}>
-              <Text color={isCodeExecutionSuccessful ? 'success' : 'error'}>
-                {actionData.output.__typename === 'ExecuteCodeOutput'
-                  ? actionData.output.output
-                  : actionData.output.error}
+        {actionData &&
+          actionData.executeCodeForQuestion.__typename ===
+            'ExecuteCodeForQuestionOutput' &&
+          actionData.executeCodeForQuestion.testCaseStatuses.map((t, idx) => (
+            <Container key={idx}>
+              <Text h4>Test Case {idx + 1}</Text>
+              <Text>
+                {t.userOutput} {t.passed ? '==' : '!='} {t.expectedOutput}
               </Text>
-            </Card.Body>
-            <Card.Footer>
-              <Badge
-                color={isCodeExecutionSuccessful ? 'success' : 'error'}
-                variant="dot"
-              />
-              <Text>{isCodeExecutionSuccessful ? 'Success' : 'Error'}</Text>
-            </Card.Footer>
-          </Card>
-        )}
+            </Container>
+          ))}
       </Grid>
     </Grid.Container>
   );

@@ -1,15 +1,11 @@
-use async_graphql::{Context, ErrorExtensions, Object, Result};
-use auth::{get_user_id_from_authorization_token, AuthError};
-use macros::{to_result_union_response, user_id_from_request};
-use uuid::Uuid;
-
-use crate::RequestData;
-
 use super::{
     dto::{
         mutations::{
             create_class::{CreateClassInput, CreateClassResultUnion},
             create_question::{CreateQuestionInput, CreateQuestionResultUnion},
+            execute_code_for_question::{
+                ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
+            },
         },
         queries::{
             class_details::ClassDetailsResultUnion, question_details::QuestionDetailsResultUnion,
@@ -18,6 +14,11 @@ use super::{
     },
     service::{LearningService, LearningServiceTrait},
 };
+use crate::RequestData;
+use async_graphql::{Context, ErrorExtensions, Object, Result};
+use auth::{get_user_id_from_authorization_token, AuthError};
+use macros::{to_result_union_response, user_id_from_request};
+use uuid::Uuid;
 
 /// The query segment for Learning
 #[derive(Default)]
@@ -55,7 +56,7 @@ impl LearningQuery {
     ) -> Result<QuestionDetailsResultUnion> {
         let output = ctx
             .data_unchecked::<LearningService>()
-            .question_details(question_slug)
+            .question_details(&question_slug)
             .await;
         to_result_union_response!(output, QuestionDetailsResultUnion)
     }
@@ -96,5 +97,22 @@ impl LearningMutation {
             )
             .await;
         to_result_union_response!(output, CreateQuestionResultUnion)
+    }
+
+    /// Execute an input code for the selected language and question
+    async fn execute_code_for_question(
+        &self,
+        ctx: &Context<'_>,
+        input: ExecuteCodeForQuestionInput,
+    ) -> Result<ExecuteCodeForQuestionResultUnion> {
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .execute_code_for_question(
+                input.question_slug(),
+                input.execute_input().code(),
+                input.execute_input().language(),
+            )
+            .await;
+        to_result_union_response!(output, ExecuteCodeForQuestionResultUnion)
     }
 }

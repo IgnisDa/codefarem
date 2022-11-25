@@ -76,7 +76,6 @@ export const QUESTION_DETAILS = graphql(`
         }
         testCases {
           inputs {
-            name
             data {
               ...TestCase
             }

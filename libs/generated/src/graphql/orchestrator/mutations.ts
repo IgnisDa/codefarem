@@ -63,3 +63,24 @@ export const TEST_CASE_UNITS = graphql(`
     testCaseUnits
   }
 `);
+
+export const EXECUTE_CODE_FOR_QUESTION = graphql(`
+  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {
+    executeCodeForQuestion(input: $input) {
+      __typename
+      ... on ExecuteCodeForQuestionOutput {
+        numTestCases
+        numTestCasesFailed
+        testCaseStatuses {
+          passed
+          userOutput
+          expectedOutput
+        }
+      }
+      ... on ExecuteCodeError {
+        error
+        step
+      }
+    }
+  }
+`);

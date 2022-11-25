@@ -1,23 +1,32 @@
-use std::sync::Arc;
-
-use async_trait::async_trait;
-use auth::validate_user_role;
-use comrak::{markdown_to_html, ComrakOptions};
-use edgedb_tokio::Client as DbClient;
-use rand::{distributions::Alphanumeric, Rng};
-use slug::slugify;
-use strum::IntoEnumIterator;
-use utilities::{graphql::ApiError, models::IdObject, users::AccountType};
-use uuid::Uuid;
-
 use super::dto::{
-    mutations::{create_class::CreateClassOutput, create_question::CreateQuestionOutput},
+    mutations::{
+        create_class::CreateClassOutput,
+        create_question::CreateQuestionOutput,
+        execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
+    },
     queries::{
         class_details::ClassDetailsOutput,
         question_details::QuestionDetailsOutput,
         test_case::{TestCase, TestCaseUnit},
     },
 };
+use crate::{
+    farem::{
+        dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
+        service::{FaremService, SupportedLanguage},
+    },
+    utils::case_unit_to_argument,
+};
+use async_trait::async_trait;
+use auth::validate_user_role;
+use comrak::{markdown_to_html, ComrakOptions};
+use edgedb_tokio::Client as DbClient;
+use rand::{distributions::Alphanumeric, Rng};
+use slug::slugify;
+use std::sync::Arc;
+use strum::IntoEnumIterator;
+use utilities::{graphql::ApiError, models::IdObject, users::AccountType};
+use uuid::Uuid;
 
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
@@ -51,11 +60,14 @@ const UPDATE_QUESTION: &str =
 #[async_trait]
 pub trait LearningServiceTrait: Sync + Send {
     fn test_case_units(&self) -> Vec<TestCaseUnit>;
+
     async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError>;
+
     async fn question_details<'a>(
         &self,
-        question_slug: String,
+        question_slug: &'_ str,
     ) -> Result<QuestionDetailsOutput, ApiError>;
+
     async fn create_class<'a>(
         &self,
         user_id: &Uuid,
@@ -63,6 +75,7 @@ pub trait LearningServiceTrait: Sync + Send {
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError>;
+
     async fn create_question<'a>(
         &self,
         user_id: &Uuid,
@@ -72,16 +85,25 @@ pub trait LearningServiceTrait: Sync + Send {
         test_cases: &[TestCase],
         class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError>;
+
+    async fn execute_code_for_question(
+        &self,
+        question_slug: &'_ str,
+        input: &'_ str,
+        language: &SupportedLanguage,
+    ) -> Result<ExecuteCodeForQuestionOutput, ExecuteCodeError>;
 }
 
 pub struct LearningService {
-    pub db_conn: Arc<DbClient>,
+    db_conn: Arc<DbClient>,
+    farem_service: Arc<FaremService>,
 }
 
 impl LearningService {
-    pub fn new(db_conn: &Arc<DbClient>) -> Self {
+    pub fn new(db_conn: &Arc<DbClient>, farem_service: &Arc<FaremService>) -> Self {
         Self {
             db_conn: db_conn.clone(),
+            farem_service: farem_service.clone(),
         }
     }
 }
@@ -105,7 +127,7 @@ impl LearningServiceTrait for LearningService {
 
     async fn question_details<'a>(
         &self,
-        question_slug: String,
+        question_slug: &'_ str,
     ) -> Result<QuestionDetailsOutput, ApiError> {
         let question_model = self
             .db_conn
@@ -259,5 +281,58 @@ impl LearningServiceTrait for LearningService {
             .await
             .unwrap();
         Ok(class)
+    }
+
+    async fn execute_code_for_question(
+        &self,
+        question_slug: &'_ str,
+        code: &'_ str,
+        language: &SupportedLanguage,
+    ) -> Result<ExecuteCodeForQuestionOutput, ExecuteCodeError> {
+        let question_details = self
+            .question_details(question_slug)
+            .await
+            .expect("There was an error in getting the correct question");
+        let compiled_wasm = self
+            .farem_service
+            .compile_source(code, language)
+            .await
+            .map_err(|f| ExecuteCodeError {
+                error: f,
+                step: ExecuteCodeErrorStep::CompilationToWasm,
+            })?;
+        let mut outputs = Vec::with_capacity(question_details.test_cases.len());
+        for test_case in question_details.test_cases.iter() {
+            let arguments = test_case
+                .inputs
+                .iter()
+                .map(case_unit_to_argument)
+                .collect::<Vec<_>>();
+            let user_output = self
+                .farem_service
+                .send_execute_wasm_request(&compiled_wasm, &arguments)
+                .await
+                .map_err(|f| ExecuteCodeError {
+                    error: f,
+                    step: ExecuteCodeErrorStep::WasmExecution,
+                })?;
+            let expected_output = test_case
+                .outputs
+                .iter()
+                .map(case_unit_to_argument)
+                .collect::<Vec<_>>()
+                .join("\n")
+                + "\n";
+            outputs.push(TestCaseStatus {
+                passed: user_output == expected_output,
+                user_output,
+                expected_output,
+            });
+        }
+        Ok(ExecuteCodeForQuestionOutput {
+            num_test_cases: outputs.len() as u8,
+            num_test_cases_failed: outputs.iter().filter(|&x| !x.passed).count() as u8,
+            test_case_statuses: outputs,
+        })
     }
 }

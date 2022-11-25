@@ -1,6 +1,5 @@
-use std::{fs, path::PathBuf};
-
 use duct::Expression;
+use std::{fs, path::PathBuf};
 use utilities::generate_random_file;
 
 pub fn generate_input_and_output_files(extension: &'_ str, code: &'_ str) -> (PathBuf, PathBuf) {

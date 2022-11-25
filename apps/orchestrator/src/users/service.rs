@@ -55,8 +55,8 @@ pub trait UserServiceTrait: Sync + Send {
 }
 
 pub struct UserService {
-    pub db_conn: Arc<DbClient>,
-    pub jwt_config: Arc<JwtConfig>,
+    db_conn: Arc<DbClient>,
+    jwt_config: Arc<JwtConfig>,
 }
 
 impl UserService {

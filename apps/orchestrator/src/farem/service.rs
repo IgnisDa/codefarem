@@ -1,18 +1,14 @@
-use std::sync::Arc;
-
+use super::dto::mutations::execute_code::{
+    ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput,
+};
 use async_graphql::Enum;
 use async_trait::async_trait;
-use edgedb_tokio::Client as DbClient;
 use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
     executor::{executor_service_client::ExecutorServiceClient, ExecutorInput},
 };
 use strum::{EnumIter, IntoEnumIterator};
 use tonic::{transport::Channel, Request};
-
-use super::dto::mutations::execute_code::{
-    ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput,
-};
 
 #[async_trait]
 pub trait FaremServiceTrait: Sync + Send {
@@ -23,28 +19,27 @@ pub trait FaremServiceTrait: Sync + Send {
     async fn execute_code(
         &self,
         input: &'_ str,
+        arguments: &[String],
         language: &SupportedLanguage,
     ) -> Result<ExecuteCodeOutput, ExecuteCodeError>;
 }
 
+#[derive(Debug, Clone)]
 pub struct FaremService {
-    pub db_conn: Arc<DbClient>,
-    pub executor_service: ExecutorServiceClient<Channel>,
-    pub cpp_compiler_service: CompilerServiceClient<Channel>,
-    pub go_compiler_service: CompilerServiceClient<Channel>,
-    pub rust_compiler_service: CompilerServiceClient<Channel>,
+    executor_service: ExecutorServiceClient<Channel>,
+    cpp_compiler_service: CompilerServiceClient<Channel>,
+    go_compiler_service: CompilerServiceClient<Channel>,
+    rust_compiler_service: CompilerServiceClient<Channel>,
 }
 
 impl FaremService {
     pub fn new(
-        db_conn: &Arc<DbClient>,
         executor_service: &ExecutorServiceClient<Channel>,
         cpp_compiler_service: &CompilerServiceClient<Channel>,
         go_compiler_service: &CompilerServiceClient<Channel>,
         rust_compiler_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
-            db_conn: db_conn.clone(),
             executor_service: executor_service.clone(),
             cpp_compiler_service: cpp_compiler_service.clone(),
             go_compiler_service: go_compiler_service.clone(),
@@ -53,7 +48,7 @@ impl FaremService {
     }
 }
 
-#[derive(Enum, Clone, Copy, PartialEq, Eq, EnumIter)]
+#[derive(Enum, Clone, Copy, Debug, PartialEq, Eq, EnumIter)]
 #[graphql(rename_items = "lowercase")]
 pub enum SupportedLanguage {
     Rust,
@@ -68,11 +63,18 @@ impl SupportedLanguage {
 }
 
 impl FaremService {
-    async fn execute_wasm(&self, wasm: Vec<u8>) -> Result<String, String> {
+    pub async fn send_execute_wasm_request(
+        &self,
+        wasm: &[u8],
+        arguments: &[String],
+    ) -> Result<String, String> {
         let execute_result = self
             .executor_service
             .clone()
-            .execute(ExecutorInput { data: wasm })
+            .execute(ExecutorInput {
+                data: wasm.to_vec(),
+                arguments: arguments.to_vec(),
+            })
             .await;
         match execute_result {
             Ok(s) => {
@@ -86,7 +88,21 @@ impl FaremService {
         }
     }
 
-    async fn compile_source(
+    pub async fn compile_source(
+        &self,
+        source: &str,
+        language: &SupportedLanguage,
+    ) -> Result<Vec<u8>, String> {
+        let compiler_service = match language {
+            SupportedLanguage::Rust => &self.rust_compiler_service,
+            SupportedLanguage::Go => &self.go_compiler_service,
+            SupportedLanguage::Cpp => &self.cpp_compiler_service,
+        };
+        self.send_compile_source_request(source, compiler_service)
+            .await
+    }
+
+    async fn send_compile_source_request(
         &self,
         input: &'_ str,
         compiler_service: &CompilerServiceClient<Channel>,
@@ -135,21 +151,17 @@ impl FaremServiceTrait for FaremService {
     async fn execute_code(
         &self,
         input: &'_ str,
+        arguments: &[String],
         language: &SupportedLanguage,
     ) -> Result<ExecuteCodeOutput, ExecuteCodeError> {
-        let wasm = match language {
-            SupportedLanguage::Rust => {
-                self.compile_source(input, &self.rust_compiler_service)
-                    .await
-            }
-            SupportedLanguage::Cpp => self.compile_source(input, &self.cpp_compiler_service).await,
-            SupportedLanguage::Go => self.compile_source(input, &self.go_compiler_service).await,
-        }
-        .map_err(|f| ExecuteCodeError {
-            error: f,
-            step: ExecuteCodeErrorStep::CompilationToWasm,
-        })?;
-        self.execute_wasm(wasm)
+        let wasm = self
+            .compile_source(input, language)
+            .await
+            .map_err(|f| ExecuteCodeError {
+                error: f,
+                step: ExecuteCodeErrorStep::CompilationToWasm,
+            })?;
+        self.send_execute_wasm_request(&wasm, arguments)
             .await
             .map(|f| ExecuteCodeOutput { output: f })
             .map_err(|f| ExecuteCodeError {

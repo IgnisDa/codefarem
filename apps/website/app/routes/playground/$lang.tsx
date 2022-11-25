@@ -53,6 +53,7 @@ export async function action({ request }: ActionArgs) {
     input: {
       code: JSON.parse(input),
       language: language as SupportedLanguage,
+      arguments: [],
     },
   });
   return json({ output: executeCode.executeCode });

@@ -9,6 +9,9 @@ pub struct ExecuteCodeInput {
     /// The code input that needs to be compiled
     code: String,
 
+    /// The arguments to be passed to the execution engine
+    arguments: Vec<String>,
+
     /// The language that needs to be compiled
     language: SupportedLanguage,
 }
