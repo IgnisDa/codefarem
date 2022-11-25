@@ -4,11 +4,7 @@ import {
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
 import { EXECUTE_CODE_FOR_QUESTION } from ':generated/graphql/orchestrator/mutations';
-import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
-import {
-  SupportedLanguage,
-  TestCaseUnit,
-} from ':generated/graphql/orchestrator/generated/graphql';
+import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
@@ -97,21 +93,9 @@ export async function action({ request }: ActionArgs) {
       },
     }
   );
+  console.log(executeCodeForQuestion);
   return json({ executeCodeForQuestion });
 }
-
-const DisplayData = (data: TestCaseFragment) => {
-  return match(data.unitType)
-    .with(TestCaseUnit.Number, TestCaseUnit.String, () =>
-      String(data.numberValue || data.stringValue)
-    )
-    .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
-      (data.numberCollectionValue || data.stringCollectionValue || []).join(
-        ', '
-      )
-    )
-    .exhaustive();
-};
 
 export default () => {
   const {
@@ -152,13 +136,13 @@ export default () => {
               <Text b>Inputs</Text>
               {testCase.inputs.map((input, idxI) => (
                 <div key={idxI}>
-                  <Code>{DisplayData(input.data as TestCaseFragment)}</Code>
+                  <Code>{input.data}</Code>
                 </div>
               ))}
               <Text b>Outputs</Text>
               {testCase.outputs.map((output, idxI) => (
                 <div key={idxI}>
-                  <Code>{DisplayData(output.data as TestCaseFragment)}</Code>
+                  <Code>{output.data}</Code>
                 </div>
               ))}
             </Collapse>

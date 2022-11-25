@@ -4,7 +4,7 @@ use edgedb_derive::Queryable;
 use utilities::graphql::ApiError;
 use uuid::Uuid;
 
-use crate::learning::dto::queries::test_case::TestCase;
+use crate::learning::dto::queries::test_case::TestCaseInput;
 
 /// The input object used to create a new question
 #[derive(Debug, InputObject, Getters)]
@@ -19,7 +19,7 @@ pub struct CreateQuestionInput {
     class_ids: Vec<Uuid>,
 
     /// All the test cases that are related to this question
-    test_cases: Vec<TestCase>,
+    test_cases: Vec<TestCaseInput>,
 }
 
 /// The result type if the question was created successfully

@@ -3,45 +3,34 @@ use serde::Deserialize;
 use utilities::graphql::ApiError;
 use uuid::Uuid;
 
-use super::test_case::TestCaseUnit;
-
-#[derive(SimpleObject, Deserialize)]
+#[derive(Debug, SimpleObject, Deserialize)]
 pub struct AuthoredByProfile {
     username: String,
 }
 
-#[derive(SimpleObject, Deserialize)]
+#[derive(Debug, SimpleObject, Deserialize)]
 pub struct AuthoredByInformation {
     profile: AuthoredByProfile,
 }
 
 #[derive(Debug, SimpleObject, Deserialize)]
 pub struct TestCaseData {
-    pub unit_type: TestCaseUnit,
-    pub string_value: Option<String>,
-    pub string_collection_value: Option<Vec<String>>,
-    pub number_value: Option<f64>,
-    pub number_collection_value: Option<Vec<f64>>,
-}
-
-#[derive(Debug, SimpleObject, Deserialize)]
-pub struct QuestionData {
-    /// The data related to this input
-    pub data: TestCaseData,
+    /// The actual data associated with the input/output
+    pub data: String,
 }
 
 #[derive(Debug, SimpleObject, Deserialize)]
 pub struct QuestionTestCase {
     /// The unique ID for this test case
-    id: Uuid,
+    pub id: Uuid,
     /// The ordered inputs for this test case
-    pub inputs: Vec<QuestionData>,
+    pub inputs: Vec<TestCaseData>,
     /// The ordered outputs for this test case
-    pub outputs: Vec<QuestionData>,
+    pub outputs: Vec<TestCaseData>,
 }
 
 /// The input object used to get details about a question
-#[derive(SimpleObject, Deserialize)]
+#[derive(Debug, SimpleObject, Deserialize)]
 pub struct QuestionDetailsOutput {
     /// The name/title of the question
     pub name: String,
@@ -63,7 +52,7 @@ pub struct QuestionDetailsOutput {
 }
 
 /// The output object when creating a new question
-#[derive(Union)]
+#[derive(Debug, Union)]
 pub enum QuestionDetailsResultUnion {
     /// The type returned when getting details about a question was successful
     Result(QuestionDetailsOutput),

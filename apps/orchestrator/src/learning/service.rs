@@ -5,17 +5,13 @@ use super::dto::{
         execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
     },
     queries::{
-        class_details::ClassDetailsOutput,
-        question_details::QuestionDetailsOutput,
-        test_case::{TestCase, TestCaseUnit},
+        class_details::ClassDetailsOutput, question_details::QuestionDetailsOutput,
+        test_case::TestCaseInput,
     },
 };
-use crate::{
-    farem::{
-        dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
-        service::{FaremService, SupportedLanguage},
-    },
-    utils::case_unit_to_argument,
+use crate::farem::{
+    dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
+    service::{FaremService, SupportedLanguage},
 };
 use async_trait::async_trait;
 use auth::validate_user_role;
@@ -24,7 +20,6 @@ use edgedb_tokio::Client as DbClient;
 use rand::{distributions::Alphanumeric, Rng};
 use slug::slugify;
 use std::sync::Arc;
-use strum::IntoEnumIterator;
 use utilities::{graphql::ApiError, models::IdObject, users::AccountType};
 use uuid::Uuid;
 
@@ -38,20 +33,9 @@ const CREATE_CLASS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/create-class.edgeql");
 const CREATE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/create-question.edgeql");
-const INSERT_NUMBER_COLLECTION_UNIT: &str = include_str!(
-    "../../../../libs/main-db/edgeql/learning/test-cases/number-collection-unit.edgeql"
+const INSERT_TEST_CASE_DATA: &str = include_str!(
+    "../../../../libs/main-db/edgeql/learning/test-cases/insert-test-case-data.edgeql"
 );
-const INSERT_NUMBER_UNIT: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/test-cases/number-unit.edgeql");
-const INSERT_STRING_UNIT: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/test-cases/string-unit.edgeql");
-const INSERT_STRING_COLLECTION_UNIT: &str = include_str!(
-    "../../../../libs/main-db/edgeql/learning/test-cases/string-collection-unit.edgeql"
-);
-const INSERT_INPUT_CASE_UNIT: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/test-cases/input-case-unit.edgeql");
-const INSERT_OUTPUT_CASE_UNIT: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/test-cases/output-case-unit.edgeql");
 const INSERT_TEST_CASE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/test-case.edgeql");
 const UPDATE_QUESTION: &str =
@@ -59,8 +43,6 @@ const UPDATE_QUESTION: &str =
 
 #[async_trait]
 pub trait LearningServiceTrait: Sync + Send {
-    fn test_case_units(&self) -> Vec<TestCaseUnit>;
-
     async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError>;
 
     async fn question_details<'a>(
@@ -82,7 +64,7 @@ pub trait LearningServiceTrait: Sync + Send {
         account_type: &AccountType,
         name: &'a str,
         problem: &'a str,
-        test_cases: &[TestCase],
+        test_cases: &[TestCaseInput],
         class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError>;
 
@@ -112,10 +94,6 @@ impl LearningService {}
 
 #[async_trait]
 impl LearningServiceTrait for LearningService {
-    fn test_case_units(&self) -> Vec<TestCaseUnit> {
-        TestCaseUnit::iter().collect()
-    }
-
     async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
         self.db_conn
             .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
@@ -169,7 +147,7 @@ impl LearningServiceTrait for LearningService {
         account_type: &AccountType,
         name: &'a str,
         problem: &'a str,
-        test_cases: &[TestCase],
+        test_cases: &[TestCaseInput],
         class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError> {
         validate_user_role(&AccountType::Teacher, account_type)?;
@@ -216,47 +194,27 @@ impl LearningServiceTrait for LearningService {
                         .to_string(),
                 }
             })?;
-        fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
-            match test_case {
-                TestCaseUnit::Number => INSERT_NUMBER_UNIT,
-                TestCaseUnit::NumberCollection => INSERT_NUMBER_COLLECTION_UNIT,
-                TestCaseUnit::String => INSERT_STRING_UNIT,
-                TestCaseUnit::StringCollection => INSERT_STRING_COLLECTION_UNIT,
-            }
-        }
         let mut test_cases_to_associate = vec![];
         for test_case in test_cases.iter() {
             let mut input_case_units = vec![];
             let mut output_case_units = vec![];
             for (idx, input) in test_case.inputs.iter().enumerate() {
-                let insert_ql = get_insert_ql(&input.data_type);
-                let case_unit = self
-                    .db_conn
-                    .query_required_single::<IdObject, _>(insert_ql, &(&input.data,))
-                    .await
-                    .unwrap();
                 let input_case_unit = self
                     .db_conn
                     .query_required_single::<IdObject, _>(
-                        INSERT_INPUT_CASE_UNIT,
-                        &(&input.name, idx as i32, case_unit.id),
+                        INSERT_TEST_CASE_DATA,
+                        &(idx as i32, input.data.clone()),
                     )
                     .await
                     .unwrap();
                 input_case_units.push(input_case_unit.id);
             }
             for (idx, output) in test_case.outputs.iter().enumerate() {
-                let insert_ql = get_insert_ql(&output.data_type);
-                let case_unit = self
-                    .db_conn
-                    .query_required_single::<IdObject, _>(insert_ql, &(&output.data,))
-                    .await
-                    .unwrap();
                 let output_case_unit = self
                     .db_conn
                     .query_required_single::<IdObject, _>(
-                        INSERT_OUTPUT_CASE_UNIT,
-                        &(idx as i32, case_unit.id),
+                        INSERT_TEST_CASE_DATA,
+                        &(idx as i32, output.data.clone()),
                     )
                     .await
                     .unwrap();
@@ -306,7 +264,7 @@ impl LearningServiceTrait for LearningService {
             let arguments = test_case
                 .inputs
                 .iter()
-                .map(case_unit_to_argument)
+                .map(|f| f.data.clone())
                 .collect::<Vec<_>>();
             let user_output = self
                 .farem_service
@@ -316,13 +274,15 @@ impl LearningServiceTrait for LearningService {
                     error: f,
                     step: ExecuteCodeErrorStep::WasmExecution,
                 })?;
-            let expected_output = test_case
+            let collected_expected_output = test_case
                 .outputs
                 .iter()
-                .map(case_unit_to_argument)
-                .collect::<Vec<_>>()
-                .join("\n")
-                + "\n";
+                .map(|f| f.data.clone())
+                .collect::<Vec<_>>();
+            let mut expected_output = collected_expected_output.join("\n");
+            if !collected_expected_output.is_empty() {
+                expected_output += "\n";
+            }
             outputs.push(TestCaseStatus {
                 passed: user_output == expected_output,
                 user_output,

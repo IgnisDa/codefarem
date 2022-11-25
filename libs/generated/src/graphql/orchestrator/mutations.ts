@@ -58,12 +58,6 @@ export const CREATE_QUESTION = graphql(`
   }
 `);
 
-export const TEST_CASE_UNITS = graphql(`
-  query TestCaseUnits {
-    testCaseUnits
-  }
-`);
-
 export const EXECUTE_CODE_FOR_QUESTION = graphql(`
   mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {
     executeCodeForQuestion(input: $input) {

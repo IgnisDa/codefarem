@@ -9,7 +9,6 @@ use super::{
         },
         queries::{
             class_details::ClassDetailsResultUnion, question_details::QuestionDetailsResultUnion,
-            test_case::TestCaseUnit,
         },
     },
     service::{LearningService, LearningServiceTrait},
@@ -30,11 +29,6 @@ pub struct LearningMutation {}
 
 #[Object]
 impl LearningQuery {
-    /// Get all the types of test case units possible
-    async fn test_case_units(&self, ctx: &Context<'_>) -> Vec<TestCaseUnit> {
-        ctx.data_unchecked::<LearningService>().test_case_units()
-    }
-
     /// Get information about a class
     async fn class_details(
         &self,

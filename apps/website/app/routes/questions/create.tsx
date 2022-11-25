@@ -1,4 +1,3 @@
-import { Listbox } from '@headlessui/react';
 import {
   Button,
   Col,
@@ -10,8 +9,7 @@ import {
   Textarea,
 } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
-import { capitalCase } from 'change-case';
+import { Form } from '@remix-run/react';
 import { set } from 'lodash';
 import { useState } from 'react';
 import { HiMinusCircle, HiPlusCircle } from 'react-icons/hi';
@@ -23,21 +21,16 @@ import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import {
   AccountType,
   SupportedLanguage,
-  TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import type { CreateQuestionInput } from ':generated/graphql/orchestrator/generated/graphql';
 import { getAuthHeader, gqlClient } from '~/lib/services/graphql.server';
-import {
-  CREATE_QUESTION,
-  TEST_CASE_UNITS,
-} from ':generated/graphql/orchestrator/mutations';
+import { CREATE_QUESTION } from ':generated/graphql/orchestrator/mutations';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await authenticator.isAuthenticated(request);
   if (user?.userDetails.accountType !== AccountType.Teacher)
     throw notFound({ message: 'Route not found' });
-  const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
-  return json({ testCaseUnits });
+  return json({});
 }
 
 export async function action({ request }: ActionArgs) {
@@ -72,37 +65,7 @@ export async function action({ request }: ActionArgs) {
   );
 }
 
-const SelectUnitCase = ({
-  name,
-  heading,
-  testCaseUnits,
-}: {
-  name: string;
-  heading: string;
-  testCaseUnits: TestCaseUnit[];
-}) => {
-  return (
-    <Listbox name={name} defaultValue={TestCaseUnit.String}>
-      {({ value }) => (
-        <>
-          <Text>{heading}</Text>
-          {/* TODO: use select from Next-UI once it has been released */}
-          <Listbox.Button>{capitalCase(value)}</Listbox.Button>
-          <Listbox.Options>
-            {testCaseUnits.map((unit, idx) => (
-              <Listbox.Option key={idx} value={unit}>
-                {capitalCase(unit)}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </>
-      )}
-    </Listbox>
-  );
-};
-
 export default () => {
-  const { testCaseUnits } = useLoaderData<typeof loader>();
   // each element of this list denotes the number of [input, output] for a test case
   const [totalTestCases, setTotalTestCases] = useState([[1, 1]]);
 
@@ -143,23 +106,10 @@ export default () => {
                   {[...Array(testCases[0]).keys()].map((iIdx) => (
                     <Row align="center" key={iIdx}>
                       <Col>
-                        <SelectUnitCase
-                          name={`testCases[${tIdx}].inputs[${iIdx}].dataType`}
-                          heading="Type"
-                          testCaseUnits={testCaseUnits}
-                        />
-                      </Col>
-                      <Col>
                         <Input
                           name={`testCases[${tIdx}].inputs[${iIdx}].data`}
                           type="text"
                           label="Data"
-                        />
-                        <input
-                          name={`testCases[${tIdx}].inputs[${iIdx}].name`}
-                          type="text"
-                          defaultValue={`line${iIdx + 1}`}
-                          hidden
                         />
                       </Col>
                       <Col>
@@ -185,13 +135,6 @@ export default () => {
                   />
                   {[...Array(testCases[1]).keys()].map((oIdx) => (
                     <Row align="center" key={oIdx}>
-                      <Col>
-                        <SelectUnitCase
-                          name={`testCases[${tIdx}].outputs[${oIdx}].dataType`}
-                          heading="Type"
-                          testCaseUnits={testCaseUnits}
-                        />
-                      </Col>
                       <Col>
                         <Input
                           name={`testCases[${tIdx}].outputs[${oIdx}].data`}

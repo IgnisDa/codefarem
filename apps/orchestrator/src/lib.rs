@@ -2,7 +2,6 @@ pub mod farem;
 pub mod graphql;
 pub mod learning;
 pub mod users;
-pub mod utils;
 
 use anyhow::Result;
 use config::JwtConfig;
