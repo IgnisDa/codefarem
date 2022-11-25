@@ -1,24 +1,32 @@
-import { Button, Input } from '@codefarem/react-ui';
+import { fakeDataDevelopmentMode, getFakeEmail, getFakePassword } from ':faker';
+import { Button, Card, Input, Loading, Spacer, Text } from '@nextui-org/react';
 import { json, redirect } from '@remix-run/node';
-import { Form, useTransition } from '@remix-run/react';
-import { $path } from 'remix-routes';
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useTransition,
+} from '@remix-run/react';
+import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
-import { AccountType } from '@codefarem/generated/orchestrator-graphql';
-
 import {
   FORM_EMAIL_KEY,
   FORM_PASSWORD_KEY,
   SUCCESSFUL_REDIRECT_PATH,
 } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
-import { graphqlSdk } from '~/lib/services/graphql.server';
 
 import type {
   ActionArgs,
   DataFunctionArgs,
   MetaFunction,
 } from '@remix-run/node';
+import { gqlClient } from '~/lib/services/graphql.server';
+import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
+import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
+import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 
 export const meta: MetaFunction = () => {
   return { title: 'Register' };
@@ -30,81 +38,87 @@ export const action = async ({ request }: ActionArgs) => {
     [FORM_PASSWORD_KEY]: z.string().min(8),
   });
   const username = new Date().toISOString();
-  const { userWithEmail } = await graphqlSdk()('query')({
-    userWithEmail: [
-      { input: { email } },
-      {
-        __typename: true,
-        '...on UserWithEmailOutput': { __typename: true },
-        '...on UserWithEmailError': { __typename: true },
-      },
-    ],
+  const { userWithEmail } = await gqlClient.request(USER_WITH_EMAIL, {
+    input: { email },
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
     // user does not exist, we create one here
-    const { registerUser } = await graphqlSdk()('mutation')({
-      registerUser: [
-        {
-          input: {
-            email,
-            password,
-            username,
-            accountType: AccountType.STUDENT,
-          },
-        },
-        {
-          __typename: true,
-          '...on RegisterUserError': { __typename: true },
-          '...on RegisterUserOutput': { __typename: true },
-        },
-      ],
+    await gqlClient.request(REGISTER_USER, {
+      input: {
+        email,
+        password,
+        username,
+        accountType: AccountType.Student,
+      },
     });
-    if (registerUser.__typename === 'RegisterUserError')
-      throw new Error(`There was a problem registering the user`);
+    return redirect(route('/auth/login'));
   }
-  return redirect($path('/auth/login'));
+  return json(
+    { message: 'The email you entered was not unique' },
+    { status: 400 }
+  );
 };
 
 export const loader = async ({ request }: DataFunctionArgs) => {
   await authenticator.isAuthenticated(request, {
     successRedirect: SUCCESSFUL_REDIRECT_PATH,
   });
-  return json({});
+  return json({
+    email: fakeDataDevelopmentMode(getFakeEmail),
+    password: fakeDataDevelopmentMode(getFakePassword),
+  });
 };
 
 export default () => {
+  const { email, password } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
   const transition = useTransition();
 
   return (
-    <div className="flex-auto md:max-w-lg">
-      <div className="space-y-4">
-        <h1 className="w-full text-2xl font-semibold font-circular-book text-primary-heading">
-          Register
-        </h1>
-        <h2 className="text-lg font-circular-book text-grayed">
-          Please provide the following details
-        </h2>
-      </div>
-      <div className="mt-10">
-        <Form className="flex flex-col mb-10 space-y-2" method="post">
+    <Card>
+      <Card.Header>
+        <Text h2>Register</Text>
+      </Card.Header>
+      <Card.Divider />
+      <Card.Body>
+        {actionData && <Text color="error">{actionData.message}</Text>}
+        <Form method="post">
           <Input
             name={FORM_EMAIL_KEY}
             type="email"
             required
             placeholder="ana@skywalk.com"
             label="Email Address"
+            width="100%"
+            initialValue={email}
           />
-          <Input
+          <Input.Password
             name={FORM_PASSWORD_KEY}
-            type="password"
             required
             label="Password"
+            width="100%"
+            initialValue={password}
           />
-          <div className="w-full">
-            <Button isLoading={transition.state !== 'idle'}>Continue</Button>
-          </div>
+          <Spacer y={1} />
+          <Button
+            type="submit"
+            css={{ width: '100%' }}
+            disabled={transition.state !== 'idle'}
+          >
+            {transition.state === 'idle' ? (
+              'Submit'
+            ) : (
+              <Loading type="points" color="currentColor" />
+            )}
+          </Button>
         </Form>
-      </div>
-    </div>
+      </Card.Body>
+      <Card.Divider />
+      <Card.Footer>
+        <Text>
+          Need to login? <Link to={route('/auth/login')}>Click here</Link>
+        </Text>
+      </Card.Footer>
+    </Card>
   );
 };

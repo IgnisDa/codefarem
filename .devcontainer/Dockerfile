@@ -16,13 +16,11 @@ RUN groupadd -g ${GUID} ${USERNAME} ; \
 RUN pacman -S --noconfirm rustup nodejs npm python3 go tinygo fish curl wget python-pip
 
 RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
-    chmod +x /etc/profile.d/cargo.sh
+    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/edgedb.sh ;\
+    chmod +x /etc/profile.d/cargo.sh ;\
+    chmod +x /etc/profile.d/edgedb.sh
 
 RUN set -eu ;\
-    npm install --global pnpm @moonrepo/cli ;\
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
-    mv "/root/.local/bin/edgedb" "/usr/local/bin/edgedb" ;\
-    chmod +x "/usr/local/bin/edgedb" ;\
     wget "https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-unknown-linux-musl.tgz" -O "/tmp/cargo-binstall.tgz" ;\
     tar zxvf "/tmp/cargo-binstall.tgz" ;\
     mv cargo-binstall "/usr/bin/"
@@ -31,10 +29,12 @@ USER $USERNAME
 
 RUN set -eu ;\
     npm config set store-dir "$HOME/.store" ;\
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
     curl "https://wasmtime.dev/install.sh" -sSf | bash ;\
     sudo cp "$HOME/.wasmtime/bin/wasmtime" "/usr/bin/" ;\
     rustup default nightly ;\
     rustup target add wasm32-wasi ;\
+    cargo install moon_cli --git https://github.com/moonrepo/moon.git ;\
     cargo binstall cargo-nextest cargo-watch --no-confirm
 
 RUN set -eu ;\

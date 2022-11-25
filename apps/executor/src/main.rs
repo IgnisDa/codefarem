@@ -1,11 +1,10 @@
-use std::io::Write;
-
 use duct::cmd;
 use log::info;
 use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
     ExecutorInput, ExecutorOutput,
 };
+use std::io::Write;
 use tonic::{async_trait, transport::Server, Request, Response, Status};
 use utilities::generate_random_file;
 
@@ -20,7 +19,13 @@ impl ExecutorService for ExecutorHandler {
     ) -> Result<Response<ExecutorOutput>, Status> {
         let (mut file, file_path) = generate_random_file(Some("wasm")).unwrap();
         file.write_all(request.get_ref().data.as_slice()).unwrap();
-        let command_output = cmd!("wasmtime", file_path)
+        let mut program_args = vec![file_path.to_string_lossy().to_string()];
+        let arguments = request.get_ref().arguments.clone();
+        if !arguments.is_empty() {
+            program_args.extend(arguments);
+        }
+        let command = cmd("wasmtime", program_args);
+        let command_output = command
             .unchecked()
             .stdout_capture()
             .stderr_capture()

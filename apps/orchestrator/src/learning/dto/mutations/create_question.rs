@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::learning::dto::queries::test_case::TestCase;
 
 /// The input object used to create a new question
-#[derive(InputObject, Getters)]
+#[derive(Debug, InputObject, Getters)]
 pub struct CreateQuestionInput {
     /// The name/title of the question
     name: String,
@@ -23,10 +23,13 @@ pub struct CreateQuestionInput {
 }
 
 /// The result type if the question was created successfully
-#[derive(SimpleObject, Queryable, Clone, Copy)]
+#[derive(Debug, SimpleObject, Queryable, Clone)]
 pub struct CreateQuestionOutput {
     /// The ID of the question
     pub id: Uuid,
+
+    /// The slug of the newly created question
+    pub slug: String,
 }
 
 /// The output object when creating a new question

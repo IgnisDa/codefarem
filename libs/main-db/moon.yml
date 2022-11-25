@@ -12,7 +12,6 @@ tasks:
       - '@group(dbschema)'
     outputs:
       - 'dbschema/edgeql-js'
-    local: true
 
   lint-edgeql:
     command: 'noop'
@@ -28,5 +27,7 @@ tasks:
 
 workspace:
   inheritedTasks:
+    exclude:
+      - 'build'
     rename:
       lint: 'lint-js'

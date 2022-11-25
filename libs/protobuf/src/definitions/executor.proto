@@ -5,6 +5,7 @@ package executor;
 // The input required when executing a wasm source.
 message ExecutorInput {
   bytes data = 1;
+  repeated string arguments = 2;
 }
 
 // The output of executing a wasm source.

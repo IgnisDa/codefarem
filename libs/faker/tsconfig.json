@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "include": [
+    "**/*"
+  ],
+  "compilerOptions": {
+    "outDir": "../../.moon/cache/types/libs/faker",
+    "rootDir": "."
+  },
+  "references": []
+}

@@ -9,17 +9,28 @@ fileGroups:
 
 tasks:
   dev-routes:
-    command: 'remix-routes'
+    command: 'routes-gen'
     args:
+      - '--driver'
+      - '@routes-gen/remix'
+      - '--output'
+      - 'app/lib/routes.d.ts'
       - '--watch'
     inputs:
       - '@group(remix)'
     local: true
 
   routes:
-    command: 'remix-routes'
+    command: 'routes-gen'
+    args:
+      - '--driver'
+      - '@routes-gen/remix'
+      - '--output'
+      - 'app/lib/routes.d.ts'
     inputs:
       - '@group(remix)'
+    output:
+      - 'app/lib/routes.d.ts'
 
   dev:
     command: 'remix dev'
@@ -30,8 +41,6 @@ tasks:
   build:
     command: 'remix build'
     deps:
-      - 'react-ui:build'
-      - 'generated:build'
       - '~:routes'
     inputs:
       - '@group(remix)'
@@ -46,7 +55,12 @@ tasks:
       - '@group(remix)'
     local: true
 
+  typecheck:
+    inputs:
+      - '@group(remix)'
+
 workspace:
   inheritedTasks:
     exclude:
+      - 'build'
       - 'test'

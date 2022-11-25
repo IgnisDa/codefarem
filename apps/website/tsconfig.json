@@ -5,9 +5,15 @@
     "emitDeclarationOnly": false,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "noEmit": true,
     "paths": {
+      ":faker": [
+        "../../libs/faker/src/index.ts"
+      ],
+      ":generated/*": [
+        "../../libs/generated/src/*"
+      ],
       "~/*": [
         "./app/*"
       ]
@@ -22,7 +28,8 @@
     "strict": true,
     "target": "ES2019",
     "esModuleInterop": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "outDir": "../../.moon/cache/types/apps/website"
   },
   "include": [
     ".eslintrc.js",
@@ -35,6 +42,9 @@
     "public"
   ],
   "references": [
+    {
+      "path": "../../libs/faker"
+    },
     {
       "path": "../../libs/generated"
     },

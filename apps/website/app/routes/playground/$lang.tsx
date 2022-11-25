@@ -1,5 +1,9 @@
-import { SupportedLanguage } from '@codefarem/generated/orchestrator-graphql';
-import { Button } from '@codefarem/react-ui';
+import {
+  LANGUAGE_EXAMPLE,
+  SUPPORTED_LANGUAGES,
+} from ':generated/graphql/orchestrator/queries';
+import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
+import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { cpp } from '@codemirror/lang-cpp';
 import { rust } from '@codemirror/lang-rust';
 import { StreamLanguage } from '@codemirror/language';
@@ -14,20 +18,19 @@ import {
 } from '@remix-run/react';
 import EditorView from '@uiw/react-codemirror';
 import { useState } from 'react';
-import { $path } from 'remix-routes';
+import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 
-import { graphqlSdk } from '../../lib/services/graphql.server';
+import { gqlClient } from '~/lib/services/graphql.server';
 
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
+import { Button, Loading } from '@nextui-org/react';
 
 export async function loader({ params }: LoaderArgs) {
-  const { supportedLanguages } = await graphqlSdk()('query')({
-    supportedLanguages: true,
-  });
+  const { supportedLanguages } = await gqlClient.request(SUPPORTED_LANGUAGES);
   const selectedLanguage = params.lang as SupportedLanguage;
   invariant(
     supportedLanguages.includes(selectedLanguage as any),
@@ -35,8 +38,8 @@ export async function loader({ params }: LoaderArgs) {
       ', '
     )}'`
   );
-  const { languageExample } = await graphqlSdk()('query')({
-    languageExample: [{ language: selectedLanguage }, true],
+  const { languageExample } = await gqlClient.request(LANGUAGE_EXAMPLE, {
+    language: selectedLanguage,
   });
   return json({ languageExample, supportedLanguages, selectedLanguage });
 }
@@ -46,20 +49,12 @@ export async function action({ request }: ActionArgs) {
     input: z.string(),
     language: z.string(),
   });
-  const executeCode = await graphqlSdk()('mutation')({
-    executeCode: [
-      {
-        input: {
-          code: JSON.parse(input),
-          language: language as SupportedLanguage,
-        },
-      },
-      {
-        __typename: true,
-        '...on ExecuteCodeError': { error: true, step: true },
-        '...on ExecuteCodeOutput': { output: true },
-      },
-    ],
+  const executeCode = await gqlClient.request(EXECUTE_CODE, {
+    input: {
+      code: JSON.parse(input),
+      language: language as SupportedLanguage,
+      arguments: [],
+    },
   });
   return json({ output: executeCode.executeCode });
 }
@@ -72,19 +67,18 @@ export default () => {
   const transition = useTransition();
 
   const extensions = match(selectedLanguage)
-    .with(SupportedLanguage.cpp, () => [cpp()])
-    .with(SupportedLanguage.rust, () => [rust()])
-    .with(SupportedLanguage.go, () => [StreamLanguage.define(go)])
+    .with(SupportedLanguage.Cpp, () => [cpp()])
+    .with(SupportedLanguage.Rust, () => [rust()])
+    .with(SupportedLanguage.Go, () => [StreamLanguage.define(go)])
     .exhaustive();
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 w-full h-full space-y-10">
-      <div className="flex items-center space-x-3">
+    <div>
+      <div>
         {supportedLanguages.map((l, idx) => (
           <Link
             key={idx}
-            to={$path('/playground/:lang', { lang: l })}
-            className="px-4 py-1 text-lg tracking-wider border border-purple-600 rounded-lg bg-purple-50"
+            to={route('/playground/:lang', { lang: l })}
             reloadDocument
           >
             {l}
@@ -106,23 +100,25 @@ export default () => {
           readOnly
           hidden
         />
-        <Button isLoading={transition.state !== 'idle'}>Submit</Button>
+        <Button type="submit">
+          {transition.state !== 'idle' && <Loading color={'secondary'} />}
+          Submit
+        </Button>
       </Form>
-      <div className="flex w-full px-20 max-h-96">
-        <div className="flex-1 w-1/3 p-2 font-mono bg-slate-600">
+      <div>
+        <div>
           {actionData &&
             (actionData.output.__typename === 'ExecuteCodeError' ? (
-              <div className="text-red-300">{actionData.output.error}</div>
+              <div>{actionData.output.error}</div>
             ) : (
-              <div className="text-white">{actionData.output.output}</div>
+              <div>{actionData.output.output}</div>
             ))}
         </div>
-        <div className="w-2/3 overflow-scroll">
+        <div>
           <EditorView
             extensions={extensions}
             value={code}
             theme="dark"
-            className="text-lg"
             onChange={(val) => setCode(val)}
           />
         </div>

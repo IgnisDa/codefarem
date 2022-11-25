@@ -32,8 +32,8 @@ impl FaremQuery {
 
 #[Object]
 impl FaremMutation {
-    /// Takes some code as input and compiles it to wasm before executing it
-    // Currently does not support user inputs.
+    /// Takes some code as input and compiles it to wasm before executing it with the
+    /// supplied argument
     async fn execute_code(
         &self,
         ctx: &Context<'_>,
@@ -42,7 +42,7 @@ impl FaremMutation {
         let output = ctx
             .data::<FaremService>()
             .unwrap()
-            .execute_code(input.code(), input.language())
+            .execute_code(input.code(), input.arguments(), input.language())
             .await;
         to_result_union_response!(output, ExecuteCodeResultUnion)
     }

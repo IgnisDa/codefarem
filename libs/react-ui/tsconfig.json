@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.options.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "outDir": "dts",
+    "outDir": "../../.moon/cache/types/libs/react-ui",
     "rootDir": "."
   },
   "exclude": [

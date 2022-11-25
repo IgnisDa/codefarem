@@ -3,6 +3,8 @@
 pub struct ExecutorInput {
     #[prost(bytes="vec", tag="1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, repeated, tag="2")]
+    pub arguments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The output of executing a wasm source.
 #[derive(Clone, PartialEq, ::prost::Message)]

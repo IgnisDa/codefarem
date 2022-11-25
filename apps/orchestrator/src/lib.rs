@@ -2,8 +2,7 @@ pub mod farem;
 pub mod graphql;
 pub mod learning;
 pub mod users;
-
-use std::{env, sync::Arc};
+pub mod utils;
 
 use anyhow::Result;
 use config::JwtConfig;
@@ -19,6 +18,7 @@ use rocket::{
     request::{FromRequest, Outcome},
     Request,
 };
+use std::{env, sync::Arc};
 use tonic::transport::Channel;
 
 pub struct AppConfig {

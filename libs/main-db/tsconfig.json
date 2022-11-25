@@ -1,16 +1,34 @@
 {
   "extends": "../../tsconfig.options.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "noUnusedLocals": false,
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "resolveJsonModule": true,
+    "module": "Node16",
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      ":faker": [
+        "../faker/src/index.ts"
+      ]
+    },
+    "outDir": "../../.moon/cache/types/libs/main-db"
   },
   "include": [
     "jest.config.ts",
+    "**/*.ts",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "tsconfig.json"
+  ],
+  "exclude": [],
+  "references": [
+    {
+      "path": "../faker"
+    }
   ]
 }

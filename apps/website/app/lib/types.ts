@@ -1,4 +1,4 @@
-import type { AccountType } from '@codefarem/generated/graphql/zeus';
+import type { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 
 export type AppUserData = {
   accountType: AccountType;

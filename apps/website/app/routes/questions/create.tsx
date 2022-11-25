@@ -1,7 +1,3 @@
-import {
-  AccountType,
-  TestCaseUnit,
-} from '@codefarem/generated/orchestrator-graphql';
 import { Listbox } from '@headlessui/react';
 import {
   Button,
@@ -18,23 +14,29 @@ import { Form, useLoaderData } from '@remix-run/react';
 import { capitalCase } from 'change-case';
 import { set } from 'lodash';
 import { useState } from 'react';
-import { HiPlusCircle } from 'react-icons/hi';
+import { HiMinusCircle, HiPlusCircle } from 'react-icons/hi';
 import { notFound } from 'remix-utils';
-import { $path } from 'remix-routes';
-
+import { route } from 'routes-gen';
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
 import { authenticator } from '~/lib/services/auth.server';
-import { graphqlScalars, graphqlSdk } from '~/lib/services/graphql.server';
-
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import {
+  AccountType,
+  SupportedLanguage,
+  TestCaseUnit,
+} from ':generated/graphql/orchestrator/generated/graphql';
+import type { CreateQuestionInput } from ':generated/graphql/orchestrator/generated/graphql';
+import { getAuthHeader, gqlClient } from '~/lib/services/graphql.server';
+import {
+  CREATE_QUESTION,
+  TEST_CASE_UNITS,
+} from ':generated/graphql/orchestrator/mutations';
 
 export async function loader({ request }: LoaderArgs) {
   const user = await authenticator.isAuthenticated(request);
-  if (user?.userDetails.accountType !== AccountType.TEACHER)
+  if (user?.userDetails.accountType !== AccountType.Teacher)
     throw notFound({ message: 'Route not found' });
-  const { testCaseUnits } = await graphqlSdk()('query')({
-    testCaseUnits: true,
-  });
+  const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
   return json({ testCaseUnits });
 }
 
@@ -42,26 +44,32 @@ export async function action({ request }: ActionArgs) {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: FAILURE_REDIRECT_PATH,
   });
-  const input: any = {};
-  for (const [key, value] of await request.formData()) {
-    set(input, key, value);
-  }
-  input.classIds = [];
-  const { createQuestion } = await graphqlSdk(user.token)('mutation', {
-    scalars: graphqlScalars,
-  })({
-    createQuestion: [
-      { input: input },
-      {
-        '...on ApiError': { error: true },
-        '...on CreateQuestionOutput': { id: true },
-        __typename: true,
-      },
-    ],
+  let input: CreateQuestionInput = {} as any;
+  for (const [key, value] of await request.formData()) set(input, key, value);
+
+  // if there are no test cases at all
+  if (!input.testCases?.length) input.testCases = [];
+
+  // handle the case when input/output is empty for a test case
+  input.testCases.forEach((tCase, idx, theArr) => {
+    if (!tCase.inputs) theArr[idx].inputs = [];
+    if (!tCase.outputs) theArr[idx].outputs = [];
   });
+
+  input.classIds = [];
+  const { createQuestion } = await gqlClient.request(
+    CREATE_QUESTION,
+    { input },
+    getAuthHeader(user.token)
+  );
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
-  return redirect($path('/questions/:id', { id: createQuestion.id }));
+  return redirect(
+    route('/questions/solve/:slug/:lang', {
+      slug: createQuestion.slug,
+      lang: SupportedLanguage.Cpp,
+    })
+  );
 }
 
 const SelectUnitCase = ({
@@ -74,7 +82,7 @@ const SelectUnitCase = ({
   testCaseUnits: TestCaseUnit[];
 }) => {
   return (
-    <Listbox name={name} defaultValue={TestCaseUnit.STRING}>
+    <Listbox name={name} defaultValue={TestCaseUnit.String}>
       {({ value }) => (
         <>
           <Text>{heading}</Text>
@@ -99,8 +107,8 @@ export default () => {
   const [totalTestCases, setTotalTestCases] = useState([[1, 1]]);
 
   return (
-    <div className="max-w-md">
-      <h1 className="text-2xl">Create Question</h1>
+    <div>
+      <h1>Create Question</h1>
       <Form method="post">
         <Input name="name" type="text" required labelPlaceholder="Name" />
         <Textarea
@@ -154,6 +162,16 @@ export default () => {
                           hidden
                         />
                       </Col>
+                      <Col>
+                        <HiMinusCircle
+                          size={30}
+                          onClick={() => {
+                            const newTestCases = [...totalTestCases];
+                            newTestCases[tIdx][0]--;
+                            setTotalTestCases(newTestCases);
+                          }}
+                        />
+                      </Col>
                     </Row>
                   ))}
                   <Text h4>Output</Text>
@@ -181,6 +199,16 @@ export default () => {
                           label="Data"
                         />
                       </Col>
+                      <Col>
+                        <HiMinusCircle
+                          size={30}
+                          onClick={() => {
+                            const newTestCases = [...totalTestCases];
+                            newTestCases[tIdx][1]--;
+                            setTotalTestCases(newTestCases);
+                          }}
+                        />
+                      </Col>
                     </Row>
                   ))}
                 </Container>
@@ -188,8 +216,8 @@ export default () => {
             ))}
           </Grid.Container>
         </div>
-        <div className="w-full">
-          <Button type="submit">Create Class</Button>
+        <div>
+          <Button type="submit">Create Question</Button>
         </div>
       </Form>
     </div>

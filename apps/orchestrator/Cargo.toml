@@ -9,6 +9,8 @@ async-graphql = { workspace = true }
 async-graphql-rocket = "4.0.13"
 async-trait = { workspace = true }
 auth = { path = "../../libs/auth" }
+comrak = "0.15.0"
+chrono = { workspace = true }
 config = { path = "../../libs/config" }
 derive-getters = "0.2.0"
 dotenv = "0.15.0"
@@ -17,6 +19,7 @@ edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
 figment = { version = "0.10.7", features = ["env"] }
 macros = { path = "../../libs/macros" }
+main_db = { path = "../../libs/main-db" }
 protobuf = { path = "../../libs/protobuf" }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { workspace = true }

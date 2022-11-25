@@ -52,3 +52,16 @@ libs/main-db/dbschema/edgeql-js
 .moon/cache
 .moon/docker
 
+# generated tsconfig
+tsconfig.tsbuildinfo
+tsconfig.build.tsbuildinfo
+
+# Build folders
+coverage/
+build/
+cjs/
+dts/
+esm/
+mjs/
+umd/
+lib

@@ -1,10 +1,24 @@
 # https://moonrepo.dev/docs/config/global-project
 $schema: 'https://moonrepo.dev/schemas/global-project.json'
 
+fileGroups:
+  # Application specific files
+  app: []
+  configs:
+    - '*.{js,json,yml,yaml}'
+  sources:
+    - 'public/**/*'
+    - 'src/**/*'
+    - 'types/**/*'
+  tests:
+    - 'tests/**/*.test.*'
+    - 'tests/**/*.stories.*'
+    - '**/__tests__/**/*'
+
 tasks:
   lint:
     command:
-      - 'eslint'
+      - eslint
       - '--ext'
       - '.js,.jsx,.ts,.tsx'
       - '--fix'
@@ -28,10 +42,23 @@ tasks:
 
   test:
     command:
-      - 'jest'
+      - jest
       - '--coverage'
       - '--passWithNoTests'
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
       - 'jest.config.*'
+
+  typecheck:
+    command:
+      - tsc
+      - '--build'
+      - '--verbose'
+    inputs:
+      - '@group(app)'
+      - '@globs(sources)'
+      - '@globs(tests)'
+      - 'tsconfig.json'
+      - 'tsconfig.*.json'
+      - '/tsconfig.options.json'

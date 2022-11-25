@@ -44,14 +44,14 @@ async fn graphql_request(
 async fn rocket() -> _ {
     let app_config = get_app_config().await.unwrap();
     let farem_service = FaremService::new(
-        &app_config.db_conn,
         &app_config.executor_service,
         &app_config.cpp_compiler_service,
         &app_config.go_compiler_service,
         &app_config.rust_compiler_service,
     );
     let user_service = UserService::new(&app_config.db_conn, &app_config.jwt_config);
-    let learning_service = LearningService::new(&app_config.db_conn);
+    let learning_service =
+        LearningService::new(&app_config.db_conn, &Arc::new(farem_service.clone()));
     let schema = Schema::build(
         QueryRoot::default(),
         MutationRoot::default(),
