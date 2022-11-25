@@ -46,6 +46,17 @@ export const LOGOUT_USER = graphql(`
   }
 `);
 
+export const TEST_CASE_DATA_FRAGMENT = graphql(`
+  fragment TestCase on TestCaseData {
+    __typename
+    numberCollectionValue
+    stringCollectionValue
+    numberValue
+    stringValue
+    unitType
+  }
+`);
+
 export const QUESTION_DETAILS = graphql(`
   query QuestionDetails($questionSlug: String!) {
     questionDetails(questionSlug: $questionSlug) {
@@ -65,10 +76,14 @@ export const QUESTION_DETAILS = graphql(`
         }
         testCases {
           inputs {
-            data
+            data {
+              ...TestCase
+            }
           }
           outputs {
-            data
+            data {
+              ...TestCase
+            }
           }
         }
       }

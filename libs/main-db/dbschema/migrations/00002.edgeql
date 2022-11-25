@@ -1,5 +1,5 @@
-CREATE MIGRATION m15rzdylz24zykhr7gzjfcwa4l2ogyogbd4xjcjrd27niimp5kibxa
-    ONTO m1q3bfrf3okkn7uhsjpqqqgdtdjlshbdvekxhubkswmoeznodxntiq
+CREATE MIGRATION m1idlnujvr3kjsz57xr6n2drbtm5r6daoaqawmjzjwu5a7gwt4mtba
+    ONTO m1z5axw7qbgijda2xduorxyicg7l27tbgmh4yklf7wltl32i7u55fa
 {
-  ALTER TYPE learning::TestCaseData RESET ABSTRACT;
+  DROP TYPE learning::EmptyUnit;
 };

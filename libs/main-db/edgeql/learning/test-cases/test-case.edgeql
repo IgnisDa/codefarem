@@ -1,10 +1,10 @@
 INSERT learning::TestCase {
     inputs := (
-        SELECT learning::TestCaseData
+        SELECT learning::InputCaseUnit
         FILTER .id IN array_unpack(<array<uuid>>$0)
     ),
     outputs := (
-        SELECT learning::TestCaseData
+        SELECT learning::OutputCaseUnit
         FILTER .id IN array_unpack(<array<uuid>>$1)
     ),
 }

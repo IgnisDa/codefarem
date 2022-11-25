@@ -14,7 +14,7 @@ module learning {
         # A unique slug for this question
         required property slug -> str {
             constraint exclusive;
-            constraint expression on (len(__subject__) >= 8);
+            constraint expression on (len(__subject__) = 8);
         };
         # the actual question text in markdown
         required property problem -> str;
@@ -35,20 +35,42 @@ module learning {
             default := (SELECT datetime_current());
         }
     }
+
     type TestCase {
         # the inputs that are passed to the question
-        multi link inputs -> learning::TestCaseData {
+        multi link inputs -> learning::InputCaseUnit {
             on source delete delete target;
         };
         # the expected outputs of the question
-        multi link outputs -> learning::TestCaseData {
+        multi link outputs -> learning::OutputCaseUnit {
             on source delete delete target;
         };
     }
-    type TestCaseData {
-        # the actual data to be stored
-        required property data -> str;
+
+    abstract type CommonCaseUnit {
+        required link data -> learning::CaseUnit {
+            on source delete delete target;
+        };
         # the order in which the inputs are passed
         required property seq -> int32;
+    }
+    type InputCaseUnit extending CommonCaseUnit {
+        # the name of the input, to be used as a variable in the codegen
+        required property name -> str;
+    }
+    type OutputCaseUnit extending CommonCaseUnit {}
+
+    abstract type CaseUnit {}
+    type NumberUnit extending learning::CaseUnit {
+        required property number_value -> float64;
+    }
+    type StringUnit extending learning::CaseUnit {
+        required property string_value -> str;
+    }
+    type NumberCollectionUnit extending learning::CaseUnit {
+        required property number_collection_value -> array<float64>;
+    }
+    type StringCollectionUnit extending learning::CaseUnit {
+        required property string_collection_value -> array<str>;
     }
 }
