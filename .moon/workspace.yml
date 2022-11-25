@@ -7,6 +7,7 @@ projects:
   main-db: 'libs/main-db'
   react-ui: 'libs/react-ui'
   faker: 'libs/faker'
+  examples: 'libs/examples'
 
 node:
   version: '19.0.0'

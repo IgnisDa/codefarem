@@ -1,0 +1,5 @@
+type: 'library'
+
+workspace:
+  inheritedTasks:
+    include: []
