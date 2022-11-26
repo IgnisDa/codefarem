@@ -4,12 +4,13 @@ from pathlib import Path
 import click
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-_base_dir = Path(__file__).parent / "templates"
+BASE_DIR = Path(__file__).parent
+BASE_TEMPLATES_DIR = BASE_DIR / "templates"
+BASE_DATA_DIR = BASE_DIR / "data"
 
-DATA_FILENAME = "data.json"
 
 compilers_environment = Environment(
-    loader=FileSystemLoader(_base_dir), undefined=StrictUndefined
+    loader=FileSystemLoader(BASE_TEMPLATES_DIR), undefined=StrictUndefined
 )
 
 
@@ -22,10 +23,8 @@ def cli():
 @click.command()
 def compilers():
     """Generate docker-files for the compilers"""
-    compilers_base = compilers_environment.get_template(
-        "compilers/base.Dockerfile"
-    )
-    with open(_base_dir / "compilers" / DATA_FILENAME) as f:
+    compilers_base = compilers_environment.get_template("base.Dockerfile")
+    with open(BASE_DATA_DIR / "compilers.json") as f:
         compilers_data = json.load(f)
     executable_data = compilers_data["apps"]
     for context in executable_data:
@@ -40,8 +39,8 @@ def compilers():
 @click.command()
 def executor():
     """Generate docker-files for the executor"""
-    executor_base = compilers_environment.get_template("executor/Dockerfile")
-    with open(_base_dir / "executor" / DATA_FILENAME) as f:
+    executor_base = compilers_environment.get_template("base.Dockerfile")
+    with open(BASE_DATA_DIR / "executor.json") as f:
         executor_data = json.load(f)
     context = executor_data["app"]
     filename = executor_data["dockerfile_path"]

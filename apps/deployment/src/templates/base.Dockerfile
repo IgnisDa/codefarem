@@ -13,6 +13,11 @@ COPY . .
 RUN cargo build --release --bin {{ EXECUTABLE_NAME }} ;\
     strip target/release/{{ EXECUTABLE_NAME }}
 
-{% block body %}
-
-{% endblock %}
+FROM {{ IMAGE_NAME }} AS runtime
+{% for command in COMMANDS %}
+RUN {{ command }}
+{% endfor %}
+WORKDIR app
+ENV PORT=80
+COPY --from=builder /app/target/release/{{ EXECUTABLE_NAME }} /usr/local/bin/{{ EXECUTABLE_NAME }}
+CMD ["/usr/local/bin/{{ EXECUTABLE_NAME }}"]
