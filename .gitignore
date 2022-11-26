@@ -45,9 +45,6 @@ Thumbs.db
 # Environment variables
 .env
 
-# edgedb
-libs/main-db/dbschema/edgeql-js
-
 # Moon
 .moon/cache
 .moon/docker
