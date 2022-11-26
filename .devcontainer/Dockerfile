@@ -42,7 +42,7 @@ RUN set -eu ;\
     wget "https://github.com/Morganamilo/paru/releases/download/v1.11.2/paru-v1.11.2-x86_64.tar.zst" ;\
     tar -xvf "paru-v1.11.2-x86_64.tar.zst" ;\
     sudo mv "paru" "/usr/bin/paru" ;\
-    paru -S --noconfirm emscripten protobuf protolint grpcurl-bin
+    paru -S --noconfirm emscripten protobuf protolint grpcurl-bin python-poetry
 
 RUN set -eu ;\
     cd /tmp ;\

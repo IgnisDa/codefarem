@@ -12,6 +12,8 @@ projects:
   compilers: 'apps/compilers'
   executor: 'apps/executor'
   orchestrator: 'apps/orchestrator'
+  # python projects
+  deployment: 'apps/deployment'
 
 node:
   version: '19.0.0'

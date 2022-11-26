@@ -23,6 +23,7 @@
         "edgeql",
         "emcc",
         "emscripten",
+        "emsdk",
         "endl",
         "esdl",
         "farem",
