@@ -2,7 +2,7 @@
   "dockerfile_path": "apps/executor/executor.generated.Dockerfile",
   "app": {
     "EXECUTABLE_NAME": "executor",
-    "IMAGE_NAME": "debian:buster",
+    "IMAGE_NAME": "ubuntu:latest",
     "COMMANDS": [
       "apt-get update -y",
       "apt-get install -y curl xz-utils",
