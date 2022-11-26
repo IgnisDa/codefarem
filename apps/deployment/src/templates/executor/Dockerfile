@@ -2,9 +2,9 @@
 
 {% block body %}
 FROM {{ IMAGE_NAME }} AS runtime
-{% for command in COMMANDS -%}
+{% for command in COMMANDS %}
 RUN {{ command }}
-{%- endfor %}
+{% endfor %}
 WORKDIR app
 ENV PORT=80
 COPY --from=builder /app/target/release/{{ EXECUTABLE_NAME }} /usr/local/bin/{{ EXECUTABLE_NAME }}

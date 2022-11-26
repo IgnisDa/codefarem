@@ -1,0 +1,14 @@
+{
+  "dockerfile_path": "apps/executor/executor.generated.Dockerfile",
+  "app": {
+    "EXECUTABLE_NAME": "executor",
+    "IMAGE_NAME": "debian:buster",
+    "COMMANDS": [
+      "apt-get update -y",
+      "apt-get install -y curl xz-utils",
+      "rm -rf /var/apt/lists/*",
+      "curl https://wasmtime.dev/install.sh -sSf | bash",
+      "apt-get remove --purge"
+    ]
+  }
+}

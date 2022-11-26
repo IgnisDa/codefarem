@@ -37,7 +37,21 @@ def compilers():
             dockerfile.write(rendered)
 
 
+@click.command()
+def executor():
+    """Generate docker-files for the executor"""
+    executor_base = compilers_environment.get_template("executor/Dockerfile")
+    with open(_base_dir / "executor" / DATA_FILENAME) as f:
+        executor_data = json.load(f)
+    context = executor_data["app"]
+    filename = executor_data["dockerfile_path"]
+    rendered = executor_base.render(**context)
+    with open(filename, mode="w", encoding="utf-8") as dockerfile:
+        dockerfile.write(rendered)
+
+
 cli.add_command(compilers)
+cli.add_command(executor)
 
 if __name__ == "__main__":
     cli()
