@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-cargo clippy --release -- -D warnings
-cargo check --release
-
-moon ci

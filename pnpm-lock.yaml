@@ -14,7 +14,6 @@ importers:
       commitizen: 4.2.5
       eslint: 8.26.0
       eslint-config-moon: 1.2.0
-      husky: 8.0.1
       packemon: ^2.4.1
       prettier: 2.7.1
       ts-node: 10.9.1
@@ -32,7 +31,6 @@ importers:
       commitizen: 4.2.5
       eslint: 8.26.0
       eslint-config-moon: 1.2.0_wyqvi574yv7oiwfeinomdzmc3m
-      husky: 8.0.1
       packemon: 2.4.1_typescript@4.8.4
       prettier: 2.7.1
       ts-node: 10.9.1_2cnt46lw4tdywdelgueo3bh3pq
@@ -8625,12 +8623,6 @@ packages:
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
-    dev: true
-
-  /husky/8.0.1:
-    resolution: {integrity: sha512-xs7/chUH/CKdOCs7Zy0Aev9e/dKOMZf3K1Az1nar3tzlv0jfqnYtu235bstsWTmXOR0EfINrPa97yy4Lz6RiKw==}
-    engines: {node: '>=14'}
-    hasBin: true
     dev: true
 
   /i18next/21.10.0:
