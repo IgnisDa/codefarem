@@ -3,7 +3,7 @@
   "apps": [
     {
       "EXECUTABLE_NAME": "rs-compiler",
-      "IMAGE_NAME": "rust:alpine",
+      "IMAGE_NAME": "rust:1.65",
       "COMMANDS": ["rustup target add wasm32-wasi"]
     },
     {
