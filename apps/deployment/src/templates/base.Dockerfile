@@ -18,6 +18,7 @@ FROM {{ IMAGE_NAME }} AS runtime
 RUN {{ command }}
 {% endfor %}
 WORKDIR app
-ENV PORT=80
+ENV PORT=5000 \
+    ROCKET_PORT=5000
 COPY --from=builder /app/target/release/{{ EXECUTABLE_NAME }} /usr/local/bin/{{ EXECUTABLE_NAME }}
 CMD ["/usr/local/bin/{{ EXECUTABLE_NAME }}"]
