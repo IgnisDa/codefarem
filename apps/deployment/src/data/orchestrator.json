@@ -4,7 +4,11 @@
     {
       "EXECUTABLE_NAME": "orchestrator",
       "IMAGE_NAME": "ubuntu:latest",
-      "COMMANDS": []
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {
+        "ROCKET_PORT": "5000",
+        "ROCKET_ADDRESS": "0.0.0.0"
+      }
     }
   ]
 }

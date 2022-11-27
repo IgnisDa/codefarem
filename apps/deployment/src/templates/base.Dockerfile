@@ -18,8 +18,8 @@ FROM {{ IMAGE_NAME }} AS runtime
 RUN {{ command }}
 {% endfor %}
 WORKDIR app
-ENV PORT=5000 \
-    ROCKET_PORT=5000 \
-    ROCKET_ADDRESS=0.0.0.0
+{% for name, value in ENVIRONMENT_VARIABLES.items() %}
+ENV {{ name }}={{ value }}
+{% endfor %}
 COPY --from=builder /app/target/release/{{ EXECUTABLE_NAME }} /usr/local/bin/{{ EXECUTABLE_NAME }}
 CMD ["/usr/local/bin/{{ EXECUTABLE_NAME }}"]
