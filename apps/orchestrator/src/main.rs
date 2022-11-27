@@ -62,8 +62,6 @@ async fn rocket() -> _ {
     .extension(Analyzer)
     .finish();
     println!("Starting server...");
-    rocket::build()
-        .manage(schema)
-        .manage(app_config.jwt_config)
-        .mount("/", routes![graphiql, graphql_request])
+    let mounter = rocket::build().manage(schema).manage(app_config.jwt_config);
+    mounter.mount("/", routes![graphiql, graphql_request])
 }
