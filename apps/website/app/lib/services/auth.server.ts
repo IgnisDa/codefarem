@@ -30,5 +30,6 @@ authenticator.use(
     if (userDetails.__typename === 'ApiError')
       throw new Error(userDetails.error);
     return { token, userDetails };
+    // TODO: Remove comment
   })
 );
