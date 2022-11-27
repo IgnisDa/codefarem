@@ -20,6 +20,8 @@ node:
   packageManager: 'yarn'
   yarn:
     version: '3.2.3'
+    plugins:
+      - 'workspace-tools'
   addEnginesConstraint: true
   dedupeOnLockfileChange: false
   syncProjectWorkspaceDependencies: true
