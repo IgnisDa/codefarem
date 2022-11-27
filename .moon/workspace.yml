@@ -16,10 +16,10 @@ projects:
   deployment: 'apps/deployment'
 
 node:
-  version: '19.0.0'
-  packageManager: 'pnpm'
-  pnpm:
-    version: '7.14.0'
+  version: '19.1.0'
+  packageManager: 'yarn'
+  yarn:
+    version: '3.2.3'
   addEnginesConstraint: true
   dedupeOnLockfileChange: false
   syncProjectWorkspaceDependencies: true

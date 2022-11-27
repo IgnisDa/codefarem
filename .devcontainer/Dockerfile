@@ -22,7 +22,7 @@ RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/c
 
 RUN set -eu ;\
     cd /tmp ;\
-    npm install -g pnpm ;\
+    npm install -g yarn ;\
     wget "https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-unknown-linux-musl.tgz" -O "cargo-binstall.tgz" ;\
     tar zxvf "cargo-binstall.tgz" ;\
     mv "cargo-binstall" "/usr/bin/cargo-binstall"

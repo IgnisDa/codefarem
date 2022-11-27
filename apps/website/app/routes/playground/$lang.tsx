@@ -69,6 +69,7 @@ export default () => {
   const extensions = match(selectedLanguage)
     .with(SupportedLanguage.Cpp, () => [cpp()])
     .with(SupportedLanguage.Rust, () => [rust()])
+    // @ts-ignore: no @codemirror/lang-go package and the one we are using works fine
     .with(SupportedLanguage.Go, () => [StreamLanguage.define(go)])
     .exhaustive();
 
