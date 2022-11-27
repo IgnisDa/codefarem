@@ -1,0 +1,158 @@
+name: 'Build and push containers to the Github registry'
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  affected:
+    name: 'Run CI and get affected projects'
+    runs-on: 'ubuntu-latest'
+    outputs:
+      affected: ${{ steps.affected.outputs.affected_json }}
+      executables: ${{ steps.affected.outputs.executables }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: supplypike/setup-bin@v1
+        with:
+          uri: 'https://github.com/moonrepo/moon/releases/latest/download/moon-x86_64-unknown-linux-musl'
+          name: 'moon'
+          version: '0.19.1'
+
+      - name: Set base commit hash
+        run: |
+          commit=${{ github.event.before }}
+          if git branch --contains "$commit"; then
+            echo "No force push detected, continuing..."
+          else
+            # get the commit before this one
+            commit=$(git log --format="%H" -n 2 | tail -n 1)
+          fi
+          echo "BASE=$commit" >> $GITHUB_ENV
+
+      - name: Get affected projects
+        id: affected
+        run: |
+          affected=$(
+              node -e "
+                  let deployable = ['compilers', 'executor', 'orchestrator', 'website']
+                  let projects = \`$(moon query touched-files --base $BASE | moon query projects --affected | jq .projects[].id -r)\`.split('\n')
+                  let deployableProjects = projects.filter(project => deployable.includes(project))
+                  console.log(deployableProjects.join(' '))
+              "
+          )
+          if [ -z "$affected" ]; then
+              affected_json="[]"
+          else
+              affected_json=$(node -e "console.log(JSON.stringify(\"${affected[@]}\".split(' ')))")
+          fi
+          executables=$(node -e "
+            let executables = \`$(cat apps/deployment/src/data/*.json | jq .apps[].EXECUTABLE_NAME -r)\`.split('\n')
+            console.log(JSON.stringify(executables))
+          ")
+          echo "affected=$affected" >> $GITHUB_OUTPUT
+          echo "affected_json=$affected_json" >> $GITHUB_OUTPUT
+          echo "executables=$executables" >> $GITHUB_OUTPUT
+          echo "Affected: $affected_json"
+          echo "Discovered executables: $executables"
+
+      - uses: ./.github/actions/setup
+        if: ${{ steps.affected.outputs.affected != '' }}
+        name: Setup environment
+
+      - name: Run CI on all the affected projects
+        if: ${{ steps.affected.outputs.affected != '' }}
+        run: 'moon ci --base $BASE'
+
+      - name: Generate project dockerfile(s)
+        if: ${{ steps.affected.outputs.affected != '' }}
+        env:
+          AFFECTED: ${{ steps.affected.outputs.affected }}
+        run: |
+          affected=($AFFECTED) # convert string to array
+          for project in "${affected[@]}"
+          do
+            echo "Generating dockerfile for '$project'..."
+            poetry run python apps/deployment/src/docker.py "$project"
+          done
+
+      - name: Save generated dockerfile(s)
+        if: ${{ steps.affected.outputs.affected != '' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: generated-dockerfile
+          path: apps/*/*.generated.Dockerfile
+
+  docker-builds:
+    name: 'Build and push containers'
+    needs: affected
+    if: ${{ needs.affected.outputs.affected != '[]' }}
+    strategy:
+      matrix:
+        project: ${{ fromJSON(needs.affected.outputs.affected) }}
+        executable: ${{ fromJSON(needs.affected.outputs.executables) }}
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Determine if the executable/project combination is correct
+        id: check
+        shell: bash {0}
+        run: |
+          cat apps/deployment/src/data/${{ matrix.project }}.json | jq .apps[].EXECUTABLE_NAME -r | grep -q "${{ matrix.executable }}"
+          echo "should_exit=$?" >> $GITHUB_OUTPUT
+
+      - name: Get docker image name
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+        id: image_name
+        run: |
+          image_name="${{ env.REGISTRY }}/${{ github.actor }}/codefarem--${{ matrix.executable }}:latest"
+          # lowercase the name
+          image_name=$(echo "$image_name" | tr '[:upper:]' '[:lower:]')
+          echo "image_name=$image_name" >> $GITHUB_OUTPUT
+          echo "Image name: $image_name"
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download generated dockerfile(s)
+        uses: actions/download-artifact@v3
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+        with:
+          name: generated-dockerfile
+          # https://github.com/actions/upload-artifact#upload-using-multiple-paths-and-exclusions
+          path: apps
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+        with:
+          context: .
+          file: apps/${{ matrix.project }}/${{ matrix.executable }}.generated.Dockerfile
+          push: true
+          tags: ${{ steps.image_name.outputs.image_name }}

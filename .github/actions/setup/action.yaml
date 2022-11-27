@@ -1,0 +1,72 @@
+name: Setup
+
+description: Setup Node.js, cache and install dependencies
+
+inputs:
+  node-version:
+    description: Node.js version
+    required: false
+    default: '19'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.10.8
+
+    - name: Setup poetry install cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.local
+        key: poetry-1.2.2
+
+    - uses: snok/install-poetry@v1
+      name: Install poetry
+      with:
+        version: 1.2.2
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Setup poetry cache
+      id: cache-python-deps
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: pydeps-${{ hashFiles('**/poetry.lock') }}
+
+    - run: poetry install --no-interaction --no-root
+      shell: bash
+      if: steps.cache-python-deps.outputs.cache-hit != 'true'
+
+    - name: Install python dependencies
+      shell: bash
+      run: poetry install --no-interaction
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - uses: pnpm/action-setup@v2
+      name: Install pnpm
+      with:
+        version: 7
+        run_install: false
+
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      shell: bash
+      run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install nodejs dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile --prefer-offline --ignore-scripts

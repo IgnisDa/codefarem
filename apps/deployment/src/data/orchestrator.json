@@ -1,0 +1,10 @@
+{
+  "dockerfile_path": "apps/orchestrator/orchestrator.generated.Dockerfile",
+  "apps": [
+    {
+      "EXECUTABLE_NAME": "orchestrator",
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": []
+    }
+  ]
+}
