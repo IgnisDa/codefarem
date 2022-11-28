@@ -14,7 +14,6 @@
     "commitizen": "4.2.5",
     "eslint": "8.26.0",
     "eslint-config-moon": "1.2.0",
-    "husky": "8.0.1",
     "packemon": "^2.4.1",
     "prettier": "2.7.1",
     "ts-node": "10.9.1",
@@ -26,12 +25,16 @@
     "commit": "git-cz"
   },
   "engines": {
-    "node": "19.0.0"
+    "node": "19.1.0"
   },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
   },
-  "packageManager": "pnpm@7.14.0"
+  "packageManager": "yarn@3.2.3",
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ]
 }

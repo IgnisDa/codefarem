@@ -42,12 +42,13 @@ impl AppConfig {
             .extract::<JwtConfig>()?;
 
         let executor_service =
-            ExecutorServiceClient::connect(env::var("EXECUTE_FAREM_URL")?).await?;
+            ExecutorServiceClient::connect(env::var("CODEFAREM_EXECUTOR_URL")?).await?;
         let cpp_compiler_service =
-            CompilerServiceClient::connect(env::var("CPP_FAREM_URL")?).await?;
-        let go_compiler_service = CompilerServiceClient::connect(env::var("GO_FAREM_URL")?).await?;
+            CompilerServiceClient::connect(env::var("CODEFAREM_CPP_COMPILER_URL")?).await?;
+        let go_compiler_service =
+            CompilerServiceClient::connect(env::var("CODEFAREM_GO_COMPILER_URL")?).await?;
         let rust_compiler_service =
-            CompilerServiceClient::connect(env::var("RUST_FAREM_URL")?).await?;
+            CompilerServiceClient::connect(env::var("CODEFAREM_RUST_COMPILER_URL")?).await?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),

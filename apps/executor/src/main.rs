@@ -1,5 +1,5 @@
 use duct::cmd;
-use log::info;
+use log::{error, info};
 use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
     ExecutorInput, ExecutorOutput,
@@ -25,6 +25,7 @@ impl ExecutorService for ExecutorHandler {
             program_args.extend(arguments);
         }
         let command = cmd("wasmtime", program_args);
+        info!("Running command: {:?}", command);
         let command_output = command
             .unchecked()
             .stdout_capture()
@@ -32,10 +33,15 @@ impl ExecutorService for ExecutorHandler {
             .run()
             .unwrap();
         if command_output.status.success() {
+            info!("Executed wasmtime on file {:?} successfully", file_path);
             Ok(Response::new(ExecutorOutput {
                 data: command_output.stdout,
             }))
         } else {
+            error!(
+                "Compilation unsuccessful, with status: {:?} ",
+                command_output.status
+            );
             Err(Status::invalid_argument(
                 String::from_utf8(command_output.stderr).unwrap(),
             ))
@@ -53,6 +59,5 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .add_service(ExecutorServiceServer::new(executor))
         .serve(format!("0.0.0.0:{port}").parse()?)
         .await?;
-
     Ok(())
 }

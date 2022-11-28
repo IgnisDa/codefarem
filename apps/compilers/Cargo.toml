@@ -6,8 +6,8 @@ description = "This crate is responsible for compiling the source code into weba
 
 [dependencies]
 duct = "0.13.5"
-env_logger = "0.9.1"
-log = "0.4.17"
+env_logger = { workspace = true }
+log = { workspace = true }
 macros = { path = "../../libs/macros" }
 protobuf = { path = "../../libs/protobuf" }
 tokio = { workspace = true }

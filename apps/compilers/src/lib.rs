@@ -1,4 +1,5 @@
 use duct::Expression;
+use log::{error, info};
 use std::{fs, path::PathBuf};
 use utilities::generate_random_file;
 
@@ -13,10 +14,16 @@ pub fn run_command_and_capture_output(
     command: Expression,
     output_file_path: &PathBuf,
 ) -> Result<Vec<u8>, Vec<u8>> {
+    info!("Running command: {:?}", command);
     let output = command.unchecked().stderr_capture().run().unwrap();
     if output.status.success() {
+        info!("Compiled using {:?} successfully", output_file_path);
         Ok(fs::read(output_file_path).unwrap())
     } else {
+        error!(
+            "Compilation unsuccessful, with status: {:?} ",
+            output.status
+        );
         Err(output.stderr)
     }
 }

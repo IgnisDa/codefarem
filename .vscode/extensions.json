@@ -18,6 +18,7 @@
     "ms-vscode.cpptools",
     "zxh404.vscode-proto3",
     "rvest.vs-code-prettier-eslint",
-    "moonrepo.moon-console"
+    "moonrepo.moon-console",
+    "ms-python.python"
   ]
 }

@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use async_graphql::{
     extensions::Analyzer,
     http::{playground_source, GraphQLPlaygroundConfig},
@@ -16,6 +14,7 @@ use orchestrator::{
     RequestData, Token,
 };
 use rocket::{get, launch, post, response::content::RawHtml, routes, State};
+use std::sync::Arc;
 
 type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
@@ -62,8 +61,6 @@ async fn rocket() -> _ {
     .data(learning_service)
     .extension(Analyzer)
     .finish();
-    rocket::build()
-        .manage(schema)
-        .manage(app_config.jwt_config)
-        .mount("/", routes![graphiql, graphql_request])
+    let mounter = rocket::build().manage(schema).manage(app_config.jwt_config);
+    mounter.mount("/", routes![graphiql, graphql_request])
 }

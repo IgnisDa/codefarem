@@ -45,9 +45,6 @@ Thumbs.db
 # Environment variables
 .env
 
-# edgedb
-libs/main-db/dbschema/edgeql-js
-
 # Moon
 .moon/cache
 .moon/docker
@@ -65,3 +62,14 @@ esm/
 mjs/
 umd/
 lib
+
+*.generated.Dockerfile
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
