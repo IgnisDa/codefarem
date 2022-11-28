@@ -33,7 +33,7 @@ impl ExecutorService for ExecutorHandler {
             .run()
             .unwrap();
         if command_output.status.success() {
-            info!("Executed wasmtime on {:?} successfully", file_path);
+            info!("Executed wasmtime on file {:?} successfully", file_path);
             Ok(Response::new(ExecutorOutput {
                 data: command_output.stdout,
             }))
