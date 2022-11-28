@@ -1,19 +1,19 @@
 name: Setup
 
-description: Setup Node.js, cache and install dependencies
+description: Setup Python, cache and install dependencies
 
 inputs:
-  node-version:
-    description: Node.js version
+  python-version:
+    description: Python version
     required: false
-    default: '19'
+    default: '3.10.8'
 
 runs:
   using: composite
   steps:
     - uses: actions/setup-python@v4
       with:
-        python-version: 3.10.8
+        python-version: ${{ inputs.python-version }}
 
     - name: Setup poetry install cache
       uses: actions/cache@v3
@@ -42,13 +42,3 @@ runs:
     - name: Install python dependencies
       shell: bash
       run: poetry install --no-interaction
-
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ inputs.node-version }}
-        cache: yarn
-
-    - name: Install nodejs dependencies
-      shell: bash
-      run: yarn install --immutable

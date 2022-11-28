@@ -20,22 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: supplypike/setup-bin@v1
-        with:
-          uri: 'https://github.com/moonrepo/moon/releases/latest/download/moon-x86_64-unknown-linux-musl'
-          name: 'moon'
-          version: '0.19.1'
+      - uses: ./.github/actions/setup-moon
+        name: Setup moon
 
-      - name: Set base commit hash
-        run: |
-          commit=${{ github.event.before }}
-          if git branch --contains "$commit"; then
-            echo "No force push detected, continuing..."
-          else
-            # get the commit before this one
-            commit=$(git log --format="%H" -n 2 | tail -n 1)
-          fi
-          echo "BASE=$commit" >> $GITHUB_ENV
+      - uses: ./.github/actions/set-base-commit
+        name: Set base commit
 
       - name: Get affected projects
         id: affected
@@ -63,13 +52,9 @@ jobs:
           echo "Affected: $affected_json"
           echo "Discovered executables: $executables"
 
-      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/setup-python
         if: ${{ steps.affected.outputs.affected != '' }}
-        name: Setup environment
-
-      - name: Run CI on all the affected projects
-        if: ${{ steps.affected.outputs.affected != '' }}
-        run: 'moon ci --base $BASE'
+        name: Setup python environment
 
       - name: Generate project dockerfile(s)
         if: ${{ steps.affected.outputs.affected != '' }}
@@ -156,3 +141,5 @@ jobs:
           file: apps/${{ matrix.project }}/${{ matrix.executable }}.generated.Dockerfile
           push: true
           tags: ${{ steps.image_name.outputs.image_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

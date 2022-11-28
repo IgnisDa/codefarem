@@ -14,7 +14,7 @@ describe('Database behavior testing', () => {
   });
 
   it('Deleting a teacher removes them from their associated class without an error', async () => {
-    for (let i = 0; i < 4; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       const teacherData = createUserInfo();
       await e
         .insert(e.users.Teacher, {
@@ -38,7 +38,7 @@ describe('Database behavior testing', () => {
     let cppClass = (await e
       .select(e.learning.Class, (c) => classShape(c))
       .run(client))!;
-    expect(cppClass.numTeachers).toBe(4);
+    expect(cppClass.numTeachers).toBe(5);
     await e
       .delete(e.users.Teacher, (t) => ({
         filter: e.op(t.id, '=', e.uuid(cppClass.teachers[0].id)),
@@ -48,7 +48,7 @@ describe('Database behavior testing', () => {
     cppClass = (await e
       .select(e.learning.Class, (c) => classShape(c))
       .run(client))!;
-    expect(cppClass.numTeachers).toBe(3);
+    expect(cppClass.numTeachers).toBe(4);
   });
 
   it('Deleting a class removes them from a teacher without an errors', async () => {
@@ -59,8 +59,7 @@ describe('Database behavior testing', () => {
         auth: e.insert(e.users.UserAuth, teacherData.auth),
       })
       .run(client);
-    // create 4 classes
-    for (let i = 0; i < 4; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       await e
         .insert(e.learning.Class, {
           name: `CPP-#${i}`,
@@ -78,7 +77,7 @@ describe('Database behavior testing', () => {
     let teacher = (await e
       .select(e.users.Teacher, (c) => teacherShape(c))
       .run(client))!;
-    expect(teacher.numClasses).toBe(4);
+    expect(teacher.numClasses).toBe(5);
     await e
       .delete(e.learning.Class, (c) => ({
         filter: e.op(c.id, '=', e.uuid(teacher.classes[0].id)),
@@ -88,6 +87,6 @@ describe('Database behavior testing', () => {
     teacher = (await e
       .select(e.users.Teacher, (c) => teacherShape(c))
       .run(client))!;
-    expect(teacher.numClasses).toBe(3);
+    expect(teacher.numClasses).toBe(4);
   });
 });

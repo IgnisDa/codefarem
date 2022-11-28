@@ -46,8 +46,6 @@ tasks:
 
   build:
     command: 'remix build'
-    deps:
-      - '~:routes'
     inputs:
       - '@group(remix)'
     outputs:

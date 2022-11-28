@@ -1,0 +1,25 @@
+name: Setup
+
+description: Setup Node.js, cache and install dependencies
+
+outputs:
+  base-commit:
+    description: The base commit we need to test against
+    value: ${{ steps.base-commit.outputs.base-commit }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set base commit hash
+      id: base-commit
+      shell: bash
+      run: |
+        commit=${{ github.event.before }}
+        if git branch --contains "$commit"; then
+          echo "No force push detected, continuing..."
+        else
+          # get the commit before this one
+          commit=$(git log --format="%H" -n 2 | tail -n 1)
+        fi
+        echo "BASE=$commit" >> $GITHUB_ENV
+        echo "base-commit=$commit" >> $GITHUB_OUTPUT

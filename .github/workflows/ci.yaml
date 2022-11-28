@@ -1,0 +1,42 @@
+name: 'Run CI'
+
+on: push
+
+jobs:
+  ci:
+    name: 'Run CI'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-moon
+        name: Setup moon
+
+      - uses: ./.github/actions/set-base-commit
+        name: Set base commit
+
+      - name: Determine if there are any affected projects
+        id: affected
+        run: |
+          affected=$(moon query touched-files --base $BASE | moon query projects --affected | jq -r '[ .projects[].id ] | @csv')
+          echo "affected=$affected" >> $GITHUB_OUTPUT
+          echo "Affected: $affected"
+
+      - uses: ./.github/actions/setup-node
+        if: ${{ steps.affected.outputs.affected != '' }}
+        name: Setup environment
+
+      - uses: edgedb/setup-edgedb@v1
+        if: ${{ steps.affected.outputs.affected != '' }}
+
+      - name: Initialize project
+        if: ${{ steps.affected.outputs.affected != '' }}
+        run: |
+          cd libs/main-db
+          edgedb project init --non-interactive
+
+      - name: Run CI on all the affected projects
+        if: ${{ steps.affected.outputs.affected != '' }}
+        run: 'moon ci --base $BASE'

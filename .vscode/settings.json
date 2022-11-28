@@ -48,6 +48,7 @@
         "rimraf",
         "rustc",
         "rustup",
+        "supplypike",
         "tailwindcss",
         "tempfile",
         "thiserror",

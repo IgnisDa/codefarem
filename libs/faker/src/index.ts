@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-const FAKER_SEED = 42;
+const FAKER_SEED = 420;
 
 faker.seed(FAKER_SEED);
 

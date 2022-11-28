@@ -1,0 +1,22 @@
+name: Setup
+
+description: Setup Node.js, cache and install dependencies
+
+inputs:
+  node-version:
+    description: Node.js version
+    required: false
+    default: '19'
+
+runs:
+  using: composite
+  steps:
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: yarn
+
+    - name: Install nodejs dependencies
+      shell: bash
+      run: yarn install --immutable
