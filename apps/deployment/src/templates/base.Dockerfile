@@ -13,11 +13,16 @@ COPY . .
 RUN cargo build --release --bin {{ EXECUTABLE_NAME }} ;\
     strip target/release/{{ EXECUTABLE_NAME }}
 
+{% block additional_step %}
+{% endblock %}
+
 FROM {{ IMAGE_NAME }} AS runtime
 {% for command in COMMANDS %}
 RUN {{ command }}
 {% endfor %}
 WORKDIR app
+{% block runtime_step %}
+{% endblock %}
 {% for name, value in ENVIRONMENT_VARIABLES.items() %}
 ENV {{ name }}={{ value }}
 {% endfor %}

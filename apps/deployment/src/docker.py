@@ -53,7 +53,7 @@ def executor():
 @click.command()
 def orchestrator():
     """Generate docker-files for the orchestrator"""
-    base = environment.get_template("base.Dockerfile")
+    base = environment.get_template("orchestrator.Dockerfile")
     with open(BASE_DATA_DIR / "orchestrator.json") as f:
         data = json.load(f)
     apps = data["apps"]

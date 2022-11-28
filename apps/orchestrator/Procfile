@@ -1,0 +1,1 @@
+release: edgedb migration apply
