@@ -20,6 +20,7 @@ FROM base AS runner
 WORKDIR /app
 COPY --from=builder /app/apps/${PROJECT_NAME}/ci/* ./
 COPY --from=builder /app/apps/${PROJECT_NAME}/build/* ./
+COPY --from=builder /app/apps/${PROJECT_NAME}/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 ENV NODE_ENV=production
 
