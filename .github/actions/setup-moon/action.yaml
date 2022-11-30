@@ -6,7 +6,7 @@ inputs:
   moon-version:
     description: Moon version
     required: false
-    default: '0.19.1'
+    default: '0.20.1'
 
 runs:
   using: composite

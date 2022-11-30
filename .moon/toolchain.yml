@@ -1,0 +1,15 @@
+node:
+  version: '19.1.0'
+  packageManager: 'yarn'
+  yarn:
+    version: '3.2.3'
+    plugins:
+      - 'workspace-tools'
+  addEnginesConstraint: true
+  dedupeOnLockfileChange: false
+  syncProjectWorkspaceDependencies: true
+
+typescript:
+  createMissingConfig: true
+  syncProjectReferences: true
+  routeOutDirToCache: true
