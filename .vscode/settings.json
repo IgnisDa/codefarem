@@ -29,6 +29,7 @@
         "farem",
         "fstream",
         "graphiql",
+        "hanko",
         "Hasher",
         "headlessui",
         "ignisda",
@@ -40,6 +41,7 @@
         "nextui",
         "pacman",
         "paru",
+        "passcode",
         "prost",
         "proto",
         "protobuf",
@@ -59,6 +61,7 @@
         "urql",
         "wasi",
         "wasmtime",
+        "webauthn",
         "zodix",
         "zxvf"
     ],

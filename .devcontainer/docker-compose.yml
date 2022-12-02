@@ -8,4 +8,59 @@ services:
     volumes:
       - ..:/workspace:cached
     command: sleep infinity
+    environment:
+      - HANKO_URL=http://localhost:9000
+      - HANKO_URL_INTERNAL=http://hanko-backend:9000
+      - HANKO_ELEMENT_URL=http://localhost:9500/element.hanko-auth.js
+      - HANKO_FRONTEND_SDK_URL=http://localhost:9500/sdk.umd.js
     user: vscode
+
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+
+  # from https://github.com/teamhanko/hanko/blob/main/deploy/docker-compose/quickstart.yaml
+
+  hanko-database:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - hanko_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  hanko-backend:
+    image: ghcr.io/teamhanko/hanko:main
+    depends_on:
+      hanko-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./config/hanko.yml:/config/config.yaml
+    command: serve all
+    ports:
+      - 9000:9000 # public
+      - 9001:9001 # admin
+    restart: unless-stopped
+
+  hanko-migrate:
+    image: ghcr.io/teamhanko/hanko:main
+    volumes:
+      - ./config/hanko.yml:/config/config.yaml
+    command: migrate up
+    depends_on:
+      hanko-database:
+        condition: service_healthy
+
+  hanko-elements:
+    image: ghcr.io/teamhanko/hanko/elements:v0.3.1
+    ports:
+      - 9500:80
+
+volumes:
+  hanko_db_data:
