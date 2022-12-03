@@ -1,0 +1,40 @@
+database:
+  dialect: postgres
+  host: $DATABASE_HOST
+  port: $DATABASE_PORT
+  user: $DATABASE_USER
+  password: $DATABASE_PASSWORD
+  database: $DATABASE_NAME
+
+passcode:
+  email:
+    from_address: no-reply@codefarem.io
+  smtp:
+    host: $SMTP_HOST
+    port: $SMTP_PORT
+    user: $SMTP_USER
+    password: $SMTP_PASSWORD
+
+secrets:
+  keys:
+    - $SECRET_KEY
+
+service:
+  name: Authentication Service
+
+server:
+  public:
+    address: ':5000'
+    cors:
+      enabled: true
+      allow_credentials: true
+      allow_origins:
+        - '*'
+
+session:
+  cookie:
+    secure: false
+
+audit_log:
+  storage:
+    enabled: true

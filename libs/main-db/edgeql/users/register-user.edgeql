@@ -5,7 +5,7 @@ SELECT (
       email := <str>$1,
     }),
     auth := (INSERT users::UserAuth {
-      password_hash := <str>$2
-    })
+      hanko_id := <str>$2,
+    }),
   }
 )

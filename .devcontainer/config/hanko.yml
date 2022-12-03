@@ -1,0 +1,40 @@
+database:
+  dialect: postgres
+  host: hanko-database
+  port: 5432
+  user: postgres
+  password: postgres
+  database: postgres
+
+passcode:
+  email:
+    from_address: no-reply@codefarem.io
+  smtp:
+    host: mail
+    port: 1025
+
+secrets:
+  keys:
+    - secret-password-12345
+
+service:
+  name: Authentication Service
+
+server:
+  admin:
+    address: ':9001'
+  public:
+    address: ':9000'
+    cors:
+      enabled: true
+      allow_credentials: true
+      allow_origins:
+        - "*"
+
+session:
+  cookie:
+    secure: false
+
+audit_log:
+  storage:
+    enabled: true

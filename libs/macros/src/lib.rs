@@ -16,7 +16,7 @@ macro_rules! user_id_from_request {
             .user_token
             .as_ref()
             .ok_or_else(|| AuthError::NotAuthorized.extend())?;
-        get_user_id_from_authorization_token(&request_data.jwt_secret[..], token.as_str())?
+        get_hanko_id_from_authorization_token(token.as_str())?
     }};
 }
 

@@ -4,7 +4,6 @@ use async_graphql::{
     EmptySubscription, Schema,
 };
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
-use config::JwtConfig;
 use orchestrator::{
     farem::service::FaremService,
     get_app_config,
@@ -26,13 +25,11 @@ fn graphiql() -> RawHtml<String> {
 #[post("/graphql", data = "<graphql_request>", format = "application/json")]
 async fn graphql_request(
     schema: &State<GraphqlSchema>,
-    jwt_config: &State<Arc<JwtConfig>>,
     user_token: Token,
     graphql_request: GraphQLRequest,
 ) -> GraphQLResponse {
     let request_data = RequestData {
         user_token: user_token.0,
-        jwt_secret: jwt_config.jwt_secret().to_vec(),
     };
     let request = graphql_request.data(request_data).0;
     let response = schema.execute(request).await;
@@ -48,7 +45,7 @@ async fn rocket() -> _ {
         &app_config.go_compiler_service,
         &app_config.rust_compiler_service,
     );
-    let user_service = UserService::new(&app_config.db_conn, &app_config.jwt_config);
+    let user_service = UserService::new(&app_config.db_conn);
     let learning_service =
         LearningService::new(&app_config.db_conn, &Arc::new(farem_service.clone()));
     let schema = Schema::build(
@@ -61,6 +58,6 @@ async fn rocket() -> _ {
     .data(learning_service)
     .extension(Analyzer)
     .finish();
-    let mounter = rocket::build().manage(schema).manage(app_config.jwt_config);
+    let mounter = rocket::build().manage(schema);
     mounter.mount("/", routes![graphiql, graphql_request])
 }

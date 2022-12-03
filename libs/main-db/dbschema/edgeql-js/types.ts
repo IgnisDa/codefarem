@@ -47,7 +47,6 @@ export namespace schema {
     "condition"?: string | null;
     "action": AccessPolicyAction;
     "expr"?: string | null;
-    "errmessage"?: string | null;
     "subject": ObjectType;
   }
   export enum AccessPolicyAction {
@@ -72,7 +71,6 @@ export namespace schema {
     "dimensions"?: number[] | null;
     "element_type": Type;
   }
-  export interface ArrayExprAlias extends Array {}
   export interface CallableObject extends AnnotationSubject {
     "return_typemod"?: TypeModifier | null;
     "params": Parameter[];
@@ -150,12 +148,7 @@ export namespace schema {
   export interface Migration extends AnnotationSubject, $Object {
     "script": string;
     "message"?: string | null;
-    "generated_by"?: MigrationGeneratedBy | null;
     "parents": Migration[];
-  }
-  export enum MigrationGeneratedBy {
-    DevMode = "DevMode",
-    DDLStatement = "DDLStatement",
   }
   export interface Module extends $Object, AnnotationSubject {}
   export interface ObjectType extends InheritingObject, ConsistencySubject, AnnotationSubject, Type, Source {
@@ -163,8 +156,8 @@ export namespace schema {
     "is_compound_type": boolean;
     "union_of": ObjectType[];
     "intersection_of": ObjectType[];
-    "links": Link[];
     "properties": Property[];
+    "links": Link[];
     "access_policies": AccessPolicy[];
   }
   export interface Operator extends CallableObject, VolatilitySubject {
@@ -195,7 +188,6 @@ export namespace schema {
   export interface Range extends CollectionType {
     "element_type": Type;
   }
-  export interface RangeExprAlias extends Range {}
   export interface ScalarType extends InheritingObject, ConsistencySubject, AnnotationSubject, PrimitiveType {
     "default"?: string | null;
     "enum_values"?: string[] | null;
@@ -219,7 +211,6 @@ export namespace schema {
     "name"?: string | null;
     "type": Type;
   }
-  export interface TupleExprAlias extends Tuple {}
   export enum TypeModifier {
     SetOfType = "SetOfType",
     OptionalType = "OptionalType",
@@ -331,7 +322,7 @@ export namespace users {
     "classes": learning.Class[];
   }
   export interface UserAuth extends std.$Object {
-    "password_hash"?: string | null;
+    "hanko_id": string;
   }
   export interface UserProfile extends std.$Object {
     "email": string;
@@ -387,7 +378,6 @@ export interface types {
     "PrimitiveType": schema.PrimitiveType;
     "CollectionType": schema.CollectionType;
     "Array": schema.Array;
-    "ArrayExprAlias": schema.ArrayExprAlias;
     "CallableObject": schema.CallableObject;
     "Cardinality": schema.Cardinality;
     "VolatilitySubject": schema.VolatilitySubject;
@@ -404,7 +394,6 @@ export interface types {
     "Source": schema.Source;
     "Link": schema.Link;
     "Migration": schema.Migration;
-    "MigrationGeneratedBy": schema.MigrationGeneratedBy;
     "Module": schema.Module;
     "ObjectType": schema.ObjectType;
     "Operator": schema.Operator;
@@ -414,13 +403,11 @@ export interface types {
     "Property": schema.Property;
     "PseudoType": schema.PseudoType;
     "Range": schema.Range;
-    "RangeExprAlias": schema.RangeExprAlias;
     "ScalarType": schema.ScalarType;
     "SourceDeleteAction": schema.SourceDeleteAction;
     "TargetDeleteAction": schema.TargetDeleteAction;
     "Tuple": schema.Tuple;
     "TupleElement": schema.TupleElement;
-    "TupleExprAlias": schema.TupleExprAlias;
     "TypeModifier": schema.TypeModifier;
     "Volatility": schema.Volatility;
   };

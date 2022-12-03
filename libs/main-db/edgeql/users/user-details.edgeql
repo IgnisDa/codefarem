@@ -5,4 +5,4 @@ SELECT users::User {
   },
   account_type := .__type__.name
 }
-FILTER .id = <uuid>$0;
+FILTER .auth.hanko_id = <str>$0;

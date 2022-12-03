@@ -13,22 +13,22 @@ const overloadDefs: {
     "=": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -36,22 +36,22 @@ const overloadDefs: {
     "?=": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: true, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: true, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: true, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: true, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: true, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: true, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: true, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: true, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}, {typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}, {typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -59,22 +59,22 @@ const overloadDefs: {
     "!=": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -82,22 +82,22 @@ const overloadDefs: {
     "?!=": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: true, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: true, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: true, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: true, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: true, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: true, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: true, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: true, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}, {typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}, {typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: true, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -105,22 +105,22 @@ const overloadDefs: {
     ">=": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -128,22 +128,22 @@ const overloadDefs: {
     ">": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -151,22 +151,22 @@ const overloadDefs: {
     "<=": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -174,22 +174,22 @@ const overloadDefs: {
     "<": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000002", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}, {typeId: "80473daf-6c65-11ed-8b12-850c7c62c40b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}, {typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000100", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}, {typeId: "8853a512-6c65-11ed-9a08-8d94244a3fcc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}, {typeId: "99db1c50-678f-11ed-a418-13ff665f50dc", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000130", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-      {kind: "Infix", args: [{typeId: "8032b973-6c65-11ed-8f80-7b44a9ac3ac3", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+      {kind: "Infix", args: [{typeId: "9279cc87-678f-11ed-9977-8f2efaa5ff49", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000111", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
@@ -200,15 +200,12 @@ const overloadDefs: {
     "and": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000109", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
     ],
-    "??": [
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000001", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000001", returnTypemod: "SetOfType"},
-    ],
     "+": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000110"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010a"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010e"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010b"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000112", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010c"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010d", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010d"},
@@ -228,7 +225,7 @@ const overloadDefs: {
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010a"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010e"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010e"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010b"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000112", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010c"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000112"},
@@ -248,7 +245,7 @@ const overloadDefs: {
     "*": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000110"},
-      {kind: "Infix", args: [{typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}, {typeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2", optional: false, setoftype: false, variadic: false}], returnTypeId: "86e2b915-6c65-11ed-8dac-5b69d6303ad2"},
+      {kind: "Infix", args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
     ],
     "/": [
@@ -279,14 +276,11 @@ const overloadDefs: {
     "union": [
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000001", returnTypemod: "SetOfType"},
     ],
-    "except": [
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000001", returnTypemod: "SetOfType"},
-    ],
-    "intersect": [
-      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000001", returnTypemod: "SetOfType"},
+    "??": [
+      {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000001", optional: true, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000001", returnTypemod: "SetOfType"},
     ],
     "++": [
-      {kind: "Infix", args: [{typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}, {typeId: "81054325-6c65-11ed-81a6-13a733f6255a", optional: false, setoftype: false, variadic: false}], returnTypeId: "81054325-6c65-11ed-81a6-13a733f6255a"},
+      {kind: "Infix", args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}], returnTypeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000102"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000101"},
       {kind: "Infix", args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010f"},
@@ -1488,6 +1482,20 @@ function op<
 * Compare two (potentially empty) values for inequality.
 */
 function op<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$duration>>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$duration>>,
+>(
+  l: P1, op: "?!=", r: P2
+): $.$expr_Operator<
+  "?!=",
+  $.OperatorKind.Infix,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2]>,
+  $.TypeSet<_std.$bool, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.optionalParamCardinality<P1>, $.cardinalityUtil.optionalParamCardinality<P2>>>
+>;
+/**
+* Compare two (potentially empty) values for inequality.
+*/
+function op<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
   P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
 >(
@@ -1602,20 +1610,6 @@ function op<
 function op<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$datetime>>,
   P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$datetime>>,
->(
-  l: P1, op: "?!=", r: P2
-): $.$expr_Operator<
-  "?!=",
-  $.OperatorKind.Infix,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2]>,
-  $.TypeSet<_std.$bool, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.optionalParamCardinality<P1>, $.cardinalityUtil.optionalParamCardinality<P2>>>
->;
-/**
-* Compare two (potentially empty) values for inequality.
-*/
-function op<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$duration>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$duration>>,
 >(
   l: P1, op: "?!=", r: P2
 ): $.$expr_Operator<
@@ -3290,294 +3284,6 @@ function op<
   $.TypeSet<_std.$bool, $.cardinalityUtil.paramCardinality<P1>>
 >;
 /**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
-  P2 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
-  P2 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<_std.$decimalλICastableTo>,
-  P2 extends $.TypeSet<_std.$decimalλICastableTo>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
-  P2 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
-  P2 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
-  P2 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<$.ObjectType>,
-  P2 extends $.TypeSet<$.ObjectType>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.mergeObjectTypes<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends $.TypeSet<$.AnyTupleType>,
-  P2 extends $.TypeSet<$.AnyTupleType>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Coalesce.
-*/
-function op<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<$.BaseType>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>>>,
->(
-  l: P1, op: "??", r: P2
-): $.$expr_Operator<
-  "??",
-  $.OperatorKind.Infix,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2]>,
-  $.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>, $.cardinalityUtil.orCardinalities<
-          $.cardinalityUtil.paramCardinality<P1>,
-          $.cardinalityUtil.paramCardinality<P2>
-        >>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<_std.$decimalλICastableTo>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<_std.$decimalλICastableTo>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<$.ObjectType>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<$.ObjectType>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.mergeObjectTypes<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends $.TypeSet<$.AnyTupleType>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends $.TypeSet<$.AnyTupleType>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
-* Conditionally provide one or the other result.
-*/
-function op<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<$.BaseType>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
-  P3 extends _.castMaps.orScalarLiteral<$.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>>>,
->(
-  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
-): $.$expr_Operator<
-  "if_else",
-  $.OperatorKind.Ternary,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
-  $.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
->;
-/**
 * Arithmetic addition.
 */
 function op<
@@ -4855,256 +4561,292 @@ function op<
         >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
   P2 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
   P2 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<_std.$decimalλICastableTo>,
   P2 extends $.TypeSet<_std.$decimalλICastableTo>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
   P2 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
   P2 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
   P2 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<$.ObjectType>,
   P2 extends $.TypeSet<$.ObjectType>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.mergeObjectTypes<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.mergeObjectTypes<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends $.TypeSet<$.AnyTupleType>,
   P2 extends $.TypeSet<$.AnyTupleType>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset difference.
+* Coalesce.
 */
 function op<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<$.BaseType>>,
   P2 extends _.castMaps.orScalarLiteral<$.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>>>,
 >(
-  s1: P1, op: "except", s2: P2
+  l: P1, op: "??", r: P2
 ): $.$expr_Operator<
-  "except",
+  "??",
   $.OperatorKind.Infix,
   _.castMaps.mapLiteralToTypeSet<[P1, P2]>,
-  $.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>, $.Cardinality.Many>
+  $.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>, $.cardinalityUtil.orCardinalities<
+          $.cardinalityUtil.paramCardinality<P1>,
+          $.cardinalityUtil.paramCardinality<P2>
+        >>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
-  P2 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<_cal.$relative_durationλICastableTo>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
-  P2 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<_cal.$local_datetimeλICastableTo>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<_std.$decimalλICastableTo>,
-  P2 extends $.TypeSet<_std.$decimalλICastableTo>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<_std.$decimalλICastableTo>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
-  P2 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<$.ArrayType<_cal.$relative_durationλICastableTo>>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
-  P2 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<$.ArrayType<_cal.$local_datetimeλICastableTo>>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
-  P2 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<$.ArrayType<_std.$decimalλICastableTo>>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<$.ObjectType>,
-  P2 extends $.TypeSet<$.ObjectType>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<$.ObjectType>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.mergeObjectTypes<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.mergeObjectTypes<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends $.TypeSet<$.AnyTupleType>,
-  P2 extends $.TypeSet<$.AnyTupleType>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends $.TypeSet<$.AnyTupleType>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  [P1, P2],
-  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P2["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<_.syntax.getSharedParentPrimitive<P1["__element__"], P3["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
-* Multiset intersection.
+* Conditionally provide one or the other result.
 */
 function op<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<$.BaseType>>,
-  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>>>,
+  P2 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bool>>,
+  P3 extends _.castMaps.orScalarLiteral<$.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>>>,
 >(
-  s1: P1, op: "intersect", s2: P2
+  if_true: P1, op: "if", condition: P2, op2: "else", if_false: P3
 ): $.$expr_Operator<
-  "intersect",
-  $.OperatorKind.Infix,
-  _.castMaps.mapLiteralToTypeSet<[P1, P2]>,
-  $.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>, $.Cardinality.Many>
+  "if_else",
+  $.OperatorKind.Ternary,
+  _.castMaps.mapLiteralToTypeSet<[P1, P2, P3]>,
+  $.TypeSet<$.getPrimitiveBaseType<_.castMaps.literalToTypeSet<P1>["__element__"]>, $.cardinalityUtil.multiplyCardinalities<$.cardinalityUtil.orCardinalities<$.cardinalityUtil.paramCardinality<P1>, $.cardinalityUtil.paramCardinality<P3>>, $.cardinalityUtil.paramCardinality<P2>>>
 >;
 /**
 * Array concatenation.

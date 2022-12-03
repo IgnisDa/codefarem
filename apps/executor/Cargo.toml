@@ -9,7 +9,6 @@ description = "This crate is responsible for executing webassembly"
 duct = "0.13.5"
 env_logger = { workspace = true }
 log = { workspace = true }
-macros = { path = "../../libs/macros" }
 protobuf = { path = "../../libs/protobuf" }
 tokio = { workspace = true }
 tonic = { workspace = true }

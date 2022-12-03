@@ -1,22 +1,14 @@
-use std::{str::FromStr, sync::Arc};
-
-use async_trait::async_trait;
-use auth::{create_jwt_token, get_hashed_password, verify_password};
-use config::JwtConfig;
-use edgedb_derive::Queryable;
-use edgedb_tokio::Client as DbClient;
-use serde::{Deserialize, Serialize};
-use utilities::{graphql::ApiError, users::AccountType};
-use uuid::Uuid;
-
 use super::dto::{
     mutations::register_user::{RegisterUserError, RegisterUserOutput},
     queries::{
-        login_user::{LoginError, LoginUserError, LoginUserOutput},
         user_details::UserDetailsOutput,
         user_with_email::{UserWithEmailError, UserWithEmailOutput},
     },
 };
+use async_trait::async_trait;
+use edgedb_tokio::Client as DbClient;
+use std::sync::Arc;
+use utilities::{graphql::ApiError, users::AccountType};
 
 const USER_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/users/user-details.edgeql");
@@ -26,44 +18,35 @@ const REGISTER_USER: &str =
     include_str!("../../../../libs/main-db/edgeql/users/register-user.edgeql");
 const CHECK_UNIQUENESS: &str =
     include_str!("../../../../libs/main-db/edgeql/users/check-uniqueness.edgeql");
-const LOGIN_USER: &str = include_str!("../../../../libs/main-db/edgeql/users/login-user.edgeql");
 
 #[async_trait]
 pub trait UserServiceTrait: Sync + Send {
-    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError>;
+    async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError>;
 
     async fn user_with_email<'a>(
         &self,
         email: &'a str,
     ) -> Result<UserWithEmailOutput, UserWithEmailError>;
 
-    async fn logout_user<'a>(&self, user_id: Uuid) -> bool;
-
-    async fn login_user<'a>(
-        &self,
-        email: &'a str,
-        password: &'a str,
-    ) -> Result<LoginUserOutput, LoginUserError>;
+    async fn logout_user<'a>(&self, hanko_id: &'a str) -> bool;
 
     async fn register_user<'a>(
         &self,
         username: &'a str,
         email: &'a str,
-        password: &'a str,
         account_type: &AccountType,
+        hanko_id: &'a str,
     ) -> Result<RegisterUserOutput, RegisterUserError>;
 }
 
 pub struct UserService {
     db_conn: Arc<DbClient>,
-    jwt_config: Arc<JwtConfig>,
 }
 
 impl UserService {
-    pub fn new(db_conn: &Arc<DbClient>, jwt_config: &Arc<JwtConfig>) -> Self {
+    pub fn new(db_conn: &Arc<DbClient>) -> Self {
         Self {
             db_conn: db_conn.clone(),
-            jwt_config: jwt_config.clone(),
         }
     }
 }
@@ -72,18 +55,19 @@ impl UserService {}
 
 #[async_trait]
 impl UserServiceTrait for UserService {
-    async fn user_details<'a>(&self, user_id: Uuid) -> Result<UserDetailsOutput, ApiError> {
-        Ok(serde_json::from_str::<UserDetailsOutput>(
-            self.db_conn
-                .query_required_single_json(USER_DETAILS, &(user_id,))
-                .await
-                .map_err(|_| ApiError {
-                    error: format!("User with id={user_id} not found"),
-                })?
-                .to_string()
-                .as_str(),
-        )
-        .unwrap())
+    async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
+        let json_str = self
+            .db_conn
+            .query_json(USER_DETAILS, &(hanko_id,))
+            .await
+            .map_err(|_| ApiError {
+                error: format!("User with hanko_id={hanko_id} not found"),
+            })?;
+        Ok(serde_json::from_str::<Vec<UserDetailsOutput>>(&json_str)
+            .unwrap()
+            .get(0)
+            .unwrap()
+            .clone())
     }
 
     async fn user_with_email<'a>(
@@ -103,63 +87,17 @@ impl UserServiceTrait for UserService {
         Ok(all_users.get(0).unwrap().to_owned())
     }
 
-    async fn logout_user<'a>(&self, user_id: Uuid) -> bool {
-        println!("Logging out user with id={user_id}");
+    async fn logout_user<'a>(&self, hanko_id: &'a str) -> bool {
+        println!("Logging out user with id={hanko_id}");
         true
-    }
-
-    async fn login_user<'a>(
-        &self,
-        email: &'a str,
-        password: &'a str,
-    ) -> Result<LoginUserOutput, LoginUserError> {
-        #[derive(Debug, Deserialize, Queryable, Serialize)]
-        struct A {
-            password_hash: String,
-        }
-        #[derive(Debug, Deserialize, Queryable, Serialize)]
-        struct C {
-            name: String,
-        }
-        #[derive(Debug, Deserialize, Queryable, Serialize)]
-        struct B {
-            id: Uuid,
-            auth: A,
-            __type__: C,
-        }
-        let login_details = self
-            .db_conn
-            .query::<B, _>(LOGIN_USER, &(email,))
-            .await
-            .unwrap();
-        if login_details.is_empty() {
-            return Err(LoginUserError {
-                error: LoginError::CredentialsMismatch,
-            });
-        }
-        if verify_password(
-            password,
-            login_details.get(0).unwrap().auth.password_hash.as_str(),
-        ) {
-            let token = create_jwt_token(
-                self.jwt_config.jwt_secret(),
-                login_details[0].id.to_string().as_str(),
-                &AccountType::from_str(login_details[0].__type__.name.as_str()).unwrap(),
-            );
-            Ok(LoginUserOutput { token })
-        } else {
-            Err(LoginUserError {
-                error: LoginError::CredentialsMismatch,
-            })
-        }
     }
 
     async fn register_user<'a>(
         &self,
         username: &'a str,
         email: &'a str,
-        password: &'a str,
         account_type: &AccountType,
+        hanko_id: &'a str,
     ) -> Result<RegisterUserOutput, RegisterUserError> {
         let check_uniqueness = self
             .db_conn
@@ -172,12 +110,11 @@ impl UserServiceTrait for UserService {
         let account_type_string = account_type.to_string();
         // replace `User` in REGISTER_USER with the correct account_type
         let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
-        let password_hash = get_hashed_password(password);
         Ok(self
             .db_conn
             .query_required_single::<RegisterUserOutput, _>(
                 new_query.as_str(),
-                &(username, email, password_hash),
+                &(username, email, hanko_id),
             )
             .await
             .unwrap())

@@ -155,35 +155,6 @@ export type InputCaseUnit = {
   name: Scalars['String'];
 };
 
-/** The different errors that can occur when logging in to the service */
-export enum LoginError {
-  /** The credentials did not match */
-  CredentialsMismatch = 'CREDENTIALS_MISMATCH'
-}
-
-/** The result type if an error was encountered when creating a new user */
-export type LoginUserError = {
-  /** The error encountered while logging in */
-  error: LoginError;
-};
-
-/** The input object used to create a new user */
-export type LoginUserInput = {
-  /** The email of the user */
-  email: Scalars['String'];
-  /** The password that the user wants to set */
-  password: Scalars['String'];
-};
-
-/** The result type if the user was created successfully */
-export type LoginUserOutput = {
-  /** The unique JWT token to be issued */
-  token: Scalars['String'];
-};
-
-/** The output object when creating a new user */
-export type LoginUserResultUnion = LoginUserError | LoginUserOutput;
-
 /** The GraphQL top-level mutation type */
 export type MutationRoot = {
   /** Create a new class */
@@ -244,8 +215,6 @@ export type QueryRoot = {
   classDetails: ClassDetailsResultUnion;
   /** Get an example code snippet for a particular language */
   languageExample: Scalars['String'];
-  /** Login a user to the service */
-  loginUser: LoginUserResultUnion;
   /** Logout a user from the service */
   logoutUser: Scalars['Boolean'];
   /** Get information about a question and the test cases related to it */
@@ -270,12 +239,6 @@ export type QueryRootClassDetailsArgs = {
 /** The GraphQL top-level query type */
 export type QueryRootLanguageExampleArgs = {
   language: SupportedLanguage;
-};
-
-
-/** The GraphQL top-level query type */
-export type QueryRootLoginUserArgs = {
-  input: LoginUserInput;
 };
 
 
@@ -337,8 +300,8 @@ export type RegisterUserInput = {
   accountType: AccountType;
   /** The email of the user */
   email: Scalars['String'];
-  /** The password that the user wants to set */
-  password: Scalars['String'];
+  /** The ID issued by the hanko auth provider */
+  hankoId: Scalars['String'];
   /** The username of the user */
   username: Scalars['String'];
 };
@@ -468,13 +431,6 @@ export type ExecuteCodeForQuestionMutationVariables = Exact<{
 
 export type ExecuteCodeForQuestionMutation = { executeCodeForQuestion: { __typename: 'ExecuteCodeError', error: string, step: ExecuteCodeErrorStep } | { __typename: 'ExecuteCodeForQuestionOutput', numTestCases: number, numTestCasesFailed: number, testCaseStatuses: Array<{ passed: boolean, userOutput: string, expectedOutput: string }> } };
 
-export type LoginUserQueryVariables = Exact<{
-  input: LoginUserInput;
-}>;
-
-
-export type LoginUserQuery = { loginUser: { __typename: 'LoginUserError', error: LoginError } | { __typename: 'LoginUserOutput', token: string } };
-
 export type SupportedLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -520,7 +476,6 @@ export const CreateClassDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const CreateQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<CreateQuestionMutation, CreateQuestionMutationVariables>;
 export const TestCaseUnitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TestCaseUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"testCaseUnits"}}]}}]} as unknown as DocumentNode<TestCaseUnitsQuery, TestCaseUnitsQueryVariables>;
 export const ExecuteCodeForQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ExecuteCodeForQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeForQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"executeCodeForQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeForQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numTestCases"}},{"kind":"Field","name":{"kind":"Name","value":"numTestCasesFailed"}},{"kind":"Field","name":{"kind":"Name","value":"testCaseStatuses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"passed"}},{"kind":"Field","name":{"kind":"Name","value":"userOutput"}},{"kind":"Field","name":{"kind":"Name","value":"expectedOutput"}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"step"}}]}}]}}]}}]} as unknown as DocumentNode<ExecuteCodeForQuestionMutation, ExecuteCodeForQuestionMutationVariables>;
-export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LoginUserOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LoginUserError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]} as unknown as DocumentNode<LoginUserQuery, LoginUserQueryVariables>;
 export const SupportedLanguagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SupportedLanguages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"supportedLanguages"}}]}}]} as unknown as DocumentNode<SupportedLanguagesQuery, SupportedLanguagesQueryVariables>;
 export const LanguageExampleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LanguageExample"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"language"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SupportedLanguage"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"languageExample"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"language"},"value":{"kind":"Variable","name":{"kind":"Name","value":"language"}}}]}]}}]} as unknown as DocumentNode<LanguageExampleQuery, LanguageExampleQueryVariables>;
 export const UserWithEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserWithEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWithEmailInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userWithEmail"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserWithEmailOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserWithEmailError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}}]}}]}}]} as unknown as DocumentNode<UserWithEmailQuery, UserWithEmailQueryVariables>;

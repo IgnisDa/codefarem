@@ -17,8 +17,6 @@ import { useState } from 'react';
 import { HiMinusCircle, HiPlusCircle } from 'react-icons/hi';
 import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
-import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
-import { authenticator } from '~/lib/services/auth.server';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import {
   AccountType,
@@ -26,24 +24,22 @@ import {
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import type { CreateQuestionInput } from ':generated/graphql/orchestrator/generated/graphql';
-import { getAuthHeader, gqlClient } from '~/lib/services/graphql.server';
+import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import {
   CREATE_QUESTION,
   TEST_CASE_UNITS,
 } from ':generated/graphql/orchestrator/mutations';
+import { getUserDetails } from '~/lib/services/user.server';
 
 export async function loader({ request }: LoaderArgs) {
-  const user = await authenticator.isAuthenticated(request);
-  if (user?.userDetails.accountType !== AccountType.Teacher)
+  const userDetails = await getUserDetails(request);
+  if (userDetails.accountType !== AccountType.Teacher)
     throw notFound({ message: 'Route not found' });
   const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
   return json({ testCaseUnits });
 }
 
 export async function action({ request }: ActionArgs) {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: FAILURE_REDIRECT_PATH,
-  });
   let input: CreateQuestionInput = {} as any;
   for (const [key, value] of await request.formData()) set(input, key, value);
 
@@ -60,7 +56,7 @@ export async function action({ request }: ActionArgs) {
   const { createQuestion } = await gqlClient.request(
     CREATE_QUESTION,
     { input },
-    getAuthHeader(user.token)
+    authenticatedRequest(request)
   );
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);

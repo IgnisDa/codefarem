@@ -5,10 +5,8 @@ pub mod users;
 pub mod utils;
 
 use anyhow::Result;
-use config::JwtConfig;
 use dotenv::dotenv;
 use edgedb_tokio::Client as DbClient;
-use figment::{providers::Env, Figment};
 use protobuf::generated::{
     compilers::compiler_service_client::CompilerServiceClient,
     executor::executor_service_client::ExecutorServiceClient,
@@ -23,7 +21,6 @@ use tonic::transport::Channel;
 
 pub struct AppConfig {
     pub db_conn: Arc<DbClient>,
-    pub jwt_config: Arc<JwtConfig>,
     pub executor_service: ExecutorServiceClient<Channel>,
     pub cpp_compiler_service: CompilerServiceClient<Channel>,
     pub go_compiler_service: CompilerServiceClient<Channel>,
@@ -37,9 +34,6 @@ impl AppConfig {
             .ensure_connected()
             .await
             .expect("Unable to connect to the edgedb instance");
-        let jwt_config = Figment::new()
-            .merge(Env::prefixed("CODEFAREM_"))
-            .extract::<JwtConfig>()?;
 
         let executor_service =
             ExecutorServiceClient::connect(env::var("CODEFAREM_EXECUTOR_URL")?).await?;
@@ -52,7 +46,6 @@ impl AppConfig {
 
         Ok(Self {
             db_conn: Arc::new(db_conn),
-            jwt_config: Arc::new(jwt_config),
             executor_service,
             cpp_compiler_service,
             go_compiler_service,
@@ -69,7 +62,6 @@ pub async fn get_app_config() -> Result<AppConfig> {
 #[derive(Debug)]
 pub struct RequestData {
     pub user_token: Option<String>,
-    pub jwt_secret: Vec<u8>,
 }
 
 pub struct Token(pub Option<String>);

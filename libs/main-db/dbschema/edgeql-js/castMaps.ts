@@ -31,7 +31,6 @@ export type scalarAssignableBy<T extends $.ScalarType> =
   T extends _schema.$SourceDeleteAction ? _schema.$SourceDeleteAction : 
   T extends _schema.$ParameterKind ? _schema.$ParameterKind : 
   T extends _schema.$OperatorKind ? _schema.$OperatorKind : 
-  T extends _schema.$MigrationGeneratedBy ? _schema.$MigrationGeneratedBy : 
   T extends _schema.$Cardinality ? _schema.$Cardinality : 
   T extends _schema.$AccessPolicyAction ? _schema.$AccessPolicyAction : 
   T extends _schema.$AccessKind ? _schema.$AccessKind : 
@@ -70,7 +69,6 @@ export type scalarCastableFrom<T extends $.ScalarType> =
   T extends _schema.$SourceDeleteAction ? _schema.$SourceDeleteAction : 
   T extends _schema.$ParameterKind ? _schema.$ParameterKind : 
   T extends _schema.$OperatorKind ? _schema.$OperatorKind : 
-  T extends _schema.$MigrationGeneratedBy ? _schema.$MigrationGeneratedBy : 
   T extends _schema.$Cardinality ? _schema.$Cardinality : 
   T extends _schema.$AccessPolicyAction ? _schema.$AccessPolicyAction : 
   T extends _schema.$AccessKind ? _schema.$AccessKind : 
@@ -231,12 +229,6 @@ type getSharedParentScalar<A, B> =
   :
   A extends _schema.$OperatorKind ?
     B extends _schema.$OperatorKind ?
-    B
-    :
-    never
-  :
-  A extends _schema.$MigrationGeneratedBy ?
-    B extends _schema.$MigrationGeneratedBy ?
     B
     :
     never
@@ -470,12 +462,6 @@ function getSharedParentScalar<A extends $.ScalarType, B extends $.ScalarType>(a
     }
   if (a.__name__ === "schema::OperatorKind") {
     if(b.__name__ === "schema::OperatorKind") {
-      return b;
-    }
-    throw new Error(`Types are not castable: ${a.__name__}, ${b.__name__}`);
-    }
-  if (a.__name__ === "schema::MigrationGeneratedBy") {
-    if(b.__name__ === "schema::MigrationGeneratedBy") {
       return b;
     }
     throw new Error(`Types are not castable: ${a.__name__}, ${b.__name__}`);

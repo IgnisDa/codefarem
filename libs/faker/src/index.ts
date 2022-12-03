@@ -5,13 +5,11 @@ const FAKER_SEED = 420;
 faker.seed(FAKER_SEED);
 
 export const createUsername = () => faker.internet.userName();
-export const createPassword = () => faker.internet.password();
 export const createEmail = () => faker.internet.email();
 
 // These functions always return static data. Useful in development when we do not need to
 // type out the same data over and over again.
 export const getFakeUsername = () => 'username-er-90';
-export const getFakePassword = () => 'password1234567890';
 export const getFakeEmail = () => 'username@email.com';
 
 /**
@@ -31,6 +29,6 @@ export const fakeDataDevelopmentMode = <T>(fn: () => T): T | undefined => {
  * Returns data about a new random user
  */
 export const createUserInfo = () => ({
-  auth: { password_hash: createPassword() },
+  auth: { hanko_id: faker.datatype.uuid() },
   profile: { email: createEmail(), username: createUsername() },
 });

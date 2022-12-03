@@ -70,7 +70,7 @@ pub trait LearningServiceTrait: Sync + Send {
 
     async fn create_class<'a>(
         &self,
-        user_id: &Uuid,
+        hanko_id: &'a str,
         account_type: &AccountType,
         name: &'a str,
         teacher_ids: &[Uuid],
@@ -78,7 +78,7 @@ pub trait LearningServiceTrait: Sync + Send {
 
     async fn create_question<'a>(
         &self,
-        user_id: &Uuid,
+        hanko_id: &'a str,
         account_type: &AccountType,
         name: &'a str,
         problem: &'a str,
@@ -144,14 +144,15 @@ impl LearningServiceTrait for LearningService {
 
     async fn create_class<'a>(
         &self,
-        user_id: &Uuid,
+        hanko_id: &'a str,
         account_type: &AccountType,
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError> {
         validate_user_role(&AccountType::Teacher, account_type)?;
-        let mut all_teachers_to_insert = teacher_ids.to_vec();
-        all_teachers_to_insert.push(*user_id);
+        let all_teachers_to_insert = teacher_ids.to_vec();
+        // TODO: Insert correct teacher
+        // all_teachers_to_insert.push(*hanko_id);
         self.db_conn
             .query_required_single::<CreateClassOutput, _>(
                 CREATE_CLASS,
@@ -165,7 +166,7 @@ impl LearningServiceTrait for LearningService {
 
     async fn create_question<'a>(
         &self,
-        user_id: &Uuid,
+        hanko_id: &'a str,
         account_type: &AccountType,
         name: &'a str,
         problem: &'a str,
@@ -173,7 +174,9 @@ impl LearningServiceTrait for LearningService {
         class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError> {
         validate_user_role(&AccountType::Teacher, account_type)?;
-        let all_teachers_to_insert = vec![*user_id];
+        // FIXME: Insert correct teachers
+        // let all_teachers_to_insert = vec![*hanko_id];
+        let all_teachers_to_insert: Vec<Uuid> = vec![];
         fn random_string(take: usize) -> String {
             slugify(
                 rand::thread_rng()

@@ -1,0 +1,5 @@
+type: 'application'
+
+workspace:
+  inheritedTasks:
+    include: []
