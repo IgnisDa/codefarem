@@ -1782,6 +1782,8 @@ __metadata:
     "@remix-run/serve": 1.7.6
     "@remix-run/server-runtime": 1.7.6
     "@routes-gen/remix": 0.3.5
+    "@teamhanko/hanko-elements": 0.0.12-alpha
+    "@teamhanko/hanko-frontend-sdk": 0.0.9-alpha
     "@types/lodash": 4.14.185
     "@types/luxon": 3.0.1
     "@types/react": 18.0.20
@@ -1800,7 +1802,7 @@ __metadata:
     react-icons: 4.4.0
     remix-auth: 3.4.0
     remix-auth-form: 1.3.0
-    remix-utils: 3.3.0
+    remix-utils: 4.3.0
     routes-gen: 0.5.2
     tiny-invariant: 1.2.0
     ts-pattern: 4.0.5
@@ -2016,6 +2018,15 @@ __metadata:
   dependencies:
     "@jridgewell/trace-mapping": 0.3.9
   checksum: 5718f267085ed8edb3e7ef210137241775e607ee18b77d95aa5bd7514f47f5019aa2d82d96b3bf342ef7aa890a346fa1044532ff7cc3009e7d24fce3ce6200fa
+  languageName: node
+  linkType: hard
+
+"@denysvuika/preact-translate@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "@denysvuika/preact-translate@npm:0.4.1"
+  peerDependencies:
+    preact: ">=10.0.0"
+  checksum: ea62f40db015efd7c37b9131f74091bd94461d687cce31d9d0b2832b00467548405f5a71eeb034f3e8b80bc5d073684b13c25d7200689b8e898a7a4cf32433ec
   languageName: node
   linkType: hard
 
@@ -5025,6 +5036,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@teamhanko/hanko-elements@npm:0.0.12-alpha":
+  version: 0.0.12-alpha
+  resolution: "@teamhanko/hanko-elements@npm:0.0.12-alpha"
+  dependencies:
+    "@denysvuika/preact-translate": ^0.4.1
+    "@teamhanko/hanko-frontend-sdk": ^0.0.8-alpha
+    classnames: ^2.3.2
+    preact: ^10.10.1
+    preact-custom-element: ^4.2.1
+  checksum: 6a896e150e85a46f292b3f951ddaf43f3174e1b8d1b07e242a589fb9067d4bceb4838e9d4002a019602c3b31f34b0fb6f2bf7ff17dce205c7782eef428b3c524
+  languageName: node
+  linkType: hard
+
+"@teamhanko/hanko-frontend-sdk@npm:0.0.9-alpha":
+  version: 0.0.9-alpha
+  resolution: "@teamhanko/hanko-frontend-sdk@npm:0.0.9-alpha"
+  dependencies:
+    "@types/js-cookie": ^3.0.2
+  checksum: e362b968d169ec83458e063f668cfd2cc6e6d18efa30ef4e1a35739e4026aebab9fb89c1549813ddcce309487deaff71b37d258d2ff10617b7150d75a1e18a49
+  languageName: node
+  linkType: hard
+
+"@teamhanko/hanko-frontend-sdk@npm:^0.0.8-alpha":
+  version: 0.0.8-alpha
+  resolution: "@teamhanko/hanko-frontend-sdk@npm:0.0.8-alpha"
+  dependencies:
+    "@types/js-cookie": ^3.0.2
+  checksum: c87408b5ce10d77b8f0d0e39bd54a3f24b16f596fc398cb8c6d7991953f2f61c3ce20edea2eacb49560c0aa25986c1cca99d0d2473a1d417d66ed6e7c0a9c5df
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.11.1, @testing-library/dom@npm:^8.5.0":
   version: 8.19.0
   resolution: "@testing-library/dom@npm:8.19.0"
@@ -5281,6 +5323,13 @@ __metadata:
     jest-matcher-utils: ^27.0.0
     pretty-format: ^27.0.0
   checksum: 0a8b045a7b660372decc807c390d3f99a2b12bb1659a1cd593afe04557f4b7c235b0576a5e35b1577710d20e42759d3d8755eb8bed6edc8733f47007e75a5509
+  languageName: node
+  linkType: hard
+
+"@types/js-cookie@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@types/js-cookie@npm:3.0.2"
+  checksum: 7ab964288dd26373e134ed0bcde4a7dbea7e6f5de1805e2d1e48eac847e89a0e7f5fdc9164c37931680ec97c6e6e5a73e3e4039e0d08527c2e21badd7bee62d1
   languageName: node
   linkType: hard
 
@@ -7214,6 +7263,13 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: be108900801e639e50f96a7e4bfa8867c753a7750a7603879f3981f8b0a89cba657497a2d5f40cd4ea557ff15d535a100818bb486baf6e26fe5d7872e75f1078
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
   languageName: node
   linkType: hard
 
@@ -14804,6 +14860,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact-custom-element@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "preact-custom-element@npm:4.2.1"
+  peerDependencies:
+    preact: 10.x
+  checksum: cdf8564488d145b66a5b1f152cfc37d7602fad8de2e720ca0fd181ad804b0bfa7d4e2612173bdfbe093e31d9acb29cee13bbc1901bff7c7b28146e1455e6cee2
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.10.1":
+  version: 10.11.3
+  resolution: "preact@npm:10.11.3"
+  checksum: 9387115aa0581e8226309e6456e9856f17dfc0e3d3e63f774de80f3d462a882ba7c60914c05942cb51d51e23e120dcfe904b8d392d46f29ad15802941fe7a367
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -15483,9 +15555,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remix-utils@npm:3.3.0":
-  version: 3.3.0
-  resolution: "remix-utils@npm:3.3.0"
+"remix-utils@npm:4.3.0":
+  version: 4.3.0
+  resolution: "remix-utils@npm:4.3.0"
   dependencies:
     intl-parse-accept-language: ^1.0.0
     is-ip: ^3.1.0
@@ -15496,7 +15568,8 @@ __metadata:
     "@remix-run/react": ^1.1.1
     "@remix-run/server-runtime": ^1.1.1
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 478322e0f0982f7c9e75175e3a52347d5f97e7e4b2f06b58b111cf6c0e74ac321ad66c65f95e7482beb0b7ba5db7eb5f6a34068e6481cb2c75b43260b02a1d0b
+    zod: ^3.19.1
+  checksum: 6a41d976daaeb6ac5ae82dd5296654908c3780489b5aca2bf2cdffd128f97038c44327cf9aa1ad06c1f997260b53546f6aef40bd0154f888989b9fde48249d02
   languageName: node
   linkType: hard
 
