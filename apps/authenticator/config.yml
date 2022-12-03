@@ -10,21 +10,21 @@ passcode:
   email:
     from_address: no-reply@codefarem.io
   smtp:
-    host: mail
-    port: 1025
+    host: $SMTP_HOST
+    port: $SMTP_PORT
+    user: $SMTP_USER
+    password: $SMTP_PASSWORD
 
 secrets:
   keys:
-    - secret-password-12345
+    - $SECRET_KEY
 
 service:
   name: Authentication Service
 
 server:
-  admin:
-    address: ':9001'
   public:
-    address: ':9000'
+    address: ':5000'
     cors:
       enabled: true
       allow_credentials: true

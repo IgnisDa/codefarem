@@ -25,6 +25,7 @@
         "emscripten",
         "emsdk",
         "endl",
+        "envsubst",
         "esdl",
         "farem",
         "fstream",
