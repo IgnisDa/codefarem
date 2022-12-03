@@ -14,17 +14,9 @@ environment = Environment(
 )
 
 
-@click.group()
-def cli():
-    """Generate docker-files for the various applications"""
-    return
-
-
-@click.command()
-def compilers():
-    """Generate docker-files for the compilers"""
-    base = environment.get_template("base.Dockerfile")
-    with open(BASE_DATA_DIR / "compilers.json") as f:
+def write_dockerfile(template_name: str, app: str):
+    base = environment.get_template(f"{template_name}.Dockerfile")
+    with open(BASE_DATA_DIR / f"{app}.json") as f:
         data = json.load(f)
     apps = data["apps"]
     for context in apps:
@@ -36,45 +28,34 @@ def compilers():
             dockerfile.write(rendered)
 
 
+@click.group()
+def cli():
+    """Generate docker-files for the various applications"""
+    return
+
+
+@click.command()
+def compilers():
+    """Generate docker-files for the compilers"""
+    write_dockerfile("base", "compilers")
+
+
 @click.command()
 def executor():
     """Generate docker-files for the executor"""
-    base = environment.get_template("base.Dockerfile")
-    with open(BASE_DATA_DIR / "executor.json") as f:
-        data = json.load(f)
-    apps = data["apps"]
-    for context in apps:
-        filename = data["dockerfile_path"]
-        rendered = base.render(**context)
-        with open(filename, mode="w", encoding="utf-8") as dockerfile:
-            dockerfile.write(rendered)
+    write_dockerfile("base", "executor")
 
 
 @click.command()
 def orchestrator():
     """Generate docker-files for the orchestrator"""
-    base = environment.get_template("orchestrator.Dockerfile")
-    with open(BASE_DATA_DIR / "orchestrator.json") as f:
-        data = json.load(f)
-    apps = data["apps"]
-    for context in apps:
-        filename = data["dockerfile_path"]
-        rendered = base.render(**context)
-        with open(filename, mode="w", encoding="utf-8") as dockerfile:
-            dockerfile.write(rendered)
+    write_dockerfile("orchestrator", "orchestrator")
 
 
 @click.command()
 def website():
     """Generate docker-files for the website"""
-    base = environment.get_template("website.Dockerfile")
-    with open(BASE_DATA_DIR / "website.json") as f:
-        data = json.load(f)
-    context = {}
-    filename = data["dockerfile_path"]
-    rendered = base.render(**context)
-    with open(filename, mode="w", encoding="utf-8") as dockerfile:
-        dockerfile.write(rendered)
+    write_dockerfile("website", "website")
 
 
 cli.add_command(compilers)
