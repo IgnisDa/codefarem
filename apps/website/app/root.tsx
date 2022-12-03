@@ -6,8 +6,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react';
-
+import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 
@@ -21,7 +22,13 @@ export const meta: MetaFunction = () => ({
   viewport: 'width=device-width,initial-scale=1',
 });
 
+export async function loader() {
+  return json({ ENV: { HANKO_URL: process.env.HANKO_URL as string } });
+}
+
 const Document: FC<{ children: ReactNode }> = ({ children }) => {
+  const { ENV } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -35,6 +42,11 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         <Container>{children}</Container>
         <ScrollRestoration />
         <Scripts />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)}`,
+          }}
+        />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
@@ -49,4 +61,12 @@ export default function App() {
       </NextUIProvider>
     </Document>
   );
+}
+
+declare global {
+  interface Window {
+    ENV: {
+      HANKO_URL: string;
+    };
+  }
 }
