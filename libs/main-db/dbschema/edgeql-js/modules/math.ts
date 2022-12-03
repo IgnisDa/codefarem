@@ -1,6 +1,117 @@
 import { $ } from "edgedb";
 import * as _ from "../imports";
 import type * as _std from "./std";
+type floorλFuncExpr<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
+> = $.$expr_Function<
+  "math::floor",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$bigint, $.cardinalityUtil.paramCardinality<P1>>
+>;
+type floorλFuncExpr2<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
+> = $.$expr_Function<
+  "math::floor",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$number, $.cardinalityUtil.paramCardinality<P1>>
+>;
+type floorλFuncExpr3<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
+> = $.$expr_Function<
+  "math::floor",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$decimal, $.cardinalityUtil.paramCardinality<P1>>
+>;
+/**
+ * Round down to the nearest integer.
+ */
+function floor<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
+>(
+  x: P1,
+): floorλFuncExpr<P1>;
+/**
+ * Round down to the nearest integer.
+ */
+function floor<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
+>(
+  x: P1,
+): floorλFuncExpr2<P1>;
+/**
+ * Round down to the nearest integer.
+ */
+function floor<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
+>(
+  x: P1,
+): floorλFuncExpr3<P1>;
+function floor(...args: any[]) {
+  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::floor', args, _.spec, [
+    {args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000110"},
+    {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
+    {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
+  ]);
+  return _.syntax.$expressionify({
+    __kind__: $.ExpressionKind.Function,
+    __element__: returnType,
+    __cardinality__: cardinality,
+    __name__: "math::floor",
+    __args__: positionalArgs,
+    __namedargs__: namedArgs,
+  }) as any;
+};
+
+type lnλFuncExpr<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
+> = $.$expr_Function<
+  "math::ln",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$number, $.cardinalityUtil.paramCardinality<P1>>
+>;
+type lnλFuncExpr2<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
+> = $.$expr_Function<
+  "math::ln",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$decimal, $.cardinalityUtil.paramCardinality<P1>>
+>;
+/**
+ * Return the natural logarithm of the input value.
+ */
+function ln<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
+>(
+  x: P1,
+): lnλFuncExpr<P1>;
+/**
+ * Return the natural logarithm of the input value.
+ */
+function ln<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
+>(
+  x: P1,
+): lnλFuncExpr2<P1>;
+function ln(...args: any[]) {
+  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::ln', args, _.spec, [
+    {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
+    {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
+  ]);
+  return _.syntax.$expressionify({
+    __kind__: $.ExpressionKind.Function,
+    __element__: returnType,
+    __cardinality__: cardinality,
+    __name__: "math::ln",
+    __args__: positionalArgs,
+    __namedargs__: namedArgs,
+  }) as any;
+};
+
 type lgλFuncExpr<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
 > = $.$expr_Function<
@@ -43,6 +154,100 @@ function lg(...args: any[]) {
     __element__: returnType,
     __cardinality__: cardinality,
     __name__: "math::lg",
+    __args__: positionalArgs,
+    __namedargs__: namedArgs,
+  }) as any;
+};
+
+type absλFuncExpr<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$anyreal>>,
+> = $.$expr_Function<
+  "math::abs",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$anyreal, $.cardinalityUtil.paramCardinality<P1>>
+>;
+/**
+ * Return the absolute value of the input *x*.
+ */
+function abs<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$anyreal>>,
+>(
+  x: P1,
+): absλFuncExpr<P1>;
+function abs(...args: any[]) {
+  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::abs', args, _.spec, [
+    {args: [{typeId: "9279182c-678f-11ed-8ee1-537991e8627b", optional: false, setoftype: false, variadic: false}], returnTypeId: "9279182c-678f-11ed-8ee1-537991e8627b"},
+  ]);
+  return _.syntax.$expressionify({
+    __kind__: $.ExpressionKind.Function,
+    __element__: returnType,
+    __cardinality__: cardinality,
+    __name__: "math::abs",
+    __args__: positionalArgs,
+    __namedargs__: namedArgs,
+  }) as any;
+};
+
+type ceilλFuncExpr<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
+> = $.$expr_Function<
+  "math::ceil",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$number, $.cardinalityUtil.paramCardinality<P1>>
+>;
+type ceilλFuncExpr2<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
+> = $.$expr_Function<
+  "math::ceil",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$bigint, $.cardinalityUtil.paramCardinality<P1>>
+>;
+type ceilλFuncExpr3<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
+> = $.$expr_Function<
+  "math::ceil",
+  _.castMaps.mapLiteralToTypeSet<[P1]>,
+  {},
+  $.TypeSet<_std.$decimal, $.cardinalityUtil.paramCardinality<P1>>
+>;
+/**
+ * Round up to the nearest integer.
+ */
+function ceil<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
+>(
+  x: P1,
+): ceilλFuncExpr<P1>;
+/**
+ * Round up to the nearest integer.
+ */
+function ceil<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
+>(
+  x: P1,
+): ceilλFuncExpr2<P1>;
+/**
+ * Round up to the nearest integer.
+ */
+function ceil<
+  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
+>(
+  x: P1,
+): ceilλFuncExpr3<P1>;
+function ceil(...args: any[]) {
+  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::ceil', args, _.spec, [
+    {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
+    {args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000110"},
+    {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
+  ]);
+  return _.syntax.$expressionify({
+    __kind__: $.ExpressionKind.Function,
+    __element__: returnType,
+    __cardinality__: cardinality,
+    __name__: "math::ceil",
     __args__: positionalArgs,
     __namedargs__: namedArgs,
   }) as any;
@@ -127,211 +332,6 @@ function mean(...args: any[]) {
     __element__: returnType,
     __cardinality__: cardinality,
     __name__: "math::mean",
-    __args__: positionalArgs,
-    __namedargs__: namedArgs,
-  }) as any;
-};
-
-type absλFuncExpr<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$anyreal>>,
-> = $.$expr_Function<
-  "math::abs",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$anyreal, $.cardinalityUtil.paramCardinality<P1>>
->;
-/**
- * Return the absolute value of the input *x*.
- */
-function abs<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$anyreal>>,
->(
-  x: P1,
-): absλFuncExpr<P1>;
-function abs(...args: any[]) {
-  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::abs', args, _.spec, [
-    {args: [{typeId: "a97aa6b2-72ae-11ed-9646-89bdf71af967", optional: false, setoftype: false, variadic: false}], returnTypeId: "a97aa6b2-72ae-11ed-9646-89bdf71af967"},
-  ]);
-  return _.syntax.$expressionify({
-    __kind__: $.ExpressionKind.Function,
-    __element__: returnType,
-    __cardinality__: cardinality,
-    __name__: "math::abs",
-    __args__: positionalArgs,
-    __namedargs__: namedArgs,
-  }) as any;
-};
-
-type ceilλFuncExpr<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
-> = $.$expr_Function<
-  "math::ceil",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$number, $.cardinalityUtil.paramCardinality<P1>>
->;
-type ceilλFuncExpr2<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
-> = $.$expr_Function<
-  "math::ceil",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$bigint, $.cardinalityUtil.paramCardinality<P1>>
->;
-type ceilλFuncExpr3<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
-> = $.$expr_Function<
-  "math::ceil",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$decimal, $.cardinalityUtil.paramCardinality<P1>>
->;
-/**
- * Round up to the nearest integer.
- */
-function ceil<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
->(
-  x: P1,
-): ceilλFuncExpr<P1>;
-/**
- * Round up to the nearest integer.
- */
-function ceil<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
->(
-  x: P1,
-): ceilλFuncExpr2<P1>;
-/**
- * Round up to the nearest integer.
- */
-function ceil<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
->(
-  x: P1,
-): ceilλFuncExpr3<P1>;
-function ceil(...args: any[]) {
-  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::ceil', args, _.spec, [
-    {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
-    {args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000110"},
-    {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
-  ]);
-  return _.syntax.$expressionify({
-    __kind__: $.ExpressionKind.Function,
-    __element__: returnType,
-    __cardinality__: cardinality,
-    __name__: "math::ceil",
-    __args__: positionalArgs,
-    __namedargs__: namedArgs,
-  }) as any;
-};
-
-type floorλFuncExpr<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
-> = $.$expr_Function<
-  "math::floor",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$number, $.cardinalityUtil.paramCardinality<P1>>
->;
-type floorλFuncExpr2<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
-> = $.$expr_Function<
-  "math::floor",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$bigint, $.cardinalityUtil.paramCardinality<P1>>
->;
-type floorλFuncExpr3<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
-> = $.$expr_Function<
-  "math::floor",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$decimal, $.cardinalityUtil.paramCardinality<P1>>
->;
-/**
- * Round down to the nearest integer.
- */
-function floor<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
->(
-  x: P1,
-): floorλFuncExpr<P1>;
-/**
- * Round down to the nearest integer.
- */
-function floor<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$bigint>>,
->(
-  x: P1,
-): floorλFuncExpr2<P1>;
-/**
- * Round down to the nearest integer.
- */
-function floor<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
->(
-  x: P1,
-): floorλFuncExpr3<P1>;
-function floor(...args: any[]) {
-  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::floor', args, _.spec, [
-    {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
-    {args: [{typeId: "00000000-0000-0000-0000-000000000110", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000110"},
-    {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
-  ]);
-  return _.syntax.$expressionify({
-    __kind__: $.ExpressionKind.Function,
-    __element__: returnType,
-    __cardinality__: cardinality,
-    __name__: "math::floor",
-    __args__: positionalArgs,
-    __namedargs__: namedArgs,
-  }) as any;
-};
-
-type lnλFuncExpr<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
-> = $.$expr_Function<
-  "math::ln",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$number, $.cardinalityUtil.paramCardinality<P1>>
->;
-type lnλFuncExpr2<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
-> = $.$expr_Function<
-  "math::ln",
-  _.castMaps.mapLiteralToTypeSet<[P1]>,
-  {},
-  $.TypeSet<_std.$decimal, $.cardinalityUtil.paramCardinality<P1>>
->;
-/**
- * Return the natural logarithm of the input value.
- */
-function ln<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
->(
-  x: P1,
-): lnλFuncExpr<P1>;
-/**
- * Return the natural logarithm of the input value.
- */
-function ln<
-  P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
->(
-  x: P1,
-): lnλFuncExpr2<P1>;
-function ln(...args: any[]) {
-  const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::ln', args, _.spec, [
-    {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
-    {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108"},
-  ]);
-  return _.syntax.$expressionify({
-    __kind__: $.ExpressionKind.Function,
-    __element__: returnType,
-    __cardinality__: cardinality,
-    __name__: "math::ln",
     __args__: positionalArgs,
     __namedargs__: namedArgs,
   }) as any;
@@ -431,7 +431,7 @@ function stddev_pop(...args: any[]) {
   }) as any;
 };
 
-type var_b8f3b5fa72ae11edaf6a371499b2e274λFuncExpr<
+type var_a0d4be23678f11edb1edadca28b82dcbλFuncExpr<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
 > = $.$expr_Function<
   "math::var",
@@ -439,7 +439,7 @@ type var_b8f3b5fa72ae11edaf6a371499b2e274λFuncExpr<
   {},
   $.TypeSet<_std.$number, $.cardinalityUtil.overrideLowerBound<$.Cardinality.One, 'Zero'>>
 >;
-type var_b8f3b5fa72ae11edaf6a371499b2e274λFuncExpr2<
+type var_a0d4be23678f11edb1edadca28b82dcbλFuncExpr2<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
 > = $.$expr_Function<
   "math::var",
@@ -450,20 +450,20 @@ type var_b8f3b5fa72ae11edaf6a371499b2e274λFuncExpr2<
 /**
  * Return the sample variance of the input set.
  */
-function var_b8f3b5fa72ae11edaf6a371499b2e274<
+function var_a0d4be23678f11edb1edadca28b82dcb<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$number>>,
 >(
   vals: P1,
-): var_b8f3b5fa72ae11edaf6a371499b2e274λFuncExpr<P1>;
+): var_a0d4be23678f11edb1edadca28b82dcbλFuncExpr<P1>;
 /**
  * Return the sample variance of the input set.
  */
-function var_b8f3b5fa72ae11edaf6a371499b2e274<
+function var_a0d4be23678f11edb1edadca28b82dcb<
   P1 extends _.castMaps.orScalarLiteral<$.TypeSet<_std.$decimalλICastableTo>>,
 >(
   vals: P1,
-): var_b8f3b5fa72ae11edaf6a371499b2e274λFuncExpr2<P1>;
-function var_b8f3b5fa72ae11edaf6a371499b2e274(...args: any[]) {
+): var_a0d4be23678f11edb1edadca28b82dcbλFuncExpr2<P1>;
+function var_a0d4be23678f11edb1edadca28b82dcb(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('math::var', args, _.spec, [
     {args: [{typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff", returnTypemod: "OptionalType"},
     {args: [{typeId: "00000000-0000-0000-0000-000000000108", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000108", returnTypemod: "OptionalType"},
@@ -528,29 +528,29 @@ function var_pop(...args: any[]) {
 
 
 type __defaultExports = {
-  "lg": typeof lg;
-  "log": typeof log;
-  "mean": typeof mean;
-  "abs": typeof abs;
-  "ceil": typeof ceil;
   "floor": typeof floor;
   "ln": typeof ln;
+  "lg": typeof lg;
+  "abs": typeof abs;
+  "ceil": typeof ceil;
+  "log": typeof log;
+  "mean": typeof mean;
   "stddev": typeof stddev;
   "stddev_pop": typeof stddev_pop;
-  "var": typeof var_b8f3b5fa72ae11edaf6a371499b2e274;
+  "var": typeof var_a0d4be23678f11edb1edadca28b82dcb;
   "var_pop": typeof var_pop
 };
 const __defaultExports: __defaultExports = {
-  "lg": lg,
-  "log": log,
-  "mean": mean,
-  "abs": abs,
-  "ceil": ceil,
   "floor": floor,
   "ln": ln,
+  "lg": lg,
+  "abs": abs,
+  "ceil": ceil,
+  "log": log,
+  "mean": mean,
   "stddev": stddev,
   "stddev_pop": stddev_pop,
-  "var": var_b8f3b5fa72ae11edaf6a371499b2e274,
+  "var": var_a0d4be23678f11edb1edadca28b82dcb,
   "var_pop": var_pop
 };
 export default __defaultExports;

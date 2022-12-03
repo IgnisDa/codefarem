@@ -29,6 +29,6 @@ export const fakeDataDevelopmentMode = <T>(fn: () => T): T | undefined => {
  * Returns data about a new random user
  */
 export const createUserInfo = () => ({
-  auth: {},
+  auth: { hanko_id: faker.datatype.uuid() },
   profile: { email: createEmail(), username: createUsername() },
 });
