@@ -1,11 +1,10 @@
-use std::{str::FromStr, sync::Arc};
-
 use async_trait::async_trait;
-use auth::{create_jwt_token, get_hashed_password, verify_password};
+use auth::create_jwt_token;
 use config::JwtConfig;
 use edgedb_derive::Queryable;
 use edgedb_tokio::Client as DbClient;
 use serde::{Deserialize, Serialize};
+use std::{str::FromStr, sync::Arc};
 use utilities::{graphql::ApiError, users::AccountType};
 use uuid::Uuid;
 
@@ -39,17 +38,12 @@ pub trait UserServiceTrait: Sync + Send {
 
     async fn logout_user<'a>(&self, user_id: Uuid) -> bool;
 
-    async fn login_user<'a>(
-        &self,
-        email: &'a str,
-        password: &'a str,
-    ) -> Result<LoginUserOutput, LoginUserError>;
+    async fn login_user<'a>(&self, email: &'a str) -> Result<LoginUserOutput, LoginUserError>;
 
     async fn register_user<'a>(
         &self,
         username: &'a str,
         email: &'a str,
-        password: &'a str,
         account_type: &AccountType,
     ) -> Result<RegisterUserOutput, RegisterUserError>;
 }
@@ -108,24 +102,15 @@ impl UserServiceTrait for UserService {
         true
     }
 
-    async fn login_user<'a>(
-        &self,
-        email: &'a str,
-        password: &'a str,
-    ) -> Result<LoginUserOutput, LoginUserError> {
+    async fn login_user<'a>(&self, email: &'a str) -> Result<LoginUserOutput, LoginUserError> {
         #[derive(Debug, Deserialize, Queryable, Serialize)]
         struct A {
-            password_hash: String,
-        }
-        #[derive(Debug, Deserialize, Queryable, Serialize)]
-        struct C {
             name: String,
         }
         #[derive(Debug, Deserialize, Queryable, Serialize)]
         struct B {
             id: Uuid,
-            auth: A,
-            __type__: C,
+            __type__: A,
         }
         let login_details = self
             .db_conn
@@ -137,28 +122,18 @@ impl UserServiceTrait for UserService {
                 error: LoginError::CredentialsMismatch,
             });
         }
-        if verify_password(
-            password,
-            login_details.get(0).unwrap().auth.password_hash.as_str(),
-        ) {
-            let token = create_jwt_token(
-                self.jwt_config.jwt_secret(),
-                login_details[0].id.to_string().as_str(),
-                &AccountType::from_str(login_details[0].__type__.name.as_str()).unwrap(),
-            );
-            Ok(LoginUserOutput { token })
-        } else {
-            Err(LoginUserError {
-                error: LoginError::CredentialsMismatch,
-            })
-        }
+        let token = create_jwt_token(
+            self.jwt_config.jwt_secret(),
+            login_details[0].id.to_string().as_str(),
+            &AccountType::from_str(login_details[0].__type__.name.as_str()).unwrap(),
+        );
+        Ok(LoginUserOutput { token })
     }
 
     async fn register_user<'a>(
         &self,
         username: &'a str,
         email: &'a str,
-        password: &'a str,
         account_type: &AccountType,
     ) -> Result<RegisterUserOutput, RegisterUserError> {
         let check_uniqueness = self
@@ -172,13 +147,9 @@ impl UserServiceTrait for UserService {
         let account_type_string = account_type.to_string();
         // replace `User` in REGISTER_USER with the correct account_type
         let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
-        let password_hash = get_hashed_password(password);
         Ok(self
             .db_conn
-            .query_required_single::<RegisterUserOutput, _>(
-                new_query.as_str(),
-                &(username, email, password_hash),
-            )
+            .query_required_single::<RegisterUserOutput, _>(new_query.as_str(), &(username, email))
             .await
             .unwrap())
     }

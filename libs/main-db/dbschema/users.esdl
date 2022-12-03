@@ -4,10 +4,6 @@ module users {
             on target delete delete source;
             on source delete delete target;
         };
-        required link auth -> users::UserAuth {
-            on target delete delete source;
-            on source delete delete target;
-        };
     }
 
     type UserProfile {
@@ -17,10 +13,6 @@ module users {
         required property username -> str {
             constraint exclusive;
         };
-    }
-
-    type UserAuth {
-        property password_hash -> str;
     }
 
     type Student extending users::User {

@@ -1,9 +1,3 @@
-use async_graphql::{Context, ErrorExtensions, Object, Result};
-use auth::{get_user_id_from_authorization_token, AuthError};
-use macros::{to_result_union_response, user_id_from_request};
-
-use crate::RequestData;
-
 use super::{
     dto::{
         mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
@@ -15,6 +9,10 @@ use super::{
     },
     service::{UserService, UserServiceTrait},
 };
+use crate::RequestData;
+use async_graphql::{Context, ErrorExtensions, Object, Result};
+use auth::{get_user_id_from_authorization_token, AuthError};
+use macros::{to_result_union_response, user_id_from_request};
 
 /// The query segment for User
 #[derive(Default)]
@@ -57,7 +55,7 @@ impl UserQuery {
     ) -> Result<LoginUserResultUnion> {
         let output = ctx
             .data_unchecked::<UserService>()
-            .login_user(input.email(), input.password())
+            .login_user(input.email())
             .await;
         to_result_union_response!(output, LoginUserResultUnion)
     }
@@ -82,12 +80,7 @@ impl UserMutation {
     ) -> Result<RegisterUserResultUnion> {
         let output = ctx
             .data_unchecked::<UserService>()
-            .register_user(
-                input.username(),
-                input.email(),
-                input.password(),
-                input.account_type(),
-            )
+            .register_user(input.username(), input.email(), input.account_type())
             .await;
         to_result_union_response!(output, RegisterUserResultUnion)
     }

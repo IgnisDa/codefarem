@@ -7,10 +7,6 @@ use edgedb_derive::Queryable;
 pub struct LoginUserInput {
     /// The email of the user
     email: String,
-
-    /// The password that the user wants to set
-    #[graphql(secret)]
-    password: String,
 }
 
 /// The result type if the user was created successfully

@@ -1,8 +1,8 @@
 import type * as edgedb from "edgedb";
 export namespace std {
   export interface BaseObject {
-    "id": string;
     "__type__": schema.ObjectType;
+    "id": string;
   }
   export interface $Object extends BaseObject {}
   export interface FreeObject extends BaseObject {}
@@ -35,28 +35,28 @@ export namespace schema {
     "is_final": boolean;
   }
   export interface InheritingObject extends SubclassableObject {
-    "inherited_fields"?: string[] | null;
     "bases": InheritingObject[];
     "ancestors": InheritingObject[];
+    "inherited_fields"?: string[] | null;
   }
   export interface AnnotationSubject extends $Object {
     "annotations": Annotation[];
   }
   export interface AccessPolicy extends InheritingObject, AnnotationSubject {
+    "subject": ObjectType;
+    "errmessage"?: string | null;
     "access_kinds": AccessKind[];
     "condition"?: string | null;
     "action": AccessPolicyAction;
     "expr"?: string | null;
-    "errmessage"?: string | null;
-    "subject": ObjectType;
   }
   export enum AccessPolicyAction {
     Allow = "Allow",
     Deny = "Deny",
   }
   export interface Alias extends AnnotationSubject {
-    "expr": string;
     "type": Type;
+    "expr": string;
   }
   export interface Annotation extends InheritingObject, AnnotationSubject {
     "inheritable"?: boolean | null;
@@ -69,14 +69,14 @@ export namespace schema {
   export interface PrimitiveType extends Type {}
   export interface CollectionType extends PrimitiveType {}
   export interface Array extends CollectionType {
-    "dimensions"?: number[] | null;
     "element_type": Type;
+    "dimensions"?: number[] | null;
   }
   export interface ArrayExprAlias extends Array {}
   export interface CallableObject extends AnnotationSubject {
-    "return_typemod"?: TypeModifier | null;
     "params": Parameter[];
     "return_type"?: Type | null;
+    "return_typemod"?: TypeModifier | null;
   }
   export enum Cardinality {
     One = "One",
@@ -86,23 +86,23 @@ export namespace schema {
     "volatility"?: Volatility | null;
   }
   export interface Cast extends AnnotationSubject, VolatilitySubject {
-    "allow_implicit"?: boolean | null;
-    "allow_assignment"?: boolean | null;
     "from_type"?: Type | null;
     "to_type"?: Type | null;
+    "allow_implicit"?: boolean | null;
+    "allow_assignment"?: boolean | null;
   }
   export interface ConsistencySubject extends $Object, InheritingObject, AnnotationSubject {
     "constraints": Constraint[];
   }
   export interface Constraint extends CallableObject, InheritingObject {
+    "subject"?: ConsistencySubject | null;
+    "params": Parameter[];
     "expr"?: string | null;
     "subjectexpr"?: string | null;
     "finalexpr"?: string | null;
     "errmessage"?: string | null;
     "delegated"?: boolean | null;
     "except_expr"?: string | null;
-    "subject"?: ConsistencySubject | null;
-    "params": Parameter[];
   }
   export interface Delta extends $Object {
     "parents": Delta[];
@@ -111,47 +111,47 @@ export namespace schema {
     "package": sys.ExtensionPackage;
   }
   export interface Function extends CallableObject, VolatilitySubject {
+    "used_globals": Global[];
     "body"?: string | null;
     "language": string;
     "preserves_optionality"?: boolean | null;
-    "used_globals": Global[];
   }
   export interface FutureBehavior extends $Object {}
   export interface Global extends AnnotationSubject {
+    "target": Type;
     "required"?: boolean | null;
     "cardinality"?: Cardinality | null;
     "expr"?: string | null;
     "default"?: string | null;
-    "target": Type;
   }
   export interface Index extends InheritingObject, AnnotationSubject {
     "expr"?: string | null;
     "except_expr"?: string | null;
   }
   export interface Pointer extends InheritingObject, ConsistencySubject, AnnotationSubject {
+    "source"?: Source | null;
+    "target"?: Type | null;
     "cardinality"?: Cardinality | null;
     "required"?: boolean | null;
     "readonly"?: boolean | null;
     "default"?: string | null;
     "expr"?: string | null;
-    "source"?: Source | null;
-    "target"?: Type | null;
   }
   export interface Source extends $Object {
     "pointers": Pointer[];
     "indexes": Index[];
   }
   export interface Link extends Pointer, Source {
-    "on_target_delete"?: TargetDeleteAction | null;
-    "on_source_delete"?: SourceDeleteAction | null;
     "target"?: ObjectType | null;
     "properties": Property[];
+    "on_target_delete"?: TargetDeleteAction | null;
+    "on_source_delete"?: SourceDeleteAction | null;
   }
   export interface Migration extends AnnotationSubject, $Object {
+    "parents": Migration[];
     "script": string;
     "message"?: string | null;
     "generated_by"?: MigrationGeneratedBy | null;
-    "parents": Migration[];
   }
   export enum MigrationGeneratedBy {
     DevMode = "DevMode",
@@ -159,13 +159,13 @@ export namespace schema {
   }
   export interface Module extends $Object, AnnotationSubject {}
   export interface ObjectType extends InheritingObject, ConsistencySubject, AnnotationSubject, Type, Source {
-    "compound_type": boolean;
-    "is_compound_type": boolean;
     "union_of": ObjectType[];
     "intersection_of": ObjectType[];
-    "links": Link[];
     "properties": Property[];
+    "links": Link[];
     "access_policies": AccessPolicy[];
+    "compound_type": boolean;
+    "is_compound_type": boolean;
   }
   export interface Operator extends CallableObject, VolatilitySubject {
     "operator_kind"?: OperatorKind | null;
@@ -179,11 +179,11 @@ export namespace schema {
     Ternary = "Ternary",
   }
   export interface Parameter extends $Object {
+    "type": Type;
     "typemod": TypeModifier;
     "kind": ParameterKind;
     "num": number;
     "default"?: string | null;
-    "type": Type;
   }
   export enum ParameterKind {
     VariadicParam = "VariadicParam",
@@ -212,12 +212,12 @@ export namespace schema {
     DeferredRestrict = "DeferredRestrict",
   }
   export interface Tuple extends CollectionType {
-    "named": boolean;
     "element_types": TupleElement[];
+    "named": boolean;
   }
   export interface TupleElement extends std.BaseObject {
-    "name"?: string | null;
     "type": Type;
+    "name"?: string | null;
   }
   export interface TupleExprAlias extends Tuple {}
   export enum TypeModifier {
@@ -234,6 +234,7 @@ export namespace schema {
 export namespace cfg {
   export interface ConfigObject extends std.BaseObject {}
   export interface AbstractConfig extends ConfigObject {
+    "auth": Auth[];
     "session_idle_timeout": edgedb.Duration;
     "session_idle_transaction_timeout": edgedb.Duration;
     "query_execution_timeout": edgedb.Duration;
@@ -248,17 +249,16 @@ export namespace cfg {
     "effective_cache_size"?: edgedb.ConfigMemory | null;
     "effective_io_concurrency"?: number | null;
     "default_statistics_target"?: number | null;
-    "auth": Auth[];
   }
   export enum AllowBareDDL {
     AlwaysAllow = "AlwaysAllow",
     NeverAllow = "NeverAllow",
   }
   export interface Auth extends ConfigObject {
+    "method"?: AuthMethod | null;
     "priority": number;
     "user": string[];
     "comment"?: string | null;
-    "method"?: AuthMethod | null;
   }
   export interface AuthMethod extends ConfigObject {
     "transports": ConnectionTransport[];
@@ -281,13 +281,13 @@ export namespace cfg {
 export namespace learning {
   export interface CaseUnit extends std.$Object {}
   export interface Class extends std.$Object {
-    "name": string;
     "students": users.Student[];
     "teachers": users.Teacher[];
+    "name": string;
   }
   export interface CommonCaseUnit extends std.$Object {
-    "seq": number;
     "data": CaseUnit;
+    "seq": number;
   }
   export interface InputCaseUnit extends CommonCaseUnit {
     "name": string;
@@ -300,13 +300,13 @@ export namespace learning {
   }
   export interface OutputCaseUnit extends CommonCaseUnit {}
   export interface Question extends std.$Object {
+    "authored_by": users.User[];
+    "classes": Class[];
+    "test_cases": TestCase[];
     "created_at": Date;
     "name": string;
     "problem": string;
     "slug": string;
-    "classes": Class[];
-    "authored_by": users.User[];
-    "test_cases": TestCase[];
   }
   export interface StringCollectionUnit extends CaseUnit {
     "string_collection_value": string[];
@@ -321,7 +321,6 @@ export namespace learning {
 }
 export namespace users {
   export interface User extends std.$Object {
-    "auth": UserAuth;
     "profile": UserProfile;
   }
   export interface Student extends User {
@@ -329,9 +328,6 @@ export namespace users {
   }
   export interface Teacher extends User {
     "classes": learning.Class[];
-  }
-  export interface UserAuth extends std.$Object {
-    "password_hash"?: string | null;
   }
   export interface UserProfile extends std.$Object {
     "email": string;
@@ -348,11 +344,11 @@ export namespace sys {
     "version": {major: number, minor: number, stage: VersionStage, stage_no: number, local: string[]};
   }
   export interface Role extends SystemObject, schema.InheritingObject, schema.AnnotationSubject {
+    "member_of": Role[];
     "superuser": boolean;
     "password"?: string | null;
     "name": string;
     "is_superuser": boolean;
-    "member_of": Role[];
   }
   export enum TransactionIsolation {
     RepeatableRead = "RepeatableRead",
@@ -455,7 +451,6 @@ export interface types {
     "User": users.User;
     "Student": users.Student;
     "Teacher": users.Teacher;
-    "UserAuth": users.UserAuth;
     "UserProfile": users.UserProfile;
   };
   "sys": {

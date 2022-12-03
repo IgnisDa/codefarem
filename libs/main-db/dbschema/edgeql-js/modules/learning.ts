@@ -2,37 +2,37 @@ import { $ } from "edgedb";
 import * as _ from "../imports";
 import type * as _std from "./std";
 import type * as _users from "./users";
-export type $CaseUnitλShape = $.typeutil.flatten<_std.$Object_8859a36f6c6511edbac839b92730dce8λShape & {
+export type $CaseUnitλShape = $.typeutil.flatten<_std.$Object_b0ae039572ae11eda74283b029582d28λShape & {
   "<data[is learning::CommonCaseUnit]": $.LinkDesc<$CommonCaseUnit, $.Cardinality.Many, {}, false, false,  false, false>;
   "<data[is learning::OutputCaseUnit]": $.LinkDesc<$OutputCaseUnit, $.Cardinality.Many, {}, false, false,  false, false>;
   "<data[is learning::InputCaseUnit]": $.LinkDesc<$InputCaseUnit, $.Cardinality.Many, {}, false, false,  false, false>;
   "<data": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $CaseUnit = $.ObjectType<"learning::CaseUnit", $CaseUnitλShape, null>;
-const $CaseUnit = $.makeType<$CaseUnit>(_.spec, "e0d755cf-6cd0-11ed-81e2-452ca2a640e2", _.syntax.literal);
+const $CaseUnit = $.makeType<$CaseUnit>(_.spec, "792b7616-72c9-11ed-9edb-d7a6aa9de971", _.syntax.literal);
 
 const CaseUnit: $.$expr_PathNode<$.TypeSet<$CaseUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($CaseUnit, $.Cardinality.Many), null, true);
 
-export type $ClassλShape = $.typeutil.flatten<_std.$Object_8859a36f6c6511edbac839b92730dce8λShape & {
-  "name": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+export type $ClassλShape = $.typeutil.flatten<_std.$Object_b0ae039572ae11eda74283b029582d28λShape & {
   "students": $.LinkDesc<_users.$Student, $.Cardinality.Many, {}, false, false,  false, false>;
   "teachers": $.LinkDesc<_users.$Teacher, $.Cardinality.Many, {}, false, false,  false, false>;
-  "<classes[is learning::Question]": $.LinkDesc<$Question, $.Cardinality.Many, {}, false, false,  false, false>;
+  "name": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "<classes[is users::Student]": $.LinkDesc<_users.$Student, $.Cardinality.Many, {}, false, false,  false, false>;
   "<classes[is users::Teacher]": $.LinkDesc<_users.$Teacher, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<classes[is learning::Question]": $.LinkDesc<$Question, $.Cardinality.Many, {}, false, false,  false, false>;
   "<classes": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Class = $.ObjectType<"learning::Class", $ClassλShape, null>;
-const $Class = $.makeType<$Class>(_.spec, "e0ef071f-6cd0-11ed-8e07-23f1ad3ae0e3", _.syntax.literal);
+const $Class = $.makeType<$Class>(_.spec, "793b0cda-72c9-11ed-9961-7f8c8d0180d5", _.syntax.literal);
 
 const Class: $.$expr_PathNode<$.TypeSet<$Class, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Class, $.Cardinality.Many), null, true);
 
-export type $CommonCaseUnitλShape = $.typeutil.flatten<_std.$Object_8859a36f6c6511edbac839b92730dce8λShape & {
-  "seq": $.PropertyDesc<_std.$int32, $.Cardinality.One, false, false, false, false>;
+export type $CommonCaseUnitλShape = $.typeutil.flatten<_std.$Object_b0ae039572ae11eda74283b029582d28λShape & {
   "data": $.LinkDesc<$CaseUnit, $.Cardinality.One, {}, false, false,  false, false>;
+  "seq": $.PropertyDesc<_std.$int32, $.Cardinality.One, false, false, false, false>;
 }>;
 type $CommonCaseUnit = $.ObjectType<"learning::CommonCaseUnit", $CommonCaseUnitλShape, null>;
-const $CommonCaseUnit = $.makeType<$CommonCaseUnit>(_.spec, "e0df4fee-6cd0-11ed-ba4d-c7b7ac29acad", _.syntax.literal);
+const $CommonCaseUnit = $.makeType<$CommonCaseUnit>(_.spec, "79339f80-72c9-11ed-9341-3f02358c3b6c", _.syntax.literal);
 
 const CommonCaseUnit: $.$expr_PathNode<$.TypeSet<$CommonCaseUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($CommonCaseUnit, $.Cardinality.Many), null, true);
 
@@ -42,7 +42,7 @@ export type $InputCaseUnitλShape = $.typeutil.flatten<$CommonCaseUnitλShape & 
   "<inputs": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $InputCaseUnit = $.ObjectType<"learning::InputCaseUnit", $InputCaseUnitλShape, null>;
-const $InputCaseUnit = $.makeType<$InputCaseUnit>(_.spec, "e0e2a5d1-6cd0-11ed-a785-0daf469806b7", _.syntax.literal);
+const $InputCaseUnit = $.makeType<$InputCaseUnit>(_.spec, "7937ba9d-72c9-11ed-93c1-53d90c130435", _.syntax.literal);
 
 const InputCaseUnit: $.$expr_PathNode<$.TypeSet<$InputCaseUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($InputCaseUnit, $.Cardinality.Many), null, true);
 
@@ -50,7 +50,7 @@ export type $NumberCollectionUnitλShape = $.typeutil.flatten<$CaseUnitλShape &
   "number_collection_value": $.PropertyDesc<$.ArrayType<_std.$float64>, $.Cardinality.One, false, false, false, false>;
 }>;
 type $NumberCollectionUnit = $.ObjectType<"learning::NumberCollectionUnit", $NumberCollectionUnitλShape, null>;
-const $NumberCollectionUnit = $.makeType<$NumberCollectionUnit>(_.spec, "e0d8bf6e-6cd0-11ed-93d4-37be02a52411", _.syntax.literal);
+const $NumberCollectionUnit = $.makeType<$NumberCollectionUnit>(_.spec, "792ceeb1-72c9-11ed-b0db-c539017e7b46", _.syntax.literal);
 
 const NumberCollectionUnit: $.$expr_PathNode<$.TypeSet<$NumberCollectionUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($NumberCollectionUnit, $.Cardinality.Many), null, true);
 
@@ -58,7 +58,7 @@ export type $NumberUnitλShape = $.typeutil.flatten<$CaseUnitλShape & {
   "number_value": $.PropertyDesc<_std.$float64, $.Cardinality.One, false, false, false, false>;
 }>;
 type $NumberUnit = $.ObjectType<"learning::NumberUnit", $NumberUnitλShape, null>;
-const $NumberUnit = $.makeType<$NumberUnit>(_.spec, "e0db5942-6cd0-11ed-bfc2-9f08a7d52eee", _.syntax.literal);
+const $NumberUnit = $.makeType<$NumberUnit>(_.spec, "792f9a90-72c9-11ed-b13b-73b5d4783b01", _.syntax.literal);
 
 const NumberUnit: $.$expr_PathNode<$.TypeSet<$NumberUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($NumberUnit, $.Cardinality.Many), null, true);
 
@@ -67,21 +67,21 @@ export type $OutputCaseUnitλShape = $.typeutil.flatten<$CommonCaseUnitλShape &
   "<outputs": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $OutputCaseUnit = $.ObjectType<"learning::OutputCaseUnit", $OutputCaseUnitλShape, null>;
-const $OutputCaseUnit = $.makeType<$OutputCaseUnit>(_.spec, "e0e0e36f-6cd0-11ed-a3ab-bfa4835d6ed5", _.syntax.literal);
+const $OutputCaseUnit = $.makeType<$OutputCaseUnit>(_.spec, "7935ba12-72c9-11ed-a24b-d51bbdb543a5", _.syntax.literal);
 
 const OutputCaseUnit: $.$expr_PathNode<$.TypeSet<$OutputCaseUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($OutputCaseUnit, $.Cardinality.Many), null, true);
 
-export type $QuestionλShape = $.typeutil.flatten<_std.$Object_8859a36f6c6511edbac839b92730dce8λShape & {
+export type $QuestionλShape = $.typeutil.flatten<_std.$Object_b0ae039572ae11eda74283b029582d28λShape & {
+  "authored_by": $.LinkDesc<_users.$User, $.Cardinality.Many, {}, false, false,  false, false>;
+  "classes": $.LinkDesc<$Class, $.Cardinality.Many, {}, false, false,  false, false>;
+  "test_cases": $.LinkDesc<$TestCase, $.Cardinality.Many, {}, false, false,  false, false>;
   "created_at": $.PropertyDesc<_std.$datetime, $.Cardinality.One, false, false, false, true>;
   "name": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "problem": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "slug": $.PropertyDesc<_std.$str, $.Cardinality.One, true, false, false, false>;
-  "classes": $.LinkDesc<$Class, $.Cardinality.Many, {}, false, false,  false, false>;
-  "authored_by": $.LinkDesc<_users.$User, $.Cardinality.Many, {}, false, false,  false, false>;
-  "test_cases": $.LinkDesc<$TestCase, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Question = $.ObjectType<"learning::Question", $QuestionλShape, null>;
-const $Question = $.makeType<$Question>(_.spec, "e0ff196b-6cd0-11ed-ace9-a355cfd3bf3d", _.syntax.literal);
+const $Question = $.makeType<$Question>(_.spec, "7956a094-72c9-11ed-b9c9-8f1da38dc6de", _.syntax.literal);
 
 const Question: $.$expr_PathNode<$.TypeSet<$Question, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Question, $.Cardinality.Many), null, true);
 
@@ -89,7 +89,7 @@ export type $StringCollectionUnitλShape = $.typeutil.flatten<$CaseUnitλShape &
   "string_collection_value": $.PropertyDesc<$.ArrayType<_std.$str>, $.Cardinality.One, false, false, false, false>;
 }>;
 type $StringCollectionUnit = $.ObjectType<"learning::StringCollectionUnit", $StringCollectionUnitλShape, null>;
-const $StringCollectionUnit = $.makeType<$StringCollectionUnit>(_.spec, "e0dc9f9b-6cd0-11ed-bc6e-f53999b2fc9b", _.syntax.literal);
+const $StringCollectionUnit = $.makeType<$StringCollectionUnit>(_.spec, "7930e953-72c9-11ed-acfd-5f743a0e17ea", _.syntax.literal);
 
 const StringCollectionUnit: $.$expr_PathNode<$.TypeSet<$StringCollectionUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($StringCollectionUnit, $.Cardinality.Many), null, true);
 
@@ -97,18 +97,18 @@ export type $StringUnitλShape = $.typeutil.flatten<$CaseUnitλShape & {
   "string_value": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
 }>;
 type $StringUnit = $.ObjectType<"learning::StringUnit", $StringUnitλShape, null>;
-const $StringUnit = $.makeType<$StringUnit>(_.spec, "e0de03da-6cd0-11ed-92ee-f17697c32736", _.syntax.literal);
+const $StringUnit = $.makeType<$StringUnit>(_.spec, "793252ec-72c9-11ed-8bcf-2915217f2aca", _.syntax.literal);
 
 const StringUnit: $.$expr_PathNode<$.TypeSet<$StringUnit, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($StringUnit, $.Cardinality.Many), null, true);
 
-export type $TestCaseλShape = $.typeutil.flatten<_std.$Object_8859a36f6c6511edbac839b92730dce8λShape & {
+export type $TestCaseλShape = $.typeutil.flatten<_std.$Object_b0ae039572ae11eda74283b029582d28λShape & {
   "inputs": $.LinkDesc<$InputCaseUnit, $.Cardinality.Many, {}, false, false,  false, false>;
   "outputs": $.LinkDesc<$OutputCaseUnit, $.Cardinality.Many, {}, false, false,  false, false>;
   "<test_cases[is learning::Question]": $.LinkDesc<$Question, $.Cardinality.Many, {}, false, false,  false, false>;
   "<test_cases": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $TestCase = $.ObjectType<"learning::TestCase", $TestCaseλShape, null>;
-const $TestCase = $.makeType<$TestCase>(_.spec, "e0fd5789-6cd0-11ed-9eae-45003ae78878", _.syntax.literal);
+const $TestCase = $.makeType<$TestCase>(_.spec, "7954ce22-72c9-11ed-806e-cf0a8dd23eb7", _.syntax.literal);
 
 const TestCase: $.$expr_PathNode<$.TypeSet<$TestCase, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($TestCase, $.Cardinality.Many), null, true);
 

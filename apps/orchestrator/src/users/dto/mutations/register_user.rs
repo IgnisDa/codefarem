@@ -14,10 +14,6 @@ pub struct RegisterUserInput {
     /// The email of the user
     email: String,
 
-    /// The password that the user wants to set
-    #[graphql(secret)]
-    password: String,
-
     /// The type of account the user wants to create
     account_type: AccountType,
 }

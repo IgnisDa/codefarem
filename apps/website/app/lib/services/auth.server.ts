@@ -1,6 +1,6 @@
 import { Authenticator } from 'remix-auth';
 import { FormStrategy } from 'remix-auth-form';
-import { FORM_EMAIL_KEY, FORM_PASSWORD_KEY } from '../constants';
+import { FORM_EMAIL_KEY } from '../constants';
 import { sessionStorage } from './session.server';
 import type { User } from '~/lib/types';
 import { getAuthHeader, gqlClient } from './graphql.server';
@@ -15,9 +15,8 @@ export const authenticator = new Authenticator<User>(sessionStorage);
 authenticator.use(
   new FormStrategy(async ({ form }): Promise<User> => {
     const email = form.get(FORM_EMAIL_KEY) as string;
-    const password = form.get(FORM_PASSWORD_KEY) as string;
     const { loginUser } = await gqlClient.request(LOGIN_USER, {
-      input: { email, password },
+      input: { email },
     });
     if (loginUser.__typename === 'LoginUserError')
       throw unauthorized(`Invalid credentials provided`);

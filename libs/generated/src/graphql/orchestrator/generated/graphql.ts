@@ -171,8 +171,6 @@ export type LoginUserError = {
 export type LoginUserInput = {
   /** The email of the user */
   email: Scalars['String'];
-  /** The password that the user wants to set */
-  password: Scalars['String'];
 };
 
 /** The result type if the user was created successfully */
@@ -337,8 +335,6 @@ export type RegisterUserInput = {
   accountType: AccountType;
   /** The email of the user */
   email: Scalars['String'];
-  /** The password that the user wants to set */
-  password: Scalars['String'];
   /** The username of the user */
   username: Scalars['String'];
 };

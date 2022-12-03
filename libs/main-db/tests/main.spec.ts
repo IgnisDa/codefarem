@@ -19,7 +19,6 @@ describe('Database behavior testing', () => {
       await e
         .insert(e.users.Teacher, {
           profile: e.insert(e.users.UserProfile, teacherData.profile),
-          auth: e.insert(e.users.UserAuth, teacherData.auth),
         })
         .run(client);
     }
@@ -56,7 +55,6 @@ describe('Database behavior testing', () => {
     const { id } = await e
       .insert(e.users.Teacher, {
         profile: e.insert(e.users.UserProfile, teacherData.profile),
-        auth: e.insert(e.users.UserAuth, teacherData.auth),
       })
       .run(client);
     for (let i = 0; i < 5; i += 1) {
