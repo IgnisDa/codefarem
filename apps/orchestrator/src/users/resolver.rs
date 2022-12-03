@@ -45,16 +45,6 @@ impl UserQuery {
             .await;
         to_result_union_response!(output, UserWithEmailResultUnion)
     }
-
-    /// Logout a user from the service
-    async fn logout_user(&self, ctx: &Context<'_>) -> Result<bool> {
-        let user_id = user_id_from_request!(ctx);
-        dbg!(&user_id);
-        Ok(ctx
-            .data_unchecked::<UserService>()
-            .logout_user(&user_id)
-            .await)
-    }
 }
 
 #[Object]

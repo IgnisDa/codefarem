@@ -22,7 +22,6 @@ const documents = {
     "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n": types.SupportedLanguagesDocument,
     "\n  query LanguageExample($language: SupportedLanguage!) {\n    languageExample(language: $language)\n  }\n": types.LanguageExampleDocument,
     "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n": types.UserWithEmailDocument,
-    "\n  query LogoutUser {\n    logoutUser\n  }\n": types.LogoutUserDocument,
     "\n  fragment TestCase on TestCaseData {\n    __typename\n    numberCollectionValue\n    stringCollectionValue\n    numberValue\n    stringValue\n    unitType\n  }\n": types.TestCaseFragmentDoc,
     "\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        renderedProblem\n        numClasses\n        authoredBy {\n          profile {\n            username\n          }\n        }\n        testCases {\n          inputs {\n            data {\n              ...TestCase\n            }\n          }\n          outputs {\n            data {\n              ...TestCase\n            }\n          }\n        }\n      }\n    }\n  }\n": types.QuestionDetailsDocument,
     "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n": types.UserDetailsDocument,
@@ -64,10 +63,6 @@ export function graphql(source: "\n  query LanguageExample($language: SupportedL
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query LogoutUser {\n    logoutUser\n  }\n"): (typeof documents)["\n  query LogoutUser {\n    logoutUser\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

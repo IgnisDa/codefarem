@@ -26,12 +26,6 @@ export const USER_WITH_EMAIL = graphql(`
   }
 `);
 
-export const LOGOUT_USER = graphql(`
-  query LogoutUser {
-    logoutUser
-  }
-`);
-
 export const TEST_CASE_DATA_FRAGMENT = graphql(`
   fragment TestCase on TestCaseData {
     __typename

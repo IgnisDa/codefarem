@@ -1,14 +1,18 @@
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
 import { redirect } from '@remix-run/node';
 import type { DataFunctionArgs } from '@remix-run/node';
-import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
-import { LOGOUT_USER } from ':generated/graphql/orchestrator/queries';
+import { serialize } from 'cookie';
+import { ApplicationConfig } from '~/lib/config.server';
 
-export const loader = async ({ request }: DataFunctionArgs) => {
-  await gqlClient.request(
-    LOGOUT_USER,
-    undefined,
-    authenticatedRequest(request)
-  );
-  return redirect(FAILURE_REDIRECT_PATH);
+export const loader = async (_args: DataFunctionArgs) => {
+  const hankoCookie = serialize('hanko', '', {
+    path: '/',
+    domain: ApplicationConfig.COOKIE_DOMAIN,
+    maxAge: -1,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+  });
+  return redirect(FAILURE_REDIRECT_PATH, {
+    headers: { 'Set-Cookie': hankoCookie },
+  });
 };

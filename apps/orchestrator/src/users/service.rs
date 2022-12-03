@@ -28,8 +28,6 @@ pub trait UserServiceTrait: Sync + Send {
         email: &'a str,
     ) -> Result<UserWithEmailOutput, UserWithEmailError>;
 
-    async fn logout_user<'a>(&self, hanko_id: &'a str) -> bool;
-
     async fn register_user<'a>(
         &self,
         username: &'a str,
@@ -85,11 +83,6 @@ impl UserServiceTrait for UserService {
             });
         }
         Ok(all_users.get(0).unwrap().to_owned())
-    }
-
-    async fn logout_user<'a>(&self, hanko_id: &'a str) -> bool {
-        println!("Logging out user with id={hanko_id}");
-        true
     }
 
     async fn register_user<'a>(

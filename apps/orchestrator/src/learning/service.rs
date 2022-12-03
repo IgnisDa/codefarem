@@ -212,12 +212,8 @@ impl LearningServiceTrait for LearningService {
                 ),
             )
             .await
-            .map_err(|e| {
-                dbg!(e);
-                ApiError {
-                    error: "There was an error creating the question, please try again."
-                        .to_string(),
-                }
+            .map_err(|_| ApiError {
+                error: "There was an error creating the question, please try again.".to_string(),
             })?;
         fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
             match test_case {

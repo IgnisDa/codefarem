@@ -11,6 +11,7 @@ import {
 import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
+import { ApplicationConfig } from './lib/config.server';
 
 export const links: LinksFunction = () => {
   return [];
@@ -23,7 +24,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader() {
-  return json({ ENV: { HANKO_URL: process.env.HANKO_URL as string } });
+  return json({ ENV: { HANKO_URL: ApplicationConfig.HANKO_URL } });
 }
 
 const Document: FC<{ children: ReactNode }> = ({ children }) => {

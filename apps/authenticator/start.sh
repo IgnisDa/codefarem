@@ -10,4 +10,5 @@ mkdir -p /config
 
 envsubst < /config.yml > /config/config.yaml
 
+/hanko migrate up
 /hanko serve public
