@@ -37,6 +37,7 @@ tasks:
       - '@group(remix)'
     output:
       - 'app/lib/routes.d.ts'
+    local: true
 
   dev:
     command: 'remix dev'
