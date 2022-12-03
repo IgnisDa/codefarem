@@ -11,8 +11,6 @@ services:
     environment:
       - HANKO_URL=http://localhost:9000
       - HANKO_URL_INTERNAL=http://hanko-backend:9000
-      - HANKO_ELEMENT_URL=http://localhost:9500/element.hanko-auth.js
-      - HANKO_FRONTEND_SDK_URL=http://localhost:9500/sdk.umd.js
     user: vscode
 
   mail:
@@ -56,11 +54,6 @@ services:
     depends_on:
       hanko-database:
         condition: service_healthy
-
-  hanko-elements:
-    image: ghcr.io/teamhanko/hanko/elements:v0.3.1
-    ports:
-      - 9500:80
 
 volumes:
   hanko_db_data:
