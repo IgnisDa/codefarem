@@ -7,13 +7,15 @@ projects:
   main-db: 'libs/main-db'
   react-ui: 'libs/react-ui'
   faker: 'libs/faker'
-  examples: 'libs/examples'
   # rust projects
   compilers: 'apps/compilers'
   executor: 'apps/executor'
   orchestrator: 'apps/orchestrator'
   # python projects
   deployment: 'apps/deployment'
+  # miscellaneous
+  authenticator: 'apps/authenticator'
+  examples: 'libs/examples'
 
 vcs:
   manager: 'git'

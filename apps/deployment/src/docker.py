@@ -35,6 +35,12 @@ def cli():
 
 
 @click.command()
+def authenticator():
+    """Generate docker-files for the authenticator"""
+    write_dockerfile("authenticator", "authenticator")
+
+
+@click.command()
 def compilers():
     """Generate docker-files for the compilers"""
     write_dockerfile("base", "compilers")
@@ -58,6 +64,7 @@ def website():
     write_dockerfile("website", "website")
 
 
+cli.add_command(authenticator)
 cli.add_command(compilers)
 cli.add_command(executor)
 cli.add_command(orchestrator)
