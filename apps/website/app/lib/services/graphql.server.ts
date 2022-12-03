@@ -7,7 +7,7 @@ export const gqlClient = new GraphQLClient(
   { headers: { connection: 'keep-alive' } }
 );
 
-export const getAuthHeader = (token: string) => ({
+const getAuthHeader = (token: string) => ({
   authorization: `Bearer ${token}`,
 });
 

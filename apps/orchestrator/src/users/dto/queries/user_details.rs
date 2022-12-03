@@ -3,7 +3,7 @@ use edgedb_derive::Queryable;
 use serde::Deserialize;
 use utilities::{graphql::ApiError, users::AccountType};
 
-#[derive(Debug, SimpleObject, Queryable, Deserialize)]
+#[derive(Debug, SimpleObject, Queryable, Deserialize, Clone)]
 pub struct UserProfileInformation {
     /// The email of the user
     email: String,
@@ -13,7 +13,7 @@ pub struct UserProfileInformation {
 }
 
 /// The result type if details about the user were found successfully
-#[derive(Debug, SimpleObject, Deserialize)]
+#[derive(Debug, SimpleObject, Deserialize, Clone)]
 pub struct UserDetailsOutput {
     /// Profile details about the user
     profile: UserProfileInformation,
