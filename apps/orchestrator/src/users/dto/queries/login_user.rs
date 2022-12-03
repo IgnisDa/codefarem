@@ -5,8 +5,8 @@ use edgedb_derive::Queryable;
 /// The input object used to create a new user
 #[derive(InputObject, Getters)]
 pub struct LoginUserInput {
-    /// The email of the user
-    email: String,
+    /// The ID issued by the hanko auth provider
+    hanko_id: String,
 }
 
 /// The result type if the user was created successfully

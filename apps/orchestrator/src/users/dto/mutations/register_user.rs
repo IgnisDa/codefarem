@@ -16,6 +16,9 @@ pub struct RegisterUserInput {
 
     /// The type of account the user wants to create
     account_type: AccountType,
+
+    /// The ID issued by the hanko auth provider
+    hanko_id: String,
 }
 
 /// The result type if the user was created successfully

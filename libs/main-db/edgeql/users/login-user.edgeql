@@ -1,7 +1,10 @@
 SELECT users::User {
   id,
+  auth: {
+    hanko_id
+  },
   __type__: {
     name
   }
 }
-FILTER .profile.email = <str>$0
+FILTER .auth.hanko_id = <str>$0

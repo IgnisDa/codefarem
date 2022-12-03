@@ -55,7 +55,7 @@ impl UserQuery {
     ) -> Result<LoginUserResultUnion> {
         let output = ctx
             .data_unchecked::<UserService>()
-            .login_user(input.email())
+            .login_user(input.hanko_id())
             .await;
         to_result_union_response!(output, LoginUserResultUnion)
     }
@@ -80,7 +80,12 @@ impl UserMutation {
     ) -> Result<RegisterUserResultUnion> {
         let output = ctx
             .data_unchecked::<UserService>()
-            .register_user(input.username(), input.email(), input.account_type())
+            .register_user(
+                input.username(),
+                input.email(),
+                input.account_type(),
+                input.hanko_id(),
+            )
             .await;
         to_result_union_response!(output, RegisterUserResultUnion)
     }

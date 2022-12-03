@@ -169,8 +169,8 @@ export type LoginUserError = {
 
 /** The input object used to create a new user */
 export type LoginUserInput = {
-  /** The email of the user */
-  email: Scalars['String'];
+  /** The ID issued by the hanko auth provider */
+  hankoId: Scalars['String'];
 };
 
 /** The result type if the user was created successfully */
@@ -335,6 +335,8 @@ export type RegisterUserInput = {
   accountType: AccountType;
   /** The email of the user */
   email: Scalars['String'];
+  /** The ID issued by the hanko auth provider */
+  hankoId: Scalars['String'];
   /** The username of the user */
   username: Scalars['String'];
 };

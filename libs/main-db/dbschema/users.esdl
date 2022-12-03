@@ -1,8 +1,19 @@
 module users {
-     abstract type User {
+    abstract type User {
+        required link auth -> users::UserAuth {
+            on target delete delete source;
+            on source delete delete target;
+        };
         required link profile -> users::UserProfile {
             on target delete delete source;
             on source delete delete target;
+        };
+    }
+
+    type UserAuth {
+        # the unique ID issued by the hanko auth provider
+        required property hanko_id -> str {
+            constraint exclusive;
         };
     }
 

@@ -38,13 +38,14 @@ pub trait UserServiceTrait: Sync + Send {
 
     async fn logout_user<'a>(&self, user_id: Uuid) -> bool;
 
-    async fn login_user<'a>(&self, email: &'a str) -> Result<LoginUserOutput, LoginUserError>;
+    async fn login_user<'a>(&self, hanko_id: &'a str) -> Result<LoginUserOutput, LoginUserError>;
 
     async fn register_user<'a>(
         &self,
         username: &'a str,
         email: &'a str,
         account_type: &AccountType,
+        hanko_id: &'a str,
     ) -> Result<RegisterUserOutput, RegisterUserError>;
 }
 
@@ -102,19 +103,24 @@ impl UserServiceTrait for UserService {
         true
     }
 
-    async fn login_user<'a>(&self, email: &'a str) -> Result<LoginUserOutput, LoginUserError> {
+    async fn login_user<'a>(&self, hanko_id: &'a str) -> Result<LoginUserOutput, LoginUserError> {
         #[derive(Debug, Deserialize, Queryable, Serialize)]
         struct A {
             name: String,
         }
         #[derive(Debug, Deserialize, Queryable, Serialize)]
         struct B {
+            hanko_id: String,
+        }
+        #[derive(Debug, Deserialize, Queryable, Serialize)]
+        struct C {
             id: Uuid,
+            auth: B,
             __type__: A,
         }
         let login_details = self
             .db_conn
-            .query::<B, _>(LOGIN_USER, &(email,))
+            .query::<C, _>(LOGIN_USER, &(hanko_id,))
             .await
             .unwrap();
         if login_details.is_empty() {
@@ -135,6 +141,7 @@ impl UserServiceTrait for UserService {
         username: &'a str,
         email: &'a str,
         account_type: &AccountType,
+        hanko_id: &'a str,
     ) -> Result<RegisterUserOutput, RegisterUserError> {
         let check_uniqueness = self
             .db_conn
@@ -149,7 +156,10 @@ impl UserServiceTrait for UserService {
         let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
         Ok(self
             .db_conn
-            .query_required_single::<RegisterUserOutput, _>(new_query.as_str(), &(username, email))
+            .query_required_single::<RegisterUserOutput, _>(
+                new_query.as_str(),
+                &(username, email, hanko_id),
+            )
             .await
             .unwrap())
     }
