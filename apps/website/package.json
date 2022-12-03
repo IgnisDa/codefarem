@@ -4,9 +4,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@codefarem/faker": "workspace:^",
-    "@codefarem/generated": "workspace:^",
-    "@codefarem/react-ui": "workspace:^",
+    "@codefarem/faker": "workspace:*",
+    "@codefarem/generated": "workspace:*",
+    "@codefarem/react-ui": "workspace:*",
     "@codemirror/lang-cpp": "6.0.1",
     "@codemirror/lang-rust": "6.0.0",
     "@codemirror/language": "6.2.1",
@@ -27,6 +27,7 @@
     "change-case": "4.1.2",
     "clsx": "1.2.1",
     "codemirror": "6.0.1",
+    "cookie": "0.5.0",
     "env-var": "7.3.0",
     "graphql-request": "5.0.0",
     "lodash": "4.17.21",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@remix-run/dev": "1.7.6",
     "@remix-run/eslint-config": "1.7.6",
+    "@types/cookie": "0.5.1",
     "@types/lodash": "4.14.185",
     "@types/luxon": "3.0.1",
     "@types/react": "18.0.20",

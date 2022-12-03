@@ -19,7 +19,6 @@ const documents = {
     "\n  mutation CreateQuestion($input: CreateQuestionInput!) {\n    createQuestion(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateQuestionOutput {\n        slug\n      }\n    }\n  }\n": types.CreateQuestionDocument,
     "\n  query TestCaseUnits {\n    testCaseUnits\n  }\n": types.TestCaseUnitsDocument,
     "\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          passed\n          userOutput\n          expectedOutput\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n": types.ExecuteCodeForQuestionDocument,
-    "\n  query LoginUser($input: LoginUserInput!) {\n    loginUser(input: $input) {\n      __typename\n      ... on LoginUserOutput {\n        token\n      }\n      ... on LoginUserError {\n        error\n      }\n    }\n  }\n": types.LoginUserDocument,
     "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n": types.SupportedLanguagesDocument,
     "\n  query LanguageExample($language: SupportedLanguage!) {\n    languageExample(language: $language)\n  }\n": types.LanguageExampleDocument,
     "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n": types.UserWithEmailDocument,
@@ -53,10 +52,6 @@ export function graphql(source: "\n  query TestCaseUnits {\n    testCaseUnits\n 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          passed\n          userOutput\n          expectedOutput\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          passed\n          userOutput\n          expectedOutput\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query LoginUser($input: LoginUserInput!) {\n    loginUser(input: $input) {\n      __typename\n      ... on LoginUserOutput {\n        token\n      }\n      ... on LoginUserError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  query LoginUser($input: LoginUserInput!) {\n    loginUser(input: $input) {\n      __typename\n      ... on LoginUserOutput {\n        token\n      }\n      ... on LoginUserError {\n        error\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

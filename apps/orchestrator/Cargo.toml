@@ -11,13 +11,11 @@ async-trait = { workspace = true }
 auth = { path = "../../libs/auth" }
 comrak = "0.15.0"
 chrono = { workspace = true }
-config = { path = "../../libs/config" }
 derive-getters = "0.2.0"
 dotenv = "0.15.0"
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
-figment = { version = "0.10.7", features = ["env"] }
 macros = { path = "../../libs/macros" }
 main_db = { path = "../../libs/main-db" }
 protobuf = { path = "../../libs/protobuf" }
@@ -31,3 +29,4 @@ uuid = { workspace = true }
 utilities = { path = "../../libs/utilities" }
 slug = "0.1.4"
 rand = { workspace = true }
+jwks-client = "0.2.0"

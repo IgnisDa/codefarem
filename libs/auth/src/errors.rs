@@ -7,12 +7,6 @@ pub enum AuthError {
     #[error("The provided credentials were invalid")]
     InvalidCredentials,
 
-    #[error("Invalid JWT token found")]
-    InvalidJwtToken(String),
-
-    #[error("JWT token creation error encountered")]
-    JwtTokenCreation,
-
     #[error("Authorization header required")]
     AuthHeaderRequired,
 

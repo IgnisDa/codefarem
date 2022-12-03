@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 async-graphql = { workspace = true }
 chrono = { workspace = true }
-jsonwebtoken = "8.1.1"
+jwks-client = "0.2.0"
 serde = { workspace = true }
 strum = { workspace = true }
 thiserror = "1.0.37"

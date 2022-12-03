@@ -18,7 +18,6 @@ import { HiMinusCircle, HiPlusCircle } from 'react-icons/hi';
 import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
-import { authenticator } from '~/lib/services/auth.server';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import {
   AccountType,

@@ -5,7 +5,6 @@ import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
-import { authenticator } from '~/lib/services/auth.server';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import { Button, Input } from '@nextui-org/react';
 import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';

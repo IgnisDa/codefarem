@@ -2,7 +2,6 @@ use super::{
     dto::{
         mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
         queries::{
-            login_user::{LoginUserInput, LoginUserResultUnion},
             user_details::UserDetailsResultUnion,
             user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
         },
@@ -11,7 +10,7 @@ use super::{
 };
 use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
-use auth::{get_user_id_from_authorization_token, AuthError};
+use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{to_result_union_response, user_id_from_request};
 
 /// The query segment for User
@@ -26,10 +25,10 @@ pub struct UserMutation {}
 impl UserQuery {
     /// Get information about the current user
     async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
-        let (user_id, _) = user_id_from_request!(ctx);
+        let user_id = user_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<UserService>()
-            .user_details(user_id)
+            .user_details(&user_id)
             .await;
         to_result_union_response!(output, UserDetailsResultUnion)
     }
@@ -47,25 +46,13 @@ impl UserQuery {
         to_result_union_response!(output, UserWithEmailResultUnion)
     }
 
-    /// Login a user to the service
-    async fn login_user(
-        &self,
-        ctx: &Context<'_>,
-        input: LoginUserInput,
-    ) -> Result<LoginUserResultUnion> {
-        let output = ctx
-            .data_unchecked::<UserService>()
-            .login_user(input.hanko_id())
-            .await;
-        to_result_union_response!(output, LoginUserResultUnion)
-    }
-
     /// Logout a user from the service
     async fn logout_user(&self, ctx: &Context<'_>) -> Result<bool> {
-        let (user_id, _) = user_id_from_request!(ctx);
+        let user_id = user_id_from_request!(ctx);
+        dbg!(&user_id);
         Ok(ctx
             .data_unchecked::<UserService>()
-            .logout_user(user_id)
+            .logout_user(&user_id)
             .await)
     }
 }

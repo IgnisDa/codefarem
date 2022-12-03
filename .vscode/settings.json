@@ -35,6 +35,7 @@
         "ignisda",
         "iostream",
         "jsonwebtoken",
+        "jwks",
         "luxon",
         "makepkg",
         "nextest",

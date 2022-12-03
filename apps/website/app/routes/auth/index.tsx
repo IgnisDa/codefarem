@@ -1,14 +1,11 @@
 import type { ActionArgs } from '@remix-run/node';
+import { redirect } from '@remix-run/node';
 import { useEffect } from 'react';
 import { ClientOnly } from 'remix-utils';
 import { Hanko } from '@teamhanko/hanko-frontend-sdk';
 import { registerHankoAuth } from '~/lib/services/hanko.client';
 import { useFetcher } from '@remix-run/react';
-import {
-  SUCCESSFUL_REDIRECT_PATH,
-  FAILURE_REDIRECT_PATH,
-} from '~/lib/constants';
-import { authenticator } from '~/lib/services/auth.server';
+import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -30,10 +27,7 @@ export const action = async ({ request }: ActionArgs) => {
       input: { email, username, accountType, hankoId },
     });
   }
-  return await authenticator.authenticate('form', request, {
-    successRedirect: SUCCESSFUL_REDIRECT_PATH,
-    failureRedirect: FAILURE_REDIRECT_PATH,
-  });
+  return redirect(SUCCESSFUL_REDIRECT_PATH);
 };
 
 export default () => {

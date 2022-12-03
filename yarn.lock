@@ -1717,7 +1717,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codefarem/faker@workspace:^, @codefarem/faker@workspace:libs/faker":
+"@codefarem/faker@workspace:*, @codefarem/faker@workspace:libs/faker":
   version: 0.0.0-use.local
   resolution: "@codefarem/faker@workspace:libs/faker"
   dependencies:
@@ -1727,7 +1727,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@codefarem/generated@workspace:^, @codefarem/generated@workspace:libs/generated":
+"@codefarem/generated@workspace:*, @codefarem/generated@workspace:libs/generated":
   version: 0.0.0-use.local
   resolution: "@codefarem/generated@workspace:libs/generated"
   dependencies:
@@ -1738,7 +1738,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@codefarem/react-ui@workspace:^, @codefarem/react-ui@workspace:libs/react-ui":
+"@codefarem/react-ui@workspace:*, @codefarem/react-ui@workspace:libs/react-ui":
   version: 0.0.0-use.local
   resolution: "@codefarem/react-ui@workspace:libs/react-ui"
   dependencies:
@@ -1764,9 +1764,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@codefarem/website@workspace:apps/website"
   dependencies:
-    "@codefarem/faker": "workspace:^"
-    "@codefarem/generated": "workspace:^"
-    "@codefarem/react-ui": "workspace:^"
+    "@codefarem/faker": "workspace:*"
+    "@codefarem/generated": "workspace:*"
+    "@codefarem/react-ui": "workspace:*"
     "@codemirror/lang-cpp": 6.0.1
     "@codemirror/lang-rust": 6.0.0
     "@codemirror/language": 6.2.1
@@ -1784,6 +1784,7 @@ __metadata:
     "@routes-gen/remix": 0.3.5
     "@teamhanko/hanko-elements": 0.0.12-alpha
     "@teamhanko/hanko-frontend-sdk": 0.0.9-alpha
+    "@types/cookie": 0.5.1
     "@types/lodash": 4.14.185
     "@types/luxon": 3.0.1
     "@types/react": 18.0.20
@@ -1793,6 +1794,7 @@ __metadata:
     change-case: 4.1.2
     clsx: 1.2.1
     codemirror: 6.0.1
+    cookie: 0.5.0
     env-var: 7.3.0
     graphql-request: 5.0.0
     lodash: 4.17.21
@@ -5205,6 +5207,13 @@ __metadata:
     "@types/node": "*"
     "@types/responselike": ^1.0.0
   checksum: d9b26403fe65ce6b0cb3720b7030104c352bcb37e4fac2a7089a25a97de59c355fa08940658751f2f347a8512aa9d18fdb66ab3ade835975b2f454f2d5befbd9
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:0.5.1":
+  version: 0.5.1
+  resolution: "@types/cookie@npm:0.5.1"
+  checksum: 9a8d60fc84797122bc399d6bd330fe5780dc7aab032321de705049ea925339f74658bfa418de483a625d51858770efef58df633ff2e20f1bdf7fbd74a52847e2
   languageName: node
   linkType: hard
 
