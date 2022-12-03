@@ -851,7 +851,6 @@ dependencies = [
  "duct",
  "env_logger 0.9.1",
  "log",
- "macros",
  "protobuf",
  "tokio 1.21.2",
  "tonic",
