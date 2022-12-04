@@ -10,7 +10,9 @@ pub fn get_hanko_id_from_authorization_token(token: &str) -> Result<String, Auth
         .strip_prefix("Bearer ")
         .ok_or(AuthError::InvalidAuthHeader)?;
     let key_store = KeyStore::new();
-    let decoded = key_store.decode(jwt).unwrap();
+    let decoded = key_store
+        .decode(jwt)
+        .map_err(|_| AuthError::InvalidAuthHeader)?;
     Ok(decoded.payload().sub().unwrap().to_string())
 }
 

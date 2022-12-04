@@ -4,9 +4,6 @@ use thiserror::Error;
 
 #[derive(Debug, Error, IntoStaticStr)]
 pub enum AuthError {
-    #[error("The provided credentials were invalid")]
-    InvalidCredentials,
-
     #[error("Authorization header required")]
     AuthHeaderRequired,
 
