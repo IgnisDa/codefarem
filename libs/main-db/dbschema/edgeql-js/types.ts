@@ -329,6 +329,20 @@ export namespace users {
     "username": string;
   }
 }
+export namespace organizations {
+  export interface InviteLink extends std.$Object {
+    "email"?: string | null;
+    "expires_at": Date;
+    "is_used": boolean;
+    "is_active": boolean;
+    "token": string;
+    "organization": Organization;
+  }
+  export interface Organization extends std.$Object {
+    "name": string;
+    "members": users.Teacher[];
+  }
+}
 export namespace sys {
   export interface SystemObject extends schema.AnnotationSubject {}
   export interface Database extends SystemObject, schema.AnnotationSubject {
@@ -444,6 +458,10 @@ export interface types {
     "Teacher": users.Teacher;
     "UserAuth": users.UserAuth;
     "UserProfile": users.UserProfile;
+  };
+  "organizations": {
+    "InviteLink": organizations.InviteLink;
+    "Organization": organizations.Organization;
   };
   "sys": {
     "SystemObject": sys.SystemObject;

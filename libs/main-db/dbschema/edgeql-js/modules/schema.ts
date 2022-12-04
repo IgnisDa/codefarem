@@ -5,6 +5,7 @@ import type * as _sys from "./sys";
 import type * as _cfg from "./cfg";
 import type * as _learning from "./learning";
 import type * as _users from "./users";
+import type * as _organizations from "./organizations";
 export type $AccessKind = {
   Select: $.$expr_Literal<$AccessKind>;
   UpdateRead: $.$expr_Literal<$AccessKind>;
@@ -541,6 +542,8 @@ export type $ObjectTypeλShape = $.typeutil.flatten<$InheritingObjectλShape & O
   "<__type__[is users::Teacher]": $.LinkDesc<_users.$Teacher, $.Cardinality.Many, {}, false, false,  false, false>;
   "<__type__[is learning::TestCase]": $.LinkDesc<_learning.$TestCase, $.Cardinality.Many, {}, false, false,  false, false>;
   "<__type__[is learning::Question]": $.LinkDesc<_learning.$Question, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<__type__[is organizations::Organization]": $.LinkDesc<_organizations.$Organization, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<__type__[is organizations::InviteLink]": $.LinkDesc<_organizations.$InviteLink, $.Cardinality.Many, {}, false, false,  false, false>;
   "<__type__": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<intersection_of": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<subject": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;

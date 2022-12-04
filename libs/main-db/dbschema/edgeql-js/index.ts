@@ -10,6 +10,7 @@ import _cfg from "./modules/cfg";
 import _schema from "./modules/schema";
 import _sys from "./modules/sys";
 import _learning from "./modules/learning";
+import _organizations from "./modules/organizations";
 import _users from "./modules/users";
 import _math from "./modules/math";
 import _default from "./modules/default";
@@ -32,6 +33,7 @@ const ExportDefault: typeof _std &
   "schema": typeof _schema;
   "sys": typeof _sys;
   "learning": typeof _learning;
+  "organizations": typeof _organizations;
   "users": typeof _users;
   "math": typeof _math;
   "default": typeof _default;
@@ -46,6 +48,7 @@ const ExportDefault: typeof _std &
   "schema": _schema,
   "sys": _sys,
   "learning": _learning,
+  "organizations": _organizations,
   "users": _users,
   "math": _math,
   "default": _default,

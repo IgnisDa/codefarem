@@ -2,6 +2,7 @@ import { $ } from "edgedb";
 import * as _ from "../imports";
 import type * as _std from "./std";
 import type * as _learning from "./learning";
+import type * as _organizations from "./organizations";
 export type $UserλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8ccbaf6fbc0493e7λShape & {
   "auth": $.LinkDesc<$UserAuth, $.Cardinality.One, {}, false, false,  false, false>;
   "profile": $.LinkDesc<$UserProfile, $.Cardinality.One, {}, false, false,  false, false>;
@@ -9,7 +10,7 @@ export type $UserλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8ccba
   "<authored_by": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $User = $.ObjectType<"users::User", $UserλShape, null>;
-const $User = $.makeType<$User>(_.spec, "a8542bd9-72d3-11ed-ad8a-6ff449e62efb", _.syntax.literal);
+const $User = $.makeType<$User>(_.spec, "3b97963b-73ad-11ed-bd27-b18454c43f92", _.syntax.literal);
 
 const User: $.$expr_PathNode<$.TypeSet<$User, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($User, $.Cardinality.Many), null, true);
 
@@ -19,17 +20,19 @@ export type $StudentλShape = $.typeutil.flatten<$UserλShape & {
   "<students": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Student = $.ObjectType<"users::Student", $StudentλShape, null>;
-const $Student = $.makeType<$Student>(_.spec, "a8570ad1-72d3-11ed-9167-2d2cece4c4be", _.syntax.literal);
+const $Student = $.makeType<$Student>(_.spec, "3b997bd5-73ad-11ed-ba8d-83d1b86bbbd1", _.syntax.literal);
 
 const Student: $.$expr_PathNode<$.TypeSet<$Student, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Student, $.Cardinality.Many), null, true);
 
 export type $TeacherλShape = $.typeutil.flatten<$UserλShape & {
   "classes": $.LinkDesc<_learning.$Class, $.Cardinality.Many, {}, false, true,  false, false>;
+  "<members[is organizations::Organization]": $.LinkDesc<_organizations.$Organization, $.Cardinality.Many, {}, false, false,  false, false>;
   "<teachers[is learning::Class]": $.LinkDesc<_learning.$Class, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<members": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<teachers": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Teacher = $.ObjectType<"users::Teacher", $TeacherλShape, null>;
-const $Teacher = $.makeType<$Teacher>(_.spec, "a85b276e-72d3-11ed-9840-6351f8d4e260", _.syntax.literal);
+const $Teacher = $.makeType<$Teacher>(_.spec, "3b9d3405-73ad-11ed-976a-697c5cbbef37", _.syntax.literal);
 
 const Teacher: $.$expr_PathNode<$.TypeSet<$Teacher, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Teacher, $.Cardinality.Many), null, true);
 
@@ -41,7 +44,7 @@ export type $UserAuthλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8
   "<auth": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $UserAuth = $.ObjectType<"users::UserAuth", $UserAuthλShape, null>;
-const $UserAuth = $.makeType<$UserAuth>(_.spec, "a8508a86-72d3-11ed-a9db-215a1edf7a27", _.syntax.literal);
+const $UserAuth = $.makeType<$UserAuth>(_.spec, "3b93e3cb-73ad-11ed-93af-6f01e3d014a4", _.syntax.literal);
 
 const UserAuth: $.$expr_PathNode<$.TypeSet<$UserAuth, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($UserAuth, $.Cardinality.Many), null, true);
 
@@ -54,7 +57,7 @@ export type $UserProfileλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11
   "<profile": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $UserProfile = $.ObjectType<"users::UserProfile", $UserProfileλShape, null>;
-const $UserProfile = $.makeType<$UserProfile>(_.spec, "a851d34b-72d3-11ed-8173-dd45688bab10", _.syntax.literal);
+const $UserProfile = $.makeType<$UserProfile>(_.spec, "3b952986-73ad-11ed-82f3-99fbf6ef0b2d", _.syntax.literal);
 
 const UserProfile: $.$expr_PathNode<$.TypeSet<$UserProfile, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($UserProfile, $.Cardinality.Many), null, true);
 
