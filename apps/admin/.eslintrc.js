@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   rules: {
     'import/no-default-export': ['off'],
     'no-console': ['error', { allow: ['warn', 'error'] }],

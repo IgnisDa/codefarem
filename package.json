@@ -10,6 +10,7 @@
     "commitizen": "4.2.5",
     "eslint": "8.26.0",
     "eslint-config-moon": "1.2.0",
+    "next": "13.0.6",
     "packemon": "^2.4.1",
     "prettier": "2.7.1",
     "ts-node": "10.9.1",
