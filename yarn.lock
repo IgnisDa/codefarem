@@ -1785,6 +1785,7 @@ __metadata:
     "@teamhanko/hanko-elements": 0.0.12-alpha
     "@teamhanko/hanko-frontend-sdk": 0.0.9-alpha
     "@types/cookie": 0.5.1
+    "@types/jsonwebtoken": 8.5.1
     "@types/lodash": 4.14.185
     "@types/luxon": 3.0.1
     "@types/react": 18.0.20
@@ -1797,6 +1798,7 @@ __metadata:
     cookie: 0.5.0
     env-var: 7.3.0
     graphql-request: 5.0.0
+    jsonwebtoken: 8.5.1
     lodash: 4.17.21
     luxon: 3.0.1
     react: 18.2.0
@@ -5376,6 +5378,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/jsonwebtoken@npm:8.5.1":
+  version: 8.5.1
+  resolution: "@types/jsonwebtoken@npm:8.5.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 740581b0d1e18f31ce9332e26702ae2704af86f0cb0bb914ee3554517e514e97392610525f9349ea8fe3742d0f816eb86d7ab864ddbd19cef55b2db4a43883a1
   languageName: node
   linkType: hard
 
@@ -12467,7 +12478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^8.5.1":
+"jsonwebtoken@npm:8.5.1, jsonwebtoken@npm:^8.5.1":
   version: 8.5.1
   resolution: "jsonwebtoken@npm:8.5.1"
   dependencies:
