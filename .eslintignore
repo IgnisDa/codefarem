@@ -23,3 +23,5 @@ lib
 !apps/website/app/lib
 
 .eslintrc.js
+
+next-env.d.ts

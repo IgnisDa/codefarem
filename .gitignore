@@ -34,7 +34,6 @@ yarn-error.log
 testem.log
 
 # Types
-dts
 /typings
 
 # System Files
@@ -73,3 +72,7 @@ lib
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# next.js
+.next
+next-env.d.ts
