@@ -24,7 +24,12 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader() {
-  return json({ ENV: { HANKO_URL: ApplicationConfig.HANKO_URL } });
+  return json({
+    ENV: {
+      HANKO_URL: ApplicationConfig.HANKO_URL,
+      NODE_ENV: process.env.NODE_ENV,
+    },
+  });
 }
 
 const Document: FC<{ children: ReactNode }> = ({ children }) => {
@@ -53,7 +58,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
             __html: `window.ENV = ${JSON.stringify(ENV)}`,
           }}
         />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        {ENV.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
   );
