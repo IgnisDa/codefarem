@@ -1,8 +1,10 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { TopBar } from 'src/libs/components/TopBar';
 import createEmotionCache from 'src/libs/createEmotionCache';
 import { theme } from 'src/styles/theme';
 
@@ -21,7 +23,10 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <TopBar />
+        <Container>
+          <Component {...pageProps} />
+        </Container>
       </ThemeProvider>
     </CacheProvider>
   );
