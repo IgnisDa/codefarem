@@ -35,6 +35,11 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
       <head>
         <Meta />
         <Links />
+        <script
+          defer
+          data-domain="codefarem.ignisda.tech"
+          src="https://plausible.ignisda.tech/js/script.js"
+        />
         {typeof document === 'undefined' ? '__STYLES__' : null}
       </head>
       <body
