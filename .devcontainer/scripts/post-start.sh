@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-sleep 5
 cd libs/main-db
-edgedb instance start -I $(edgedb project info --instance-name)
+until edgedb instance start -I $(edgedb project info --instance-name)
+do
+    echo "Error starting instance, retrying..."
+done
 echo "Main database started..."
