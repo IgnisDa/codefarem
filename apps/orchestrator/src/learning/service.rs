@@ -121,7 +121,7 @@ impl LearningServiceTrait for LearningService {
             .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
             .await
             .map_err(|_| ApiError {
-                error: format!("Class with id={class_id} not found"),
+                error: format!("Class with id={class_id:?} not found"),
             })
     }
 
