@@ -1,7 +1,9 @@
 FROM ghcr.io/teamhanko/hanko:main as builder
 
+FROM stephenc/envsub as deps
+
 FROM ubuntu as runner
-RUN apt update && apt install -y gettext
+COPY --from=deps /bin/envsub /bin/envsub
 COPY --from=builder /hanko .
 COPY apps/authenticator/start.sh .
 COPY apps/authenticator/config.yml .
