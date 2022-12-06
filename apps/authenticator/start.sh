@@ -8,7 +8,7 @@ export DATABASE_NAME=$(echo $DATABASE_URL | grep -oP "postgres://.*@.*:.*/\K(.+?
 
 mkdir -p /config
 
-envsubst < /config.yml > /config/config.yaml
+(cat /config.yml) | envsub > /config/config.yaml
 
 /hanko migrate up
 /hanko serve public

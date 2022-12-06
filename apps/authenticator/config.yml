@@ -1,24 +1,24 @@
 database:
   dialect: postgres
-  user: '$DATABASE_USER'
-  password: '$DATABASE_PASSWORD'
-  host: '$DATABASE_HOST'
-  port: $DATABASE_PORT
-  database: '$DATABASE_NAME'
+  user: '${DATABASE_USER}'
+  password: '${DATABASE_PASSWORD}'
+  host: '${DATABASE_HOST}'
+  port: ${DATABASE_PORT}
+  database: '${DATABASE_NAME}'
 
 passcode:
   email:
-    from_address: '$FROM_EMAIL'
-    from_name: '$FROM_NAME'
+    from_address: '${FROM_EMAIL}'
+    from_name: '${FROM_NAME}'
   smtp:
-    host: '$SMTP_HOST'
-    port: $SMTP_PORT
-    user: '$SMTP_USER'
-    password: '$SMTP_PASSWORD'
+    host: '${SMTP_HOST}'
+    port: ${SMTP_PORT}
+    user: '${SMTP_USER}'
+    password: '${SMTP_PASSWORD}'
 
 secrets:
   keys:
-    - '$SECRET_KEY'
+    - '${SECRET_KEY}'
 
 service:
   name: 'Codefarem'
@@ -30,12 +30,12 @@ server:
       enabled: true
       allow_credentials: true
       allow_origins:
-        - '$SERVER_PUBLIC_CORS_ALLOW_ORIGIN'
+        - '${SERVER_PUBLIC_CORS_ALLOW_ORIGIN}'
 
 session:
   lifespan: '24h'
   cookie:
-    domain: '$SESSION_COOKIE_DOMAIN'
+    domain: '${SESSION_COOKIE_DOMAIN}'
     http_only: true
     secure: true
 
