@@ -76,3 +76,6 @@ lib
 # next.js
 .next
 next-env.d.ts
+
+# remix
+apps/website/.cache

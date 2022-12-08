@@ -1,7 +1,0 @@
-.cache
-build
-public/build
-.env
-
-app/tailwind.css
-!app/lib
