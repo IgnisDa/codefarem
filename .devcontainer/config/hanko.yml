@@ -1,3 +1,7 @@
+audit_log:
+  storage:
+    enabled: true
+
 database:
   dialect: postgres
   host: hanko-database
@@ -13,12 +17,13 @@ passcode:
     host: mail
     port: 1025
 
+session:
+  cookie:
+    secure: false
+
 secrets:
   keys:
     - secret-password-12345
-
-service:
-  name: Authentication Service
 
 server:
   admin:
@@ -29,12 +34,7 @@ server:
       enabled: true
       allow_credentials: true
       allow_origins:
-        - "*"
+        - '*'
 
-session:
-  cookie:
-    secure: false
-
-audit_log:
-  storage:
-    enabled: true
+service:
+  name: Authentication Service
