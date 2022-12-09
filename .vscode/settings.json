@@ -45,6 +45,7 @@
         "mantine",
         "nextest",
         "nextui",
+        "nprogress",
         "pacman",
         "paru",
         "passcode",
