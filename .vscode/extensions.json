@@ -19,6 +19,7 @@
     "zxh404.vscode-proto3",
     "rvest.vs-code-prettier-eslint",
     "moonrepo.moon-console",
-    "ms-python.python"
+    "ms-python.python",
+    "bierner.markdown-mermaid"
   ]
 }
