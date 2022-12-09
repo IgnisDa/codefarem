@@ -8,16 +8,15 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import {
-  IconCalendarStats,
   IconCode,
   IconDeviceDesktopAnalytics,
   IconFingerprint,
   IconGauge,
-  IconHome2,
   IconLogout,
   IconSettings,
   IconSwitchHorizontal,
   IconUser,
+  IconUsers,
   TablerIcon,
 } from '@tabler/icons';
 import { Link } from '@tanstack/react-router';
@@ -58,42 +57,48 @@ const useStyles = createStyles((theme) => ({
 interface NavbarLinkProps {
   icon: TablerIcon;
   label: string;
-  link: string;
   active?: boolean;
   onClick?: () => void;
 }
 
-function NavbarLink({
+const NavbarButton = ({
+  icon: Icon,
+  label,
+  active,
+  onClick,
+}: NavbarLinkProps) => {
+  const { classes, cx } = useStyles();
+  return (
+    <Tooltip label={label} position="right" transitionDuration={0}>
+      <UnstyledButton
+        onClick={onClick}
+        className={cx(classes.link, { [classes.active]: active })}
+      >
+        <Icon stroke={1.5} />
+      </UnstyledButton>
+    </Tooltip>
+  );
+};
+
+const NavbarLink = ({
   icon: Icon,
   label,
   link,
-  active,
   onClick,
-}: NavbarLinkProps) {
-  const { classes, cx } = useStyles();
-  return (
-    <Link to={link}>
-      <Tooltip label={label} position="right" transitionDuration={0}>
-        <UnstyledButton
-          onClick={onClick}
-          className={cx(classes.link, { [classes.active]: active })}
-        >
-          <Icon stroke={1.5} />
-        </UnstyledButton>
-      </Tooltip>
-    </Link>
-  );
-}
+}: NavbarLinkProps & { link: string }) => (
+  <Link to={link} search={{}} params={{}}>
+    <NavbarButton label={label} onClick={onClick} icon={Icon} />
+  </Link>
+);
 
 const mockData = [
-  { icon: IconHome2, label: 'Home', link: '/organizations' },
-  { icon: IconGauge, label: 'Dashboard', link: '/organizations' },
+  { icon: IconGauge, label: 'Dashboard', link: '/' },
+  { icon: IconUsers, label: 'Organizations', link: '/organizations' },
   {
     icon: IconDeviceDesktopAnalytics,
     label: 'Analytics',
     link: '/organizations',
   },
-  { icon: IconCalendarStats, label: 'Releases', link: '/organizations' },
   { icon: IconUser, label: 'Account', link: '/organizations' },
   { icon: IconFingerprint, label: 'Security', link: '/organizations' },
   { icon: IconSettings, label: 'Settings', link: '/organizations' },
@@ -123,8 +128,8 @@ export const NavbarMinimal = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Stack justify="center" spacing={0}>
-          <NavbarLink icon={IconSwitchHorizontal} label="Change account" />
-          <NavbarLink icon={IconLogout} label="Logout" />
+          <NavbarButton icon={IconSwitchHorizontal} label="Change account" />
+          <NavbarButton icon={IconLogout} label="Logout" />
         </Stack>
       </Navbar.Section>
     </Navbar>
