@@ -5,6 +5,9 @@ hands-on fashion.
 
 ## How it works
 
+Codefarem employs a microservices architecture. Here is a high level sequence diagram of
+how it works:
+
 ```mermaid
 sequenceDiagram
 
@@ -13,12 +16,16 @@ participant Orchestrator;
 participant Compiler;
 participant Executor;
 Client ->> Orchestrator: req. to execute code
-activate Orchestrator
-Orchestrator ->> Compiler: compile code
+note over Orchestrator: select compiler (acc. to lang)
+Orchestrator ->> Compiler: request compilation
+note over Compiler: compile code
 Compiler ->> Orchestrator: return compiled code (or error)
-Orchestrator ->> Executor: execute compiled code
+Orchestrator -->> Client: error if compilation failed
+Orchestrator ->> Executor: request execution
+note over Executor: execute compiled code
 Executor ->> Orchestrator: return execution result (or error)
-Orchestrator ->> Client: return execution result (or error)
+Orchestrator ->> Client: return execution result
+Orchestrator -->> Client: return execution error
 ```
 
 ## Motivation
@@ -30,17 +37,19 @@ the technologies used:
 - [Edgedb][edgedb]: For the database
 - [Hanko][hanko]: For the authentication framework
 - [Remix][remix]: For the frontend
-- [Mantine][mantine]: For the frontend components
+- [Mantine][mantine]: For the frontend framework in admin
+- [Next UI][next-ui]: For the frontend framework in the main website
 - [Empscripten][emscripten]: For the CPP WASM compilation
 - [Tinygo][tinygo]: For the Go WASM compilation
-- [Rustc Wasm][rustc-wasm32]: For the Rust WASM compilation
+- [Rust Wasi][rust-wasm32]: For the Rust WASM compilation
 - [Wasmtime][wasmtime]: For executing the compiled WASM outputs
 
 [edgedb]: https://edgedb.com
 [hanko]: https://hanko.io
 [remix]: https://remix.run
 [mantine]: https://mantine.dev
+[next-ui]: https://nextui.org
 [emscripten]: https://emscripten.org
 [tinygo]: https://tinygo.org
-[rustc-wasm32]: https://github.com/bytecodealliance/cargo-wasi
+[rust-wasm32]: https://github.com/bytecodealliance/cargo-wasi
 [wasmtime]: https://wasmtime.dev
