@@ -1,0 +1,35 @@
+fileGroups:
+  vite:
+    - 'src/**/*'
+    - 'env.d.ts'
+    - 'index.html'
+    - 'vite.config.*'
+
+tasks:
+  dev:
+    command: 'vite dev'
+    local: true
+
+  build:
+    command: 'vite build'
+    inputs:
+      - '@group(vite)'
+    outputs:
+      - 'dist'
+
+  preview:
+    command: 'vite preview'
+    deps:
+      - '~:build'
+    local: true
+
+  test:
+    command:
+      - 'vitest'
+      - 'run'
+      - '--coverage'
+      - '--passWithNoTests'
+    inputs:
+      - '@group(vite)'
+      - 'tests/**/*'
+      - 'vitest.config.*'
