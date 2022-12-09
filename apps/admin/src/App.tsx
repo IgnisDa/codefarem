@@ -1,20 +1,18 @@
-import { MantineProvider } from '@mantine/core';
+import { AppShell, MantineProvider } from '@mantine/core';
 import {
   createReactRouter,
   createRouteConfig,
-  Link,
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
+import { NavbarMinimal } from './components/Navbar';
 import { OrganizationsPage } from './pages/organizations';
 
 const rootRoute = createRouteConfig({
   component: () => (
-    <>
-      <Link to="/organizations">Organizations</Link>
-      <hr />
+    <AppShell navbar={<NavbarMinimal />}>
       <Outlet />
-    </>
+    </AppShell>
   ),
 });
 
