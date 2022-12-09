@@ -48,10 +48,6 @@ Thumbs.db
 .moon/cache
 .moon/docker
 
-# generated tsconfig
-tsconfig.tsbuildinfo
-tsconfig.build.tsbuildinfo
-
 # Build folders
 coverage/
 build/
@@ -79,3 +75,6 @@ next-env.d.ts
 
 # remix
 apps/website/.cache
+
+# generated tsconfig
+*.tsbuildinfo
