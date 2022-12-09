@@ -1,13 +1,26 @@
-CREATE MIGRATION m1z5axw7qbgijda2xduorxyicg7l27tbgmh4yklf7wltl32i7u55fa
+CREATE MIGRATION m1qmkksblb3thtjorold5xol4mae4c47ddsqvtqdgt2wqsolf55h5a
     ONTO initial
 {
+  CREATE MODULE external IF NOT EXISTS;
   CREATE MODULE learning IF NOT EXISTS;
   CREATE MODULE users IF NOT EXISTS;
   CREATE ABSTRACT TYPE learning::CaseUnit;
   CREATE TYPE learning::NumberCollectionUnit EXTENDING learning::CaseUnit {
       CREATE REQUIRED PROPERTY number_collection_value -> array<std::float64>;
   };
-  CREATE TYPE learning::EmptyUnit EXTENDING learning::CaseUnit;
+  CREATE SCALAR TYPE external::InviteAs EXTENDING enum<Student, Teacher>;
+  CREATE TYPE external::InviteLink {
+      CREATE PROPERTY email -> std::str;
+      CREATE REQUIRED PROPERTY expires_at -> std::datetime;
+      CREATE PROPERTY used_at -> std::datetime;
+      CREATE PROPERTY is_active := (((.expires_at > std::datetime_of_statement()) AND (.used_at ?= <std::datetime>{})));
+      CREATE REQUIRED PROPERTY ia -> external::InviteAs {
+          SET default := (external::InviteAs.Teacher);
+      };
+      CREATE REQUIRED PROPERTY token -> std::str {
+          CREATE CONSTRAINT std::exclusive;
+      };
+  };
   CREATE TYPE learning::NumberUnit EXTENDING learning::CaseUnit {
       CREATE REQUIRED PROPERTY number_value -> std::float64;
   };
@@ -31,7 +44,9 @@ CREATE MIGRATION m1z5axw7qbgijda2xduorxyicg7l27tbgmh4yklf7wltl32i7u55fa
       CREATE REQUIRED PROPERTY name -> std::str;
   };
   CREATE TYPE users::UserAuth {
-      CREATE PROPERTY password_hash -> std::str;
+      CREATE REQUIRED PROPERTY hanko_id -> std::str {
+          CREATE CONSTRAINT std::exclusive;
+      };
   };
   CREATE TYPE users::UserProfile {
       CREATE REQUIRED PROPERTY email -> std::str {
