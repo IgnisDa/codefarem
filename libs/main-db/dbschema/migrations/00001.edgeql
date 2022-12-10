@@ -1,4 +1,4 @@
-CREATE MIGRATION m1qmkksblb3thtjorold5xol4mae4c47ddsqvtqdgt2wqsolf55h5a
+CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
     ONTO initial
 {
   CREATE MODULE external IF NOT EXISTS;
@@ -8,15 +8,15 @@ CREATE MIGRATION m1qmkksblb3thtjorold5xol4mae4c47ddsqvtqdgt2wqsolf55h5a
   CREATE TYPE learning::NumberCollectionUnit EXTENDING learning::CaseUnit {
       CREATE REQUIRED PROPERTY number_collection_value -> array<std::float64>;
   };
-  CREATE SCALAR TYPE external::InviteAs EXTENDING enum<Student, Teacher>;
+  CREATE SCALAR TYPE users::AccountType EXTENDING enum<Student, Teacher>;
   CREATE TYPE external::InviteLink {
+      CREATE REQUIRED PROPERTY account_type -> users::AccountType {
+          SET default := (users::AccountType.Teacher);
+      };
       CREATE PROPERTY email -> std::str;
       CREATE REQUIRED PROPERTY expires_at -> std::datetime;
       CREATE PROPERTY used_at -> std::datetime;
       CREATE PROPERTY is_active := (((.expires_at > std::datetime_of_statement()) AND (.used_at ?= <std::datetime>{})));
-      CREATE REQUIRED PROPERTY ia -> external::InviteAs {
-          SET default := (external::InviteAs.Teacher);
-      };
       CREATE REQUIRED PROPERTY token -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
@@ -36,10 +36,10 @@ CREATE MIGRATION m1qmkksblb3thtjorold5xol4mae4c47ddsqvtqdgt2wqsolf55h5a
       };
       CREATE REQUIRED PROPERTY seq -> std::int32;
   };
-  CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::InputCaseUnit EXTENDING learning::CommonCaseUnit {
       CREATE REQUIRED PROPERTY name -> std::str;
   };
+  CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::Class {
       CREATE REQUIRED PROPERTY name -> std::str;
   };

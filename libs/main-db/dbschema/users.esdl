@@ -35,4 +35,6 @@ module users {
         # the classes that this teacher teachers
         multi link classes := .<teachers[is learning::Class];
     }
+
+    scalar type AccountType extending enum<Student, Teacher>;
 }

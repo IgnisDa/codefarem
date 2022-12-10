@@ -1,6 +1,4 @@
 module external {
-    scalar type InviteAs extending enum<Student, Teacher>;
-
     type InviteLink {
         required property token -> str {
             constraint exclusive;
@@ -11,8 +9,8 @@ module external {
         required property expires_at -> datetime;
         property used_at -> datetime;
         property is_active := .expires_at > datetime_of_statement() and .used_at ?= <datetime>{};
-        required property ia -> InviteAs {
-            default := InviteAs.Teacher;
+        required property account_type -> users::AccountType {
+            default := users::AccountType.Teacher;
         };
     }
 }
