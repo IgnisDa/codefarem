@@ -1,10 +1,6 @@
-mod resolver;
-mod service;
-
-use std::sync::Arc;
-
+use admin_backend::{get_app_config, GraphqlSchema, MutationRoot, QueryRoot, Service};
 use anyhow::Result;
-use async_graphql::{http::GraphiQLSource, EmptyMutation, EmptySubscription, Schema};
+use async_graphql::{http::GraphiQLSource, EmptySubscription, Schema};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
 use axum::{
     extract::Extension,
@@ -12,10 +8,6 @@ use axum::{
     routing::get,
     Router, Server,
 };
-use dotenv::dotenv;
-use edgedb_tokio::Client as DbClient;
-use resolver::{GraphqlSchema, QueryRoot};
-use service::Service;
 use utilities::get_server_url;
 
 async fn graphql_handler(schema: Extension<GraphqlSchema>, req: GraphQLRequest) -> GraphQLResponse {
@@ -26,24 +18,15 @@ async fn graphiql() -> impl IntoResponse {
     Html(GraphiQLSource::build().finish())
 }
 
-async fn init() -> Result<DbClient> {
-    dotenv().ok();
-    let db_conn = edgedb_tokio::create_client().await?;
-    db_conn
-        .ensure_connected()
-        .await
-        .expect("Unable to connect to the edgedb instance");
-    Ok(db_conn)
-}
-
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    let db_conn = init().await.unwrap();
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription)
-        .data(Service {
-            db_conn: Arc::new(db_conn),
-        })
+    let app_config = get_app_config().await?;
+    let service = Service {
+        db_conn: app_config.db_conn,
+    };
+    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+        .data(service)
         .finish();
     let server_url = get_server_url();
     let app = Router::new()
@@ -53,4 +36,5 @@ async fn main() {
         .serve(app.into_make_service())
         .await
         .unwrap();
+    Ok(())
 }
