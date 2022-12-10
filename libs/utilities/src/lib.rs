@@ -2,14 +2,21 @@ pub mod graphql;
 pub mod models;
 pub mod users;
 
+use chrono::Utc;
+use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use std::{
     env,
     fs::{self, File},
     path::PathBuf,
 };
 
-use chrono::Utc;
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
+/// This function will extract the `HOST` and `PORT` environment variables and return a
+/// `String` containing the URL to the server.
+pub fn get_server_url() -> String {
+    let host = env::var("HOST").unwrap_or_else(|_| "0.0.0.0".to_string());
+    let port = env::var("PORT").expect("Expected PORT to be set");
+    format!("{host}:{port}")
+}
 
 /// This will create a file in the OS temporary directory and then return a handle to that
 /// file along with it's path. These files will NOT be deleted automatically.

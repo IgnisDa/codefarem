@@ -29,6 +29,7 @@ macro_rules! proto_server {
             CompileResponse, Example, Input, VoidParams,
         };
         use tonic::{async_trait, transport::Server, Request, Response, Status};
+        use utilities::get_server_url;
 
         #[derive(Debug, Default)]
         pub struct CompilerHandler {}
@@ -59,12 +60,12 @@ macro_rules! proto_server {
         #[tokio::main]
         async fn main() -> Result<(), Box<dyn std::error::Error>> {
             env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-            let port = std::env::var("PORT").expect("Expected PORT to be set");
-            info!("Starting server on port {port:?}");
+            let server_url = get_server_url();
+            info!("Starting server on url {server_url:?}");
             let compiler = CompilerHandler::default();
             Server::builder()
                 .add_service(CompilerServiceServer::new(compiler))
-                .serve(format!("0.0.0.0:{port}").parse()?)
+                .serve(server_url.parse()?)
                 .await?;
 
             Ok(())
