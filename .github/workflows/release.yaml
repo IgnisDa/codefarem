@@ -7,12 +7,11 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  affected:
-    name: 'Run CI and get affected projects'
+  generate:
+    name: 'Generate dockerfile(s)'
     runs-on: 'ubuntu-latest'
     outputs:
-      affected: ${{ steps.affected.outputs.affected_json }}
-      executables: ${{ steps.affected.outputs.executables }}
+      executables: ${{ steps.executables.outputs.executables }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,64 +23,40 @@ jobs:
       - uses: ./.github/actions/set-base-commit
         name: Set base commit
 
-      - name: Get affected projects
-        id: affected
+      - name: Get projects executables
+        id: executables
         run: |
-          affected=$(
-              node -e "
-                  let deployable = ['authenticator', 'compilers', 'executor', 'orchestrator', 'website', 'admin-backend', 'admin-website']
-                  let projects = \`$(moon query touched-files --base $BASE | moon query projects --affected | jq .projects[].id -r)\`.split('\n')
-                  let deployableProjects = projects.filter(project => deployable.includes(project))
-                  console.log(deployableProjects.join(' '))
-              "
-          )
-          if [ -z "$affected" ]; then
-              affected_json="[]"
-          else
-              affected_json=$(node -e "console.log(JSON.stringify(\"${affected[@]}\".split(' ')))")
-          fi
           executables=$(node -e "
             let executables = \`$(cat apps/deployment/src/data/*.json | jq .apps[].EXECUTABLE_NAME -r)\`.split('\n')
             console.log(JSON.stringify(executables))
           ")
-          echo "affected=$affected" >> $GITHUB_OUTPUT
-          echo "affected_json=$affected_json" >> $GITHUB_OUTPUT
           echo "executables=$executables" >> $GITHUB_OUTPUT
-          echo "Affected: $affected_json"
           echo "Discovered executables: $executables"
 
       - uses: ./.github/actions/setup-python
-        if: ${{ steps.affected.outputs.affected != '' }}
         name: Setup python environment
 
       - name: Generate project dockerfile(s)
-        if: ${{ steps.affected.outputs.affected != '' }}
-        env:
-          AFFECTED: ${{ steps.affected.outputs.affected }}
         run: |
-          affected=($AFFECTED) # convert string to array
-          for project in "${affected[@]}"
+          for project in "authenticator" "compilers" "executor" "orchestrator" "website" "admin-backend" "admin-website"
           do
             echo "Generating dockerfile for '$project'..."
             poetry run python apps/deployment/src/docker.py "$project"
           done
 
       - name: Save generated dockerfile(s)
-        if: ${{ steps.affected.outputs.affected != '' }}
         uses: actions/upload-artifact@v3
         with:
           name: generated-dockerfile
           path: apps/**/*.generated.Dockerfile
           if-no-files-found: error
 
-  docker-builds:
+  build:
     name: 'Build and push containers'
-    needs: affected
-    if: ${{ needs.affected.outputs.affected != '[]' }}
+    needs: generate
     strategy:
       matrix:
-        project: ${{ fromJSON(needs.affected.outputs.affected) }}
-        executable: ${{ fromJSON(needs.affected.outputs.executables) }}
+        executable: ${{ fromJSON(needs.generate.outputs.executables) }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: read
@@ -92,7 +67,6 @@ jobs:
           fetch-depth: 0
 
       - name: Get docker image name
-        if: ${{ matrix.project == matrix.executable }}
         id: image_name
         run: |
           image_name="${{ env.REGISTRY }}/${{ github.actor }}/codefarem--${{ matrix.executable }}:latest"
@@ -102,7 +76,6 @@ jobs:
           echo "Image name: $image_name"
 
       - name: Get dockerfile path
-        if: ${{ matrix.project == matrix.executable }}
         id: dockerfile_path
         env:
           executable: ${{ matrix.executable }}
@@ -111,7 +84,6 @@ jobs:
           echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
 
       - name: Log in to the Container registry
-        if: ${{ matrix.project == matrix.executable }}
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
@@ -119,7 +91,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download generated dockerfile(s)
-        if: ${{ matrix.project == matrix.executable }}
         uses: actions/download-artifact@v3
         with:
           name: generated-dockerfile
@@ -127,15 +98,12 @@ jobs:
           path: apps
 
       - name: Set up QEMU
-        if: ${{ matrix.project == matrix.executable }}
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
-        if: ${{ matrix.project == matrix.executable }}
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push
-        if: ${{ matrix.project == matrix.executable }}
         uses: docker/build-push-action@v3
         with:
           context: .
