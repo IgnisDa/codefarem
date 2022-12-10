@@ -1,7 +1,7 @@
 type: 'library'
 
 tasks:
-  generate-orchestrator-graphql:
+  orchestrator-graphql:
     command:
       - 'graphql-codegen'
       - '--config'
@@ -10,11 +10,14 @@ tasks:
       - 'src/graphql/orchestrator-generated'
     local: true
 
-  generate-graphql:
-    deps:
-      - '~:generate-orchestrator-graphql'
+  admin-graphql:
+    command:
+      - 'graphql-codegen'
+      - '--config'
+      - 'src/graphql/admin/codegen.ts'
+    outputs:
+      - 'src/graphql/admin-generated'
     local: true
-
 workspace:
   inheritedTasks:
     exclude:

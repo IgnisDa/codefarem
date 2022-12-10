@@ -6,7 +6,6 @@ import {
   Paper,
   SegmentedControl,
   Select,
-  Space,
   Text,
   TextInput,
   Title,
@@ -19,11 +18,18 @@ const schema = z.object({
   ia: z.nativeEnum(AccountType),
 });
 
+const times = [
+  ['1 hour', '1h'],
+  ['1 day', '1d'],
+  ['1 week', '1w'],
+  ['1 month', '1m'],
+];
+
 export const InvitePage = () => {
   const form = useForm({
     initialValues: {
       email: '',
-      expiresAt: '7d',
+      expiresAt: times[2][1],
       ia: AccountType.Teacher,
     },
     validate: zodResolver(schema),
@@ -35,14 +41,13 @@ export const InvitePage = () => {
       <Paper withBorder shadow="md" p={25} mt={30} radius="md">
         <form onSubmit={form.onSubmit((values) => void console.log(values))}>
           <TextInput label="Email" required {...form.getInputProps('email')} />
-          <Space h="xs" />
           <Select
-            label="Validity"
-            data={[{ label: '7 days', value: '7d' }]}
+            label="Valid for"
+            data={times.map(([label, value]) => ({ label, value }))}
+            mt="sm"
             {...form.getInputProps('expiresAt')}
           />
-          <Space h="xs" />
-          <Flex align={'center'} gap={'lg'}>
+          <Flex align={'center'} mt="sm" justify={'space-between'}>
             <Text fz={'sm'} span>
               Invite As
             </Text>
@@ -54,7 +59,7 @@ export const InvitePage = () => {
               {...form.getInputProps('ia')}
             />
           </Flex>
-          <Button fullWidth mt="xl" type="submit">
+          <Button fullWidth mt="sm" type="submit">
             Create
           </Button>
         </form>
