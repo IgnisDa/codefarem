@@ -85,6 +85,11 @@ jobs:
               break
             fi
           done
+          # throw error if no dockerfile path was found
+          if [[ -z "$dockerfile_path" ]]; then
+            echo "No dockerfile path found for executable '$executable'"
+            exit 1
+          fi
           echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
 
       - name: Log in to the Container registry
