@@ -73,14 +73,18 @@ jobs:
           # lowercase the name
           image_name=$(echo "$image_name" | tr '[:upper:]' '[:lower:]')
           echo "image_name=$image_name" >> $GITHUB_OUTPUT
-          echo "Image name: $image_name"
 
       - name: Get dockerfile path
         id: dockerfile_path
         env:
           executable: ${{ matrix.executable }}
         run: |
-          dockerfile_path=$(envsubst < apps/deployment/src/data/${{ matrix.project }}.json | jq '.dockerfile_path' -r)
+          for file in apps/deployment/src/data/*.json; do
+            if [[ $(cat "$file" | jq '.apps[].EXECUTABLE_NAME' -r) == *"$executable"* ]]; then
+              dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
+              break
+            fi
+          done
           echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
 
       - name: Log in to the Container registry
