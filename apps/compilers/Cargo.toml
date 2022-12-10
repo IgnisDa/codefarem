@@ -5,14 +5,15 @@ edition = "2021"
 description = "This crate is responsible for compiling the source code into webassembly"
 
 [dependencies]
-duct = "0.13.5"
-env_logger = { workspace = true }
-log = { workspace = true }
 macros = { path = "../../libs/macros" }
 protobuf = { path = "../../libs/protobuf" }
+utilities = { path = "../../libs/utilities" }
+
+duct = { workspace = true }
+env_logger = { workspace = true }
+log = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
-utilities = { path = "../../libs/utilities" }
 
 [[bin]]
 name = "cpp-compiler"

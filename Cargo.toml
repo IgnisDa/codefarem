@@ -11,9 +11,11 @@ members = [
 ]
 
 [workspace.dependencies]
-async-graphql = { version = "4.0.14", features = ["log", "uuid"] }
+async-graphql = { version = "5.0.3", features = ["log", "uuid"] }
+async-graphql-rocket = { version = "5.0.3" }
 async-trait = { version = "0.1.57" }
 chrono = { version = "0.4.22" }
+duct = { version = "0.13.5" }
 edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }

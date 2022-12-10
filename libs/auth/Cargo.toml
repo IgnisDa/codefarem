@@ -4,11 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+utilities = { path = "../utilities" }
+
 async-graphql = { workspace = true }
 chrono = { workspace = true }
 jwks-client = "0.2.0"
 serde = { workspace = true }
 strum = { workspace = true }
 thiserror = "1.0.37"
-utilities = { path = "../utilities" }
 uuid = { workspace = true }

@@ -6,10 +6,11 @@ description = "This crate is responsible for executing webassembly"
 
 
 [dependencies]
-duct = "0.13.5"
+protobuf = { path = "../../libs/protobuf" }
+utilities = { path = "../../libs/utilities" }
+
+duct = { workspace = true }
 env_logger = { workspace = true }
 log = { workspace = true }
-protobuf = { path = "../../libs/protobuf" }
 tokio = { workspace = true }
 tonic = { workspace = true }
-utilities = { path = "../../libs/utilities" }
