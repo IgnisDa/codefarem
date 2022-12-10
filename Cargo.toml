@@ -5,6 +5,7 @@ members = [
   "libs/main-db",
   "libs/protobuf",
   "libs/utilities",
+  "apps/admin/backend",
   "apps/compilers",
   "apps/executor",
   "apps/orchestrator",
@@ -23,7 +24,7 @@ rand = { version = "0.8.5" }
 serde = { version = "1.0.145", features = ["derive"] }
 serde_json = { version = "1.0.85" }
 strum = { version = "0.24.1", features = ["derive"] }
-tokio = { version = "1.21.1", features = ["rt", "macros", "rt-multi-thread"] }
+tokio = { version = "1.23.0", features = ["rt", "macros", "rt-multi-thread"] }
 tonic = { version = "0.8" }
 uuid = { version = "1.1.2", features = ["serde"] }
 env_logger = { version = "0.9.1" }

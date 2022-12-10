@@ -4,4 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+utilities = { path = "../../../libs/utilities" }
+
 async-graphql = { workspace = true }
+async-graphql-axum = { version = "5.0.3" }
+env_logger = { workspace = true }
+log = { workspace = true }
+axum = { version = "0.6.1" }
+tokio = { workspace = true }

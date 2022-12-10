@@ -6,6 +6,8 @@
             "detail": "Starts all the farem services",
             "type": "shell",
             "dependsOn": [
+                "admin-website",
+                "admin-backend",
                 "cpp-compiler",
                 "go-compiler",
                 "rs-compiler",
@@ -81,6 +83,26 @@
             "command": "moon run website:dev website:dev-routes",
             "detail": "Run the main website server",
             "options": {},
+        },
+        {
+            "label": "admin-website",
+            "type": "shell",
+            "isBackground": true,
+            "command": "moon run admin-website:dev",
+            "detail": "Run the admin website server",
+            "options": {},
+        },
+        {
+            "label": "admin-backend",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --package admin_backend'",
+            "detail": "Run the admin backend server",
+            "options": {
+                "env": {
+                    "PORT": "5005"
+                }
+            },
         },
     ]
 }
