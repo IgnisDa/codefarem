@@ -96,7 +96,7 @@
             "label": "admin-backend",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package admin_backend'",
+            "command": "cargo watch -cqx 'run --package admin-backend'",
             "detail": "Run the admin backend server",
             "options": {
                 "env": {
