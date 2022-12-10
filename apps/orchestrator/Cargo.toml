@@ -27,6 +27,4 @@ strum = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
 uuid = { workspace = true }
-slug = "0.1.4"
-rand = { workspace = true }
 jwks-client = "0.2.0"

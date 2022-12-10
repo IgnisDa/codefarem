@@ -20,11 +20,9 @@ use crate::{
 use auth::validate_user_role;
 use comrak::{markdown_to_html, ComrakOptions};
 use edgedb_tokio::Client;
-use rand::{distributions::Alphanumeric, Rng};
-use slug::slugify;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
-use utilities::{graphql::ApiError, models::IdObject, users::AccountType};
+use utilities::{graphql::ApiError, models::IdObject, random_string, users::AccountType};
 use uuid::Uuid;
 
 const IS_SLUG_NOT_UNIQUE: &str =
@@ -136,16 +134,6 @@ impl LearningService {
         // FIXME: Insert correct teachers
         // let all_teachers_to_insert = vec![*hanko_id];
         let all_teachers_to_insert: Vec<Uuid> = vec![];
-        fn random_string(take: usize) -> String {
-            slugify(
-                rand::thread_rng()
-                    .sample_iter(&Alphanumeric)
-                    .take(take)
-                    .map(char::from)
-                    .collect::<String>(),
-            )
-            .to_ascii_uppercase()
-        }
         let mut slug = random_string(8);
         loop {
             let is_slug_not_unique = self

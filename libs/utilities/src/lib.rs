@@ -5,11 +5,23 @@ pub mod users;
 use chrono::Utc;
 use log::info;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use slug::slugify;
 use std::{
     env,
     fs::{create_dir_all, File},
     path::PathBuf,
 };
+
+pub fn random_string(take: usize) -> String {
+    slugify(
+        rand::thread_rng()
+            .sample_iter(&Alphanumeric)
+            .take(take)
+            .map(char::from)
+            .collect::<String>(),
+    )
+    .to_ascii_uppercase()
+}
 
 /// This function will extract the `HOST` and `PORT` environment variables and return a
 /// `String` containing the URL to the server.

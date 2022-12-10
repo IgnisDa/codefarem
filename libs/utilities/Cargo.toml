@@ -9,7 +9,8 @@ chrono = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 log = { workspace = true }
-rand = "0.8.5"
+rand = { workspace = true }
 serde = { workspace = true }
+slug = "0.1.4"
 strum = { workspace = true }
 uuid = { workspace = true }
