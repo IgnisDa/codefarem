@@ -9,14 +9,10 @@ import {
 } from '@mantine/core';
 import {
   IconCode,
-  IconDeviceDesktopAnalytics,
-  IconFingerprint,
   IconGauge,
   IconLogout,
-  IconSettings,
+  IconPlaylistAdd,
   IconSwitchHorizontal,
-  IconUser,
-  IconUsers,
   TablerIcon,
 } from '@tabler/icons';
 import { Link } from '@tanstack/react-router';
@@ -93,15 +89,7 @@ const NavbarLink = ({
 
 const mockData = [
   { icon: IconGauge, label: 'Dashboard', link: '/' },
-  { icon: IconUsers, label: 'Organizations', link: '/organizations' },
-  {
-    icon: IconDeviceDesktopAnalytics,
-    label: 'Analytics',
-    link: '/organizations',
-  },
-  { icon: IconUser, label: 'Account', link: '/organizations' },
-  { icon: IconFingerprint, label: 'Security', link: '/organizations' },
-  { icon: IconSettings, label: 'Settings', link: '/organizations' },
+  { icon: IconPlaylistAdd, label: 'Invite', link: '/invite' },
 ];
 
 export const NavbarMinimal = () => {

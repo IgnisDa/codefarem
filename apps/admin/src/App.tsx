@@ -6,7 +6,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { NavbarMinimal } from './components/Navbar';
-import { OrganizationsPage } from './pages/organizations';
+import { InvitePage } from './pages/invite';
 
 const rootRoute = createRouteConfig({
   component: () => (
@@ -17,8 +17,8 @@ const rootRoute = createRouteConfig({
 });
 
 const organizationsRoute = rootRoute.createRoute({
-  component: OrganizationsPage,
-  path: '/organizations',
+  component: InvitePage,
+  path: '/invite',
 });
 
 const routeConfig = rootRoute.addChildren([organizationsRoute]);
