@@ -91,15 +91,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Determine if the executable/project combination is correct
-        id: check
-        shell: bash {0}
-        run: |
-          cat apps/deployment/src/data/${{ matrix.project }}.json | jq .apps[].EXECUTABLE_NAME -r | grep -q "${{ matrix.executable }}"
-          echo "should_exit=$?" >> $GITHUB_OUTPUT
-
       - name: Get docker image name
-        if: ${{ steps.check.outputs.should_exit != 1 }}
+        if: ${{ matrix.project == matrix.executable }}
         id: image_name
         run: |
           image_name="${{ env.REGISTRY }}/${{ github.actor }}/codefarem--${{ matrix.executable }}:latest"
@@ -109,7 +102,7 @@ jobs:
           echo "Image name: $image_name"
 
       - name: Get dockerfile path
-        if: ${{ steps.check.outputs.should_exit != 1 }}
+        if: ${{ matrix.project == matrix.executable }}
         id: dockerfile_path
         env:
           executable: ${{ matrix.executable }}
@@ -118,32 +111,32 @@ jobs:
           echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
 
       - name: Log in to the Container registry
+        if: ${{ matrix.project == matrix.executable }}
         uses: docker/login-action@v2
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download generated dockerfile(s)
+        if: ${{ matrix.project == matrix.executable }}
         uses: actions/download-artifact@v3
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           name: generated-dockerfile
           # https://github.com/actions/upload-artifact#upload-using-multiple-paths-and-exclusions
           path: apps
 
       - name: Set up QEMU
+        if: ${{ matrix.project == matrix.executable }}
         uses: docker/setup-qemu-action@v2
-        if: ${{ steps.check.outputs.should_exit != 1 }}
 
       - name: Set up Docker Buildx
+        if: ${{ matrix.project == matrix.executable }}
         uses: docker/setup-buildx-action@v2
-        if: ${{ steps.check.outputs.should_exit != 1 }}
 
       - name: Build and push
+        if: ${{ matrix.project == matrix.executable }}
         uses: docker/build-push-action@v3
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           context: .
           file: ${{ steps.dockerfile_path.outputs.dockerfile_path }}
