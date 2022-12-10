@@ -4,15 +4,21 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+macros = { path = "../../../libs/macros" }
 utilities = { path = "../../../libs/utilities" }
 
 anyhow = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-axum = { version = "5.0.3" }
+chrono = { workspace = true }
+derive-getters = { workspace = true }
 dotenv = { workspace = true }
 edgedb-tokio = { workspace = true }
+edgedb-derive = { workspace = true }
+edgedb-protocol = { workspace = true }
 env_logger = { workspace = true }
 lettre = "0.10.1"
 log = { workspace = true }
 axum = { version = "0.6.1" }
 tokio = { workspace = true }
+humantime = "2.1.0"

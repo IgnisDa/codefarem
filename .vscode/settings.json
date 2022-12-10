@@ -36,6 +36,7 @@
         "hanko",
         "Hasher",
         "headlessui",
+        "humantime",
         "ignisda",
         "iostream",
         "jsonwebtoken",

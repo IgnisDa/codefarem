@@ -1,3 +1,4 @@
+mod dto;
 mod resolver;
 mod service;
 
