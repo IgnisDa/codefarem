@@ -53,7 +53,6 @@ impl ExecutorService for ExecutorHandler {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     let server_url = get_server_url();
-    info!("Starting server on url {server_url:?}");
     let executor = ExecutorHandler::default();
     Server::builder()
         .add_service(ExecutorServiceServer::new(executor))

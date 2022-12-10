@@ -3,19 +3,23 @@ pub mod models;
 pub mod users;
 
 use chrono::Utc;
+use log::info;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use std::{
     env,
-    fs::{self, File},
+    fs::{create_dir_all, File},
     path::PathBuf,
 };
 
 /// This function will extract the `HOST` and `PORT` environment variables and return a
 /// `String` containing the URL to the server.
+#[inline]
 pub fn get_server_url() -> String {
     let host = env::var("HOST").unwrap_or_else(|_| "0.0.0.0".to_string());
     let port = env::var("PORT").expect("Expected PORT to be set");
-    format!("{host}:{port}")
+    let server_url = format!("{host}:{port}");
+    info!("Starting server on url {server_url:?}");
+    server_url
 }
 
 /// This will create a file in the OS temporary directory and then return a handle to that
@@ -33,7 +37,7 @@ pub fn generate_random_file(extension: Option<&'_ str>) -> Result<(File, PathBuf
         random_filename.push_str(format!(".{ext}").as_str());
     }
     let dirname = dir.join("codefarem");
-    fs::create_dir_all(&dirname).unwrap();
+    create_dir_all(&dirname).unwrap();
     let file_path = dirname.join(random_filename);
     Ok((File::create(&file_path).unwrap(), file_path))
 }
