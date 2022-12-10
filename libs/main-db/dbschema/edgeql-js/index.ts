@@ -7,10 +7,10 @@ import * as $op from "./operators";
 import _std from "./modules/std";
 import _cal from "./modules/cal";
 import _cfg from "./modules/cfg";
+import _external from "./modules/external";
 import _schema from "./modules/schema";
 import _sys from "./modules/sys";
 import _learning from "./modules/learning";
-import _organizations from "./modules/organizations";
 import _users from "./modules/users";
 import _math from "./modules/math";
 import _default from "./modules/default";
@@ -30,10 +30,10 @@ const ExportDefault: typeof _std &
   "std": typeof _std;
   "cal": typeof _cal;
   "cfg": typeof _cfg;
+  "external": typeof _external;
   "schema": typeof _schema;
   "sys": typeof _sys;
   "learning": typeof _learning;
-  "organizations": typeof _organizations;
   "users": typeof _users;
   "math": typeof _math;
   "default": typeof _default;
@@ -45,10 +45,10 @@ const ExportDefault: typeof _std &
   "std": _std,
   "cal": _cal,
   "cfg": _cfg,
+  "external": _external,
   "schema": _schema,
   "sys": _sys,
   "learning": _learning,
-  "organizations": _organizations,
   "users": _users,
   "math": _math,
   "default": _default,

@@ -269,6 +269,20 @@ export namespace cfg {
   }
   export interface Trust extends AuthMethod {}
 }
+export namespace external {
+  export enum InviteAs {
+    Student = "Student",
+    Teacher = "Teacher",
+  }
+  export interface InviteLink extends std.$Object {
+    "email"?: string | null;
+    "expires_at": Date;
+    "used_at"?: Date | null;
+    "is_active": boolean;
+    "ia": InviteAs;
+    "token": string;
+  }
+}
 export namespace learning {
   export interface CaseUnit extends std.$Object {}
   export interface Class extends std.$Object {
@@ -327,20 +341,6 @@ export namespace users {
   export interface UserProfile extends std.$Object {
     "email": string;
     "username": string;
-  }
-}
-export namespace organizations {
-  export interface InviteLink extends std.$Object {
-    "email"?: string | null;
-    "expires_at": Date;
-    "is_used": boolean;
-    "is_active": boolean;
-    "token": string;
-    "organization": Organization;
-  }
-  export interface Organization extends std.$Object {
-    "name": string;
-    "members": users.Teacher[];
   }
 }
 export namespace sys {
@@ -439,6 +439,10 @@ export interface types {
     "SCRAM": cfg.SCRAM;
     "Trust": cfg.Trust;
   };
+  "external": {
+    "InviteAs": external.InviteAs;
+    "InviteLink": external.InviteLink;
+  };
   "learning": {
     "CaseUnit": learning.CaseUnit;
     "Class": learning.Class;
@@ -458,10 +462,6 @@ export interface types {
     "Teacher": users.Teacher;
     "UserAuth": users.UserAuth;
     "UserProfile": users.UserProfile;
-  };
-  "organizations": {
-    "InviteLink": organizations.InviteLink;
-    "Organization": organizations.Organization;
   };
   "sys": {
     "SystemObject": sys.SystemObject;

@@ -16,12 +16,12 @@ const rootRoute = createRouteConfig({
   ),
 });
 
-const organizationsRoute = rootRoute.createRoute({
+const inviteRoute = rootRoute.createRoute({
   component: InvitePage,
   path: '/invite',
 });
 
-const routeConfig = rootRoute.addChildren([organizationsRoute]);
+const routeConfig = rootRoute.addChildren([inviteRoute]);
 
 const router = createReactRouter({ routeConfig });
 

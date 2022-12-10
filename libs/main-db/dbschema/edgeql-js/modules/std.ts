@@ -18,7 +18,7 @@ export type $JsonEmpty = {
   UseNull: $.$expr_Literal<$JsonEmpty>;
   DeleteKey: $.$expr_Literal<$JsonEmpty>;
 } & $.EnumType<"std::JsonEmpty", ["ReturnEmpty", "ReturnTarget", "Error", "UseNull", "DeleteKey"]>;
-const JsonEmpty: $JsonEmpty = $.makeType<$JsonEmpty>(_.spec, "981f1b6e-678f-11ed-95d6-39b9ad57817c", _.syntax.literal);
+const JsonEmpty: $JsonEmpty = $.makeType<$JsonEmpty>(_.spec, "1b46f442-7730-11ed-8cbc-915b273151b1", _.syntax.literal);
 
 type $anyreal = $anyint | $anyfloat | $anynumeric;
 
@@ -67,7 +67,7 @@ export type $json = $.ScalarType<"std::json", unknown>;
 const json: $.scalarTypeWithConstructor<$json, never> = $.makeType<$.scalarTypeWithConstructor<$json, never>>(_.spec, "00000000-0000-0000-0000-00000000010f", _.syntax.literal);
 
 interface $sequence extends $int64 {}
-const $sequence: $sequence = $.makeType<$sequence>(_.spec, "9280ab1c-678f-11ed-976b-6928d6863a79", _.syntax.literal);
+const $sequence: $sequence = $.makeType<$sequence>(_.spec, "13840977-7730-11ed-ac4a-1395691e25cb", _.syntax.literal);
 
 export type $str = $.ScalarType<"std::str", string>;
 const str: $.scalarTypeWithConstructor<$str, never> = $.makeType<$.scalarTypeWithConstructor<$str, never>>(_.spec, "00000000-0000-0000-0000-000000000101", _.syntax.literal);
@@ -83,22 +83,22 @@ export type $BaseObjectλShape = $.typeutil.flatten<{
   "__type__": $.LinkDesc<_schema.$ObjectType, $.Cardinality.One, {}, false, false,  true, false>;
 }>;
 type $BaseObject = $.ObjectType<"std::BaseObject", $BaseObjectλShape, null>;
-const $BaseObject = $.makeType<$BaseObject>(_.spec, "99db1c50-678f-11ed-a418-13ff665f50dc", _.syntax.literal);
+const $BaseObject = $.makeType<$BaseObject>(_.spec, "1cd7cae6-7730-11ed-aaee-a7e9d6d8cfb4", _.syntax.literal);
 
 const BaseObject: $.$expr_PathNode<$.TypeSet<$BaseObject, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($BaseObject, $.Cardinality.Many), null, true);
 
-export type $Object_99e11e7f678f11ed8ccbaf6fbc0493e7λShape = $.typeutil.flatten<$BaseObjectλShape & {
+export type $Object_1cddb2f4773011ed977d63c742e2f33fλShape = $.typeutil.flatten<$BaseObjectλShape & {
 }>;
-type $Object_99e11e7f678f11ed8ccbaf6fbc0493e7 = $.ObjectType<"std::Object", $Object_99e11e7f678f11ed8ccbaf6fbc0493e7λShape, null>;
-export type $Object = $Object_99e11e7f678f11ed8ccbaf6fbc0493e7
-const $Object_99e11e7f678f11ed8ccbaf6fbc0493e7 = $.makeType<$Object_99e11e7f678f11ed8ccbaf6fbc0493e7>(_.spec, "99e11e7f-678f-11ed-8ccb-af6fbc0493e7", _.syntax.literal);
+type $Object_1cddb2f4773011ed977d63c742e2f33f = $.ObjectType<"std::Object", $Object_1cddb2f4773011ed977d63c742e2f33fλShape, null>;
+export type $Object = $Object_1cddb2f4773011ed977d63c742e2f33f
+const $Object_1cddb2f4773011ed977d63c742e2f33f = $.makeType<$Object_1cddb2f4773011ed977d63c742e2f33f>(_.spec, "1cddb2f4-7730-11ed-977d-63c742e2f33f", _.syntax.literal);
 
-const Object_99e11e7f678f11ed8ccbaf6fbc0493e7: $.$expr_PathNode<$.TypeSet<$Object_99e11e7f678f11ed8ccbaf6fbc0493e7, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Object_99e11e7f678f11ed8ccbaf6fbc0493e7, $.Cardinality.Many), null, true);
+const Object_1cddb2f4773011ed977d63c742e2f33f: $.$expr_PathNode<$.TypeSet<$Object_1cddb2f4773011ed977d63c742e2f33f, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Object_1cddb2f4773011ed977d63c742e2f33f, $.Cardinality.Many), null, true);
 
 export type $FreeObjectλShape = $.typeutil.flatten<$BaseObjectλShape & {
 }>;
 type $FreeObject = $.ObjectType<"std::FreeObject", $FreeObjectλShape, null>;
-const $FreeObject = $.makeType<$FreeObject>(_.spec, "99e840d8-678f-11ed-b536-1da422705f3e", _.syntax.literal);
+const $FreeObject = $.makeType<$FreeObject>(_.spec, "1ce4baf9-7730-11ed-bed2-e3b0f652627e", _.syntax.literal);
 
 const FreeObject: $.$expr_PathNode<$.TypeSet<$FreeObject, $.Cardinality.One>, null, true> = _.syntax.$PathNode($.$toSet($FreeObject, $.Cardinality.One), null, true);
 
@@ -707,8 +707,8 @@ function min<
 ): minλFuncExpr16<P1>;
 function min(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::min', args, _.spec, [
-    {args: [{typeId: "9279182c-678f-11ed-8ee1-537991e8627b", optional: false, setoftype: true, variadic: false}], returnTypeId: "9279182c-678f-11ed-8ee1-537991e8627b", returnTypemod: "OptionalType", preservesOptionality: true},
-    {args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: true, variadic: false}], returnTypeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", returnTypemod: "OptionalType", preservesOptionality: true},
+    {args: [{typeId: "137c66ec-7730-11ed-a0ac-c119969d22fd", optional: false, setoftype: true, variadic: false}], returnTypeId: "137c66ec-7730-11ed-a0ac-c119969d22fd", returnTypemod: "OptionalType", preservesOptionality: true},
+    {args: [{typeId: "1384bc03-7730-11ed-98b1-6b0fc69dd31e", optional: false, setoftype: true, variadic: false}], returnTypeId: "1384bc03-7730-11ed-98b1-6b0fc69dd31e", returnTypemod: "OptionalType", preservesOptionality: true},
     {args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000101", returnTypemod: "OptionalType", preservesOptionality: true},
     {args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010a", returnTypemod: "OptionalType", preservesOptionality: true},
     {args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010e", returnTypemod: "OptionalType", preservesOptionality: true},
@@ -992,8 +992,8 @@ function max<
 ): maxλFuncExpr16<P1>;
 function max(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::max', args, _.spec, [
-    {args: [{typeId: "9279182c-678f-11ed-8ee1-537991e8627b", optional: false, setoftype: true, variadic: false}], returnTypeId: "9279182c-678f-11ed-8ee1-537991e8627b", returnTypemod: "OptionalType", preservesOptionality: true},
-    {args: [{typeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", optional: false, setoftype: true, variadic: false}], returnTypeId: "928165dc-678f-11ed-b8ce-01c5253de4fc", returnTypemod: "OptionalType", preservesOptionality: true},
+    {args: [{typeId: "137c66ec-7730-11ed-a0ac-c119969d22fd", optional: false, setoftype: true, variadic: false}], returnTypeId: "137c66ec-7730-11ed-a0ac-c119969d22fd", returnTypemod: "OptionalType", preservesOptionality: true},
+    {args: [{typeId: "1384bc03-7730-11ed-98b1-6b0fc69dd31e", optional: false, setoftype: true, variadic: false}], returnTypeId: "1384bc03-7730-11ed-98b1-6b0fc69dd31e", returnTypemod: "OptionalType", preservesOptionality: true},
     {args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000101", returnTypemod: "OptionalType", preservesOptionality: true},
     {args: [{typeId: "00000000-0000-0000-0000-00000000010a", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010a", returnTypemod: "OptionalType", preservesOptionality: true},
     {args: [{typeId: "00000000-0000-0000-0000-00000000010e", optional: false, setoftype: true, variadic: false}], returnTypeId: "00000000-0000-0000-0000-00000000010e", returnTypemod: "OptionalType", preservesOptionality: true},
@@ -1397,8 +1397,8 @@ function contains(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::contains', args, _.spec, [
     {args: [{typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
     {args: [{typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000102", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "92728186-678f-11ed-8eaa-7969a88bc089", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}, {typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}, {typeId: "1375d0a8-7730-11ed-b9b2-bbbf45b2a4cd", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
     {args: [{typeId: "ca752a6b-54a8-ba10-285b-13a79b02a110", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-00000000010c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
     {args: [{typeId: "5d31584b-3a5f-533d-3d64-fab0fdab61b3", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000001", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
   ]);
@@ -2916,7 +2916,7 @@ function json_set<
 ): json_setλFuncExpr2<P1, P2>;
 function json_set(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::json_set', args, _.spec, [
-    {args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: true}], namedArgs: {"value": {typeId: "00000000-0000-0000-0000-00000000010f", optional: true, setoftype: false, variadic: false}, "create_if_missing": {typeId: "00000000-0000-0000-0000-000000000109", optional: true, setoftype: false, variadic: false}, "empty_treatment": {typeId: "981f1b6e-678f-11ed-95d6-39b9ad57817c", optional: true, setoftype: false, variadic: false}}, returnTypeId: "00000000-0000-0000-0000-00000000010f", returnTypemod: "OptionalType"},
+    {args: [{typeId: "00000000-0000-0000-0000-00000000010f", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-000000000101", optional: false, setoftype: false, variadic: true}], namedArgs: {"value": {typeId: "00000000-0000-0000-0000-00000000010f", optional: true, setoftype: false, variadic: false}, "create_if_missing": {typeId: "00000000-0000-0000-0000-000000000109", optional: true, setoftype: false, variadic: false}, "empty_treatment": {typeId: "1b46f442-7730-11ed-8cbc-915b273151b1", optional: true, setoftype: false, variadic: false}}, returnTypeId: "00000000-0000-0000-0000-00000000010f", returnTypemod: "OptionalType"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -3688,7 +3688,7 @@ function range_is_empty<
 ): range_is_emptyλFuncExpr<P1>;
 function range_is_empty(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::range_is_empty', args, _.spec, [
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -3906,7 +3906,7 @@ function range_get_upper<
 ): range_get_upperλFuncExpr<P1>;
 function range_get_upper(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::range_get_upper', args, _.spec, [
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "92728186-678f-11ed-8eaa-7969a88bc089", returnTypemod: "OptionalType"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "1375d0a8-7730-11ed-b9b2-bbbf45b2a4cd", returnTypemod: "OptionalType"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -3933,7 +3933,7 @@ function range_get_lower<
 ): range_get_lowerλFuncExpr<P1>;
 function range_get_lower(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::range_get_lower', args, _.spec, [
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "92728186-678f-11ed-8eaa-7969a88bc089", returnTypemod: "OptionalType"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "1375d0a8-7730-11ed-b9b2-bbbf45b2a4cd", returnTypemod: "OptionalType"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -3960,7 +3960,7 @@ function range_is_inclusive_upper<
 ): range_is_inclusive_upperλFuncExpr<P1>;
 function range_is_inclusive_upper(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::range_is_inclusive_upper', args, _.spec, [
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -3987,7 +3987,7 @@ function range_is_inclusive_lower<
 ): range_is_inclusive_lowerλFuncExpr<P1>;
 function range_is_inclusive_lower(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::range_is_inclusive_lower', args, _.spec, [
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -4017,7 +4017,7 @@ function overlaps<
 ): overlapsλFuncExpr<P1, P2>;
 function overlaps(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::overlaps', args, _.spec, [
-    {args: [{typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}, {typeId: "3d2e3e6f-4c44-b5d0-a8e3-793e884069e6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
+    {args: [{typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}, {typeId: "5627d29e-8898-96de-695f-18e065cfdb7b", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-000000000109"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -4716,8 +4716,8 @@ function sequence_reset<
 ): sequence_resetλFuncExpr2<P1, P2>;
 function sequence_reset(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::sequence_reset', args, _.spec, [
-    {args: [{typeId: "9d1a2320-678f-11ed-8155-155be4a377d6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
-    {args: [{typeId: "9d1a2320-678f-11ed-8155-155be4a377d6", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
+    {args: [{typeId: "20b9e321-7730-11ed-85f1-29b66c3d817c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
+    {args: [{typeId: "20b9e321-7730-11ed-85f1-29b66c3d817c", optional: false, setoftype: false, variadic: false}, {typeId: "00000000-0000-0000-0000-0000000001ff", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -4744,7 +4744,7 @@ function sequence_next<
 ): sequence_nextλFuncExpr<P1>;
 function sequence_next(...args: any[]) {
   const {returnType, cardinality, args: positionalArgs, namedArgs} = _.syntax.$resolveOverload('std::sequence_next', args, _.spec, [
-    {args: [{typeId: "9d1a2320-678f-11ed-8155-155be4a377d6", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
+    {args: [{typeId: "20b9e321-7730-11ed-85f1-29b66c3d817c", optional: false, setoftype: false, variadic: false}], returnTypeId: "00000000-0000-0000-0000-0000000001ff"},
   ]);
   return _.syntax.$expressionify({
     __kind__: $.ExpressionKind.Function,
@@ -4758,7 +4758,7 @@ function sequence_next(...args: any[]) {
 
 
 
-export { JsonEmpty, bigint, bool, bytes, datetime, decimal, duration, float32, float64, int16, int32, int64, json, $sequence, str, uuid, number, $BaseObject, BaseObject, $Object_99e11e7f678f11ed8ccbaf6fbc0493e7, Object_99e11e7f678f11ed8ccbaf6fbc0493e7, $FreeObject, FreeObject };
+export { JsonEmpty, bigint, bool, bytes, datetime, decimal, duration, float32, float64, int16, int32, int64, json, $sequence, str, uuid, number, $BaseObject, BaseObject, $Object_1cddb2f4773011ed977d63c742e2f33f, Object_1cddb2f4773011ed977d63c742e2f33f, $FreeObject, FreeObject };
 
 export type { $anyscalar, $anypoint, $anydiscrete, $anycontiguous, $anyreal, $anyfloat, $anyint, $anynumeric };
 
@@ -4779,7 +4779,7 @@ type __defaultExports = {
   "str": typeof str;
   "uuid": typeof uuid;
   "BaseObject": typeof BaseObject;
-  "Object": typeof Object_99e11e7f678f11ed8ccbaf6fbc0493e7;
+  "Object": typeof Object_1cddb2f4773011ed977d63c742e2f33f;
   "FreeObject": typeof FreeObject;
   "assert_single": typeof assert_single;
   "assert_exists": typeof assert_exists;
@@ -4883,7 +4883,7 @@ const __defaultExports: __defaultExports = {
   "str": str,
   "uuid": uuid,
   "BaseObject": BaseObject,
-  "Object": Object_99e11e7f678f11ed8ccbaf6fbc0493e7,
+  "Object": Object_1cddb2f4773011ed977d63c742e2f33f,
   "FreeObject": FreeObject,
   "assert_single": assert_single,
   "assert_exists": assert_exists,
