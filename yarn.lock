@@ -6259,6 +6259,7 @@ __metadata:
     vite: 3.2.3
     vite-tsconfig-paths: 4.0.2
     vitest: 0.25.6
+    zod: 3.19.1
   languageName: unknown
   linkType: soft
 

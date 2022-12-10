@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
   Button,
   Container,
@@ -10,8 +11,13 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
+
+const schema = z.object({
+  email: z.string().email({ message: 'Invalid email' }),
+  ia: z.nativeEnum(AccountType),
+});
 
 export const InvitePage = () => {
   const form = useForm({
@@ -20,9 +26,7 @@ export const InvitePage = () => {
       expiresAt: '7d',
       ia: AccountType.Teacher,
     },
-    validate: {
-      email: (_value) => null,
-    },
+    validate: zodResolver(schema),
   });
 
   return (
