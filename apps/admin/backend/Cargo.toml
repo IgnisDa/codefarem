@@ -12,6 +12,7 @@ async-graphql-axum = { version = "5.0.3" }
 dotenv = { workspace = true }
 edgedb-tokio = { workspace = true }
 env_logger = { workspace = true }
+lettre = "0.10.1"
 log = { workspace = true }
 axum = { version = "0.6.1" }
 tokio = { workspace = true }

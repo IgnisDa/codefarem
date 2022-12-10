@@ -24,6 +24,7 @@ async fn main() -> Result<()> {
     let app_config = get_app_config().await?;
     let service = Service {
         db_conn: app_config.db_conn,
+        mailer: app_config.mailer,
     };
     let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
         .data(service)
@@ -34,7 +35,6 @@ async fn main() -> Result<()> {
         .layer(Extension(schema));
     Server::bind(&server_url.parse().unwrap())
         .serve(app.into_make_service())
-        .await
-        .unwrap();
+        .await?;
     Ok(())
 }

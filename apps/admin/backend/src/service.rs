@@ -1,7 +1,8 @@
+use edgedb_tokio::Client;
+use lettre::SmtpTransport;
 use std::sync::Arc;
 
-use edgedb_tokio::Client as DbClient;
-
 pub struct Service {
-    pub db_conn: Arc<DbClient>,
+    pub db_conn: Arc<Client>,
+    pub mailer: Arc<SmtpTransport>,
 }
