@@ -71,7 +71,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: generated-dockerfile
-          path: apps/*/*.generated.Dockerfile
+          path: apps/**/*.generated.Dockerfile
+          if-no-files-found: error
 
   docker-builds:
     name: 'Build and push containers'
