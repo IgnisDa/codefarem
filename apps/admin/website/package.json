@@ -1,5 +1,5 @@
 {
-  "name": "admin",
+  "name": "@codefarem/admin-website",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -29,7 +29,6 @@
     "@types/react": "18.0.24",
     "@types/react-dom": "18.0.8",
     "@vitejs/plugin-react": "2.2.0",
-    "typescript": "4.6.4",
     "vite": "3.2.3",
     "vite-tsconfig-paths": "4.0.2",
     "vitest": "0.25.6"

@@ -3,7 +3,7 @@
   "files": [],
   "references": [
     {
-      "path": "apps/admin"
+      "path": "apps/admin/website"
     },
     {
       "path": "apps/website"

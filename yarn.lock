@@ -1620,6 +1620,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codefarem/admin-website@workspace:apps/admin/website":
+  version: 0.0.0-use.local
+  resolution: "@codefarem/admin-website@workspace:apps/admin/website"
+  dependencies:
+    "@codefarem/generated": "workspace:*"
+    "@emotion/react": 11.10.5
+    "@mantine/core": 5.9.2
+    "@mantine/dates": 5.9.2
+    "@mantine/form": 5.9.2
+    "@mantine/hooks": 5.9.2
+    "@mantine/modals": 5.9.2
+    "@mantine/notifications": 5.9.2
+    "@mantine/nprogress": 5.9.2
+    "@tabler/icons": 1.116.1
+    "@tanstack/react-router": beta
+    "@types/react": 18.0.24
+    "@types/react-dom": 18.0.8
+    "@vitejs/plugin-react": 2.2.0
+    dayjs: 1.11.7
+    react: 18.2.0
+    react-dom: 18.2.0
+    vite: 3.2.3
+    vite-tsconfig-paths: 4.0.2
+    vitest: 0.25.6
+    zod: 3.19.1
+  languageName: unknown
+  linkType: soft
+
 "@codefarem/faker@workspace:*, @codefarem/faker@workspace:libs/faker":
   version: 0.0.0-use.local
   resolution: "@codefarem/faker@workspace:libs/faker"
@@ -6233,35 +6261,6 @@ __metadata:
   checksum: 4079b67283b94935157698831967642f24a075c52ce3feaaaafe095776dfbe15d86a1b33b1e53860fc0d062ed6c83f4284a5c87c85b9ad51853a01173da6097f
   languageName: node
   linkType: hard
-
-"admin@workspace:apps/admin":
-  version: 0.0.0-use.local
-  resolution: "admin@workspace:apps/admin"
-  dependencies:
-    "@codefarem/generated": "workspace:*"
-    "@emotion/react": 11.10.5
-    "@mantine/core": 5.9.2
-    "@mantine/dates": 5.9.2
-    "@mantine/form": 5.9.2
-    "@mantine/hooks": 5.9.2
-    "@mantine/modals": 5.9.2
-    "@mantine/notifications": 5.9.2
-    "@mantine/nprogress": 5.9.2
-    "@tabler/icons": 1.116.1
-    "@tanstack/react-router": beta
-    "@types/react": 18.0.24
-    "@types/react-dom": 18.0.8
-    "@vitejs/plugin-react": 2.2.0
-    dayjs: 1.11.7
-    react: 18.2.0
-    react-dom: 18.2.0
-    typescript: 4.6.4
-    vite: 3.2.3
-    vite-tsconfig-paths: 4.0.2
-    vitest: 0.25.6
-    zod: 3.19.1
-  languageName: unknown
-  linkType: soft
 
 "agent-base@npm:6, agent-base@npm:^6.0.0, agent-base@npm:^6.0.2":
   version: 6.0.2
@@ -17149,16 +17148,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.6.4":
-  version: 4.6.4
-  resolution: "typescript@npm:4.6.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: e7bfcc39cd4571a63a54e5ea21f16b8445268b9900bf55aee0e02ad981be576acc140eba24f1af5e3c1457767c96cea6d12861768fb386cf3ffb34013718631a
-  languageName: node
-  linkType: hard
-
 "typescript@npm:4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
@@ -17166,16 +17155,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 3e4f061658e0c8f36c820802fa809e0fd812b85687a9a2f5430bc3d0368e37d1c9605c3ce9b39df9a05af2ece67b1d844f9f6ea8ff42819f13bcb80f85629af0
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@4.6.4#~builtin<compat/typescript>":
-  version: 4.6.4
-  resolution: "typescript@patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=a1c5e5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 1cb434fbc637d347be90e3a0c6cd05e33c38f941713c8786d3031faf1842c2c148ba91d2fac01e7276b0ae3249b8633f1660e32686cc7a8c6a8fd5361dc52c66
   languageName: node
   linkType: hard
 

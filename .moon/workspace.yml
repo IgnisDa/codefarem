@@ -2,7 +2,7 @@
 $schema: 'https://moonrepo.dev/schemas/workspace.json'
 
 projects:
-  admin: 'apps/admin'
+  admin-website: 'apps/admin/website'
   faker: 'libs/faker'
   generated: 'libs/generated'
   main-db: 'libs/main-db'
