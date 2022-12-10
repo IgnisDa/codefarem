@@ -31,7 +31,7 @@ jobs:
         run: |
           affected=$(
               node -e "
-                  let deployable = ['authenticator', 'compilers', 'executor', 'orchestrator', 'website']
+                  let deployable = ['authenticator', 'compilers', 'executor', 'orchestrator', 'website', 'admin-backend', 'admin-website']
                   let projects = \`$(moon query touched-files --base $BASE | moon query projects --affected | jq .projects[].id -r)\`.split('\n')
                   let deployableProjects = projects.filter(project => deployable.includes(project))
                   console.log(deployableProjects.join(' '))

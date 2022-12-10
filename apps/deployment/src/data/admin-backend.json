@@ -1,0 +1,11 @@
+{
+  "dockerfile_path": "apps/admin/backend/admin-backend.generated.Dockerfile",
+  "apps": [
+    {
+      "EXECUTABLE_NAME": "admin_backend",
+      "IMAGE_NAME": "gcr.io/distroless/static",
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {}
+    }
+  ]
+}

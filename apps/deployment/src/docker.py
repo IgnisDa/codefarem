@@ -35,6 +35,18 @@ def cli():
 
 
 @click.command()
+def admin_website():
+    """Generate docker-files for the admin website"""
+    write_dockerfile("admin-website", "admin-website")
+
+
+@click.command()
+def admin_backend():
+    """Generate docker-files for the admin backend"""
+    write_dockerfile("base", "admin-backend")
+
+
+@click.command()
 def authenticator():
     """Generate docker-files for the authenticator"""
     write_dockerfile("authenticator", "authenticator")
@@ -64,6 +76,8 @@ def website():
     write_dockerfile("website", "website")
 
 
+cli.add_command(admin_backend)
+cli.add_command(admin_website)
 cli.add_command(authenticator)
 cli.add_command(compilers)
 cli.add_command(executor)

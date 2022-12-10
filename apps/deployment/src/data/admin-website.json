@@ -1,0 +1,8 @@
+{
+  "dockerfile_path": "apps/admin/website/admin-website.generated.Dockerfile",
+  "apps": [
+    {
+      "EXECUTABLE_NAME": "admin-website"
+    }
+  ]
+}
