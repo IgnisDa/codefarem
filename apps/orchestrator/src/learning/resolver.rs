@@ -12,7 +12,7 @@ use super::{
             test_case::TestCaseUnit,
         },
     },
-    service::{LearningService, LearningServiceTrait},
+    service::LearningService,
 };
 use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};

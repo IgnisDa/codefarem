@@ -5,8 +5,7 @@ use super::dto::{
         user_with_email::{UserWithEmailError, UserWithEmailOutput},
     },
 };
-use async_trait::async_trait;
-use edgedb_tokio::Client as DbClient;
+use edgedb_tokio::Client;
 use std::sync::Arc;
 use utilities::{graphql::ApiError, users::AccountType};
 
@@ -19,41 +18,20 @@ const REGISTER_USER: &str =
 const CHECK_UNIQUENESS: &str =
     include_str!("../../../../libs/main-db/edgeql/users/check-uniqueness.edgeql");
 
-#[async_trait]
-pub trait UserServiceTrait: Sync + Send {
-    async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError>;
-
-    async fn user_with_email<'a>(
-        &self,
-        email: &'a str,
-    ) -> Result<UserWithEmailOutput, UserWithEmailError>;
-
-    async fn register_user<'a>(
-        &self,
-        username: &'a str,
-        email: &'a str,
-        account_type: &AccountType,
-        hanko_id: &'a str,
-    ) -> Result<RegisterUserOutput, RegisterUserError>;
-}
-
 pub struct UserService {
-    db_conn: Arc<DbClient>,
+    db_conn: Arc<Client>,
 }
 
 impl UserService {
-    pub fn new(db_conn: &Arc<DbClient>) -> Self {
+    pub fn new(db_conn: &Arc<Client>) -> Self {
         Self {
             db_conn: db_conn.clone(),
         }
     }
 }
 
-impl UserService {}
-
-#[async_trait]
-impl UserServiceTrait for UserService {
-    async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
+impl UserService {
+    pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
         let json_str = self
             .db_conn
             .query_json(USER_DETAILS, &(hanko_id,))
@@ -68,7 +46,7 @@ impl UserServiceTrait for UserService {
             .clone())
     }
 
-    async fn user_with_email<'a>(
+    pub async fn user_with_email<'a>(
         &self,
         email: &'a str,
     ) -> Result<UserWithEmailOutput, UserWithEmailError> {
@@ -85,7 +63,7 @@ impl UserServiceTrait for UserService {
         Ok(all_users.get(0).unwrap().to_owned())
     }
 
-    async fn register_user<'a>(
+    pub async fn register_user<'a>(
         &self,
         username: &'a str,
         email: &'a str,

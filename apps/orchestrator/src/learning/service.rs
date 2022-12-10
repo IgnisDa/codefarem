@@ -17,10 +17,9 @@ use crate::{
     },
     utils::case_unit_to_argument,
 };
-use async_trait::async_trait;
 use auth::validate_user_role;
 use comrak::{markdown_to_html, ComrakOptions};
-use edgedb_tokio::Client as DbClient;
+use edgedb_tokio::Client;
 use rand::{distributions::Alphanumeric, Rng};
 use slug::slugify;
 use std::sync::Arc;
@@ -57,50 +56,13 @@ const INSERT_TEST_CASE: &str =
 const UPDATE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/update-question.edgeql");
 
-#[async_trait]
-pub trait LearningServiceTrait: Sync + Send {
-    fn test_case_units(&self) -> Vec<TestCaseUnit>;
-
-    async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError>;
-
-    async fn question_details<'a>(
-        &self,
-        question_slug: &'_ str,
-    ) -> Result<QuestionDetailsOutput, ApiError>;
-
-    async fn create_class<'a>(
-        &self,
-        hanko_id: &'a str,
-        account_type: &AccountType,
-        name: &'a str,
-        teacher_ids: &[Uuid],
-    ) -> Result<CreateClassOutput, ApiError>;
-
-    async fn create_question<'a>(
-        &self,
-        hanko_id: &'a str,
-        account_type: &AccountType,
-        name: &'a str,
-        problem: &'a str,
-        test_cases: &[TestCase],
-        class_ids: &[Uuid],
-    ) -> Result<CreateQuestionOutput, ApiError>;
-
-    async fn execute_code_for_question(
-        &self,
-        question_slug: &'_ str,
-        input: &'_ str,
-        language: &SupportedLanguage,
-    ) -> Result<ExecuteCodeForQuestionOutput, ExecuteCodeError>;
-}
-
 pub struct LearningService {
-    db_conn: Arc<DbClient>,
+    db_conn: Arc<Client>,
     farem_service: Arc<FaremService>,
 }
 
 impl LearningService {
-    pub fn new(db_conn: &Arc<DbClient>, farem_service: &Arc<FaremService>) -> Self {
+    pub fn new(db_conn: &Arc<Client>, farem_service: &Arc<FaremService>) -> Self {
         Self {
             db_conn: db_conn.clone(),
             farem_service: farem_service.clone(),
@@ -108,15 +70,12 @@ impl LearningService {
     }
 }
 
-impl LearningService {}
-
-#[async_trait]
-impl LearningServiceTrait for LearningService {
-    fn test_case_units(&self) -> Vec<TestCaseUnit> {
+impl LearningService {
+    pub fn test_case_units(&self) -> Vec<TestCaseUnit> {
         TestCaseUnit::iter().collect()
     }
 
-    async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
+    pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
         self.db_conn
             .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
             .await
@@ -125,7 +84,7 @@ impl LearningServiceTrait for LearningService {
             })
     }
 
-    async fn question_details<'a>(
+    pub async fn question_details<'a>(
         &self,
         question_slug: &'_ str,
     ) -> Result<QuestionDetailsOutput, ApiError> {
@@ -142,7 +101,7 @@ impl LearningServiceTrait for LearningService {
         Ok(question)
     }
 
-    async fn create_class<'a>(
+    pub async fn create_class<'a>(
         &self,
         hanko_id: &'a str,
         account_type: &AccountType,
@@ -164,7 +123,7 @@ impl LearningServiceTrait for LearningService {
             })
     }
 
-    async fn create_question<'a>(
+    pub async fn create_question<'a>(
         &self,
         hanko_id: &'a str,
         account_type: &AccountType,
@@ -282,7 +241,7 @@ impl LearningServiceTrait for LearningService {
         Ok(class)
     }
 
-    async fn execute_code_for_question(
+    pub async fn execute_code_for_question(
         &self,
         question_slug: &'_ str,
         code: &'_ str,

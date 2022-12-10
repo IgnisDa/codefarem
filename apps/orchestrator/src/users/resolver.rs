@@ -6,7 +6,7 @@ use super::{
             user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
         },
     },
-    service::{UserService, UserServiceTrait},
+    service::UserService,
 };
 use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};

@@ -3,7 +3,7 @@ use macros::to_result_union_response;
 
 use super::{
     dto::mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
-    service::{FaremService, FaremServiceTrait, SupportedLanguage},
+    service::{FaremService, SupportedLanguage},
 };
 
 /// The query segment for Farem

@@ -13,10 +13,9 @@ utilities = { path = "../../libs/utilities" }
 anyhow = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-rocket = { workspace = true }
-async-trait = { workspace = true }
 comrak = "0.15.0"
 chrono = { workspace = true }
-derive-getters = "0.2.0"
+derive-getters = { workspace = true }
 dotenv = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
