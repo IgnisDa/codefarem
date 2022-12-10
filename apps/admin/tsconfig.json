@@ -19,10 +19,19 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "outDir": "../../.moon/cache/types/apps/admin"
+    "outDir": "../../.moon/cache/types/apps/admin",
+    "paths": {
+      ":generated/*": [
+        "../../libs/generated/src/*"
+      ]
+    }
   },
   "include": [
     "src"
   ],
-  "references": []
+  "references": [
+    {
+      "path": "../../libs/generated"
+    }
+  ]
 }
