@@ -3,7 +3,7 @@
   "apps": [
     {
       "EXECUTABLE_NAME": "admin-backend",
-      "IMAGE_NAME": "gcr.io/distroless/static",
+      "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     }
