@@ -1,5 +1,5 @@
 {
-  "dockerfile_path": "apps/compilers/{{ executable }}.generated.Dockerfile",
+  "dockerfile_path": "apps/compilers/${executable}.generated.Dockerfile",
   "apps": [
     {
       "EXECUTABLE_NAME": "rs-compiler",

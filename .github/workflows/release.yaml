@@ -108,6 +108,15 @@ jobs:
           echo "image_name=$image_name" >> $GITHUB_OUTPUT
           echo "Image name: $image_name"
 
+      - name: Get dockerfile path
+        if: ${{ steps.check.outputs.should_exit != 1 }}
+        id: dockerfile_path
+        env:
+          executable: ${{ matrix.executable }}
+        run: |
+          dockerfile_path=$(envsubst < apps/deployment/src/data/${{ matrix.project }}.json | jq '.dockerfile_path' -r)
+          echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
+
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         if: ${{ steps.check.outputs.should_exit != 1 }}
@@ -137,7 +146,7 @@ jobs:
         if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           context: .
-          file: apps/${{ matrix.project }}/${{ matrix.executable }}.generated.Dockerfile
+          file: ${{ steps.dockerfile_path.outputs.dockerfile_path }}
           push: true
           tags: ${{ steps.image_name.outputs.image_name }}
           cache-from: type=gha

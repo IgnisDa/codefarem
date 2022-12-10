@@ -21,7 +21,7 @@ def write_dockerfile(template_name: str, app: str):
     apps = data["apps"]
     for context in apps:
         filename = data["dockerfile_path"].replace(
-            "{{ executable }}", context["EXECUTABLE_NAME"]
+            "${executable}", context["EXECUTABLE_NAME"]
         )
         rendered = base.render(**context)
         with open(filename, mode="w", encoding="utf-8") as dockerfile:
