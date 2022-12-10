@@ -10,14 +10,14 @@ main_db = { path = "../../libs/main-db" }
 protobuf = { path = "../../libs/protobuf" }
 utilities = { path = "../../libs/utilities" }
 
-anyhow = "1.0.65"
+anyhow = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-rocket = { workspace = true }
 async-trait = { workspace = true }
 comrak = "0.15.0"
 chrono = { workspace = true }
 derive-getters = "0.2.0"
-dotenv = "0.15.0"
+dotenv = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
