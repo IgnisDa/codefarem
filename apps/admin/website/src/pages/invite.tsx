@@ -14,8 +14,9 @@ import { useForm, zodResolver } from '@mantine/form';
 import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 
 const schema = z.object({
+  accountType: z.nativeEnum(AccountType),
   email: z.string().email({ message: 'Invalid email' }),
-  ia: z.nativeEnum(AccountType),
+  validFor: z.string(),
 });
 
 const times = [
@@ -28,9 +29,9 @@ const times = [
 export const InvitePage = () => {
   const form = useForm({
     initialValues: {
+      accountType: AccountType.Teacher,
       email: '',
-      expiresAt: times[2][1],
-      ia: AccountType.Teacher,
+      validFor: times[2][1],
     },
     validate: zodResolver(schema),
   });
@@ -45,7 +46,7 @@ export const InvitePage = () => {
             label="Valid for"
             data={times.map(([label, value]) => ({ label, value }))}
             mt="sm"
-            {...form.getInputProps('expiresAt')}
+            {...form.getInputProps('validFor')}
           />
           <Flex align={'center'} mt="sm" justify={'space-between'}>
             <Text fz={'sm'} span>
@@ -56,7 +57,7 @@ export const InvitePage = () => {
                 { label: 'Teacher', value: AccountType.Teacher },
                 { label: 'Student', value: AccountType.Student },
               ]}
-              {...form.getInputProps('ia')}
+              {...form.getInputProps('accountType')}
             />
           </Flex>
           <Button fullWidth mt="sm" type="submit">
