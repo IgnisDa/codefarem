@@ -1,5 +1,8 @@
 use crate::{
-    dto::mutations::create_invite_link::{CreateInviteLinkInput, CreateInviteLinkResultUnion},
+    dto::{
+        mutations::create_invite_link::{CreateInviteLinkInput, CreateInviteLinkResultUnion},
+        queries::invite_link::InviteLinkDto,
+    },
     Service,
 };
 use async_graphql::{Context, EmptySubscription, Object, Result, Schema};
@@ -10,8 +13,8 @@ pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
-    async fn hello(&self) -> String {
-        "hello query".to_owned()
+    async fn all_invite_links(&self, ctx: &Context<'_>) -> Vec<InviteLinkDto> {
+        ctx.data_unchecked::<Service>().all_invite_links().await
     }
 }
 
@@ -19,10 +22,6 @@ pub struct MutationRoot;
 
 #[Object]
 impl MutationRoot {
-    async fn hello(&self) -> String {
-        "hello mutation".to_owned()
-    }
-
     async fn create_invite_link(
         &self,
         ctx: &Context<'_>,

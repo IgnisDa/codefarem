@@ -37,6 +37,8 @@ dependencies = [
  "lettre",
  "log",
  "macros",
+ "serde",
+ "serde_json",
  "tokio 1.23.0",
  "tower-http",
  "utilities",

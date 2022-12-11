@@ -10,6 +10,7 @@ utilities = { path = "../../../libs/utilities" }
 anyhow = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-axum = { version = "5.0.3" }
+axum = { version = "0.6.1" }
 chrono = { workspace = true }
 derive-getters = { workspace = true }
 dotenv = { workspace = true }
@@ -22,7 +23,8 @@ lettre = { version = "0.10.1", features = [
     "smtp-transport",
 ], default-features = false }
 log = { workspace = true }
-axum = { version = "0.6.1" }
 tokio = { workspace = true }
 humantime = "2.1.0"
+serde = { workspace = true }
+serde_json = { workspace = true }
 tower-http = { version = "0.3.5", features = ["cors"] }

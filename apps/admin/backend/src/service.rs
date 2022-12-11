@@ -1,4 +1,6 @@
-use crate::dto::mutations::create_invite_link::CreateInviteLinkOutput;
+use crate::dto::{
+    mutations::create_invite_link::CreateInviteLinkOutput, queries::invite_link::InviteLinkDto,
+};
 use chrono::{Duration, Utc};
 use edgedb_tokio::Client;
 use lettre::SmtpTransport;
@@ -6,6 +8,8 @@ use log::error;
 use std::sync::Arc;
 use utilities::{graphql::ApiError, random_string, users::AccountType};
 
+const ALL_INVITE_LINKS: &str =
+    include_str!("../../../../libs/main-db/edgeql/external/all-invite-links.edgeql");
 const CREATE_INVITE_LINK: &str =
     include_str!("../../../../libs/main-db/edgeql/external/create-invite-link.edgeql");
 
@@ -15,6 +19,16 @@ pub struct Service {
 }
 
 impl Service {
+    pub async fn all_invite_links(&self) -> Vec<InviteLinkDto> {
+        let json_invite_links = self
+            .db_conn
+            .query_json(ALL_INVITE_LINKS, &())
+            .await
+            .unwrap()
+            .to_string();
+        serde_json::from_str(&json_invite_links).unwrap()
+    }
+
     pub async fn create_invite_link(
         &self,
         email: &Option<String>,
