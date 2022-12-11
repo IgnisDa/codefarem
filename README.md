@@ -16,7 +16,7 @@ sequenceDiagram
     participant Compiler;
     participant Executor;
     Client ->> Orchestrator: req. to execute code
-    note over Orchestrator: select compiler (acc. to lang)
+    note over Orchestrator: select compiler according to language
     Orchestrator ->> Compiler: request compilation
     note over Compiler: compile code
     Compiler ->> Orchestrator: return compiled code (or error)
