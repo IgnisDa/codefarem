@@ -82,10 +82,13 @@ jobs:
           executable: ${{ matrix.executable }}
         run: |
           for file in apps/deployment/src/data/*.json; do
-            if [[ $(cat "$file" | jq '.apps[].EXECUTABLE_NAME' -r) == *"$executable"* ]]; then
-              dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
-              break
-            fi
+              for exe in $(cat "$file" | jq -r '.apps[].EXECUTABLE_NAME'); do
+                  if [[ "$exe" == "$executable" ]]; then
+                      dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
+                      echo "Found dockerfile path for executable '$executable': '$dockerfile_path'"
+                      break
+                  fi
+              done
           done
           # throw error if no dockerfile path was found
           if [[ -z "$dockerfile_path" ]]; then
