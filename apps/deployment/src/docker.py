@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import click
@@ -9,15 +10,18 @@ BASE_TEMPLATES_DIR = BASE_DIR / "templates"
 BASE_DATA_DIR = BASE_DIR / "data"
 
 
-environment = Environment(
+data_environment = Environment(undefined=StrictUndefined)
+template_environment = Environment(
     loader=FileSystemLoader(BASE_TEMPLATES_DIR), undefined=StrictUndefined
 )
 
 
 def write_dockerfile(template_name: str, app: str):
-    base = environment.get_template(f"{template_name}.Dockerfile")
+    base = template_environment.get_template(f"{template_name}.Dockerfile")
     with open(BASE_DATA_DIR / f"{app}.json") as f:
-        data = json.load(f)
+        template = data_environment.from_string(f.read())
+        data = template.render(**os.environ)
+        data = json.loads(data)
     apps = data["apps"]
     for context in apps:
         filename = data["dockerfile_path"].replace(

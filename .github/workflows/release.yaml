@@ -37,6 +37,8 @@ jobs:
         name: Setup python environment
 
       - name: Generate project dockerfile(s)
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
           for project in "authenticator" "compilers" "executor" "orchestrator" "website" "admin-backend" "admin-website"
           do

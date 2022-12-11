@@ -3,6 +3,9 @@ WORKDIR /app
 RUN npm install -g @moonrepo/cli
 
 FROM base as builder
+{% for name, value in ENVIRONMENT_VARIABLES.items() %}
+ENV {{ name }}={{ value }}
+{% endfor %}
 WORKDIR /build
 COPY . .
 RUN moon setup
