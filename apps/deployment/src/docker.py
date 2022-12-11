@@ -26,7 +26,7 @@ def write_dockerfile(template_name: str, app: str):
     for idx, context in enumerate(apps):
         template = data_environment.from_string(data_str)
         ctx = {"EXECUTABLE": context["EXECUTABLE_NAME"]}
-        ctx.update(os.environ)
+        ctx |= os.environ
         data = template.render(ctx)
         data = data.strip()
         data = json.loads(data)
