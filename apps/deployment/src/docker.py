@@ -19,15 +19,19 @@ template_environment = Environment(
 def write_dockerfile(template_name: str, app: str):
     base = template_environment.get_template(f"{template_name}.Dockerfile")
     with open(BASE_DATA_DIR / f"{app}.json") as f:
-        template = data_environment.from_string(f.read())
-        data = template.render(**os.environ)
+        data_str = f.read()
+        data = json.loads(data_str)
+        apps = data["apps"]
+
+    for idx, context in enumerate(apps):
+        template = data_environment.from_string(data_str)
+        ctx = {"EXECUTABLE": context["EXECUTABLE_NAME"]}
+        ctx.update(os.environ)
+        data = template.render(ctx)
+        data = data.strip()
         data = json.loads(data)
-    apps = data["apps"]
-    for context in apps:
-        filename = data["dockerfile_path"].replace(
-            "${executable}", context["EXECUTABLE_NAME"]
-        )
-        rendered = base.render(**context)
+        filename = data["dockerfile_path"]
+        rendered = base.render(**data["apps"][idx])
         with open(filename, mode="w", encoding="utf-8") as dockerfile:
             dockerfile.write(rendered)
 
