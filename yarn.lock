@@ -1634,11 +1634,13 @@ __metadata:
     "@mantine/notifications": 5.9.2
     "@mantine/nprogress": 5.9.2
     "@tabler/icons": 1.116.1
+    "@tanstack/react-query": 4.19.1
     "@tanstack/react-router": beta
     "@types/react": 18.0.24
     "@types/react-dom": 18.0.8
     "@vitejs/plugin-react": 2.2.0
     dayjs: 1.11.7
+    graphql-request: 5.0.0
     react: 18.2.0
     react-dom: 18.2.0
     vite: 3.2.3
@@ -5334,6 +5336,32 @@ __metadata:
     react-dom:
       optional: true
   checksum: 0e310e2334f69937deb77dab64042dbd16d8f3f6a1e5fb3ee0dac05b01d0260a7ade20297e55b91c6728eb6899a35817e1d471001ebbd2d5d18e6a23e63059c4
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:4.19.1":
+  version: 4.19.1
+  resolution: "@tanstack/query-core@npm:4.19.1"
+  checksum: a54a613d5b7abe2bba352fa26228bee0589eb8116bf482760dbe39474202b08cfc3899100e478f0bd1ae1a7bd60dcda0634c04bec56a98346763d32bc7720b54
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:4.19.1":
+  version: 4.19.1
+  resolution: "@tanstack/react-query@npm:4.19.1"
+  dependencies:
+    "@tanstack/query-core": 4.19.1
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: cce8b51c5cbaff007efb2fc54c5e03a2191e363626226903c345ae9baf0d48a36fc322383e24aff4f12250e672da67d3ceaa9819bbb16ace98a5c7bdff098a61
   languageName: node
   linkType: hard
 

@@ -44,9 +44,18 @@ export type CreateInviteLinkOutput = {
 /** The output object when creating a new class */
 export type CreateInviteLinkResultUnion = ApiError | CreateInviteLinkOutput;
 
+export type InviteLinkDto = {
+  email?: Maybe<Scalars['String']>;
+  expiresAt: Scalars['String'];
+  id: Scalars['String'];
+  isActive: Scalars['Boolean'];
+  role: AccountType;
+  token: Scalars['String'];
+  usedAt?: Maybe<Scalars['String']>;
+};
+
 export type MutationRoot = {
   createInviteLink: CreateInviteLinkResultUnion;
-  hello: Scalars['String'];
 };
 
 
@@ -55,7 +64,7 @@ export type MutationRootCreateInviteLinkArgs = {
 };
 
 export type QueryRoot = {
-  hello: Scalars['String'];
+  allInviteLinks: Array<InviteLinkDto>;
 };
 
 export type CreateInviteLinkMutationVariables = Exact<{
@@ -65,5 +74,11 @@ export type CreateInviteLinkMutationVariables = Exact<{
 
 export type CreateInviteLinkMutation = { createInviteLink: { __typename: 'ApiError', error: string } | { __typename: 'CreateInviteLinkOutput', token: string } };
 
+export type AllInviteLinksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllInviteLinksQuery = { allInviteLinks: Array<{ id: string, token: string, isActive: boolean, email?: string | null, expiresAt: string, usedAt?: string | null, role: AccountType }> };
+
 
 export const CreateInviteLinkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateInviteLink"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateInviteLinkInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createInviteLink"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateInviteLinkOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]} as unknown as DocumentNode<CreateInviteLinkMutation, CreateInviteLinkMutationVariables>;
+export const AllInviteLinksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllInviteLinks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allInviteLinks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"usedAt"}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]} as unknown as DocumentNode<AllInviteLinksQuery, AllInviteLinksQueryVariables>;

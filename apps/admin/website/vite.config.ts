@@ -11,5 +11,6 @@ export default defineConfig({
   plugins: [
     tsconfigPaths({ root: dirname }),
     react()
-  ]
+  ],
+  server: { port: 5006 },
 })

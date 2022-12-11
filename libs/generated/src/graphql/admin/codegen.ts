@@ -17,7 +17,7 @@ const config: CodegenConfig = {
     },
     ignoreNoDocuments: true,
     overwrite: true,
-    schema: 'http://127.0.0.1:5005',
+    schema: 'http://127.0.0.1:5005/graphql',
 };
 
 // eslint-disable-next-line import/no-default-export

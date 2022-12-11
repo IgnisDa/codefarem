@@ -1,4 +1,5 @@
 import { AppShell, MantineProvider } from '@mantine/core';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createReactRouter,
   createRouteConfig,
@@ -7,6 +8,8 @@ import {
 } from '@tanstack/react-router';
 import { NavbarMinimal } from './components/Navbar';
 import { InvitePage } from './pages/invite';
+
+const queryClient = new QueryClient();
 
 const rootRoute = createRouteConfig({
   component: () => (
@@ -33,7 +36,9 @@ export default function App() {
       withNormalizeCSS
       theme={{ colorScheme: 'dark' }}
     >
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </MantineProvider>
   );
 }
