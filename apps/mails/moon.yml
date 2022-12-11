@@ -1,0 +1,6 @@
+type: 'library'
+
+tasks:
+  dev:
+    command: 'email dev'
+    local: true

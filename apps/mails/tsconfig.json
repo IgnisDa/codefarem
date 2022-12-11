@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "include": [
+    "**/*"
+  ],
+  "references": [],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "../../.moon/cache/types/apps/mails"
+  }
+}
