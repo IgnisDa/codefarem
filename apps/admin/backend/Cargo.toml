@@ -17,7 +17,7 @@ edgedb-tokio = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 env_logger = { workspace = true }
-lettre = "0.10.1"
+lettre = { version = "0.10.1", features = ["rustls"] }
 log = { workspace = true }
 axum = { version = "0.6.1" }
 tokio = { workspace = true }

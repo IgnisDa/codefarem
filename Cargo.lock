@@ -1634,6 +1634,7 @@ dependencies = [
  "nom",
  "once_cell",
  "quoted_printable",
+ "rustls",
  "socket2 0.4.7",
 ]
 
