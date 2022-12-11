@@ -80,28 +80,34 @@ export const InvitePage = () => {
                 <Accordion.Item value={invite.id} key={invite.id}>
                   <Accordion.Control>{invite.role}</Accordion.Control>
                   <Accordion.Panel>
-                    <Text>
-                      Invite for{' '}
-                      <Text span underline>
-                        {invite.email}
-                      </Text>{' '}
-                      will expire on{' '}
-                      <Text span underline>
-                        {new Date(invite.expiresAt).toDateString()}
-                      </Text>
-                    </Text>
-                    <Center mt={'sm'}>
-                      <CopyButton value={invite.token}>
-                        {({ copied, copy }) => (
-                          <Button
-                            color={copied ? 'teal' : 'blue'}
-                            onClick={copy}
-                          >
-                            {copied ? 'Copied' : 'Copy'} token
-                          </Button>
-                        )}
-                      </CopyButton>
-                    </Center>
+                    {invite.isActive ? (
+                      <>
+                        <Text>
+                          Invite for{' '}
+                          <Text span underline>
+                            {invite.email}
+                          </Text>{' '}
+                          will expire on{' '}
+                          <Text span underline>
+                            {new Date(invite.expiresAt).toDateString()}
+                          </Text>
+                        </Text>
+                        <Center mt={'sm'}>
+                          <CopyButton value={invite.token}>
+                            {({ copied, copy }) => (
+                              <Button
+                                color={copied ? 'teal' : 'blue'}
+                                onClick={copy}
+                              >
+                                {copied ? 'Copied' : 'Copy'} token
+                              </Button>
+                            )}
+                          </CopyButton>
+                        </Center>
+                      </>
+                    ) : (
+                      <Text>This link has already been used</Text>
+                    )}
                   </Accordion.Panel>
                 </Accordion.Item>
               ))}
