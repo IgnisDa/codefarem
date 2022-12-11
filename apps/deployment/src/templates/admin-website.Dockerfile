@@ -1,6 +1,6 @@
 FROM node:latest AS base
 WORKDIR /app
-RUN npm install -g @moonrepo/cli
+RUN npm install --global @moonrepo/cli && moon --version
 
 FROM base as builder
 {% for name, value in ENVIRONMENT_VARIABLES.items() %}
