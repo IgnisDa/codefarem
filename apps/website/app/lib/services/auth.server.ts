@@ -13,8 +13,8 @@ export async function requireValidJwt(request: Request,
 ) {
     const hankoCookie = extractHankoCookie(request);
     const decoded = decode(hankoCookie) as JwtPayload;
-    const hankoId = decoded.sub;
-    const exp = (decoded.exp || 0) * 1000;
+    const hankoId = decoded?.sub;
+    const exp = (decoded?.exp || 0) * 1000;
     if (!decoded || !hankoId || exp < Date.now()) {
         const searchParams = new URLSearchParams([
             ["redirectTo", redirectTo],

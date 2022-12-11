@@ -56,7 +56,6 @@ dts/
 esm/
 mjs/
 umd/
-lib
 
 *.generated.Dockerfile
 
