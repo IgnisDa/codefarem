@@ -60,8 +60,8 @@ impl UserMutation {
             .register_user(
                 input.username(),
                 input.email(),
-                input.account_type(),
                 input.hanko_id(),
+                input.invite_token(),
             )
             .await;
         to_result_union_response!(output, RegisterUserResultUnion)

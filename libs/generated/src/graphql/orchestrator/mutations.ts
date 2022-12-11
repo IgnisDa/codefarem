@@ -22,9 +22,8 @@ export const REGISTER_USER = graphql(`
       ... on RegisterUserOutput {
         id
       }
-      ... on RegisterUserError {
-        usernameNotUnique
-        emailNotUnique
+      ... on ApiError {
+        error
       }
     }
   }

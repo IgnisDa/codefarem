@@ -10,21 +10,27 @@ import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
-import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
 
-const schema = z.object({ email: z.string().email(), hankoId: z.string() });
+const authSchema = z.object({
+  email: z.string().email(),
+  hankoId: z.string(),
+});
+
+const urlSchema = z.object({
+  inviteToken: z.string().optional(),
+});
 
 export const action = async ({ request }: ActionArgs) => {
-  const { hankoId, email } = await zx.parseForm(request.clone(), schema);
+  const { hankoId, email } = await zx.parseForm(request.clone(), authSchema);
   const { userWithEmail } = await gqlClient.request(USER_WITH_EMAIL, {
     input: { email },
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
+    const { inviteToken } = zx.parseQuery(request.clone(), urlSchema);
     const username = new Date().toISOString();
-    const accountType = AccountType.Student;
     await gqlClient.request(REGISTER_USER, {
-      input: { email, username, accountType, hankoId },
+      input: { email, username, hankoId, inviteToken },
     });
   }
   return redirect(SUCCESSFUL_REDIRECT_PATH);
@@ -36,7 +42,7 @@ export default () => {
   const handler = async () => {
     const hanko = new Hanko(window.ENV.HANKO_URL);
     const user = await hanko.user.getCurrent();
-    const data = schema.parse({ hankoId: user.id, email: user.email });
+    const data = authSchema.parse({ hankoId: user.id, email: user.email });
     fetcher.submit(data, { method: 'post' });
   };
 
