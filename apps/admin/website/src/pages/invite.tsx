@@ -3,11 +3,15 @@ import {
   Accordion,
   Alert,
   Button,
+  Center,
   Container,
+  CopyButton,
   Flex,
+  Grid,
   Paper,
   SegmentedControl,
   Select,
+  Space,
   Text,
   TextInput,
   Title,
@@ -63,60 +67,90 @@ export const InvitePage = () => {
   });
 
   return (
-    <>
-      <Container size={'xs'} my={40} px={0}>
-        <Title align="center">Send invite</Title>
-        <Paper withBorder shadow="md" p={25} mt={30} radius="md">
-          <form
-            onSubmit={form.onSubmit((values) => {
-              mutation.mutate(values);
-            })}
-          >
-            <TextInput
-              label="Email"
-              required
-              {...form.getInputProps('email')}
-            />
-            <Select
-              label="Valid for"
-              data={times.map(([label, value]) => ({ label, value }))}
-              mt="sm"
-              {...form.getInputProps('validFor')}
-            />
-            <Flex align={'center'} mt="sm" justify={'space-between'}>
-              <Text fz={'sm'} span>
-                Invite As
-              </Text>
-              <SegmentedControl
-                data={[
-                  { label: 'Teacher', value: AccountType.Teacher },
-                  { label: 'Student', value: AccountType.Student },
-                ]}
-                {...form.getInputProps('accountType')}
+    <Container px={0} size={'lg'}>
+      <Grid>
+        <Grid.Col md={6}>
+          <Title align="center">All Invite Links</Title>
+          <Space mt={'md'} />
+          {data?.length === 0 ? (
+            <Alert color={'red'}>You do not have active invite links</Alert>
+          ) : (
+            <Accordion>
+              {data?.map((invite) => (
+                <Accordion.Item value={invite.id} key={invite.id}>
+                  <Accordion.Control>{invite.role}</Accordion.Control>
+                  <Accordion.Panel>
+                    <Text>
+                      Invite for{' '}
+                      <Text span underline>
+                        {invite.email}
+                      </Text>{' '}
+                      will expire on{' '}
+                      <Text span underline>
+                        {new Date(invite.expiresAt).toDateString()}
+                      </Text>
+                    </Text>
+                    <Center mt={'sm'}>
+                      <CopyButton value={invite.token}>
+                        {({ copied, copy }) => (
+                          <Button
+                            color={copied ? 'teal' : 'blue'}
+                            onClick={copy}
+                          >
+                            {copied ? 'Copied' : 'Copy'} token
+                          </Button>
+                        )}
+                      </CopyButton>
+                    </Center>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              ))}
+            </Accordion>
+          )}
+        </Grid.Col>
+        <Grid.Col md={6}>
+          <Title align="center">Send invite</Title>
+          <Paper withBorder shadow="md" p={25} mt={30} radius="md">
+            <form
+              onSubmit={form.onSubmit((values) => {
+                mutation.mutate(values);
+              })}
+            >
+              <TextInput
+                label="Email"
+                required
+                {...form.getInputProps('email')}
               />
-            </Flex>
-            <Button fullWidth mt="sm" type="submit">
-              Create
-            </Button>
-            {mutation.isSuccess && (
-              <Alert mt={'lg'} color={'green'}>
-                Invite Link created!
-              </Alert>
-            )}
-          </form>
-        </Paper>
-      </Container>
-      <Container size={'xs'} my={40} px={0}>
-        <Title align="center">All Invite Links</Title>
-        <Accordion mt={'md'}>
-          {data?.map((invite) => (
-            <Accordion.Item value={invite.id} key={invite.id}>
-              <Accordion.Control>{invite.role}</Accordion.Control>
-              <Accordion.Panel>{invite.email}</Accordion.Panel>
-            </Accordion.Item>
-          ))}
-        </Accordion>
-      </Container>
-    </>
+              <Select
+                label="Valid for"
+                data={times.map(([label, value]) => ({ label, value }))}
+                mt="sm"
+                {...form.getInputProps('validFor')}
+              />
+              <Flex align={'center'} mt="sm" justify={'space-between'}>
+                <Text fz={'sm'} span>
+                  Invite As
+                </Text>
+                <SegmentedControl
+                  data={[
+                    { label: 'Teacher', value: AccountType.Teacher },
+                    { label: 'Student', value: AccountType.Student },
+                  ]}
+                  {...form.getInputProps('accountType')}
+                />
+              </Flex>
+              <Button fullWidth mt="sm" type="submit">
+                Create
+              </Button>
+              {mutation.isSuccess && (
+                <Alert mt={'lg'} color={'green'}>
+                  Invite Link created!
+                </Alert>
+              )}
+            </form>
+          </Paper>
+        </Grid.Col>
+      </Grid>
+    </Container>
   );
 };
