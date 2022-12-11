@@ -47,7 +47,7 @@ impl Service {
                     error: "Could not create invite link".to_string(),
                 }
             })?;
-        if let Some(e) = email {
+        if let Some(_e) = email {
             // TODO: Send email
         }
         Ok(invite_link)

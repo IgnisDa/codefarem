@@ -4,10 +4,12 @@ use async_graphql::{http::GraphiQLSource, EmptySubscription, Schema};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
 use axum::{
     extract::Extension,
+    http::Method,
     response::{Html, IntoResponse},
     routing::get,
     Router, Server,
 };
+use tower_http::cors::{Any, CorsLayer};
 use utilities::get_server_url;
 
 async fn graphql_handler(schema: Extension<GraphqlSchema>, req: GraphQLRequest) -> GraphQLResponse {
@@ -30,9 +32,14 @@ async fn main() -> Result<()> {
         .data(service)
         .finish();
     let server_url = get_server_url();
+    let cors = CorsLayer::new()
+        .allow_methods([Method::GET, Method::POST])
+        .allow_headers(Any)
+        .allow_origin(Any);
     let app = Router::new()
-        .route("/", get(graphiql).post(graphql_handler))
-        .layer(Extension(schema));
+        .route("/graphql", get(graphiql).post(graphql_handler))
+        .layer(Extension(schema))
+        .layer(cors);
     Server::bind(&server_url.parse().unwrap())
         .serve(app.into_make_service())
         .await?;

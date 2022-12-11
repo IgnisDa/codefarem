@@ -17,8 +17,12 @@ edgedb-tokio = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 env_logger = { workspace = true }
-lettre = { version = "0.10.1", features = ["rustls"] }
+lettre = { version = "0.10.1", features = [
+    "rustls-tls",
+    "smtp-transport",
+], default-features = false }
 log = { workspace = true }
 axum = { version = "0.6.1" }
 tokio = { workspace = true }
 humantime = "2.1.0"
+tower-http = { version = "0.3.5", features = ["cors"] }
