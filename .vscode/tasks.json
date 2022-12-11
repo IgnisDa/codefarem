@@ -85,6 +85,18 @@
             "options": {},
         },
         {
+            "label": "mails",
+            "type": "shell",
+            "isBackground": true,
+            "command": "moon run mails:dev",
+            "detail": "Run the mail preview server",
+            "options": {
+                "env": {
+                    "PORT": "5006"
+                }
+            },
+        },
+        {
             "label": "admin-website",
             "type": "shell",
             "isBackground": true,
