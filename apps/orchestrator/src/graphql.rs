@@ -1,4 +1,4 @@
-use super::{
+use crate::{
     farem::resolver::{FaremMutation, FaremQuery},
     learning::resolver::{LearningMutation, LearningQuery},
     users::resolver::{UserMutation, UserQuery},

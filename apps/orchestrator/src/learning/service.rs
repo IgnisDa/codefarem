@@ -1,19 +1,19 @@
-use super::dto::{
-    mutations::{
-        create_class::CreateClassOutput,
-        create_question::CreateQuestionOutput,
-        execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
-    },
-    queries::{
-        class_details::ClassDetailsOutput,
-        question_details::QuestionDetailsOutput,
-        test_case::{TestCase, TestCaseUnit},
-    },
-};
 use crate::{
     farem::{
         dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
         service::{FaremService, SupportedLanguage},
+    },
+    learning::dto::{
+        mutations::{
+            create_class::CreateClassOutput,
+            create_question::CreateQuestionOutput,
+            execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
+        },
+        queries::{
+            class_details::ClassDetailsOutput,
+            question_details::QuestionDetailsOutput,
+            test_case::{TestCase, TestCaseUnit},
+        },
     },
     utils::case_unit_to_argument,
 };

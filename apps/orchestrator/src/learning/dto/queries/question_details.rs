@@ -1,9 +1,8 @@
+use crate::learning::dto::queries::test_case::TestCaseUnit;
 use async_graphql::{SimpleObject, Union};
 use serde::Deserialize;
 use utilities::graphql::ApiError;
 use uuid::Uuid;
-
-use super::test_case::TestCaseUnit;
 
 #[derive(SimpleObject, Deserialize)]
 pub struct AuthoredByProfile {

@@ -1,4 +1,4 @@
-use super::dto::{
+use crate::users::dto::{
     mutations::register_user::RegisterUserOutput,
     queries::user_with_email::{UserWithEmailError, UserWithEmailOutput},
 };

@@ -5,12 +5,12 @@ use async_graphql::{
 };
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
 use orchestrator::{
+    config::get_app_config,
     farem::service::FaremService,
-    get_app_config,
     graphql::{MutationRoot, QueryRoot},
     learning::service::LearningService,
     users::service::UserService,
-    RequestData, Token,
+    utils::{RequestData, Token},
 };
 use rocket::{get, launch, post, response::content::RawHtml, routes, State};
 use std::sync::Arc;

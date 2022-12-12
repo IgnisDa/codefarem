@@ -1,4 +1,4 @@
-use super::{
+use crate::users::{
     dto::{
         mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
         queries::{
@@ -8,7 +8,7 @@ use super::{
     },
     service::UserService,
 };
-use crate::RequestData;
+use crate::utils::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};

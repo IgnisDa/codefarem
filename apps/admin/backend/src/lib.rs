@@ -1,38 +1,8 @@
+mod config;
 mod dto;
 mod resolver;
 mod service;
 
-use anyhow::Result;
-use dotenv::dotenv;
-use edgedb_tokio::Client;
-use mailer::Mailer;
+pub use config::get_app_config;
 pub use resolver::{GraphqlSchema, MutationRoot, QueryRoot};
 pub use service::Service;
-use std::sync::Arc;
-
-pub struct AppConfig {
-    pub db_conn: Arc<Client>,
-    pub mailer: Arc<Mailer>,
-}
-
-impl AppConfig {
-    pub async fn new() -> Result<Self> {
-        let db_conn = edgedb_tokio::create_client().await?;
-        db_conn
-            .ensure_connected()
-            .await
-            .expect("Unable to connect to the edgedb instance");
-
-        let mailer = Mailer::new()?;
-
-        Ok(Self {
-            db_conn: Arc::new(db_conn),
-            mailer: Arc::new(mailer),
-        })
-    }
-}
-
-pub async fn get_app_config() -> Result<AppConfig> {
-    dotenv().ok();
-    AppConfig::new().await
-}

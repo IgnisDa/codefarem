@@ -1,10 +1,9 @@
-use async_graphql::{Context, Object, Result};
-use macros::to_result_union_response;
-
-use super::{
+use crate::farem::{
     dto::mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
     service::{FaremService, SupportedLanguage},
 };
+use async_graphql::{Context, Object, Result};
+use macros::to_result_union_response;
 
 /// The query segment for Farem
 #[derive(Default)]
