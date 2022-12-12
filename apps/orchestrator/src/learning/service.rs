@@ -22,7 +22,12 @@ use comrak::{markdown_to_html, ComrakOptions};
 use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
-use utilities::{graphql::ApiError, models::IdObject, random_string, users::AccountType};
+use utilities::{
+    graphql::ApiError,
+    models::IdObject,
+    random_string,
+    users::{get_user_details_from_hanko_id, AccountType},
+};
 use uuid::Uuid;
 
 const IS_SLUG_NOT_UNIQUE: &str =
@@ -105,10 +110,10 @@ impl LearningService {
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError> {
-        validate_user_role(&AccountType::Teacher, account_type)?;
-        let all_teachers_to_insert = teacher_ids.to_vec();
-        // TODO: Insert correct teacher
-        // all_teachers_to_insert.push(*hanko_id);
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let mut all_teachers_to_insert = teacher_ids.to_vec();
+        all_teachers_to_insert.push(user_details.id);
         self.db_conn
             .query_required_single::<CreateClassOutput, _>(
                 CREATE_CLASS,
@@ -128,10 +133,9 @@ impl LearningService {
         test_cases: &[TestCase],
         class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError> {
-        validate_user_role(&AccountType::Teacher, account_type)?;
-        // FIXME: Insert correct teachers
-        // let all_teachers_to_insert = vec![*hanko_id];
-        let all_teachers_to_insert: Vec<Uuid> = vec![];
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let all_teachers_to_insert = vec![user_details.id];
         let mut slug = random_string(8);
         loop {
             let is_slug_not_unique = self

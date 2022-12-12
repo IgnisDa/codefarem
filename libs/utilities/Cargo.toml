@@ -8,9 +8,11 @@ async-graphql = { workspace = true }
 chrono = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
+edgedb-tokio = { workspace = true }
 log = { workspace = true }
 rand = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 slug = "0.1.4"
 strum = { workspace = true }
 uuid = { workspace = true }

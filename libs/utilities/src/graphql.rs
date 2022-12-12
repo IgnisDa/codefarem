@@ -1,6 +1,7 @@
 use crate::users::AccountType;
 use async_graphql::SimpleObject;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 /// An error type with an attached field to tell what went wrong
 #[derive(Debug, Default, Deserialize, Serialize, SimpleObject)]
@@ -12,18 +13,21 @@ pub struct ApiError {
 #[derive(Debug, SimpleObject, Deserialize, Clone)]
 pub struct UserProfileInformation {
     /// The email of the user
-    email: String,
+    pub email: String,
 
     /// The username of the user
-    username: String,
+    pub username: String,
 }
 
 /// The result type if details about the user were found successfully
 #[derive(Debug, SimpleObject, Deserialize, Clone)]
 pub struct UserDetailsOutput {
+    /// The unique ID of the user
+    pub id: Uuid,
+
     /// Profile details about the user
-    profile: UserProfileInformation,
+    pub profile: UserProfileInformation,
 
     /// The type of account the user has
-    account_type: AccountType,
+    pub account_type: AccountType,
 }

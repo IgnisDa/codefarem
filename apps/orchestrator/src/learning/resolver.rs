@@ -18,7 +18,6 @@ use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
-use utilities::users::AccountType;
 use uuid::Uuid;
 
 /// The query segment for Learning
