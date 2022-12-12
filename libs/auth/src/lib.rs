@@ -1,17 +1,26 @@
 mod errors;
 
+use std::env;
+
 pub use errors::AuthError;
-use jwks_client::keyset::KeyStore;
+use jwksclient2::keyset::KeyStore;
 use utilities::{graphql::ApiError, users::AccountType};
 
-///.Returns the user ID from the given JWT
-pub fn get_hanko_id_from_authorization_token(token: &str) -> Result<String, AuthError> {
+pub fn get_jwks_endpoint() -> String {
+    let authenticator_url = env::var("CODEFAREM_AUTHENTICATOR_URL").unwrap();
+    format!("{authenticator_url}/.well-known/jwks.json")
+}
+
+///.Returns the hanko ID from the authorization token
+pub async fn get_hanko_id_from_authorization_token(token: &str) -> Result<String, AuthError> {
     let jwt = token
         .strip_prefix("Bearer ")
         .ok_or(AuthError::InvalidAuthHeader)?;
-    let key_store = KeyStore::new();
+    let key_store = KeyStore::new_from(get_jwks_endpoint())
+        .await
+        .map_err(|_| AuthError::InvalidConfig)?;
     let decoded = key_store
-        .decode(jwt)
+        .verify(jwt)
         .map_err(|_| AuthError::InvalidAuthHeader)?;
     Ok(decoded.payload().sub().unwrap().to_string())
 }

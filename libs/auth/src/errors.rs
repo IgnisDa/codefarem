@@ -12,6 +12,9 @@ pub enum AuthError {
 
     #[error("You are not authorized to view this resource")]
     NotAuthorized,
+
+    #[error("Invalid configuration")]
+    InvalidConfig,
 }
 
 impl ErrorExtensions for AuthError {

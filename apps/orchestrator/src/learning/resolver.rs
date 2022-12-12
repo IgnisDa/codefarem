@@ -17,7 +17,7 @@ use super::{
 use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
-use macros::{to_result_union_response, user_id_from_request};
+use macros::{hanko_id_from_request, to_result_union_response};
 use utilities::users::AccountType;
 use uuid::Uuid;
 
@@ -71,12 +71,12 @@ impl LearningMutation {
         ctx: &Context<'_>,
         input: CreateClassInput,
     ) -> Result<CreateClassResultUnion> {
-        let user_id = user_id_from_request!(ctx);
+        let hanko_id = hanko_id_from_request!(ctx);
         // FIXME: Use correct value
         let account_type = AccountType::Teacher;
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(&user_id, &account_type, input.name(), input.teacher_ids())
+            .create_class(&hanko_id, &account_type, input.name(), input.teacher_ids())
             .await;
         to_result_union_response!(output, CreateClassResultUnion)
     }
@@ -87,7 +87,7 @@ impl LearningMutation {
         ctx: &Context<'_>,
         input: CreateQuestionInput,
     ) -> Result<CreateQuestionResultUnion> {
-        let user_id = user_id_from_request!(ctx);
+        let user_id = hanko_id_from_request!(ctx);
         // FIXME: Use correct value
         let account_type = AccountType::Teacher;
         let output = ctx

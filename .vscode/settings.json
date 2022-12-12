@@ -42,6 +42,7 @@
         "iostream",
         "jsonwebtoken",
         "jwks",
+        "jwksclient",
         "lettre",
         "luxon",
         "makepkg",

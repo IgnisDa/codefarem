@@ -11,7 +11,7 @@ use super::{
 use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
-use macros::{to_result_union_response, user_id_from_request};
+use macros::{hanko_id_from_request, to_result_union_response};
 
 /// The query segment for User
 #[derive(Default)]
@@ -25,7 +25,7 @@ pub struct UserMutation {}
 impl UserQuery {
     /// Get information about the current user
     async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
-        let user_id = user_id_from_request!(ctx);
+        let user_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<UserService>()
             .user_details(&user_id)

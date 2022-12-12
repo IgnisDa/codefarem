@@ -5,6 +5,7 @@ pub mod users;
 pub mod utils;
 
 use anyhow::Result;
+use auth::get_jwks_endpoint;
 use dotenv::dotenv;
 use edgedb_tokio::Client as DbClient;
 use protobuf::generated::{
@@ -56,6 +57,9 @@ impl AppConfig {
 
 pub async fn get_app_config() -> Result<AppConfig> {
     dotenv().ok();
+    // TODO: Use a better way to check if required env vars are set
+    // This throws an error if the JWT key is not set
+    get_jwks_endpoint();
     AppConfig::new().await
 }
 
