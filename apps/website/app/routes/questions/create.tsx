@@ -30,8 +30,10 @@ import {
   TEST_CASE_UNITS,
 } from ':generated/graphql/orchestrator/mutations';
 import { getUserDetails } from '~/lib/services/user.server';
+import { requireValidJwt } from '~/lib/services/auth.server';
 
 export async function loader({ request }: LoaderArgs) {
+  await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher)
     throw notFound({ message: 'Route not found' });

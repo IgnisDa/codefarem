@@ -62,7 +62,7 @@ impl Service {
                 }
             })?;
         if let Some(_e) = email {
-            // TODO: Send email
+            // TODO: Send email, work on this
         }
         Ok(invite_link)
     }

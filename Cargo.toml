@@ -2,6 +2,7 @@
 members = [
   "libs/auth",
   "libs/macros",
+  "libs/mailer",
   "libs/main-db",
   "libs/protobuf",
   "libs/utilities",
