@@ -26,6 +26,7 @@ edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "ma
 lettre = { version = "0.10.1", features = [
   "rustls-tls",
   "smtp-transport",
+  "builder",
 ], default-features = false }
 log = { version = "0.4.17" }
 rand = { version = "0.8.5" }
