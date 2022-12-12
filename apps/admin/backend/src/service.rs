@@ -3,8 +3,8 @@ use crate::dto::{
 };
 use chrono::{Duration, Utc};
 use edgedb_tokio::Client;
-use lettre::SmtpTransport;
 use log::error;
+use mailer::Mailer;
 use std::sync::Arc;
 use utilities::{graphql::ApiError, random_string, users::AccountType};
 
@@ -15,7 +15,7 @@ const CREATE_INVITE_LINK: &str =
 
 pub struct Service {
     pub db_conn: Arc<Client>,
-    pub mailer: Arc<SmtpTransport>,
+    pub mailer: Arc<Mailer>,
 }
 
 impl Service {

@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+mailer = { path = "../../../libs/mailer" }
 macros = { path = "../../../libs/macros" }
 utilities = { path = "../../../libs/utilities" }
 
@@ -18,10 +19,7 @@ edgedb-tokio = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 env_logger = { workspace = true }
-lettre = { version = "0.10.1", features = [
-    "rustls-tls",
-    "smtp-transport",
-], default-features = false }
+lettre = { workspace = true }
 log = { workspace = true }
 tokio = { workspace = true }
 humantime = "2.1.0"

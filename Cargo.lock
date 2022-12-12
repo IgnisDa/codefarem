@@ -37,6 +37,7 @@ dependencies = [
  "lettre",
  "log",
  "macros",
+ "mailer",
  "serde",
  "serde_json",
  "tokio 1.23.0",
@@ -1709,6 +1710,10 @@ version = "0.1.0"
 [[package]]
 name = "mailer"
 version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "lettre",
+]
 
 [[package]]
 name = "main_db"
