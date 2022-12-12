@@ -1,9 +1,8 @@
 mod errors;
 
-use std::env;
-
 pub use errors::AuthError;
 use jwksclient2::keyset::KeyStore;
+use std::env;
 use utilities::{graphql::ApiError, users::AccountType};
 
 pub fn get_jwks_endpoint() -> String {
@@ -16,6 +15,7 @@ pub async fn get_hanko_id_from_authorization_token(token: &str) -> Result<String
     let jwt = token
         .strip_prefix("Bearer ")
         .ok_or(AuthError::InvalidAuthHeader)?;
+    // TODO: Generate this beforehand and take it as an argument
     let key_store = KeyStore::new_from(get_jwks_endpoint())
         .await
         .map_err(|_| AuthError::InvalidConfig)?;
