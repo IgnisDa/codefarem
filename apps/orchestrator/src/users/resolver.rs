@@ -25,10 +25,10 @@ pub struct UserMutation {}
 impl UserQuery {
     /// Get information about the current user
     async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
-        let user_id = hanko_id_from_request!(ctx);
+        let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<UserService>()
-            .user_details(&user_id)
+            .user_details(&hanko_id)
             .await;
         to_result_union_response!(output, UserDetailsResultUnion)
     }

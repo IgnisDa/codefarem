@@ -102,7 +102,6 @@ impl LearningService {
     pub async fn create_class<'a>(
         &self,
         hanko_id: &'a str,
-        account_type: &AccountType,
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError> {
@@ -124,7 +123,6 @@ impl LearningService {
     pub async fn create_question<'a>(
         &self,
         hanko_id: &'a str,
-        account_type: &AccountType,
         name: &'a str,
         problem: &'a str,
         test_cases: &[TestCase],

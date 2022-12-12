@@ -1,15 +1,15 @@
 use super::dto::{
     mutations::register_user::RegisterUserOutput,
-    queries::{
-        user_details::UserDetailsOutput,
-        user_with_email::{UserWithEmailError, UserWithEmailOutput},
-    },
+    queries::user_with_email::{UserWithEmailError, UserWithEmailOutput},
 };
 use chrono::DateTime;
 use edgedb_tokio::Client;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
-use utilities::{graphql::ApiError, users::AccountType};
+use utilities::{
+    graphql::{ApiError, UserDetailsOutput},
+    users::AccountType,
+};
 use uuid::Uuid;
 
 const USER_DETAILS: &str =

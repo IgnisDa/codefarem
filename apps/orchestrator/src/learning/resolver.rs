@@ -72,11 +72,9 @@ impl LearningMutation {
         input: CreateClassInput,
     ) -> Result<CreateClassResultUnion> {
         let hanko_id = hanko_id_from_request!(ctx);
-        // FIXME: Use correct value
-        let account_type = AccountType::Teacher;
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(&hanko_id, &account_type, input.name(), input.teacher_ids())
+            .create_class(&hanko_id, input.name(), input.teacher_ids())
             .await;
         to_result_union_response!(output, CreateClassResultUnion)
     }
@@ -87,14 +85,11 @@ impl LearningMutation {
         ctx: &Context<'_>,
         input: CreateQuestionInput,
     ) -> Result<CreateQuestionResultUnion> {
-        let user_id = hanko_id_from_request!(ctx);
-        // FIXME: Use correct value
-        let account_type = AccountType::Teacher;
+        let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
             .create_question(
-                &user_id,
-                &account_type,
+                &hanko_id,
                 input.name(),
                 input.problem(),
                 input.test_cases(),
