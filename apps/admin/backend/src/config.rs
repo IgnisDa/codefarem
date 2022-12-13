@@ -48,6 +48,8 @@ impl AppState {
             config.smtp.port,
             config.smtp.user,
             config.smtp.password,
+            config.smtp.from.name,
+            config.smtp.from.email,
         )?;
 
         Ok(Self {
