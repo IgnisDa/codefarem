@@ -1,0 +1,14 @@
+hanko-auth {
+  --background-color-h: 100%;
+  --background-color-s: 100%;
+  --background-color-l: 100%;
+
+  --color-h: 0%;
+  --color-s: 0%;
+  --color-l: 100%;
+}
+
+hanko-auth::part(button) {
+  background-color: hsl(269, 87%, 31%);
+  color: aliceblue;
+}

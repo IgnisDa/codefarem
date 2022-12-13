@@ -1,4 +1,4 @@
-import type { ActionArgs } from '@remix-run/node';
+import type { ActionArgs, LinksFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useEffect } from 'react';
 import { ClientOnly } from 'remix-utils';
@@ -11,6 +11,11 @@ import { z } from 'zod';
 import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
+import styles from './index.css';
+
+export const links: LinksFunction = () => {
+  return [{ rel: 'stylesheet', href: styles }];
+};
 
 const authSchema = z.object({
   email: z.string().email(),

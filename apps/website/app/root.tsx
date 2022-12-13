@@ -11,7 +11,12 @@ import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 import { ApplicationConfig } from './lib/config.server';
-import { AppShell, createEmotionCache, MantineProvider } from '@mantine/core';
+import {
+  AppShell,
+  createEmotionCache,
+  Flex,
+  MantineProvider,
+} from '@mantine/core';
 import { AppNavbar } from './lib/components/AppShell';
 
 createEmotionCache({ key: 'mantine' });
@@ -50,8 +55,10 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         />
       </head>
       <body>
-        <AppShell navbar={<AppNavbar />}>
-          {children}
+        <AppShell navbar={<AppNavbar />} padding={0}>
+          <Flex h={'100%'} justify={'center'} py={40}>
+            {children}
+          </Flex>
           <ScrollRestoration />
           <Scripts />
           <script
