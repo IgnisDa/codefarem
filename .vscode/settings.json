@@ -71,6 +71,7 @@
         "tempfile",
         "thiserror",
         "tinygo",
+        "tiptap",
         "tlsv",
         "tokei",
         "trpc",
