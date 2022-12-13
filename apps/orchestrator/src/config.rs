@@ -6,8 +6,30 @@ use protobuf::generated::{
     compilers::compiler_service_client::CompilerServiceClient,
     executor::executor_service_client::ExecutorServiceClient,
 };
-use std::{env, sync::Arc};
+use serde::Deserialize;
+use std::sync::Arc;
 use tonic::transport::Channel;
+use utilities::get_figment_config;
+
+#[derive(Debug, Deserialize)]
+struct JwtConfig {
+    secret: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct ServiceConfig {
+    executor: String,
+    cpp_compiler: String,
+    go_compiler: String,
+    rust_compiler: String,
+    authenticator: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct AppConfig {
+    jwt: JwtConfig,
+    service_urls: ServiceConfig,
+}
 
 pub struct AppState {
     pub db_conn: Arc<DbClient>,
@@ -25,14 +47,15 @@ impl AppState {
             .await
             .expect("Unable to connect to the edgedb instance");
 
-        let executor_service =
-            ExecutorServiceClient::connect(env::var("CODEFAREM_EXECUTOR_URL")?).await?;
+        let config: AppConfig = get_figment_config().extract()?;
+
+        let executor_service = ExecutorServiceClient::connect(config.service_urls.executor).await?;
         let cpp_compiler_service =
-            CompilerServiceClient::connect(env::var("CODEFAREM_CPP_COMPILER_URL")?).await?;
+            CompilerServiceClient::connect(config.service_urls.cpp_compiler).await?;
         let go_compiler_service =
-            CompilerServiceClient::connect(env::var("CODEFAREM_GO_COMPILER_URL")?).await?;
+            CompilerServiceClient::connect(config.service_urls.go_compiler).await?;
         let rust_compiler_service =
-            CompilerServiceClient::connect(env::var("CODEFAREM_RUST_COMPILER_URL")?).await?;
+            CompilerServiceClient::connect(config.service_urls.rust_compiler).await?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),
