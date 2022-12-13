@@ -18,12 +18,12 @@ export const QuestionProblem = () => {
       Highlight,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
-    content: '',
+    content: '<br />'.repeat(4),
   });
 
   return (
     <RichTextEditor editor={editor}>
-      <RichTextEditor.Toolbar sticky stickyOffset={60}>
+      <RichTextEditor.Toolbar sticky>
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />
           <RichTextEditor.Italic />
@@ -63,7 +63,7 @@ export const QuestionProblem = () => {
         </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
 
-      <RichTextEditor.Content mt={10} />
+      <RichTextEditor.Content />
     </RichTextEditor>
   );
 };
