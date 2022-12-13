@@ -33,6 +33,7 @@ dependencies = [
  "edgedb-protocol",
  "edgedb-tokio",
  "env_logger 0.9.1",
+ "figment",
  "humantime 2.1.0",
  "lettre",
  "log",
@@ -1727,7 +1728,6 @@ name = "mailer"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "figment",
  "lettre",
 ]
 

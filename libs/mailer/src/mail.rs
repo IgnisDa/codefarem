@@ -5,8 +5,8 @@ use lettre::{
 use std::env;
 
 fn message_settings() -> Result<MessageBuilder> {
-    let from_name = env::var("CODEFAREM_FROM_EMAIL_NAME")?;
-    let from_email = env::var("CODEFAREM_FROM_EMAIL")?;
+    let from_name = env::var("CODEFAREM_SMTP__FROM__NAME")?;
+    let from_email = env::var("CODEFAREM_SMTP__FROM__EMAIL")?;
     let mailbox = format!("{from_name} <{from_email}>").parse().unwrap();
     Ok(Message::builder().from(mailbox))
 }
@@ -16,14 +16,12 @@ pub struct Mailer {
 }
 
 impl Mailer {
-    // TODO: Use figment to validate the env vars
-
-    pub fn new() -> Result<Self> {
-        let smtp_host = env::var("CODEFAREM_SMTP_HOST")?;
-        let smtp_port = env::var("CODEFAREM_SMTP_PORT")?.parse::<u16>()?;
-        let smtp_username = env::var("CODEFAREM_SMTP_USER")?;
-        let smtp_password = env::var("CODEFAREM_SMTP_PASSWORD")?;
-
+    pub fn new(
+        smtp_host: String,
+        smtp_port: u16,
+        smtp_username: String,
+        smtp_password: String,
+    ) -> Result<Self> {
         let credentials = Credentials::new(smtp_username, smtp_password);
 
         let mailer = if cfg!(debug_assertions) {
