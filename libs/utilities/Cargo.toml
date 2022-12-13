@@ -9,6 +9,7 @@ chrono = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
+figment = { version = "0.10.8", features = ["env"] }
 log = { workspace = true }
 rand = { workspace = true }
 serde = { workspace = true }

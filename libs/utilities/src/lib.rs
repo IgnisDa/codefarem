@@ -3,6 +3,7 @@ pub mod models;
 pub mod users;
 
 use chrono::Utc;
+use figment::{providers::Env, Figment};
 use log::info;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use slug::slugify;
@@ -52,4 +53,9 @@ pub fn generate_random_file(extension: Option<&'_ str>) -> Result<(File, PathBuf
     create_dir_all(&dirname).unwrap();
     let file_path = dirname.join(random_filename);
     Ok((File::create(&file_path).unwrap(), file_path))
+}
+
+/// Get the figment configuration that is used across the apps
+pub fn get_figment_config() -> Figment {
+    Figment::new().merge(Env::prefixed("CODEFAREM_").split("__"))
 }

@@ -1,10 +1,10 @@
 use anyhow::Result;
 use dotenv::dotenv;
 use edgedb_tokio::Client;
-use figment::{providers::Env, Figment};
 use mailer::Mailer;
 use serde::Deserialize;
 use std::sync::Arc;
+use utilities::get_figment_config;
 
 #[derive(Debug, Deserialize)]
 struct FromConfig {
@@ -39,9 +39,7 @@ impl AppState {
             .await
             .expect("Unable to connect to the edgedb instance");
 
-        let config: AppConfig = Figment::new()
-            .merge(Env::prefixed("CODEFAREM_").split("__"))
-            .extract()?;
+        let config: AppConfig = get_figment_config().extract()?;
 
         let mailer = Mailer::new(
             config.smtp.host,

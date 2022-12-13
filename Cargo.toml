@@ -23,7 +23,6 @@ duct = { version = "0.13.5" }
 edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
-figment = { version = "0.10.8", features = ["env"] }
 lettre = { version = "0.10.1", features = [
   "rustls-tls",
   "smtp-transport",
