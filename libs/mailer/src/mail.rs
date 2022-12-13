@@ -58,6 +58,7 @@ impl Mailer {
         to_email: &'_ str,
         role: &'_ str,
         invite_token: &'_ str,
+        valid_for: &'_ str,
     ) -> Result<()> {
         let body = format!(
             r"
@@ -65,6 +66,8 @@ You have been invited to join Codefarem as a {role:?}.
 Please use the below given invite token to join the platform.
 
 Invite Token: {invite_token:?}
+
+This invite token is valid for {valid_for:?}.
 "
         );
         let message = self

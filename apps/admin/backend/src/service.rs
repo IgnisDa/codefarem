@@ -3,6 +3,7 @@ use crate::dto::{
 };
 use chrono::{Duration, Utc};
 use edgedb_tokio::Client;
+use humantime::format_duration;
 use log::error;
 use mailer::Mailer;
 use std::sync::Arc;
@@ -35,8 +36,8 @@ impl Service {
         account_type: &AccountType,
         valid_for: &'_ str,
     ) -> Result<CreateInviteLinkOutput, ApiError> {
-        let token = random_string(10);
         // TODO: Add check to confirm it is unique
+        let token = random_string(10);
         let duration = humantime::parse_duration(valid_for).map_err(|_| ApiError {
             error: format!("Could not convert {valid_for:?} to a valid duration"),
         })?;
@@ -61,8 +62,18 @@ impl Service {
                     error: "Could not create invite link".to_string(),
                 }
             })?;
-        if let Some(_e) = email {
-            // TODO: Send email, work on this
+        if let Some(e) = email {
+            self.mailer
+                .create_invite_link(
+                    e,
+                    &account_type.to_string(),
+                    &token,
+                    &format_duration(duration).to_string(),
+                )
+                .await
+                .map_err(|_| ApiError {
+                    error: "Could not send invite link".to_string(),
+                })?;
         }
         Ok(invite_link)
     }
