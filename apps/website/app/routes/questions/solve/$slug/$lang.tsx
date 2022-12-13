@@ -30,15 +30,15 @@ import { z } from 'zod';
 import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import type { LoaderArgs, ActionArgs, MetaFunction } from '@remix-run/node';
-import {
-  Text,
-  Button,
-  Grid,
-  Loading,
-  Collapse,
-  Code,
-  Container,
-} from '@nextui-org/react';
+// import {
+//   Text,
+//   Button,
+//   Grid,
+//   Loading,
+//   Collapse,
+//   Code,
+//   Container,
+// } from '@nextui-org/react';
 import { notFound } from 'remix-utils';
 
 export const meta: MetaFunction = ({ data }) => {

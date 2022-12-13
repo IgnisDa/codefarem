@@ -37,7 +37,6 @@ the technologies used:
 - [Edgedb][edgedb]: Database for backend
 - [Hanko][hanko]: Authentication provider
 - [Remix][remix]: Framework used for the main website
-- [Next UI][next-ui]: Frontend framework in the main website
 - [Vite][vite]: Framework used for the admin website
 - [Mantine][mantine]: Frontend framework in admin website
 - [Emscripten][emscripten]: Compiling `cpp` to `wasm`
@@ -49,7 +48,6 @@ the technologies used:
 [hanko]: https://hanko.io
 [remix]: https://remix.run
 [mantine]: https://mantine.dev
-[next-ui]: https://nextui.org
 [vite]: https://vitejs.dev
 [emscripten]: https://emscripten.org
 [tinygo]: https://tinygo.org

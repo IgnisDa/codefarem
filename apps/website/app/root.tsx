@@ -1,4 +1,3 @@
-import { Container, NextUIProvider } from '@nextui-org/react';
 import {
   Links,
   LiveReload,
@@ -12,6 +11,9 @@ import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 import { ApplicationConfig } from './lib/config.server';
+import { createEmotionCache, MantineProvider } from '@mantine/core';
+
+createEmotionCache({ key: 'mantine' });
 
 export const links: LinksFunction = () => {
   return [];
@@ -50,7 +52,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
       <body
         style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
       >
-        <Container>{children}</Container>
+        {children}
         <ScrollRestoration />
         <Scripts />
         <script
@@ -66,11 +68,11 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
 
 export default function App() {
   return (
-    <Document>
-      <NextUIProvider>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <Document>
         <Outlet />
-      </NextUIProvider>
-    </Document>
+      </Document>
+    </MantineProvider>
   );
 }
 

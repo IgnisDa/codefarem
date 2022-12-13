@@ -23,11 +23,9 @@ import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
-
 import { gqlClient } from '~/lib/services/graphql.server';
-
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
-import { Button, Loading } from '@nextui-org/react';
+import { Button, Loader } from '@mantine/core';
 
 export async function loader({ params }: LoaderArgs) {
   const { supportedLanguages } = await gqlClient.request(SUPPORTED_LANGUAGES);
@@ -102,7 +100,7 @@ export default () => {
           hidden
         />
         <Button type="submit">
-          {transition.state !== 'idle' && <Loading color={'secondary'} />}
+          {transition.state !== 'idle' && <Loader color={'green'} />}
           Submit
         </Button>
       </Form>
