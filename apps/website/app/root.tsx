@@ -11,7 +11,8 @@ import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 import { ApplicationConfig } from './lib/config.server';
-import { createEmotionCache, MantineProvider } from '@mantine/core';
+import { AppShell, createEmotionCache, MantineProvider } from '@mantine/core';
+import { AppNavbar } from './lib/components/AppShell';
 
 createEmotionCache({ key: 'mantine' });
 
@@ -47,20 +48,19 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
           data-domain="codefarem.ignisda.tech"
           src="https://plausible.ignisda.tech/js/script.js"
         />
-        {typeof document === 'undefined' ? '__STYLES__' : null}
       </head>
-      <body
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
-      >
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(ENV)}`,
-          }}
-        />
-        {ENV.NODE_ENV === 'development' && <LiveReload />}
+      <body>
+        <AppShell navbar={<AppNavbar />}>
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.ENV = ${JSON.stringify(ENV)}`,
+            }}
+          />
+          {ENV.NODE_ENV === 'development' && <LiveReload />}
+        </AppShell>
       </body>
     </html>
   );
@@ -68,7 +68,11 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
 
 export default function App() {
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{ colorScheme: 'dark' }}
+    >
       <Document>
         <Outlet />
       </Document>
