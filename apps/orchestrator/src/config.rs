@@ -9,7 +9,7 @@ use protobuf::generated::{
 use std::{env, sync::Arc};
 use tonic::transport::Channel;
 
-pub struct AppConfig {
+pub struct AppState {
     pub db_conn: Arc<DbClient>,
     pub executor_service: ExecutorServiceClient<Channel>,
     pub cpp_compiler_service: CompilerServiceClient<Channel>,
@@ -17,7 +17,7 @@ pub struct AppConfig {
     pub rust_compiler_service: CompilerServiceClient<Channel>,
 }
 
-impl AppConfig {
+impl AppState {
     pub async fn new() -> Result<Self> {
         let db_conn = edgedb_tokio::create_client().await?;
         db_conn
@@ -44,10 +44,10 @@ impl AppConfig {
     }
 }
 
-pub async fn get_app_config() -> Result<AppConfig> {
+pub async fn get_app_state() -> Result<AppState> {
     dotenv().ok();
     // TODO: Use a better way to check if required env vars are set
     // This throws an error if the JWT key is not set
     get_jwks_endpoint();
-    AppConfig::new().await
+    AppState::new().await
 }

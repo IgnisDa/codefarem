@@ -16,6 +16,8 @@ pub struct Mailer {
 }
 
 impl Mailer {
+    // TODO: Use figment to validate the env vars
+
     pub fn new() -> Result<Self> {
         let smtp_host = env::var("CODEFAREM_SMTP_HOST")?;
         let smtp_port = env::var("CODEFAREM_SMTP_PORT")?.parse::<u16>()?;

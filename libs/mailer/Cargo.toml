@@ -5,4 +5,5 @@ edition = "2021"
 
 [dependencies]
 anyhow = { workspace = true }
+figment = { workspace = true }
 lettre = { workspace = true }

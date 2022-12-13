@@ -20,6 +20,7 @@ dotenv = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
+figment = { workspace = true }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { workspace = true }
 serde_json = { workspace = true }

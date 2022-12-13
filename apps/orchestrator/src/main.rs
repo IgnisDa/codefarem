@@ -5,7 +5,7 @@ use async_graphql::{
 };
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
 use orchestrator::{
-    config::get_app_config,
+    config::get_app_state,
     farem::service::FaremService,
     graphql::{MutationRoot, QueryRoot},
     learning::service::LearningService,
@@ -38,7 +38,7 @@ async fn graphql_request(
 
 #[launch]
 async fn rocket() -> _ {
-    let app_config = get_app_config().await.unwrap();
+    let app_config = get_app_state().await.unwrap();
     let farem_service = FaremService::new(
         &app_config.executor_service,
         &app_config.cpp_compiler_service,

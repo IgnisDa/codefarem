@@ -1,4 +1,4 @@
-use admin_backend::{get_app_config, GraphqlSchema, MutationRoot, QueryRoot, Service};
+use admin_backend::{get_app_state, GraphqlSchema, MutationRoot, QueryRoot, Service};
 use anyhow::Result;
 use async_graphql::{http::GraphiQLSource, EmptySubscription, Schema};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
@@ -23,7 +23,7 @@ async fn graphiql() -> impl IntoResponse {
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    let app_config = get_app_config().await?;
+    let app_config = get_app_state().await?;
     let service = Service {
         db_conn: app_config.db_conn,
         mailer: app_config.mailer,

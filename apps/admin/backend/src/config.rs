@@ -4,12 +4,12 @@ use edgedb_tokio::Client;
 use mailer::Mailer;
 use std::sync::Arc;
 
-pub struct AppConfig {
+pub struct AppState {
     pub db_conn: Arc<Client>,
     pub mailer: Arc<Mailer>,
 }
 
-impl AppConfig {
+impl AppState {
     pub async fn new() -> Result<Self> {
         let db_conn = edgedb_tokio::create_client().await?;
         db_conn
@@ -26,7 +26,7 @@ impl AppConfig {
     }
 }
 
-pub async fn get_app_config() -> Result<AppConfig> {
+pub async fn get_app_state() -> Result<AppState> {
     dotenv().ok();
-    AppConfig::new().await
+    AppState::new().await
 }
