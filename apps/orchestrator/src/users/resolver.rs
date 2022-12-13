@@ -1,14 +1,17 @@
-use crate::users::{
-    dto::{
-        mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
-        queries::{
-            user_details::UserDetailsResultUnion,
-            user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
+use crate::{
+    config::AppConfig,
+    users::{
+        dto::{
+            mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
+            queries::{
+                user_details::UserDetailsResultUnion,
+                user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
+            },
         },
+        service::UserService,
     },
-    service::UserService,
+    utils::RequestData,
 };
-use crate::utils::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};

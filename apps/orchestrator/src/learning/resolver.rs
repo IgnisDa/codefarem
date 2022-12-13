@@ -1,20 +1,23 @@
-use crate::learning::{
-    dto::{
-        mutations::{
-            create_class::{CreateClassInput, CreateClassResultUnion},
-            create_question::{CreateQuestionInput, CreateQuestionResultUnion},
-            execute_code_for_question::{
-                ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
+use crate::{
+    config::AppConfig,
+    learning::{
+        dto::{
+            mutations::{
+                create_class::{CreateClassInput, CreateClassResultUnion},
+                create_question::{CreateQuestionInput, CreateQuestionResultUnion},
+                execute_code_for_question::{
+                    ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
+                },
+            },
+            queries::{
+                class_details::ClassDetailsResultUnion,
+                question_details::QuestionDetailsResultUnion, test_case::TestCaseUnit,
             },
         },
-        queries::{
-            class_details::ClassDetailsResultUnion, question_details::QuestionDetailsResultUnion,
-            test_case::TestCaseUnit,
-        },
+        service::LearningService,
     },
-    service::LearningService,
+    utils::RequestData,
 };
-use crate::utils::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};

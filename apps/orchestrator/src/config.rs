@@ -1,7 +1,6 @@
 use anyhow::Result;
-use auth::get_jwks_endpoint;
 use dotenv::dotenv;
-use edgedb_tokio::Client as DbClient;
+use edgedb_tokio::Client;
 use protobuf::generated::{
     compilers::compiler_service_client::CompilerServiceClient,
     executor::executor_service_client::ExecutorServiceClient,
@@ -12,31 +11,26 @@ use tonic::transport::Channel;
 use utilities::get_figment_config;
 
 #[derive(Debug, Deserialize)]
-struct JwtConfig {
-    secret: String,
+pub struct ServiceConfig {
+    pub executor: String,
+    pub cpp_compiler: String,
+    pub go_compiler: String,
+    pub rust_compiler: String,
+    pub authenticator: String,
 }
 
 #[derive(Debug, Deserialize)]
-struct ServiceConfig {
-    executor: String,
-    cpp_compiler: String,
-    go_compiler: String,
-    rust_compiler: String,
-    authenticator: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct AppConfig {
-    jwt: JwtConfig,
-    service_urls: ServiceConfig,
+pub struct AppConfig {
+    pub service_urls: ServiceConfig,
 }
 
 pub struct AppState {
-    pub db_conn: Arc<DbClient>,
+    pub db_conn: Arc<Client>,
     pub executor_service: ExecutorServiceClient<Channel>,
     pub cpp_compiler_service: CompilerServiceClient<Channel>,
     pub go_compiler_service: CompilerServiceClient<Channel>,
     pub rust_compiler_service: CompilerServiceClient<Channel>,
+    pub config: AppConfig,
 }
 
 impl AppState {
@@ -49,13 +43,14 @@ impl AppState {
 
         let config: AppConfig = get_figment_config().extract()?;
 
-        let executor_service = ExecutorServiceClient::connect(config.service_urls.executor).await?;
+        let executor_service =
+            ExecutorServiceClient::connect(config.service_urls.executor.clone()).await?;
         let cpp_compiler_service =
-            CompilerServiceClient::connect(config.service_urls.cpp_compiler).await?;
+            CompilerServiceClient::connect(config.service_urls.cpp_compiler.clone()).await?;
         let go_compiler_service =
-            CompilerServiceClient::connect(config.service_urls.go_compiler).await?;
+            CompilerServiceClient::connect(config.service_urls.go_compiler.clone()).await?;
         let rust_compiler_service =
-            CompilerServiceClient::connect(config.service_urls.rust_compiler).await?;
+            CompilerServiceClient::connect(config.service_urls.rust_compiler.clone()).await?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),
@@ -63,14 +58,12 @@ impl AppState {
             cpp_compiler_service,
             go_compiler_service,
             rust_compiler_service,
+            config,
         })
     }
 }
 
 pub async fn get_app_state() -> Result<AppState> {
     dotenv().ok();
-    // TODO: Use a better way to check if required env vars are set
-    // This throws an error if the JWT key is not set
-    get_jwks_endpoint();
     AppState::new().await
 }

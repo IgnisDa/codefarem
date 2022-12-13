@@ -38,16 +38,16 @@ async fn graphql_request(
 
 #[launch]
 async fn rocket() -> _ {
-    let app_config = get_app_state().await.unwrap();
+    let app_state = get_app_state().await.unwrap();
     let farem_service = FaremService::new(
-        &app_config.executor_service,
-        &app_config.cpp_compiler_service,
-        &app_config.go_compiler_service,
-        &app_config.rust_compiler_service,
+        &app_state.executor_service,
+        &app_state.cpp_compiler_service,
+        &app_state.go_compiler_service,
+        &app_state.rust_compiler_service,
     );
-    let user_service = UserService::new(&app_config.db_conn);
+    let user_service = UserService::new(&app_state.db_conn);
     let learning_service =
-        LearningService::new(&app_config.db_conn, &Arc::new(farem_service.clone()));
+        LearningService::new(&app_state.db_conn, &Arc::new(farem_service.clone()));
     let schema = Schema::build(
         QueryRoot::default(),
         MutationRoot::default(),
@@ -56,6 +56,7 @@ async fn rocket() -> _ {
     .data(farem_service)
     .data(user_service)
     .data(learning_service)
+    .data(app_state.config)
     .extension(Analyzer)
     .finish();
     let mounter = rocket::build().manage(schema);

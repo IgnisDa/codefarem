@@ -12,11 +12,16 @@ macro_rules! to_result_union_response {
 macro_rules! hanko_id_from_request {
     ($context: expr) => {{
         let request_data = $context.data_unchecked::<RequestData>();
+        let app_config = $context.data_unchecked::<AppConfig>();
         let token = request_data
             .user_token
             .as_ref()
             .ok_or_else(|| AuthError::NotAuthorized.extend())?;
-        get_hanko_id_from_authorization_token(token.as_str()).await?
+        get_hanko_id_from_authorization_token(
+            token.as_str(),
+            &app_config.service_urls.authenticator,
+        )
+        .await?
     }};
 }
 
