@@ -16,7 +16,7 @@ module learning {
             constraint exclusive;
             constraint expression on (len(__subject__) = 8);
         };
-        # the actual question text in markdown
+        # the actual question text, will store html content
         required property problem -> str;
         # the classes in which this question is used
         multi link classes -> learning::Class;
