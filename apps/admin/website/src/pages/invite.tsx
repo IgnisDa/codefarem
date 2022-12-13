@@ -36,7 +36,7 @@ const times = [
   ['1 hour', '1h'],
   ['1 day', '1d'],
   ['1 week', '1w'],
-  ['1 month', '1m'],
+  ['1 month', '1M'],
 ];
 
 export const InvitePage = () => {
@@ -63,6 +63,7 @@ export const InvitePage = () => {
     },
     onSuccess: async () => {
       await refetch();
+      form.reset();
     },
   });
 
@@ -124,6 +125,7 @@ export const InvitePage = () => {
             >
               <TextInput
                 label="Email"
+                type={'email'}
                 required
                 {...form.getInputProps('email')}
               />
