@@ -88,3 +88,14 @@ export const USER_DETAILS = graphql(`
     }
   }
 `);
+
+export const ALL_QUESTIONS = graphql(`
+  query AllQuestions {
+    allQuestions {
+      createdTime
+      name
+      slug
+      numTestCases
+    }
+  }
+`);

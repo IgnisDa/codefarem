@@ -4,6 +4,7 @@ declare module "routes-gen" {
     "/playground/:lang": { "lang": string };
     "/questions/create": Record<string, never>;
     "/classes/create": Record<string, never>;
+    "/questions/list": Record<string, never>;
     "/classes/:id": { "id": string };
     "/": Record<string, never>;
     "/auth": Record<string, never>;
@@ -16,6 +17,7 @@ declare module "routes-gen" {
       | ["/playground/:lang", RouteParams["/playground/:lang"]]
       | ["/questions/create"]
       | ["/classes/create"]
+      | ["/questions/list"]
       | ["/classes/:id", RouteParams["/classes/:id"]]
       | ["/"]
       | ["/auth"]

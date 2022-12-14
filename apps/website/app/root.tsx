@@ -13,8 +13,8 @@ import type { FC, ReactNode } from 'react';
 import { ApplicationConfig } from './lib/config.server';
 import {
   AppShell,
+  Box,
   createEmotionCache,
-  Flex,
   MantineProvider,
 } from '@mantine/core';
 import { AppNavbar } from './lib/components/AppShell';
@@ -56,9 +56,9 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
       </head>
       <body>
         <AppShell navbar={<AppNavbar />} padding={0}>
-          <Flex h={'100%'} justify={'center'} py={40}>
+          <Box h={'100%'} py={40}>
             {children}
-          </Flex>
+          </Box>
           <ScrollRestoration />
           <Scripts />
           <script

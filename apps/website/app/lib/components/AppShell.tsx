@@ -83,6 +83,10 @@ const data = [
     icon: IconQuestionMark,
     links: [
       {
+        link: route('/questions/list'),
+        label: 'List',
+      },
+      {
         link: route('/questions/create'),
         label: 'Create',
       },
