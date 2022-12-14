@@ -76,11 +76,17 @@ export default () => {
   const fetcher = useFetcher();
 
   const onSubmit = async () => {
+    // remove the name field from all the test case outputs
+    const newTestCases = testCases.map((testCase) => {
+      const outputs = testCase.outputs.map(({ name, ...rest }: any) => rest);
+      return { ...testCase, outputs };
+    });
+
     const data: CreateQuestionInput = {
       name: name,
       problem: problem,
       classIds: [],
-      testCases: testCases,
+      testCases: newTestCases,
     };
     fetcher.submit({ data: JSON.stringify(data) }, { method: 'post' });
   };
