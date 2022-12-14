@@ -1,6 +1,5 @@
 import {
   AccountType,
-  SupportedLanguage,
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import {
@@ -21,8 +20,7 @@ import {
   Title,
 } from '@mantine/core';
 import { json, redirect } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { set } from 'lodash';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
@@ -50,19 +48,10 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
-  let input: CreateQuestionInput = {} as any;
-  for (const [key, value] of await request.formData()) set(input, key, value);
+  const input: CreateQuestionInput = JSON.parse(
+    (await request.formData()).get('data')?.toString() || ''
+  );
 
-  // if there are no test cases at all
-  if (!input.testCases?.length) input.testCases = [];
-
-  // handle the case when input/output is empty for a test case
-  input.testCases.forEach((tCase, idx, theArr) => {
-    if (!tCase.inputs) theArr[idx].inputs = [];
-    if (!tCase.outputs) theArr[idx].outputs = [];
-  });
-
-  input.classIds = [];
   const { createQuestion } = await gqlClient.request(
     CREATE_QUESTION,
     { input },
@@ -70,12 +59,7 @@ export async function action({ request }: ActionArgs) {
   );
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
-  return redirect(
-    route('/questions/solve/:slug/:lang', {
-      slug: createQuestion.slug,
-      lang: SupportedLanguage.Cpp,
-    })
-  );
+  return redirect(route('/'));
 }
 
 const defaultOutput: OutputCaseUnit = {
@@ -89,6 +73,18 @@ type InputOrOutput = 'inputs' | 'outputs';
 type DataOrDataType = 'data' | 'dataType';
 
 export default () => {
+  const fetcher = useFetcher();
+
+  const onSubmit = async () => {
+    const data: CreateQuestionInput = {
+      name: name,
+      problem: problem,
+      classIds: [],
+      testCases: testCases,
+    };
+    fetcher.submit({ data: JSON.stringify(data) }, { method: 'post' });
+  };
+
   const [activeTab, setActiveTab] = useState<string | null>('t-0');
 
   const { testCaseUnits } = useLoaderData<typeof loader>();
@@ -99,6 +95,8 @@ export default () => {
       outputs: [{ data: '', dataType: TestCaseUnit.String }],
     },
   ]);
+  const [name, setName] = useState('');
+  const [problem, setProblem] = useState('');
 
   const addTestCase = () => {
     setTestCases((prev) => [
@@ -149,11 +147,16 @@ export default () => {
     <Container w={'100%'} mx={{ xs: 10, md: 20 }}>
       <Stack>
         <Title order={1}>Create a question</Title>
-        <TextInput label="Name" required />
+        <TextInput
+          label="Name"
+          required
+          value={name}
+          onChange={(e) => setName(e.currentTarget.value)}
+        />
         <Flex direction={'column'}>
           <Text>Problem statement</Text>
           <ScrollArea h={210}>
-            <QuestionProblem />
+            <QuestionProblem text={problem} setText={setProblem} />
           </ScrollArea>
         </Flex>
         <Stack>
@@ -315,6 +318,11 @@ export default () => {
             Remove test case
           </Button>
           <Button onClick={addTestCase}>Add test case</Button>
+        </Flex>
+        <Flex justify={'end'}>
+          <Button variant="filled" color="green" onClick={onSubmit}>
+            Create Question
+          </Button>
         </Flex>
       </Stack>
     </Container>
