@@ -11,11 +11,20 @@ import { z } from 'zod';
 import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
-import styles from '../../styles/auth/index.css';
-import { Stack, TextInput } from '@mantine/core';
+import authStyles from '../../styles/auth/index.css';
+import { Center, createStyles, Stack, TextInput } from '@mantine/core';
+
+const useStyles = createStyles((theme) => ({
+  container: {
+    width: '300px',
+    [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
+      width: '400px',
+    },
+  },
+}));
 
 export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [{ rel: 'stylesheet', href: authStyles }];
 };
 
 const authSchema = z.object({
@@ -42,6 +51,7 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default () => {
+  const { classes } = useStyles();
   const [inviteToken, setInviteToken] = useState('');
   const fetcher = useFetcher();
 
@@ -63,15 +73,17 @@ export default () => {
   });
 
   return (
-    <Stack>
-      <ClientOnly fallback={'Loading...'}>
-        {() => <hanko-auth lang="en" api={window.ENV.HANKO_URL} />}
-      </ClientOnly>
-      <TextInput
-        label="Invite Token"
-        value={inviteToken}
-        onChange={(event) => setInviteToken(event.currentTarget.value)}
-      />
-    </Stack>
+    <Center>
+      <Stack className={classes.container}>
+        <ClientOnly fallback={'Loading...'}>
+          {() => <hanko-auth lang="en" api={window.ENV.HANKO_URL} />}
+        </ClientOnly>
+        <TextInput
+          label="Invite Token"
+          value={inviteToken}
+          onChange={(event) => setInviteToken(event.currentTarget.value)}
+        />
+      </Stack>
+    </Center>
   );
 };
