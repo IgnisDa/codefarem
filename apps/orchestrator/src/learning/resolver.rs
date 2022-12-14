@@ -23,6 +23,8 @@ use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
 use uuid::Uuid;
 
+use super::dto::queries::all_questions::QuestionPartialsDetails;
+
 /// The query segment for Learning
 #[derive(Default)]
 pub struct LearningQuery {}
@@ -36,6 +38,13 @@ impl LearningQuery {
     /// Get all the types of test case units possible
     async fn test_case_units(&self, ctx: &Context<'_>) -> Vec<TestCaseUnit> {
         ctx.data_unchecked::<LearningService>().test_case_units()
+    }
+
+    /// Get all the questions
+    async fn all_questions(&self, ctx: &Context<'_>) -> Vec<QuestionPartialsDetails> {
+        ctx.data_unchecked::<LearningService>()
+            .all_questions()
+            .await
     }
 
     /// Get information about a class

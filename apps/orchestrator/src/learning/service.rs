@@ -30,6 +30,10 @@ use utilities::{
 };
 use uuid::Uuid;
 
+use super::dto::queries::all_questions::QuestionPartialsDetails;
+
+const ALL_QUESTIONS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/all-questions.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
@@ -76,6 +80,13 @@ impl LearningService {
 impl LearningService {
     pub fn test_case_units(&self) -> Vec<TestCaseUnit> {
         TestCaseUnit::iter().collect()
+    }
+
+    pub async fn all_questions<'a>(&self) -> Vec<QuestionPartialsDetails> {
+        self.db_conn
+            .query::<QuestionPartialsDetails, _>(ALL_QUESTIONS, &())
+            .await
+            .unwrap_or_default()
     }
 
     pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
