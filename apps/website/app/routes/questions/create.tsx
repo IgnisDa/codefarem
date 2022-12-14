@@ -8,13 +8,12 @@ import {
   TEST_CASE_UNITS,
 } from ':generated/graphql/orchestrator/mutations';
 import {
+  ActionIcon,
   Button,
   Container,
   Flex,
-  Group,
   ScrollArea,
   Select,
-  Space,
   Stack,
   Tabs,
   Text,
@@ -35,7 +34,11 @@ import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   CreateQuestionInput,
   TestCase,
+  InputCaseUnit,
+  OutputCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
+import { IconMinus, IconPlus } from '@tabler/icons';
+import { guessDataType } from '~/lib/utils';
 
 export async function loader({ request }: LoaderArgs) {
   await requireValidJwt(request);
@@ -75,6 +78,16 @@ export async function action({ request }: ActionArgs) {
   );
 }
 
+const defaultOutput: OutputCaseUnit = {
+  data: '',
+  dataType: TestCaseUnit.String,
+};
+
+const defaultInput: InputCaseUnit = { ...defaultOutput, name: 'line0' };
+
+type InputOrOutput = 'inputs' | 'outputs';
+type DataOrDataType = 'data' | 'dataType';
+
 export default () => {
   const [activeTab, setActiveTab] = useState<string | null>('t-0');
 
@@ -86,6 +99,51 @@ export default () => {
       outputs: [{ data: '', dataType: TestCaseUnit.String }],
     },
   ]);
+
+  const addTestCase = () => {
+    setTestCases((prev) => [
+      ...prev,
+      { inputs: [defaultInput], outputs: [defaultOutput] },
+    ]);
+  };
+
+  const removeTestCase = () => {
+    setTestCases((prev) => {
+      prev.pop();
+      return [...prev];
+    });
+  };
+
+  const addCase = (testCaseIdx: number, inputOrOutput: InputOrOutput) => {
+    const newCases = [...testCases];
+    newCases[testCaseIdx][inputOrOutput].push({
+      ...defaultInput,
+      name: `line${newCases[testCaseIdx][inputOrOutput].length}`,
+    });
+    setTestCases(newCases);
+  };
+
+  const removeIndividualInputCase = (
+    testCaseIdx: number,
+    caseIdx: number,
+    inputOrOutput: InputOrOutput
+  ) => {
+    const newCases = [...testCases];
+    newCases[testCaseIdx][inputOrOutput].splice(caseIdx, 1);
+    setTestCases(newCases);
+  };
+
+  const setData = (
+    testCaseIdx: number,
+    caseIdx: number,
+    inputOrOutput: InputOrOutput,
+    dataOrDataType: DataOrDataType,
+    data: string | InputCaseUnit
+  ) => {
+    const newCases = [...testCases];
+    newCases[testCaseIdx][inputOrOutput][caseIdx][dataOrDataType] = data as any;
+    setTestCases(newCases);
+  };
 
   return (
     <Container w={'100%'} mx={{ xs: 10, md: 20 }}>
@@ -108,84 +166,143 @@ export default () => {
                 </Tabs.Tab>
               ))}
             </Tabs.List>
-            {testCases.map((tCase, idx) => (
-              <Tabs.Panel pt={10} value={`t-${idx}`} key={idx}>
+            {testCases.map((tCase, testCaseIdx) => (
+              <Tabs.Panel pt={10} value={`t-${testCaseIdx}`} key={testCaseIdx}>
                 <Flex gap={10}>
-                  <Stack>
-                    <Title order={3}>Inputs</Title>
-                    <Flex gap={20}>
+                  <Stack w={'50%'}>
+                    <Flex px={10} justify="space-between">
+                      <Title order={3}>Inputs</Title>
                       <Button
-                        onClick={() => {
-                          const newCases = [...testCases];
-                          newCases[idx].inputs.push({
-                            data: '',
-                            dataType: TestCaseUnit.String,
-                            name: `line${testCases[idx].inputs.length}`,
-                          });
-                          setTestCases(newCases);
-                        }}
+                        variant="light"
+                        leftIcon={<IconPlus size={20} />}
+                        compact
+                        onClick={() => addCase(testCaseIdx, 'inputs')}
                       >
-                        Add another input
-                      </Button>
-                      <Button
-                        color={'red'}
-                        onClick={() => {
-                          const newCases = [...testCases];
-                          newCases[idx].inputs.pop();
-                          setTestCases(newCases);
-                        }}
-                      >
-                        Remove last input
+                        Add
                       </Button>
                     </Flex>
-                    {tCase.inputs.map((input, idx) => (
-                      <Group key={idx}>
-                        <TextInput required value={input.data} label="Data" />
+                    {tCase.inputs.map((input, inputCaseIdx) => (
+                      <Flex gap={10} align={'center'} key={inputCaseIdx}>
+                        <TextInput
+                          required
+                          value={input.data}
+                          label="Data"
+                          onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'data',
+                              value
+                            );
+                            const dataType = guessDataType(value);
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'dataType',
+                              dataType
+                            );
+                          }}
+                        />
                         <Select
                           required
                           data={testCaseUnits}
                           value={input.dataType}
                           label="Data type"
+                          onChange={(e) =>
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'dataType',
+                              e!
+                            )
+                          }
                         />
-                      </Group>
+                        <ActionIcon
+                          mt={20}
+                          variant="filled"
+                          onClick={() =>
+                            removeIndividualInputCase(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs'
+                            )
+                          }
+                        >
+                          <IconMinus size={20} />
+                        </ActionIcon>
+                      </Flex>
                     ))}
                   </Stack>
-                  <Stack>
-                    <Title order={3}>Outputs</Title>
-                    <Flex gap={20}>
+                  <Stack w={'50%'}>
+                    <Flex px={10} justify="space-between">
+                      <Title order={3}>Outputs</Title>
                       <Button
-                        onClick={() => {
-                          const newCases = [...testCases];
-                          newCases[idx].outputs.push({
-                            data: '',
-                            dataType: TestCaseUnit.String,
-                          });
-                          setTestCases(newCases);
-                        }}
+                        variant="light"
+                        leftIcon={<IconPlus size={20} />}
+                        compact
+                        onClick={() => addCase(testCaseIdx, 'outputs')}
                       >
-                        Add another output
-                      </Button>
-                      <Button
-                        color={'red'}
-                        onClick={() => {
-                          const newCases = [...testCases];
-                          newCases[idx].outputs.pop();
-                          setTestCases(newCases);
-                        }}
-                      >
-                        Remove last output
+                        Add
                       </Button>
                     </Flex>
-                    {tCase.outputs.map((output, idx) => (
-                      <Group key={idx}>
-                        <TextInput required value={output.data} label="Data" />
+                    {tCase.outputs.map((output, outputCaseIdx) => (
+                      <Flex gap={10} align={'center'} key={outputCaseIdx}>
+                        <TextInput
+                          required
+                          value={output.data}
+                          label="Data"
+                          onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'data',
+                              value
+                            );
+                            const dataType = guessDataType(value);
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'dataType',
+                              dataType
+                            );
+                          }}
+                        />
                         <Select
                           required
                           data={testCaseUnits}
                           value={output.dataType}
                           label="Data type"
+                          onChange={(e) =>
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'dataType',
+                              e!
+                            )
+                          }
                         />
-                      </Group>
+                        <ActionIcon
+                          mt={20}
+                          variant="filled"
+                          onClick={() =>
+                            removeIndividualInputCase(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs'
+                            )
+                          }
+                        >
+                          <IconMinus size={20} />
+                        </ActionIcon>
+                      </Flex>
                     ))}
                   </Stack>
                 </Flex>
@@ -194,32 +311,10 @@ export default () => {
           </Tabs>
         </Stack>
         <Flex justify={'space-between'}>
-          <Button
-            color={'red'}
-            onClick={() => {
-              const idx = Number(activeTab?.split('-')[1]) - 1;
-              testCases.splice(idx, 1);
-              const newTestCases = [...testCases];
-              setTestCases(newTestCases);
-            }}
-          >
-            Delete this test case
+          <Button color={'red'} onClick={removeTestCase}>
+            Remove test case
           </Button>
-          <Button
-            onClick={() => {
-              setTestCases([
-                ...testCases,
-                {
-                  inputs: [
-                    { data: '', dataType: TestCaseUnit.String, name: 'line0' },
-                  ],
-                  outputs: [{ data: '', dataType: TestCaseUnit.String }],
-                },
-              ]);
-            }}
-          >
-            Add test case
-          </Button>
+          <Button onClick={addTestCase}>Add test case</Button>
         </Flex>
       </Stack>
     </Container>
