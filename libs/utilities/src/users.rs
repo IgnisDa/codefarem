@@ -32,11 +32,10 @@ async fn find_user_details_from_db(
     hanko_id: &'_ str,
     client: &Arc<Client>,
 ) -> Option<UserDetailsOutput> {
-    let json_str = client
-        .query_single_json(USER_DETAILS, &(hanko_id,))
-        .await
-        .ok()??;
-    serde_json::from_str::<UserDetailsOutput>(&json_str).ok()
+    let json_str = client.query_json(USER_DETAILS, &(hanko_id,)).await.ok()?;
+    serde_json::from_str::<Vec<UserDetailsOutput>>(&json_str)
+        .ok()
+        .and_then(|mut users| users.pop())
 }
 
 /// Fetch the user details from the database using the hanko id

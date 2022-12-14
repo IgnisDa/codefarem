@@ -8,12 +8,10 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use utilities::{
     graphql::{ApiError, UserDetailsOutput},
-    users::AccountType,
+    users::{get_user_details_from_hanko_id, AccountType},
 };
 use uuid::Uuid;
 
-const USER_DETAILS: &str =
-    include_str!("../../../../libs/main-db/edgeql/users/user-details.edgeql");
 const USER_WITH_EMAIL: &str =
     include_str!("../../../../libs/main-db/edgeql/users/user-with-email.edgeql");
 const REGISTER_USER: &str =
@@ -37,18 +35,7 @@ impl UserService {
 
 impl UserService {
     pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
-        let json_str = self
-            .db_conn
-            .query_json(USER_DETAILS, &(hanko_id,))
-            .await
-            .map_err(|_| ApiError {
-                error: format!("User with hanko_id={hanko_id} not found"),
-            })?;
-        Ok(serde_json::from_str::<Vec<UserDetailsOutput>>(&json_str)
-            .unwrap()
-            .get(0)
-            .unwrap()
-            .clone())
+        get_user_details_from_hanko_id(hanko_id, &self.db_conn).await
     }
 
     pub async fn user_with_email<'a>(
