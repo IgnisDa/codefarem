@@ -47,6 +47,9 @@ export const action = async ({ request }: ActionArgs) => {
       input: { email, username, hankoId, inviteToken: inviteToken || null },
     });
   }
+  const url = new URL(request.url);
+  const redirectTo = url.searchParams.get('redirectTo');
+  if (redirectTo) return redirect(redirectTo);
   return redirect(SUCCESSFUL_REDIRECT_PATH);
 };
 
