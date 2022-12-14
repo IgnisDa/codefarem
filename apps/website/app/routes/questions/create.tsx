@@ -59,7 +59,7 @@ export async function action({ request }: ActionArgs) {
   );
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
-  return redirect(route('/'));
+  return redirect(route('/questions/list'));
 }
 
 const defaultOutput: OutputCaseUnit = {
