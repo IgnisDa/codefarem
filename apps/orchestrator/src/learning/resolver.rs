@@ -10,7 +10,7 @@ use crate::{
                 },
             },
             queries::{
-                class_details::ClassDetailsResultUnion,
+                all_questions::QuestionPartialsDetails, class_details::ClassDetailsResultUnion,
                 question_details::QuestionDetailsResultUnion, test_case::TestCaseUnit,
             },
         },
@@ -18,12 +18,14 @@ use crate::{
     },
     utils::RequestData,
 };
-use async_graphql::{Context, ErrorExtensions, Object, Result};
+use async_graphql::{
+    connection::{Connection, EmptyFields},
+    Context, ErrorExtensions, Object, Result,
+};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
+use utilities::graphql::ConnectionArguments;
 use uuid::Uuid;
-
-use super::dto::queries::all_questions::QuestionPartialsDetails;
 
 /// The query segment for Learning
 #[derive(Default)]
@@ -41,9 +43,13 @@ impl LearningQuery {
     }
 
     /// Get all the questions
-    async fn all_questions(&self, ctx: &Context<'_>) -> Vec<QuestionPartialsDetails> {
+    async fn all_questions(
+        &self,
+        ctx: &Context<'_>,
+        args: ConnectionArguments,
+    ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
         ctx.data_unchecked::<LearningService>()
-            .all_questions()
+            .all_questions(args.after, args.before, args.first, args.last)
             .await
     }
 

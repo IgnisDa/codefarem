@@ -10,12 +10,17 @@ use crate::{
             execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
         },
         queries::{
+            all_questions::QuestionPartialsDetails,
             class_details::ClassDetailsOutput,
             question_details::QuestionDetailsOutput,
             test_case::{TestCase, TestCaseUnit},
         },
     },
     utils::case_unit_to_argument,
+};
+use async_graphql::{
+    connection::{query, Connection, Edge, EmptyFields},
+    Error, Result,
 };
 use auth::validate_user_role;
 use comrak::{markdown_to_html, ComrakOptions};
@@ -29,8 +34,6 @@ use utilities::{
     users::{get_user_details_from_hanko_id, AccountType},
 };
 use uuid::Uuid;
-
-use super::dto::queries::all_questions::QuestionPartialsDetails;
 
 const ALL_QUESTIONS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/all-questions.edgeql");
@@ -82,11 +85,36 @@ impl LearningService {
         TestCaseUnit::iter().collect()
     }
 
-    pub async fn all_questions<'a>(&self) -> Vec<QuestionPartialsDetails> {
-        self.db_conn
-            .query::<QuestionPartialsDetails, _>(ALL_QUESTIONS, &())
-            .await
-            .unwrap_or_default()
+    pub async fn all_questions<'a>(
+        &self,
+        after: Option<String>,
+        before: Option<String>,
+        first: Option<i32>,
+        last: Option<i32>,
+    ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
+        query(
+            after,
+            before,
+            first,
+            last,
+            |after, before, first, last| async move {
+                let all_questions = self
+                    .db_conn
+                    .query::<QuestionPartialsDetails, _>(ALL_QUESTIONS, &())
+                    .await
+                    .unwrap_or_default();
+                let has_previous_page = false;
+                let has_next_page = false;
+                let mut connection = Connection::new(has_previous_page, has_next_page);
+                connection
+                    .edges
+                    .extend(all_questions.into_iter().map(|question| {
+                        Edge::with_additional_fields(question.id.to_string(), question, EmptyFields)
+                    }));
+                Ok::<_, Error>(connection)
+            },
+        )
+        .await
     }
 
     pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
