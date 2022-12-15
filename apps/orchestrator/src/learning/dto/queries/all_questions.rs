@@ -8,6 +8,8 @@ pub struct QuestionPartialsDetails {
     /// The unique identifier of the question
     pub id: Uuid,
 
+    // TODO: Use date-time type for this, for eg:
+    // https://async-graphql.github.io/async-graphql/en/custom_scalars.html
     /// The date-time when this question was created
     pub created_time: String,
 

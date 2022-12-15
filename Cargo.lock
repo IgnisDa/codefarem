@@ -32,7 +32,7 @@ dependencies = [
  "edgedb-derive",
  "edgedb-protocol",
  "edgedb-tokio",
- "env_logger 0.9.1",
+ "env_logger 0.10.0",
  "humantime 2.1.0",
  "lettre",
  "log",
@@ -276,7 +276,7 @@ version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8"
 dependencies = [
- "hermit-abi",
+ "hermit-abi 0.1.19",
  "libc",
  "winapi 0.3.9",
 ]
@@ -518,6 +518,7 @@ dependencies = [
  "js-sys",
  "num-integer",
  "num-traits",
+ "serde",
  "time 0.1.44",
  "wasm-bindgen",
  "winapi 0.3.9",
@@ -575,7 +576,7 @@ name = "compilers"
 version = "0.1.0"
 dependencies = [
  "duct",
- "env_logger 0.9.1",
+ "env_logger 0.10.0",
  "log",
  "macros",
  "protobuf",
@@ -818,7 +819,7 @@ dependencies = [
 [[package]]
 name = "edgedb-derive"
 version = "0.4.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#431d62ad5431680d8d4852305fc612f47d9f6c19"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#5e49bb1a9d1d2c5d99d0f90c495881f7d9b8e8b0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -829,7 +830,7 @@ dependencies = [
 [[package]]
 name = "edgedb-errors"
 version = "0.3.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#431d62ad5431680d8d4852305fc612f47d9f6c19"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#5e49bb1a9d1d2c5d99d0f90c495881f7d9b8e8b0"
 dependencies = [
  "bytes 1.2.1",
 ]
@@ -837,7 +838,7 @@ dependencies = [
 [[package]]
 name = "edgedb-protocol"
 version = "0.4.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#431d62ad5431680d8d4852305fc612f47d9f6c19"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#5e49bb1a9d1d2c5d99d0f90c495881f7d9b8e8b0"
 dependencies = [
  "bitflags",
  "bytes 1.2.1",
@@ -849,7 +850,7 @@ dependencies = [
 [[package]]
 name = "edgedb-tokio"
 version = "0.3.0"
-source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#431d62ad5431680d8d4852305fc612f47d9f6c19"
+source = "git+https://github.com/edgedb/edgedb-rust.git?branch=master#5e49bb1a9d1d2c5d99d0f90c495881f7d9b8e8b0"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -932,12 +933,12 @@ dependencies = [
 
 [[package]]
 name = "env_logger"
-version = "0.9.1"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c90bf5f19754d10198ccb95b70664fc925bd1fc090a0fd9a6ebc54acc8cd6272"
+checksum = "85cdab6a89accf66733ad5a1693a4dcced6aeff64602b634530dd73c1f3ee9f0"
 dependencies = [
- "atty",
  "humantime 2.1.0",
+ "is-terminal",
  "log",
  "regex",
  "termcolor",
@@ -969,7 +970,7 @@ name = "executor"
 version = "0.1.0"
 dependencies = [
  "duct",
- "env_logger 0.9.1",
+ "env_logger 0.10.0",
  "log",
  "protobuf",
  "tokio 1.23.0",
@@ -1300,6 +1301,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "hermit-abi"
+version = "0.2.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee512640fe35acbfb4bb779db6f0d80704c2cacfa2e39b601ef3e3f47d1ae4c7"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "hkdf"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1547,6 +1557,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "59ce5ef949d49ee85593fc4d3f3f95ad61657076395cbbce23e2121fc5542074"
 
 [[package]]
+name = "io-lifetimes"
+version = "1.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "46112a93252b123d31a119a8d1a1ac19deac4fac6e0e8b0df58f0d4e5870e63c"
+dependencies = [
+ "libc",
+ "windows-sys 0.42.0",
+]
+
+[[package]]
 name = "iovec"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1560,6 +1580,18 @@ name = "ipnet"
 version = "2.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f88c5561171189e69df9d98bcf18fd5f9558300f7ea7b801eb8a0fd748bd8745"
+
+[[package]]
+name = "is-terminal"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "927609f78c2913a6f6ac3c27a4fe87f43e2a35367c0c4b0f8265e8f49a104330"
+dependencies = [
+ "hermit-abi 0.2.6",
+ "io-lifetimes 1.0.3",
+ "rustix 0.36.5",
+ "windows-sys 0.42.0",
+]
 
 [[package]]
 name = "itertools"
@@ -1659,9 +1691,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.132"
+version = "0.2.138"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8371e4e5341c3a96db127eb2465ac681ced4c433e01dd0e938adbef26ba93ba5"
+checksum = "db6d7e329c562c5dfab7a46a2afabc8b987ab9a4834c9d1ca04dc54c1546cef8"
 
 [[package]]
 name = "line-wrap"
@@ -1683,6 +1715,12 @@ name = "linux-raw-sys"
 version = "0.0.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4d2456c373231a208ad294c33dc5bff30051eafd954cd4caae83a712b12854d"
+
+[[package]]
+name = "linux-raw-sys"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f051f77a7c8e6957c0696eac88f26b0117e54f52d3fc682ab19397a8812846a4"
 
 [[package]]
 name = "lock_api"
@@ -1935,7 +1973,7 @@ version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19e64526ebdee182341572e50e9ad03965aa510cd94427a4549448f285e957a1"
 dependencies = [
- "hermit-abi",
+ "hermit-abi 0.1.19",
  "libc",
 ]
 
@@ -2737,10 +2775,24 @@ checksum = "72c825b8aa8010eb9ee99b75f05e10180b9278d161583034d7574c9d617aeada"
 dependencies = [
  "bitflags",
  "errno",
- "io-lifetimes",
+ "io-lifetimes 0.7.5",
  "libc",
- "linux-raw-sys",
+ "linux-raw-sys 0.0.46",
  "windows-sys 0.36.1",
+]
+
+[[package]]
+name = "rustix"
+version = "0.36.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3807b5d10909833d3e9acd1eb5fb988f79376ff10fce42937de71a449c4c588"
+dependencies = [
+ "bitflags",
+ "errno",
+ "io-lifetimes 1.0.3",
+ "libc",
+ "linux-raw-sys 0.1.4",
+ "windows-sys 0.42.0",
 ]
 
 [[package]]
@@ -3214,7 +3266,7 @@ version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "40ca90c434fd12083d1a6bdcbe9f92a14f96c8a1ba600ba451734ac334521f7a"
 dependencies = [
- "rustix",
+ "rustix 0.35.9",
  "windows-sys 0.42.0",
 ]
 
