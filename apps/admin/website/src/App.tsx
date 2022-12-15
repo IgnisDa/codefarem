@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { NavbarMinimal } from './components/Navbar';
+import { IndexPage } from './pages';
 import { InvitePage } from './pages/invite';
 
 const queryClient = new QueryClient();
@@ -19,12 +20,17 @@ const rootRoute = createRouteConfig({
   ),
 });
 
+const indexPage = rootRoute.createRoute({
+  component: IndexPage,
+  path: '/',
+});
+
 const inviteRoute = rootRoute.createRoute({
   component: InvitePage,
   path: '/invite',
 });
 
-const routeConfig = rootRoute.addChildren([inviteRoute]);
+const routeConfig = rootRoute.addChildren([indexPage, inviteRoute]);
 
 const router = createReactRouter({ routeConfig });
 
