@@ -1,8 +1,4 @@
-use async_graphql::{
-    extensions::Analyzer,
-    http::{playground_source, GraphQLPlaygroundConfig},
-    EmptySubscription, Schema,
-};
+use async_graphql::{extensions::Analyzer, http::GraphiQLSource, EmptySubscription, Schema};
 use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
 use orchestrator::{
     config::get_app_state,
@@ -18,8 +14,8 @@ use std::sync::Arc;
 type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
 #[get("/graphiql")]
-fn graphiql() -> RawHtml<String> {
-    RawHtml(playground_source(GraphQLPlaygroundConfig::new("/graphql")))
+async fn graphiql() -> RawHtml<String> {
+    RawHtml(GraphiQLSource::build().endpoint("/graphql").finish())
 }
 
 #[post("/graphql", data = "<graphql_request>", format = "application/json")]
