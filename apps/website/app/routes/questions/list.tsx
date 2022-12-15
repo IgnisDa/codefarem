@@ -8,8 +8,11 @@ import { gqlClient } from '~/lib/services/graphql.server';
 import type { LoaderArgs } from '@remix-run/node';
 
 export async function loader(_args: LoaderArgs) {
-  const { allQuestions } = await gqlClient.request(ALL_QUESTIONS);
-  return json({ allQuestions });
+  const { allQuestions } = await gqlClient.request(ALL_QUESTIONS, { args: {} });
+  const questions = allQuestions.edges.map((edge) => edge.node);
+  return json({
+    allQuestions: questions,
+  });
 }
 
 export default () => {

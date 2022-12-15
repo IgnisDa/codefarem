@@ -90,12 +90,23 @@ export const USER_DETAILS = graphql(`
 `);
 
 export const ALL_QUESTIONS = graphql(`
-  query AllQuestions {
-    allQuestions {
-      createdTime
-      name
-      slug
-      numTestCases
+  query AllQuestions($args: ConnectionArguments!) {
+    allQuestions(args: $args) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          createdTime
+          name
+          slug
+          numTestCases
+        }
+      }
     }
   }
 `);
