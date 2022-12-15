@@ -19,4 +19,4 @@ FROM alpine:3.16
 WORKDIR /srv
 COPY --from=builder /build/apps/admin/website/dist ./
 COPY --from=deps /miniserve /usr/bin/miniserve
-CMD miniserve --index index.html --spa --port $PORT /srv
+CMD miniserve --index index.html --spa --port $PORT --verbose /srv
