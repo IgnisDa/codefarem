@@ -1,8 +1,6 @@
 {
   "name": "@codefarem/website",
   "version": "0.0.0",
-  "license": "MIT",
-  "private": true,
   "dependencies": {
     "@codefarem/faker": "workspace:*",
     "@codefarem/generated": "workspace:*",
@@ -82,5 +80,7 @@
     "@types/luxon": "3.0.1",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6"
-  }
+  },
+  "license": "MIT",
+  "private": true
 }

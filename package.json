@@ -1,8 +1,6 @@
 {
   "name": "codefarem",
   "version": "0.0.0",
-  "license": "MIT",
-  "private": true,
   "devDependencies": {
     "@types/node": "18.7.18",
     "@typescript-eslint/eslint-plugin": "5.38.1",
@@ -18,7 +16,9 @@
   "engines": {
     "node": "19.1.0"
   },
+  "license": "MIT",
   "packageManager": "yarn@3.2.3",
+  "private": true,
   "workspaces": [
     "apps/**",
     "libs/*"

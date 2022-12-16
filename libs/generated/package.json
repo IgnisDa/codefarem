@@ -1,8 +1,6 @@
 {
   "name": "@codefarem/generated",
   "version": "0.0.0",
-  "license": "MIT",
-  "private": true,
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.1.1",
     "graphql": "^16.6.0"
@@ -10,5 +8,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.12",
     "@graphql-codegen/client-preset": "^1.1.4"
-  }
+  },
+  "license": "MIT",
+  "private": true
 }

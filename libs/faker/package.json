@@ -1,13 +1,13 @@
 {
   "name": "@codefarem/faker",
   "version": "0.0.0",
-  "private": true,
-  "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "7.6.0"
   },
   "devDependencies": {
     "@types/jest": "28.1.1",
     "jest": "28.1.1"
-  }
+  },
+  "license": "ISC",
+  "private": true
 }
