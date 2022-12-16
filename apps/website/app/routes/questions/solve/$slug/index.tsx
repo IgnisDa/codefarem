@@ -5,7 +5,7 @@ import {
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
 import { json } from '@remix-run/node';
-import { useActionData, useLoaderData, useTransition } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import Editor from '@monaco-editor/react';
 import { useState } from 'react';
 import { notFound } from 'remix-utils';
@@ -27,6 +27,8 @@ import {
   Select,
   Stack,
   Box,
+  Space,
+  Paper,
 } from '@mantine/core';
 import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
 import { useEditor } from '@tiptap/react';
@@ -56,12 +58,18 @@ export async function loader({ params }: LoaderArgs) {
   });
 }
 
+const inputSchema = z.object({
+  input: z.string(),
+  language: z.nativeEnum(SupportedLanguage),
+  questionSlug: z.string(),
+});
+type inputSchemaType = z.infer<typeof inputSchema>;
+
 export async function action({ request }: ActionArgs) {
-  const { input, language, questionSlug } = await zx.parseForm(request, {
-    input: z.string(),
-    language: z.string(),
-    questionSlug: z.string(),
-  });
+  const { input, language, questionSlug } = await zx.parseForm(
+    request,
+    inputSchema
+  );
   const { executeCodeForQuestion } = await gqlClient.request(
     EXECUTE_CODE_FOR_QUESTION,
     {
@@ -70,7 +78,7 @@ export async function action({ request }: ActionArgs) {
         executeInput: {
           arguments: [],
           code: JSON.parse(input),
-          language: language as SupportedLanguage,
+          language: language,
         },
       },
     }
@@ -92,17 +100,16 @@ const DisplayData = (data: TestCaseFragment) => {
 };
 
 export default () => {
-  const { supportedLanguages, questionDetails } =
+  const { supportedLanguages, questionDetails, questionSlug } =
     useLoaderData<typeof loader>();
   const editor = useEditor({
     extensions: [StarterKit],
     editable: false,
     content: questionDetails.problem,
   });
-  const actionData = useActionData<typeof action>();
-  const transition = useTransition();
   const [language, setLanguage] = useState(SupportedLanguage.Cpp);
   const [code, setCode] = useState('');
+  const fetcher = useFetcher<typeof action>();
 
   return (
     <Container fluid mx={10}>
@@ -168,12 +175,33 @@ export default () => {
           <Flex justify={'space-between'} align={'center'}>
             {/* TODO: Remove this element */}
             <div></div>
-            <Button leftIcon={<IconPlayerPlay size={24} />} color={'blue'}>
+            <Button
+              leftIcon={<IconPlayerPlay size={24} />}
+              loading={fetcher.state === 'submitting'}
+              onClick={() => {
+                const data: inputSchemaType = {
+                  input: JSON.stringify(code),
+                  language,
+                  questionSlug,
+                };
+                fetcher.submit(data, { method: 'post' });
+              }}
+            >
               Run Test Cases
             </Button>
           </Flex>
         </Stack>
       </Flex>
+      <Container>
+        {fetcher.data && (
+          <>
+            <Space h={'lg'} />
+            <Paper shadow="lg" p="md" withBorder>
+              {JSON.stringify(fetcher.data)}
+            </Paper>
+          </>
+        )}
+      </Container>
     </Container>
   );
 };
