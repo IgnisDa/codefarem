@@ -47,7 +47,6 @@ export const QUESTION_DETAILS = graphql(`
       ... on QuestionDetailsOutput {
         name
         problem
-        renderedProblem
         numClasses
         authoredBy {
           profile {
