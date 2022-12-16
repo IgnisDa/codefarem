@@ -18,6 +18,7 @@ import {
   MantineProvider,
 } from '@mantine/core';
 import { AppNavbar } from './lib/components/AppShell';
+import { StylesPlaceholder } from '@mantine/remix';
 
 createEmotionCache({ key: 'mantine' });
 
@@ -46,6 +47,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <html lang="en">
       <head>
+        <StylesPlaceholder />
         <Meta />
         <Links />
         <script
