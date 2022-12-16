@@ -1,4 +1,3 @@
-import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { ALL_QUESTIONS } from ':generated/graphql/orchestrator/queries';
 import { Card, Container, Grid, Stack, Text, Title } from '@mantine/core';
 import { json } from '@remix-run/node';
@@ -31,10 +30,7 @@ export default () => {
                 radius="md"
                 withBorder
                 component="a"
-                href={route('/questions/solve/:slug/:lang', {
-                  slug: question.slug,
-                  lang: SupportedLanguage.Cpp,
-                })}
+                href={route('/questions/solve/:slug', { slug: question.slug })}
               >
                 <Stack>
                   <Title order={3} underline>
