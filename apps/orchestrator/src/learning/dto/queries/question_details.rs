@@ -48,9 +48,6 @@ pub struct QuestionDetailsOutput {
     /// The detailed markdown text explaining the question
     pub problem: String,
 
-    /// The html version of the problem that can be safely rendered
-    pub rendered_problem: String,
-
     /// The number of classes that have this question
     pub num_classes: u8,
 

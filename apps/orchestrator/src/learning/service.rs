@@ -23,7 +23,6 @@ use async_graphql::{
     Error, Result,
 };
 use auth::validate_user_role;
-use comrak::{markdown_to_html, ComrakOptions};
 use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
@@ -138,9 +137,7 @@ impl LearningService {
             .ok_or_else(|| ApiError {
                 error: format!("Question with slug={question_slug} not found"),
             })?;
-        let mut question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();
-        question.rendered_problem = markdown_to_html(&question.problem, &ComrakOptions::default());
-        Ok(question)
+        Ok(serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap())
     }
 
     pub async fn create_class<'a>(

@@ -2,7 +2,6 @@ SELECT learning::Question {
   created_at,
   name,
   problem,
-  rendered_problem := '',
   num_classes := (SELECT count(.classes)),
   authored_by: {
     profile: {
