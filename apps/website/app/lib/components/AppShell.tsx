@@ -7,7 +7,12 @@ import {
   Anchor,
   Text,
 } from '@mantine/core';
-import { IconLogout, IconCode, IconQuestionMark } from '@tabler/icons';
+import {
+  IconLogout,
+  IconCode,
+  IconQuestionMark,
+  IconSchool,
+} from '@tabler/icons';
 import { route } from 'routes-gen';
 import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { LinksGroup } from './LinksGroup';
@@ -77,6 +82,11 @@ const data = [
         label: 'Go',
       },
     ],
+  },
+  {
+    label: 'Classes',
+    icon: IconSchool,
+    links: [{ link: route('/classes/create'), label: 'Create' }],
   },
   {
     label: 'Questions',
