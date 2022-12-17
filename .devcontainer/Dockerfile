@@ -51,3 +51,10 @@ RUN set -eu ;\
     sudo mv "moon" "/usr/bin/moon" ;\
     sudo chmod +x "/usr/bin/moon" ;\
     cargo binstall cargo-nextest cargo-watch --no-confirm
+
+RUN export WASI_VERSION=16 ;\
+    export WASI_VERSION_FULL=${WASI_VERSION}.0 ;\
+    curl -sSf -L -O "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_VERSION}/wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz" ;\
+    mkdir -p /opt/wasi-sdk ;\
+    tar --strip-components=1 -C /opt/wasi-sdk -xvf wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz ;\
+    rm -f wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz
