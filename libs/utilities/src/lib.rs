@@ -2,6 +2,7 @@ pub mod graphql;
 pub mod models;
 pub mod users;
 
+use async_graphql::Enum;
 use chrono::Utc;
 use figment::{providers::Env, Figment};
 use log::info;
@@ -13,6 +14,7 @@ use std::{
     fs::{create_dir_all, File},
     path::PathBuf,
 };
+use strum::{EnumIter, IntoEnumIterator};
 
 pub static CODEFAREM_TEMP_PATH: Lazy<PathBuf> = Lazy::new(|| {
     let dir = env::temp_dir();
@@ -20,6 +22,23 @@ pub static CODEFAREM_TEMP_PATH: Lazy<PathBuf> = Lazy::new(|| {
     create_dir_all(&dirname).unwrap();
     dirname
 });
+
+/// All the languages that are supported by the service
+#[derive(Enum, Clone, Copy, Debug, PartialEq, Eq, EnumIter)]
+#[graphql(rename_items = "lowercase")]
+pub enum SupportedLanguage {
+    Rust,
+    Go,
+    Cpp,
+    C,
+    Zig,
+}
+
+impl SupportedLanguage {
+    pub fn variants() -> Vec<Self> {
+        Self::iter().collect()
+    }
+}
 
 pub fn random_string(take: usize) -> String {
     slugify(

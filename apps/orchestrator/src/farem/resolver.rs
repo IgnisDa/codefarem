@@ -1,9 +1,10 @@
 use crate::farem::{
     dto::mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
-    service::{FaremService, SupportedLanguage},
+    service::FaremService,
 };
 use async_graphql::{Context, Object, Result};
 use macros::to_result_union_response;
+use utilities::SupportedLanguage;
 
 /// The query segment for Farem
 #[derive(Default)]

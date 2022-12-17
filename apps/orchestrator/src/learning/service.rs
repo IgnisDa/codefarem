@@ -1,7 +1,7 @@
 use crate::{
     farem::{
         dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
-        service::{FaremService, SupportedLanguage},
+        service::FaremService,
     },
     learning::dto::{
         mutations::{
@@ -31,6 +31,7 @@ use utilities::{
     models::IdObject,
     random_string,
     users::{get_user_details_from_hanko_id, AccountType},
+    SupportedLanguage,
 };
 use uuid::Uuid;
 

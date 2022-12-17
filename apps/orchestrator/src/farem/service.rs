@@ -1,13 +1,12 @@
 use crate::farem::dto::mutations::execute_code::{
     ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput,
 };
-use async_graphql::Enum;
 use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
     executor::{executor_service_client::ExecutorServiceClient, ExecutorInput},
 };
-use strum::{EnumIter, IntoEnumIterator};
 use tonic::{transport::Channel, Request};
+use utilities::SupportedLanguage;
 
 #[derive(Debug, Clone)]
 pub struct FaremService {
@@ -36,22 +35,6 @@ impl FaremService {
             zig_compiler_service: zig_compiler_service.clone(),
             c_compiler_service: c_compiler_service.clone(),
         }
-    }
-}
-
-#[derive(Enum, Clone, Copy, Debug, PartialEq, Eq, EnumIter)]
-#[graphql(rename_items = "lowercase")]
-pub enum SupportedLanguage {
-    Rust,
-    Go,
-    Cpp,
-    C,
-    Zig,
-}
-
-impl SupportedLanguage {
-    fn variants() -> Vec<Self> {
-        Self::iter().collect()
     }
 }
 
