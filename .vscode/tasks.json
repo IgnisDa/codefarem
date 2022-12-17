@@ -8,6 +8,7 @@
             "dependsOn": [
                 "admin-website",
                 "admin-backend",
+                "c-compiler",
                 "cpp-compiler",
                 "go-compiler",
                 "rs-compiler",
