@@ -14,7 +14,6 @@ import {
   IconSchool,
 } from '@tabler/icons';
 import { route } from 'routes-gen';
-import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { LinksGroup } from './LinksGroup';
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -70,16 +69,8 @@ const data = [
     icon: IconCode,
     links: [
       {
-        link: route('/playground/:lang', { lang: SupportedLanguage.Rust }),
-        label: 'Rust',
-      },
-      {
-        link: route('/playground/:lang', { lang: SupportedLanguage.Cpp }),
-        label: 'CPP',
-      },
-      {
-        link: route('/playground/:lang', { lang: SupportedLanguage.Go }),
-        label: 'Go',
+        link: route('/playground'),
+        label: 'Code',
       },
     ],
   },
