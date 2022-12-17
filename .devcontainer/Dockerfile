@@ -52,9 +52,6 @@ RUN set -eu ;\
     sudo chmod +x "/usr/bin/moon" ;\
     cargo binstall cargo-nextest cargo-watch --no-confirm
 
-RUN export WASI_VERSION=16 ;\
-    export WASI_VERSION_FULL=${WASI_VERSION}.0 ;\
-    curl -sSf -L -O "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_VERSION}/wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz" ;\
-    mkdir -p /opt/wasi-sdk ;\
-    tar --strip-components=1 -C /opt/wasi-sdk -xvf wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz ;\
-    rm -f wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz
+RUN wget "https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz" ;\
+    tar -xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
+    rm -rf "wasi-python-3.10.tgz"
