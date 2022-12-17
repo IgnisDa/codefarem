@@ -15,10 +15,7 @@
         "rm -rf wasi-python-3.10.tgz",
         "rm -rf /var/apt/lists/*"
       ],
-      "ENVIRONMENT_VARIABLES": {
-        "WASI_VERSION": "16",
-        "WASI_VERSION_FULL": "${WASI_VERSION}.0"
-      }
+      "ENVIRONMENT_VARIABLES": {}
     }
   ]
 }
