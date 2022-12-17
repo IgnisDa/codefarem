@@ -7,12 +7,19 @@
       "COMMANDS": [
         "apt-get update -y",
         "apt-get install -y curl xz-utils",
-        "rm -rf /var/apt/lists/*",
         "curl https://wasmtime.dev/install.sh -sSf | bash",
         "apt-get remove --purge",
-        "cp /root/.wasmtime/bin/wasmtime /usr/local/bin"
+        "cp /root/.wasmtime/bin/wasmtime /usr/local/bin",
+        "curl -sSf -L -O https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-${WASI_VERSION}/wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz",
+        "mkdir -p /opt/wasi-sdk",
+        "tar --strip-components=1 -C /opt/wasi-sdk -xvf wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz",
+        "rm -rf wasi-sdk-${WASI_VERSION_FULL}-linux.tar.gz",
+        "rm -rf /var/apt/lists/*"
       ],
-      "ENVIRONMENT_VARIABLES": {}
+      "ENVIRONMENT_VARIABLES": {
+        "WASI_VERSION": "16",
+        "WASI_VERSION_FULL": "${WASI_VERSION}.0"
+      }
     }
   ]
 }

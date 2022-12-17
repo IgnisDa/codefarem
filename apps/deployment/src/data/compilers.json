@@ -46,6 +46,12 @@
         "zig version"
       ],
       "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAME": "python-compiler",
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {}
     }
   ]
 }
