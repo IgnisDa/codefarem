@@ -15,6 +15,7 @@ pub struct FaremService {
     cpp_compiler_service: CompilerServiceClient<Channel>,
     go_compiler_service: CompilerServiceClient<Channel>,
     rust_compiler_service: CompilerServiceClient<Channel>,
+    zig_compiler_service: CompilerServiceClient<Channel>,
 }
 
 impl FaremService {
@@ -23,12 +24,14 @@ impl FaremService {
         cpp_compiler_service: &CompilerServiceClient<Channel>,
         go_compiler_service: &CompilerServiceClient<Channel>,
         rust_compiler_service: &CompilerServiceClient<Channel>,
+        zig_compiler_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
             executor_service: executor_service.clone(),
             cpp_compiler_service: cpp_compiler_service.clone(),
             go_compiler_service: go_compiler_service.clone(),
             rust_compiler_service: rust_compiler_service.clone(),
+            zig_compiler_service: zig_compiler_service.clone(),
         }
     }
 }
@@ -39,6 +42,7 @@ pub enum SupportedLanguage {
     Rust,
     Go,
     Cpp,
+    Zig,
 }
 
 impl SupportedLanguage {
@@ -82,6 +86,7 @@ impl FaremService {
             SupportedLanguage::Rust => &self.rust_compiler_service,
             SupportedLanguage::Go => &self.go_compiler_service,
             SupportedLanguage::Cpp => &self.cpp_compiler_service,
+            SupportedLanguage::Zig => &self.zig_compiler_service,
         };
         self.send_compile_source_request(source, compiler_service)
             .await
@@ -119,6 +124,7 @@ impl FaremService {
             SupportedLanguage::Rust => &self.rust_compiler_service,
             SupportedLanguage::Cpp => &self.cpp_compiler_service,
             SupportedLanguage::Go => &self.go_compiler_service,
+            SupportedLanguage::Zig => &self.zig_compiler_service,
         };
         compiler_service
             .clone()

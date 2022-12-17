@@ -26,3 +26,7 @@ path = "src/bin/go.rs"
 [[bin]]
 name = "rs-compiler"
 path = "src/bin/rs.rs"
+
+[[bin]]
+name = "zig-compiler"
+path = "src/bin/zig.rs"

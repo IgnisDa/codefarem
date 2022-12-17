@@ -16,7 +16,7 @@ fn compile(code: &'_ str) -> Result<Vec<u8>, Vec<u8>> {
         "-o",
         &output_file_path
     );
-    run_command_and_capture_output(command, &output_file_path)
+    run_command_and_capture_output(command, &output_file_path, || {})
 }
 
 proto_server!(example, compile);

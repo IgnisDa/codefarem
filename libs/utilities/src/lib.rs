@@ -5,6 +5,7 @@ pub mod users;
 use chrono::Utc;
 use figment::{providers::Env, Figment};
 use log::info;
+use once_cell::sync::Lazy;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use slug::slugify;
 use std::{
@@ -12,6 +13,13 @@ use std::{
     fs::{create_dir_all, File},
     path::PathBuf,
 };
+
+pub static CODEFAREM_TEMP_PATH: Lazy<PathBuf> = Lazy::new(|| {
+    let dir = env::temp_dir();
+    let dirname = dir.join("codefarem");
+    create_dir_all(&dirname).unwrap();
+    dirname
+});
 
 pub fn random_string(take: usize) -> String {
     slugify(
@@ -38,7 +46,6 @@ pub fn get_server_url() -> String {
 /// This will create a file in the OS temporary directory and then return a handle to that
 /// file along with it's path. These files will NOT be deleted automatically.
 pub fn generate_random_file(extension: Option<&'_ str>) -> Result<(File, PathBuf), String> {
-    let dir = env::temp_dir();
     let instant = Utc::now().timestamp();
     let characters = thread_rng()
         .sample_iter(&Alphanumeric)
@@ -49,9 +56,7 @@ pub fn generate_random_file(extension: Option<&'_ str>) -> Result<(File, PathBuf
     if let Some(ext) = extension {
         random_filename.push_str(format!(".{ext}").as_str());
     }
-    let dirname = dir.join("codefarem");
-    create_dir_all(&dirname).unwrap();
-    let file_path = dirname.join(random_filename);
+    let file_path = CODEFAREM_TEMP_PATH.join(random_filename);
     Ok((File::create(&file_path).unwrap(), file_path))
 }
 

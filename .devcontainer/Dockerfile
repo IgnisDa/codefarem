@@ -13,7 +13,7 @@ RUN groupadd -g ${GUID} ${USERNAME} ;\
     echo "ALL ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} ;\
     chmod 0440 /etc/sudoers.d/${USERNAME}
 
-RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip; do pacman -S --noconfirm $pkg; done
+RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip zig; do pacman -S --noconfirm $pkg; done
 
 RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
     printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/edgedb.sh ;\

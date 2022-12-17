@@ -40,6 +40,7 @@ async fn rocket() -> _ {
         &app_state.cpp_compiler_service,
         &app_state.go_compiler_service,
         &app_state.rust_compiler_service,
+        &app_state.zig_compiler_service,
     );
     let user_service = UserService::new(&app_state.db_conn);
     let learning_service =

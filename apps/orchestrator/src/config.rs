@@ -15,6 +15,7 @@ pub struct ServiceConfig {
     pub executor: String,
     pub cpp_compiler: String,
     pub go_compiler: String,
+    pub zig_compiler: String,
     pub rust_compiler: String,
     pub authenticator: String,
 }
@@ -30,6 +31,7 @@ pub struct AppState {
     pub cpp_compiler_service: CompilerServiceClient<Channel>,
     pub go_compiler_service: CompilerServiceClient<Channel>,
     pub rust_compiler_service: CompilerServiceClient<Channel>,
+    pub zig_compiler_service: CompilerServiceClient<Channel>,
     pub config: AppConfig,
 }
 
@@ -51,6 +53,8 @@ impl AppState {
             CompilerServiceClient::connect(config.service_urls.go_compiler.clone()).await?;
         let rust_compiler_service =
             CompilerServiceClient::connect(config.service_urls.rust_compiler.clone()).await?;
+        let zig_compiler_service =
+            CompilerServiceClient::connect(config.service_urls.zig_compiler.clone()).await?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),
@@ -58,6 +62,7 @@ impl AppState {
             cpp_compiler_service,
             go_compiler_service,
             rust_compiler_service,
+            zig_compiler_service,
             config,
         })
     }

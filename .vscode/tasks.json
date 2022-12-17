@@ -11,6 +11,7 @@
                 "cpp-compiler",
                 "go-compiler",
                 "rs-compiler",
+                "zig-compiler",
                 "executor",
                 "website",
                 "orchestrator"
@@ -25,6 +26,18 @@
             "options": {
                 "env": {
                     "PORT": "5002"
+                }
+            },
+        },
+        {
+            "label": "zig-compiler",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin zig-compiler'",
+            "detail": "Run the zig compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5007"
                 }
             },
         },
@@ -68,7 +81,7 @@
             "label": "orchestrator",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package orchestrator'",
+            "command": "cargo watch --delay 1 -cqx 'run --package orchestrator'",
             "detail": "Run the orchestrator service",
             "options": {
                 "env": {
