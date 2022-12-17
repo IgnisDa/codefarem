@@ -34,8 +34,8 @@ RUN set -eu ;\
     curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
     curl "https://wasmtime.dev/install.sh" -sSf | bash ;\
     sudo cp "$HOME/.wasmtime/bin/wasmtime" "/usr/bin/wasmtime" ;\
-    rustup default nightly ;\
-    rustup target add wasm32-wasi
+    rustup default "1.65" ;\
+    rustup target add "wasm32-wasi"
 
 RUN set -eu ;\
     cd /tmp ;\
