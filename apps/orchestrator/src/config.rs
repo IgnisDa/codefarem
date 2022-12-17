@@ -18,6 +18,7 @@ pub struct ServiceConfig {
     pub zig_compiler: String,
     pub c_compiler: String,
     pub rust_compiler: String,
+    pub python_compiler: String,
     pub authenticator: String,
 }
 
@@ -29,11 +30,12 @@ pub struct AppConfig {
 pub struct AppState {
     pub db_conn: Arc<Client>,
     pub executor_service: ExecutorServiceClient<Channel>,
-    pub cpp_compiler_service: CompilerServiceClient<Channel>,
-    pub go_compiler_service: CompilerServiceClient<Channel>,
-    pub rust_compiler_service: CompilerServiceClient<Channel>,
-    pub zig_compiler_service: CompilerServiceClient<Channel>,
-    pub c_compiler_service: CompilerServiceClient<Channel>,
+    pub cpp_service: CompilerServiceClient<Channel>,
+    pub go_service: CompilerServiceClient<Channel>,
+    pub rust_service: CompilerServiceClient<Channel>,
+    pub zig_service: CompilerServiceClient<Channel>,
+    pub c_service: CompilerServiceClient<Channel>,
+    pub python_service: CompilerServiceClient<Channel>,
     pub config: AppConfig,
 }
 
@@ -49,25 +51,28 @@ impl AppState {
 
         let executor_service =
             ExecutorServiceClient::connect(config.service_urls.executor.clone()).await?;
-        let cpp_compiler_service =
+        let cpp_service =
             CompilerServiceClient::connect(config.service_urls.cpp_compiler.clone()).await?;
-        let go_compiler_service =
+        let go_service =
             CompilerServiceClient::connect(config.service_urls.go_compiler.clone()).await?;
-        let rust_compiler_service =
+        let rust_service =
             CompilerServiceClient::connect(config.service_urls.rust_compiler.clone()).await?;
-        let zig_compiler_service =
+        let zig_service =
             CompilerServiceClient::connect(config.service_urls.zig_compiler.clone()).await?;
-        let c_compiler_service =
+        let c_service =
             CompilerServiceClient::connect(config.service_urls.c_compiler.clone()).await?;
+        let python_service =
+            CompilerServiceClient::connect(config.service_urls.python_compiler.clone()).await?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),
             executor_service,
-            cpp_compiler_service,
-            go_compiler_service,
-            rust_compiler_service,
-            zig_compiler_service,
-            c_compiler_service,
+            cpp_service,
+            go_service,
+            rust_service,
+            zig_service,
+            c_service,
+            python_service,
             config,
         })
     }

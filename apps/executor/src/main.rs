@@ -1,4 +1,4 @@
-use duct::cmd;
+use duct::{cmd, Expression};
 use log::{error, info};
 use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
@@ -6,7 +6,14 @@ use protobuf::generated::executor::{
 };
 use std::io::Write;
 use tonic::{async_trait, transport::Server, Request, Response, Status};
-use utilities::{generate_random_file, get_server_url};
+use utilities::{generate_random_file, get_server_url, SupportedLanguage};
+
+fn get_command_to_run(language: SupportedLanguage) -> Expression {
+    match language {
+        SupportedLanguage::Python => cmd!("wasmtime"),
+        _ => cmd!("wasmtime"),
+    }
+}
 
 #[derive(Debug, Default)]
 struct ExecutorHandler {}

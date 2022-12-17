@@ -32,6 +32,7 @@ pub enum SupportedLanguage {
     Cpp,
     C,
     Zig,
+    Python,
 }
 
 impl SupportedLanguage {

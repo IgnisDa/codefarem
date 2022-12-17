@@ -364,10 +364,12 @@ export type RegisterUserOutput = {
 /** The output object when creating a new user */
 export type RegisterUserResultUnion = ApiError | RegisterUserOutput;
 
+/** All the languages that are supported by the service */
 export enum SupportedLanguage {
   C = 'c',
   Cpp = 'cpp',
   Go = 'go',
+  Python = 'python',
   Rust = 'rust',
   Zig = 'zig'
 }

@@ -37,11 +37,12 @@ async fn rocket() -> _ {
     let app_state = get_app_state().await.unwrap();
     let farem_service = FaremService::new(
         &app_state.executor_service,
-        &app_state.cpp_compiler_service,
-        &app_state.go_compiler_service,
-        &app_state.rust_compiler_service,
-        &app_state.zig_compiler_service,
-        &app_state.c_compiler_service,
+        &app_state.cpp_service,
+        &app_state.go_service,
+        &app_state.rust_service,
+        &app_state.zig_service,
+        &app_state.c_service,
+        &app_state.python_service,
     );
     let user_service = UserService::new(&app_state.db_conn);
     let learning_service =
