@@ -3,6 +3,7 @@ import { Stack, Flex, Select, Button } from '@mantine/core';
 import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
 import Editor from '@monaco-editor/react';
 import type { Dispatch, SetStateAction } from 'react';
+import { showNotification } from '@mantine/notifications';
 
 interface CodeEditorProps {
   supportedLanguages: SupportedLanguage[];
@@ -34,7 +35,18 @@ export const CodeEditor = ({
           value={language}
           onChange={(e) => setLanguage(e as SupportedLanguage)}
         />
-        <Button variant={'default'} leftIcon={<IconDeviceFloppy size={24} />}>
+        <Button
+          variant={'default'}
+          leftIcon={<IconDeviceFloppy size={24} />}
+          onClick={() => {
+            showNotification({
+              title: 'System notification',
+              message: 'This feature has not been implemented yet',
+              color: 'red',
+              autoClose: 5000,
+            });
+          }}
+        >
           Save
         </Button>
       </Flex>

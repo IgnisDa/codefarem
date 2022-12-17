@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
+import { NotificationsProvider } from '@mantine/notifications';
 import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
@@ -82,9 +83,11 @@ export default function App() {
       withNormalizeCSS
       theme={{ colorScheme: 'dark' }}
     >
-      <Document>
-        <Outlet />
-      </Document>
+      <NotificationsProvider>
+        <Document>
+          <Outlet />
+        </Document>
+      </NotificationsProvider>
     </MantineProvider>
   );
 }
