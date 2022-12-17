@@ -6,7 +6,7 @@
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt-get update -y",
-        "apt-get install -y curl xz-utils",
+        "apt-get install -y curl wget xz-utils",
         "curl https://wasmtime.dev/install.sh -sSf | bash",
         "apt-get remove --purge",
         "cp /root/.wasmtime/bin/wasmtime /usr/local/bin",
