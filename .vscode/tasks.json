@@ -8,18 +8,19 @@
             "dependsOn": [
                 "admin-website",
                 "admin-backend",
-                "c-compiler",
-                "cpp-compiler",
-                "go-compiler",
-                "rs-compiler",
-                "zig-compiler",
+                "c-service",
+                "python-service",
+                "cpp-service",
+                "go-service",
+                "rs-service",
+                "zig-service",
                 "executor",
                 "website",
                 "orchestrator"
             ]
         },
         {
-            "label": "cpp-compiler",
+            "label": "cpp-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin cpp-compiler'",
@@ -31,7 +32,7 @@
             },
         },
         {
-            "label": "c-compiler",
+            "label": "c-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin c-compiler'",
@@ -43,7 +44,19 @@
             },
         },
         {
-            "label": "zig-compiler",
+            "label": "python-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin python-compiler'",
+            "detail": "Run the Python compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5009"
+                }
+            },
+        },
+        {
+            "label": "zig-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin zig-compiler'",
@@ -55,7 +68,7 @@
             },
         },
         {
-            "label": "go-compiler",
+            "label": "go-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin go-compiler'",
@@ -67,7 +80,7 @@
             },
         },
         {
-            "label": "rs-compiler",
+            "label": "rs-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin rs-compiler'",

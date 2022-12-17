@@ -34,3 +34,7 @@ path = "src/bin/zig.rs"
 [[bin]]
 name = "c-compiler"
 path = "src/bin/c.rs"
+
+[[bin]]
+name = "python-compiler"
+path = "src/bin/python.rs"
