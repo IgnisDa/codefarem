@@ -89,9 +89,7 @@ const DisplayData = (data: TestCaseFragment) => {
       String(data.numberValue || data.stringValue)
     )
     .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
-      (data.numberCollectionValue || data.stringCollectionValue || []).join(
-        ', '
-      )
+      (data.numberCollectionValue || data.stringCollectionValue || []).join(',')
     )
     .exhaustive();
 };
