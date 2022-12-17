@@ -3,7 +3,7 @@ use crate::farem::dto::mutations::execute_code::{
 };
 use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
-    executor::{executor_service_client::ExecutorServiceClient, ExecutorInput},
+    executor::{executor_service_client::ExecutorServiceClient, ExecutorInput, Language},
 };
 use tonic::{transport::Channel, Request};
 use utilities::SupportedLanguage;
@@ -46,13 +46,16 @@ impl FaremService {
         &self,
         wasm: &[u8],
         arguments: &[String],
+        language: &SupportedLanguage,
     ) -> Result<String, String> {
+        let request_lang = Language::from(*language) as i32;
         let execute_result = self
             .executor_service
             .clone()
             .execute(ExecutorInput {
                 data: wasm.to_vec(),
                 arguments: arguments.to_vec(),
+                language: request_lang,
             })
             .await;
         match execute_result {
@@ -143,7 +146,7 @@ impl FaremService {
                 error: f,
                 step: ExecuteCodeErrorStep::CompilationToWasm,
             })?;
-        self.send_execute_wasm_request(&wasm, arguments)
+        self.send_execute_wasm_request(&wasm, arguments, language)
             .await
             .map(|f| ExecuteCodeOutput { output: f })
             .map_err(|f| ExecuteCodeError {

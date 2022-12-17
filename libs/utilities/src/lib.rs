@@ -7,6 +7,7 @@ use chrono::Utc;
 use figment::{providers::Env, Figment};
 use log::info;
 use once_cell::sync::Lazy;
+use protobuf::generated::executor::Language;
 use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use slug::slugify;
 use std::{
@@ -33,6 +34,19 @@ pub enum SupportedLanguage {
     C,
     Zig,
     Python,
+}
+
+impl From<SupportedLanguage> for Language {
+    fn from(language: SupportedLanguage) -> Self {
+        match language {
+            SupportedLanguage::Rust => Language::Rust,
+            SupportedLanguage::Go => Language::Go,
+            SupportedLanguage::Cpp => Language::Cpp,
+            SupportedLanguage::C => Language::C,
+            SupportedLanguage::Zig => Language::Zig,
+            SupportedLanguage::Python => Language::Python,
+        }
+    }
 }
 
 impl SupportedLanguage {

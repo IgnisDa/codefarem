@@ -295,7 +295,7 @@ impl LearningService {
                 .collect::<Vec<_>>();
             let user_output = self
                 .farem_service
-                .send_execute_wasm_request(&compiled_wasm, &arguments)
+                .send_execute_wasm_request(&compiled_wasm, &arguments, language)
                 .await
                 .map_err(|f| ExecuteCodeError {
                     error: f,

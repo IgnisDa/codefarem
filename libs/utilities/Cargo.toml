@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+protobuf = { path = "../protobuf" }
+
 async-graphql = { workspace = true }
 chrono = { workspace = true }
 edgedb-derive = { workspace = true }

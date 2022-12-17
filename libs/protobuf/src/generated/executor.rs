@@ -5,12 +5,40 @@ pub struct ExecutorInput {
     pub data: ::prost::alloc::vec::Vec<u8>,
     #[prost(string, repeated, tag="2")]
     pub arguments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(enumeration="Language", tag="3")]
+    pub language: i32,
 }
 /// The output of executing a wasm source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutorOutput {
     #[prost(bytes="vec", tag="1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Language {
+    Rust = 0,
+    Go = 1,
+    Cpp = 2,
+    C = 3,
+    Zig = 4,
+    Python = 5,
+}
+impl Language {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Language::Rust => "Rust",
+            Language::Go => "Go",
+            Language::Cpp => "Cpp",
+            Language::C => "C",
+            Language::Zig => "Zig",
+            Language::Python => "Python",
+        }
+    }
 }
 /// Generated client implementations.
 pub mod executor_service_client {

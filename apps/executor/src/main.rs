@@ -1,18 +1,19 @@
-use duct::{cmd, Expression};
+use duct::cmd;
 use log::{error, info};
 use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
-    ExecutorInput, ExecutorOutput,
+    ExecutorInput, ExecutorOutput, Language,
 };
 use std::io::Write;
 use tonic::{async_trait, transport::Server, Request, Response, Status};
-use utilities::{generate_random_file, get_server_url, SupportedLanguage};
+use utilities::{generate_random_file, get_server_url};
 
-fn get_command_to_run(language: SupportedLanguage) -> Expression {
-    match language {
-        SupportedLanguage::Python => cmd!("wasmtime"),
-        _ => cmd!("wasmtime"),
-    }
+fn get_command_args(language: Language) -> Vec<String> {
+    let args: Vec<&'_ str> = match language {
+        Language::Python => vec![],
+        _ => vec![],
+    };
+    args.into_iter().map(String::from).collect()
 }
 
 #[derive(Debug, Default)]
@@ -31,6 +32,9 @@ impl ExecutorService for ExecutorHandler {
         if !arguments.is_empty() {
             program_args.extend(arguments);
         }
+        let command_args =
+            get_command_args(Language::from_i32(request.get_ref().language).unwrap());
+        program_args.extend(command_args);
         let command = cmd("wasmtime", program_args);
         info!("Running command: {:?}", command);
         let command_output = command
