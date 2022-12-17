@@ -30,6 +30,18 @@
             },
         },
         {
+            "label": "c-compiler",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin c-compiler'",
+            "detail": "Run the C compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5008"
+                }
+            },
+        },
+        {
             "label": "zig-compiler",
             "type": "shell",
             "isBackground": true,

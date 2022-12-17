@@ -365,6 +365,7 @@ export type RegisterUserOutput = {
 export type RegisterUserResultUnion = ApiError | RegisterUserOutput;
 
 export enum SupportedLanguage {
+  C = 'c',
   Cpp = 'cpp',
   Go = 'go',
   Rust = 'rust',

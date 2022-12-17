@@ -30,3 +30,7 @@ path = "src/bin/rs.rs"
 [[bin]]
 name = "zig-compiler"
 path = "src/bin/zig.rs"
+
+[[bin]]
+name = "c-compiler"
+path = "src/bin/c.rs"
