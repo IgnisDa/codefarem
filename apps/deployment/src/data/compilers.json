@@ -21,8 +21,15 @@
     },
     {
       "EXECUTABLE_NAME": "zig-compiler",
-      "IMAGE_NAME": "euantorano/zig:0.9.1",
-      "COMMANDS": [],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils",
+        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
+        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
+        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
+        "zig version"
+      ],
       "ENVIRONMENT_VARIABLES": {}
     }
   ]
