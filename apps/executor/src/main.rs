@@ -36,13 +36,13 @@ impl ExecutorService for ExecutorHandler {
         let (mut file, file_path) = generate_random_file(Some("wasm")).unwrap();
         file.write_all(request.get_ref().data.as_slice()).unwrap();
         let mut program_args = vec![];
+        let language = Language::from_i32(request.get_ref().language).unwrap();
+        let command_args = get_command_args(language, file_path.clone());
+        program_args.extend(command_args);
         let arguments = request.get_ref().arguments.clone();
         if !arguments.is_empty() {
             program_args.extend(arguments);
         }
-        let language = Language::from_i32(request.get_ref().language).unwrap();
-        let command_args = get_command_args(language, file_path.clone());
-        program_args.extend(command_args);
         let command = cmd("wasmtime", program_args);
         info!("Running command: {:?}", command);
         let command_output = command
