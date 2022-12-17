@@ -28,6 +28,7 @@
         "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
         "tar xf zig-linux-x86_64-0.9.1.tar.xz",
         "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
+        "rm -rf tmp/*",
         "zig version"
       ],
       "ENVIRONMENT_VARIABLES": {}
