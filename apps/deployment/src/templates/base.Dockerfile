@@ -1,5 +1,4 @@
 FROM lukemathwalker/cargo-chef:latest AS chef
-RUN rustup default nightly
 WORKDIR app
 
 FROM chef AS planner
