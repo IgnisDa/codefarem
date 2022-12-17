@@ -6,7 +6,6 @@ import {
 } from ':generated/graphql/orchestrator/queries';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import Editor from '@monaco-editor/react';
 import { useState } from 'react';
 import { notFound } from 'remix-utils';
 import invariant from 'tiny-invariant';
@@ -19,21 +18,19 @@ import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/gra
 import type { LoaderArgs, ActionArgs, MetaFunction } from '@remix-run/node';
 import {
   Accordion,
-  Button,
   Code,
   Text,
   Container,
   Flex,
-  Select,
   Stack,
   Box,
   Space,
   Paper,
 } from '@mantine/core';
-import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
 import { useEditor } from '@tiptap/react';
 import { RichTextEditor } from '@mantine/tiptap';
 import StarterKit from '@tiptap/starter-kit';
+import { CodeEditor } from '~/lib/components/CodeEditor';
 
 export const meta: MetaFunction = ({ data }) => {
   if (!data) return {};
@@ -147,50 +144,24 @@ export default () => {
             })}
           </Accordion>
         </Stack>
-        <Stack w={'50%'}>
-          <Flex justify={'space-between'} align={'center'}>
-            <Select
-              data={supportedLanguages.map((l) => ({
-                label: l.toUpperCase(),
-                value: l,
-              }))}
-              value={language}
-              onChange={(e) => setLanguage(e as SupportedLanguage)}
-            />
-            <Button
-              variant={'default'}
-              leftIcon={<IconDeviceFloppy size={24} />}
-            >
-              Save
-            </Button>
-          </Flex>
-          <Editor
-            options={{ lineNumbers: 'off' }}
-            height={'50vh'}
+        <Flex w={'50%'}>
+          <CodeEditor
+            code={code}
+            isSubmittingLoading={fetcher.state === 'submitting'}
             language={language}
-            theme={'vs-dark'}
-            value={code}
-            onChange={(value) => setCode(value || '')}
+            onSubmit={async () => {
+              const data: inputSchemaType = {
+                input: JSON.stringify(code),
+                language,
+                questionSlug,
+              };
+              fetcher.submit(data, { method: 'post' });
+            }}
+            setCode={setCode}
+            setLanguage={setLanguage}
+            supportedLanguages={supportedLanguages}
           />
-          <Flex justify={'space-between'} align={'center'}>
-            {/* TODO: Remove this element */}
-            <div></div>
-            <Button
-              leftIcon={<IconPlayerPlay size={24} />}
-              loading={fetcher.state === 'submitting'}
-              onClick={() => {
-                const data: inputSchemaType = {
-                  input: JSON.stringify(code),
-                  language,
-                  questionSlug,
-                };
-                fetcher.submit(data, { method: 'post' });
-              }}
-            >
-              Run Test Cases
-            </Button>
-          </Flex>
-        </Stack>
+        </Flex>
       </Flex>
       <Container>
         {fetcher.data && (
