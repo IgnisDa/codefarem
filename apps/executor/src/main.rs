@@ -4,16 +4,24 @@ use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
     ExecutorInput, ExecutorOutput, Language,
 };
-use std::io::Write;
+use std::{io::Write, path::PathBuf};
 use tonic::{async_trait, transport::Server, Request, Response, Status};
-use utilities::{generate_random_file, get_server_url};
+use utilities::{generate_random_file, get_server_url, CODEFAREM_TEMP_PATH};
 
-fn get_command_args(language: Language) -> Vec<String> {
-    let args: Vec<&'_ str> = match language {
-        Language::Python => vec![],
-        _ => vec![],
-    };
-    args.into_iter().map(String::from).collect()
+fn get_command_args(language: Language, file_path: PathBuf) -> Vec<String> {
+    let binding = file_path.to_string_lossy().to_string();
+    match language {
+        Language::Python => {
+            vec![
+                format!("--dir={}", CODEFAREM_TEMP_PATH.to_string_lossy()),
+                "--mapdir=/opt::/opt".to_string(),
+                "--".to_string(),
+                "/opt/wasi-python/bin/python3.wasm".to_string(),
+                binding,
+            ]
+        }
+        _ => vec![binding],
+    }
 }
 
 #[derive(Debug, Default)]
@@ -27,13 +35,13 @@ impl ExecutorService for ExecutorHandler {
     ) -> Result<Response<ExecutorOutput>, Status> {
         let (mut file, file_path) = generate_random_file(Some("wasm")).unwrap();
         file.write_all(request.get_ref().data.as_slice()).unwrap();
-        let mut program_args = vec![file_path.to_string_lossy().to_string()];
+        let mut program_args = vec![];
         let arguments = request.get_ref().arguments.clone();
         if !arguments.is_empty() {
             program_args.extend(arguments);
         }
-        let command_args =
-            get_command_args(Language::from_i32(request.get_ref().language).unwrap());
+        let language = Language::from_i32(request.get_ref().language).unwrap();
+        let command_args = get_command_args(language, file_path.clone());
         program_args.extend(command_args);
         let command = cmd("wasmtime", program_args);
         info!("Running command: {:?}", command);

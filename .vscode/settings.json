@@ -49,6 +49,7 @@
         "luxon",
         "makepkg",
         "mantine",
+        "mapdir",
         "nextest",
         "nextui",
         "nprogress",
