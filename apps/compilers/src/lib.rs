@@ -13,14 +13,14 @@ pub fn generate_input_and_output_files(extension: &'_ str, code: &'_ str) -> (Pa
 pub fn run_command_and_capture_output<F>(
     command: Expression,
     output_file_path: &PathBuf,
-    rename_fn: F,
+    after_cmd_fn: F,
 ) -> Result<Vec<u8>, Vec<u8>>
 where
     F: FnOnce(),
 {
     info!("Running command: {:?}", command);
     let output = command.unchecked().stderr_capture().run().unwrap();
-    rename_fn();
+    after_cmd_fn();
     if output.status.success() {
         info!("Compiled to {:?} successfully", output_file_path);
         Ok(fs::read(output_file_path).unwrap())
@@ -29,7 +29,6 @@ where
             "Compilation unsuccessful, with status: {:?} ",
             output.status
         );
-        dbg!(&output);
         Err(output.stderr)
     }
 }
