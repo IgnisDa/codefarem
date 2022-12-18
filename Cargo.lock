@@ -14,7 +14,7 @@ dependencies = [
 
 [[package]]
 name = "admin-backend"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -277,7 +277,7 @@ dependencies = [
 
 [[package]]
 name = "auth"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "async-graphql",
  "chrono",
@@ -864,7 +864,7 @@ dependencies = [
 
 [[package]]
 name = "executor"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "duct",
  "env_logger 0.10.0",
@@ -1608,11 +1608,11 @@ dependencies = [
 
 [[package]]
 name = "macros"
-version = "0.1.0"
+version = "0.0.0"
 
 [[package]]
 name = "mailer"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "lettre",
@@ -1620,7 +1620,7 @@ dependencies = [
 
 [[package]]
 name = "main_db"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -1886,7 +1886,7 @@ dependencies = [
 
 [[package]]
 name = "orchestrator"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "anyhow",
  "async-graphql",
@@ -2165,7 +2165,7 @@ dependencies = [
 
 [[package]]
 name = "protobuf"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "prost",
  "tonic",
@@ -3581,7 +3581,7 @@ checksum = "09cc8ee72d2a9becf2f2febe0205bbed8fc6615b7cb429ad062dc7b7ddd036a9"
 
 [[package]]
 name = "utilities"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "async-graphql",
  "chrono",
