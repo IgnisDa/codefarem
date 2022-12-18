@@ -102,7 +102,7 @@ export default () => {
     editable: false,
     content: questionDetails.problem,
   });
-  const [language, setLanguage] = useState(SupportedLanguage.Cpp);
+  const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState('');
   const fetcher = useFetcher<typeof action>();
 

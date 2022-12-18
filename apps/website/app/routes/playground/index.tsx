@@ -49,7 +49,7 @@ export async function action({ request }: ActionArgs) {
 export default () => {
   const { languageExamples, supportedLanguages } =
     useLoaderData<typeof loader>();
-  const [language, setLanguage] = useState(SupportedLanguage.Cpp);
+  const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState(languageExamples[language]);
   const fetcher = useFetcher<typeof action>();
 
