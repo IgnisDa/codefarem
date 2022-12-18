@@ -1,7 +1,5 @@
 use macros::proto_server;
 
-const VERSION: &str = include_str!(concat!(env!("OUT_DIR"), "/python_version.txt"));
-
 async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/python/example.py").trim()
 }

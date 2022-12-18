@@ -44,7 +44,7 @@
     {
       "EXECUTABLE_NAMES": ["python-compiler"],
       "IMAGE_NAME": "ubuntu:latest",
-      "COMMANDS": ["apt update", "apt install -y python3"],
+      "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     }
   ]

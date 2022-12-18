@@ -6,7 +6,6 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
 FROM chef AS builder
-{% include 'prepare-env.Dockerfile' %}
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
@@ -17,7 +16,12 @@ RUN cargo build --release --bin {{ EXECUTABLE_NAME }} ;\
 {% endblock %}
 
 FROM {{ IMAGE_NAME }} AS runtime
-{% include 'prepare-env.Dockerfile' %}
+{% for name, value in ENVIRONMENT_VARIABLES.items() %}
+ENV {{ name }}={{ value }}
+{% endfor %}
+{% for command in COMMANDS %}
+RUN {{ command }}
+{% endfor %}
 WORKDIR app
 {% block runtime_step %}
 {% endblock %}
