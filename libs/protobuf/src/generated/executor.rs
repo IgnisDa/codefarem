@@ -1,3 +1,7 @@
+/// A message type which can be used if no parameters are needed
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VoidParams {
+}
 /// The input required when executing a wasm source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutorInput {
@@ -16,6 +20,13 @@ pub struct ExecutorOutput {
     /// The time elapsed to execute the wasm
     #[prost(string, tag="2")]
     pub elapsed: ::prost::alloc::string::String,
+}
+/// The response returned when getting information about the compiler toolchain
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolchainInfoResponse {
+    /// The version of the compiler toolchain
+    #[prost(string, tag="1")]
+    pub version: ::prost::alloc::string::String,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -115,6 +126,7 @@ pub mod executor_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
+        /// Execute the wasm source and get the output generated
         pub async fn execute(
             &mut self,
             request: impl tonic::IntoRequest<super::ExecutorInput>,
@@ -134,6 +146,26 @@ pub mod executor_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Get information about the compiler toolchain
+        pub async fn toolchain_info(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VoidParams>,
+        ) -> Result<tonic::Response<super::ToolchainInfoResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/executor.ExecutorService/ToolchainInfo",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -143,10 +175,16 @@ pub mod executor_service_server {
     ///Generated trait containing gRPC methods that should be implemented for use with ExecutorServiceServer.
     #[async_trait]
     pub trait ExecutorService: Send + Sync + 'static {
+        /// Execute the wasm source and get the output generated
         async fn execute(
             &self,
             request: tonic::Request<super::ExecutorInput>,
         ) -> Result<tonic::Response<super::ExecutorOutput>, tonic::Status>;
+        /// Get information about the compiler toolchain
+        async fn toolchain_info(
+            &self,
+            request: tonic::Request<super::VoidParams>,
+        ) -> Result<tonic::Response<super::ToolchainInfoResponse>, tonic::Status>;
     }
     /// The service definition.
     #[derive(Debug)]
@@ -235,6 +273,46 @@ pub mod executor_service_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = ExecuteSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/executor.ExecutorService/ToolchainInfo" => {
+                    #[allow(non_camel_case_types)]
+                    struct ToolchainInfoSvc<T: ExecutorService>(pub Arc<T>);
+                    impl<
+                        T: ExecutorService,
+                    > tonic::server::UnaryService<super::VoidParams>
+                    for ToolchainInfoSvc<T> {
+                        type Response = super::ToolchainInfoResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::VoidParams>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move {
+                                (*inner).toolchain_info(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = ToolchainInfoSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

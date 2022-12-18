@@ -2,11 +2,11 @@ use duct::cmd;
 use log::{error, info};
 use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
-    ExecutorInput, ExecutorOutput, Language,
+    ExecutorInput, ExecutorOutput, Language, ToolchainInfoResponse, VoidParams,
 };
 use std::{io::Write, path::PathBuf, time::Instant};
 use tonic::{async_trait, transport::Server, Request, Response, Status};
-use utilities::{generate_random_file, get_server_url, CODEFAREM_TEMP_PATH};
+use utilities::{generate_random_file, get_command_output, get_server_url, CODEFAREM_TEMP_PATH};
 
 fn get_command_args(language: Language, file_path: PathBuf) -> Vec<String> {
     let binding = file_path.to_string_lossy().to_string();
@@ -24,11 +24,23 @@ fn get_command_args(language: Language, file_path: PathBuf) -> Vec<String> {
     }
 }
 
+fn toolchain_version() -> String {
+    get_command_output("wasmtime", &["--version"]).unwrap()
+}
+
 #[derive(Debug, Default)]
 struct ExecutorHandler {}
 
 #[async_trait]
 impl ExecutorService for ExecutorHandler {
+    async fn toolchain_info(
+        &self,
+        _request: Request<VoidParams>,
+    ) -> Result<Response<ToolchainInfoResponse>, Status> {
+        let version = toolchain_version();
+        Ok(Response::new(ToolchainInfoResponse { version }))
+    }
+
     async fn execute(
         &self,
         request: Request<ExecutorInput>,

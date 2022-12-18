@@ -2,6 +2,10 @@ syntax = "proto3";
 
 package executor;
 
+// A message type which can be used if no parameters are needed
+message VoidParams {
+}
+
 enum Language {
   Rust = 0;
   Go = 1;
@@ -26,7 +30,16 @@ message ExecutorOutput {
   string elapsed = 2;
 }
 
+// The response returned when getting information about the compiler toolchain
+message ToolchainInfoResponse {
+  // The version of the compiler toolchain
+  string version = 1;
+}
+
 // The service definition.
 service ExecutorService {
+  // Execute the wasm source and get the output generated
   rpc Execute(ExecutorInput) returns (ExecutorOutput) {};
+  // Get information about the compiler toolchain
+  rpc ToolchainInfo(VoidParams) returns (ToolchainInfoResponse);
 }
