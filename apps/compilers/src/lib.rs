@@ -17,7 +17,7 @@ pub fn run_command_and_capture_output(
     info!("Running command: {:?}", command);
     let output = command.unchecked().stderr_capture().run().unwrap();
     if output.status.success() {
-        info!("Compiled using {:?} successfully", output_file_path);
+        info!("Compiled to {:?} successfully", output_file_path);
         Ok(fs::read(output_file_path).unwrap())
     } else {
         error!(

@@ -1,37 +1,45 @@
-import { Listbox } from '@headlessui/react';
-import {
-  Button,
-  Col,
-  Container,
-  Grid,
-  Input,
-  Row,
-  Text,
-  Textarea,
-} from '@nextui-org/react';
-import { json, redirect } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
-import { capitalCase } from 'change-case';
-import { set } from 'lodash';
-import { useState } from 'react';
-import { HiMinusCircle, HiPlusCircle } from 'react-icons/hi';
-import { notFound } from 'remix-utils';
-import { route } from 'routes-gen';
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import {
   AccountType,
-  SupportedLanguage,
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
-import type { CreateQuestionInput } from ':generated/graphql/orchestrator/generated/graphql';
-import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import {
   CREATE_QUESTION,
   TEST_CASE_UNITS,
 } from ':generated/graphql/orchestrator/mutations';
+import {
+  ActionIcon,
+  Button,
+  Container,
+  Flex,
+  ScrollArea,
+  Select,
+  Stack,
+  Tabs,
+  Text,
+  TextInput,
+  Title,
+} from '@mantine/core';
+import { json, redirect } from '@remix-run/node';
+import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
+import { notFound } from 'remix-utils';
+import { route } from 'routes-gen';
+import { QuestionProblem } from '~/lib/components/QuestionProblem';
+import { requireValidJwt } from '~/lib/services/auth.server';
+import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
+import type { ActionArgs, LoaderArgs } from '@remix-run/node';
+import type {
+  CreateQuestionInput,
+  TestCase,
+  InputCaseUnit,
+  OutputCaseUnit,
+} from ':generated/graphql/orchestrator/generated/graphql';
+import { IconMinus, IconPlus } from '@tabler/icons';
+import { guessDataType } from '~/lib/utils';
 
 export async function loader({ request }: LoaderArgs) {
+  await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher)
     throw notFound({ message: 'Route not found' });
@@ -40,19 +48,10 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
-  let input: CreateQuestionInput = {} as any;
-  for (const [key, value] of await request.formData()) set(input, key, value);
+  const input: CreateQuestionInput = JSON.parse(
+    (await request.formData()).get('data')?.toString() || ''
+  );
 
-  // if there are no test cases at all
-  if (!input.testCases?.length) input.testCases = [];
-
-  // handle the case when input/output is empty for a test case
-  input.testCases.forEach((tCase, idx, theArr) => {
-    if (!tCase.inputs) theArr[idx].inputs = [];
-    if (!tCase.outputs) theArr[idx].outputs = [];
-  });
-
-  input.classIds = [];
   const { createQuestion } = await gqlClient.request(
     CREATE_QUESTION,
     { input },
@@ -60,162 +59,278 @@ export async function action({ request }: ActionArgs) {
   );
   if (createQuestion.__typename === 'ApiError')
     throw new Error(createQuestion.error);
-  return redirect(
-    route('/questions/solve/:slug/:lang', {
-      slug: createQuestion.slug,
-      lang: SupportedLanguage.Cpp,
-    })
-  );
+  return redirect(route('/questions/list'));
 }
 
-const SelectUnitCase = ({
-  name,
-  heading,
-  testCaseUnits,
-}: {
-  name: string;
-  heading: string;
-  testCaseUnits: TestCaseUnit[];
-}) => {
-  return (
-    <Listbox name={name} defaultValue={TestCaseUnit.String}>
-      {({ value }) => (
-        <>
-          <Text>{heading}</Text>
-          {/* TODO: use select from Next-UI once it has been released */}
-          <Listbox.Button>{capitalCase(value)}</Listbox.Button>
-          <Listbox.Options>
-            {testCaseUnits.map((unit, idx) => (
-              <Listbox.Option key={idx} value={unit}>
-                {capitalCase(unit)}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </>
-      )}
-    </Listbox>
-  );
+const defaultOutput: OutputCaseUnit = {
+  data: '',
+  dataType: TestCaseUnit.String,
 };
 
+const defaultInput: InputCaseUnit = { ...defaultOutput, name: 'line0' };
+
+type InputOrOutput = 'inputs' | 'outputs';
+type DataOrDataType = 'data' | 'dataType';
+
 export default () => {
+  const fetcher = useFetcher();
+
+  const onSubmit = async () => {
+    // remove the name field from all the test case outputs
+    const newTestCases = testCases.map((testCase) => {
+      const outputs = testCase.outputs.map(({ name, ...rest }: any) => rest);
+      return { ...testCase, outputs };
+    });
+
+    const data: CreateQuestionInput = {
+      name: name,
+      problem: problem,
+      classIds: [],
+      testCases: newTestCases,
+    };
+    fetcher.submit({ data: JSON.stringify(data) }, { method: 'post' });
+  };
+
+  const [activeTab, setActiveTab] = useState<string | null>('t-0');
+
   const { testCaseUnits } = useLoaderData<typeof loader>();
-  // each element of this list denotes the number of [input, output] for a test case
-  const [totalTestCases, setTotalTestCases] = useState([[1, 1]]);
+
+  const [testCases, setTestCases] = useState<Array<TestCase>>([
+    {
+      inputs: [{ data: '', dataType: TestCaseUnit.String, name: 'line0' }],
+      outputs: [{ data: '', dataType: TestCaseUnit.String }],
+    },
+  ]);
+  const [name, setName] = useState('');
+  const [problem, setProblem] = useState('');
+
+  const addTestCase = () => {
+    setTestCases((prev) => [
+      ...prev,
+      { inputs: [defaultInput], outputs: [defaultOutput] },
+    ]);
+  };
+
+  const removeTestCase = () => {
+    setTestCases((prev) => {
+      prev.pop();
+      return [...prev];
+    });
+  };
+
+  const addCase = (testCaseIdx: number, inputOrOutput: InputOrOutput) => {
+    const newCases = [...testCases];
+    newCases[testCaseIdx][inputOrOutput].push({
+      ...defaultInput,
+      name: `line${newCases[testCaseIdx][inputOrOutput].length}`,
+    });
+    setTestCases(newCases);
+  };
+
+  const removeIndividualInputCase = (
+    testCaseIdx: number,
+    caseIdx: number,
+    inputOrOutput: InputOrOutput
+  ) => {
+    const newCases = [...testCases];
+    newCases[testCaseIdx][inputOrOutput].splice(caseIdx, 1);
+    setTestCases(newCases);
+  };
+
+  const setData = (
+    testCaseIdx: number,
+    caseIdx: number,
+    inputOrOutput: InputOrOutput,
+    dataOrDataType: DataOrDataType,
+    data: string | InputCaseUnit
+  ) => {
+    const newCases = [...testCases];
+    newCases[testCaseIdx][inputOrOutput][caseIdx][dataOrDataType] = data as any;
+    setTestCases(newCases);
+  };
 
   return (
-    <div>
-      <h1>Create Question</h1>
-      <Form method="post">
-        <Input name="name" type="text" required labelPlaceholder="Name" />
-        <Textarea
-          name="problem"
-          labelPlaceholder="Accompanying text"
-          placeholder="You can use github flavored markdown"
+    <Container w={'100%'} mx={{ xs: 10, md: 20 }}>
+      <Stack>
+        <Title order={1}>Create a question</Title>
+        <TextInput
+          label="Name"
           required
+          value={name}
+          onChange={(e) => setName(e.currentTarget.value)}
         />
-        <div>
-          <Text h2>Test Cases</Text>
-          <Button
-            rounded
-            ghost
-            icon={<HiPlusCircle size={30} />}
-            onClick={() => setTotalTestCases([...totalTestCases, [1, 1]])}
-          >
-            Add test case
-          </Button>
-          <Grid.Container gap={2}>
-            {totalTestCases.map((testCases, tIdx) => (
-              <Grid key={tIdx}>
-                <Container>
-                  <Text h4>Input</Text>
-                  <HiPlusCircle
-                    size={30}
-                    onClick={() => {
-                      const newTestCases = [...totalTestCases];
-                      newTestCases[tIdx][0]++;
-                      setTotalTestCases(newTestCases);
-                    }}
-                  />
-                  {[...Array(testCases[0]).keys()].map((iIdx) => (
-                    <Row align="center" key={iIdx}>
-                      <Col>
-                        <SelectUnitCase
-                          name={`testCases[${tIdx}].inputs[${iIdx}].dataType`}
-                          heading="Type"
-                          testCaseUnits={testCaseUnits}
-                        />
-                      </Col>
-                      <Col>
-                        <Input
-                          name={`testCases[${tIdx}].inputs[${iIdx}].data`}
-                          type="text"
+        <Flex direction={'column'}>
+          <Text>Problem statement</Text>
+          <ScrollArea h={210}>
+            <QuestionProblem text={problem} setText={setProblem} />
+          </ScrollArea>
+        </Flex>
+        <Stack>
+          <Text>Test cases</Text>
+          <Tabs value={activeTab} onTabChange={setActiveTab}>
+            <Tabs.List>
+              {testCases.map((_, idx) => (
+                <Tabs.Tab value={`t-${idx}`} key={idx}>
+                  Test Case {idx + 1}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+            {testCases.map((tCase, testCaseIdx) => (
+              <Tabs.Panel pt={10} value={`t-${testCaseIdx}`} key={testCaseIdx}>
+                <Flex gap={10}>
+                  <Stack w={'50%'}>
+                    <Flex px={10} justify="space-between">
+                      <Title order={3}>Inputs</Title>
+                      <Button
+                        variant="light"
+                        leftIcon={<IconPlus size={20} />}
+                        compact
+                        onClick={() => addCase(testCaseIdx, 'inputs')}
+                      >
+                        Add
+                      </Button>
+                    </Flex>
+                    {tCase.inputs.map((input, inputCaseIdx) => (
+                      <Flex gap={10} align={'center'} key={inputCaseIdx}>
+                        <TextInput
+                          required
+                          value={input.data}
                           label="Data"
-                        />
-                        <input
-                          name={`testCases[${tIdx}].inputs[${iIdx}].name`}
-                          type="text"
-                          defaultValue={`line${iIdx + 1}`}
-                          hidden
-                        />
-                      </Col>
-                      <Col>
-                        <HiMinusCircle
-                          size={30}
-                          onClick={() => {
-                            const newTestCases = [...totalTestCases];
-                            newTestCases[tIdx][0]--;
-                            setTotalTestCases(newTestCases);
+                          onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'data',
+                              value
+                            );
+                            const dataType = guessDataType(value);
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'dataType',
+                              dataType
+                            );
                           }}
                         />
-                      </Col>
-                    </Row>
-                  ))}
-                  <Text h4>Output</Text>
-                  <HiPlusCircle
-                    size={30}
-                    onClick={() => {
-                      const newTestCases = [...totalTestCases];
-                      newTestCases[tIdx][1]++;
-                      setTotalTestCases(newTestCases);
-                    }}
-                  />
-                  {[...Array(testCases[1]).keys()].map((oIdx) => (
-                    <Row align="center" key={oIdx}>
-                      <Col>
-                        <SelectUnitCase
-                          name={`testCases[${tIdx}].outputs[${oIdx}].dataType`}
-                          heading="Type"
-                          testCaseUnits={testCaseUnits}
+                        <Select
+                          required
+                          data={testCaseUnits}
+                          value={input.dataType}
+                          label="Data type"
+                          onChange={(e) =>
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'dataType',
+                              e!
+                            )
+                          }
                         />
-                      </Col>
-                      <Col>
-                        <Input
-                          name={`testCases[${tIdx}].outputs[${oIdx}].data`}
-                          type="text"
+                        <ActionIcon
+                          mt={20}
+                          variant="filled"
+                          onClick={() =>
+                            removeIndividualInputCase(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs'
+                            )
+                          }
+                        >
+                          <IconMinus size={20} />
+                        </ActionIcon>
+                      </Flex>
+                    ))}
+                  </Stack>
+                  <Stack w={'50%'}>
+                    <Flex px={10} justify="space-between">
+                      <Title order={3}>Outputs</Title>
+                      <Button
+                        variant="light"
+                        leftIcon={<IconPlus size={20} />}
+                        compact
+                        onClick={() => addCase(testCaseIdx, 'outputs')}
+                      >
+                        Add
+                      </Button>
+                    </Flex>
+                    {tCase.outputs.map((output, outputCaseIdx) => (
+                      <Flex gap={10} align={'center'} key={outputCaseIdx}>
+                        <TextInput
+                          required
+                          value={output.data}
                           label="Data"
-                        />
-                      </Col>
-                      <Col>
-                        <HiMinusCircle
-                          size={30}
-                          onClick={() => {
-                            const newTestCases = [...totalTestCases];
-                            newTestCases[tIdx][1]--;
-                            setTotalTestCases(newTestCases);
+                          onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'data',
+                              value
+                            );
+                            const dataType = guessDataType(value);
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'dataType',
+                              dataType
+                            );
                           }}
                         />
-                      </Col>
-                    </Row>
-                  ))}
-                </Container>
-              </Grid>
+                        <Select
+                          required
+                          data={testCaseUnits}
+                          value={output.dataType}
+                          label="Data type"
+                          onChange={(e) =>
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'dataType',
+                              e!
+                            )
+                          }
+                        />
+                        <ActionIcon
+                          mt={20}
+                          variant="filled"
+                          onClick={() =>
+                            removeIndividualInputCase(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs'
+                            )
+                          }
+                        >
+                          <IconMinus size={20} />
+                        </ActionIcon>
+                      </Flex>
+                    ))}
+                  </Stack>
+                </Flex>
+              </Tabs.Panel>
             ))}
-          </Grid.Container>
-        </div>
-        <div>
-          <Button type="submit">Create Question</Button>
-        </div>
-      </Form>
-    </div>
+          </Tabs>
+        </Stack>
+        <Flex justify={'space-between'}>
+          <Button color={'red'} onClick={removeTestCase}>
+            Remove test case
+          </Button>
+          <Button onClick={addTestCase}>Add test case</Button>
+        </Flex>
+        <Flex justify={'end'}>
+          <Button variant="filled" color="green" onClick={onSubmit}>
+            Create Question
+          </Button>
+        </Flex>
+      </Stack>
+    </Container>
   );
 };

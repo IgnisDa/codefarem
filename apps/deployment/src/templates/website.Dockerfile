@@ -1,7 +1,7 @@
 FROM node:latest AS base
 WORKDIR /app
 ENV PROJECT_NAME=website
-RUN npm install -g @moonrepo/cli
+RUN npm install --global @moonrepo/cli && moon --version
 
 FROM base AS workspace
 WORKDIR /app

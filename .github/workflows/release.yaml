@@ -7,12 +7,11 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  affected:
-    name: 'Run CI and get affected projects'
+  generate:
+    name: 'Generate dockerfile(s)'
     runs-on: 'ubuntu-latest'
     outputs:
-      affected: ${{ steps.affected.outputs.affected_json }}
-      executables: ${{ steps.affected.outputs.executables }}
+      executables: ${{ steps.executables.outputs.executables }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -24,63 +23,42 @@ jobs:
       - uses: ./.github/actions/set-base-commit
         name: Set base commit
 
-      - name: Get affected projects
-        id: affected
+      - name: Get projects executables
+        id: executables
         run: |
-          affected=$(
-              node -e "
-                  let deployable = ['authenticator', 'compilers', 'executor', 'orchestrator', 'website']
-                  let projects = \`$(moon query touched-files --base $BASE | moon query projects --affected | jq .projects[].id -r)\`.split('\n')
-                  let deployableProjects = projects.filter(project => deployable.includes(project))
-                  console.log(deployableProjects.join(' '))
-              "
-          )
-          if [ -z "$affected" ]; then
-              affected_json="[]"
-          else
-              affected_json=$(node -e "console.log(JSON.stringify(\"${affected[@]}\".split(' ')))")
-          fi
           executables=$(node -e "
             let executables = \`$(cat apps/deployment/src/data/*.json | jq .apps[].EXECUTABLE_NAME -r)\`.split('\n')
             console.log(JSON.stringify(executables))
           ")
-          echo "affected=$affected" >> $GITHUB_OUTPUT
-          echo "affected_json=$affected_json" >> $GITHUB_OUTPUT
           echo "executables=$executables" >> $GITHUB_OUTPUT
-          echo "Affected: $affected_json"
           echo "Discovered executables: $executables"
 
       - uses: ./.github/actions/setup-python
-        if: ${{ steps.affected.outputs.affected != '' }}
         name: Setup python environment
 
       - name: Generate project dockerfile(s)
-        if: ${{ steps.affected.outputs.affected != '' }}
         env:
-          AFFECTED: ${{ steps.affected.outputs.affected }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
-          affected=($AFFECTED) # convert string to array
-          for project in "${affected[@]}"
+          for project in "authenticator" "compilers" "executor" "orchestrator" "website" "admin-backend" "admin-website"
           do
             echo "Generating dockerfile for '$project'..."
             poetry run python apps/deployment/src/docker.py "$project"
           done
 
       - name: Save generated dockerfile(s)
-        if: ${{ steps.affected.outputs.affected != '' }}
         uses: actions/upload-artifact@v3
         with:
           name: generated-dockerfile
-          path: apps/*/*.generated.Dockerfile
+          path: apps/**/*.generated.Dockerfile
+          if-no-files-found: error
 
-  docker-builds:
+  build:
     name: 'Build and push containers'
-    needs: affected
-    if: ${{ needs.affected.outputs.affected != '[]' }}
+    needs: generate
     strategy:
       matrix:
-        project: ${{ fromJSON(needs.affected.outputs.affected) }}
-        executable: ${{ fromJSON(needs.affected.outputs.executables) }}
+        executable: ${{ fromJSON(needs.generate.outputs.executables) }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: read
@@ -90,26 +68,37 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Determine if the executable/project combination is correct
-        id: check
-        shell: bash {0}
-        run: |
-          cat apps/deployment/src/data/${{ matrix.project }}.json | jq .apps[].EXECUTABLE_NAME -r | grep -q "${{ matrix.executable }}"
-          echo "should_exit=$?" >> $GITHUB_OUTPUT
-
       - name: Get docker image name
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         id: image_name
         run: |
           image_name="${{ env.REGISTRY }}/${{ github.actor }}/codefarem--${{ matrix.executable }}:latest"
           # lowercase the name
           image_name=$(echo "$image_name" | tr '[:upper:]' '[:lower:]')
           echo "image_name=$image_name" >> $GITHUB_OUTPUT
-          echo "Image name: $image_name"
+
+      - name: Get dockerfile path
+        id: dockerfile_path
+        env:
+          executable: ${{ matrix.executable }}
+        run: |
+          for file in apps/deployment/src/data/*.json; do
+              for exe in $(cat "$file" | jq -r '.apps[].EXECUTABLE_NAME'); do
+                  if [[ "$exe" == "$executable" ]]; then
+                      dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
+                      echo "Found dockerfile path for executable '$executable': '$dockerfile_path'"
+                      break
+                  fi
+              done
+          done
+          # throw error if no dockerfile path was found
+          if [[ -z "$dockerfile_path" ]]; then
+            echo "No dockerfile path found for executable '$executable'"
+            exit 1
+          fi
+          echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -117,7 +106,6 @@ jobs:
 
       - name: Download generated dockerfile(s)
         uses: actions/download-artifact@v3
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           name: generated-dockerfile
           # https://github.com/actions/upload-artifact#upload-using-multiple-paths-and-exclusions
@@ -125,18 +113,15 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-        if: ${{ steps.check.outputs.should_exit != 1 }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        if: ${{ steps.check.outputs.should_exit != 1 }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
-        if: ${{ steps.check.outputs.should_exit != 1 }}
         with:
           context: .
-          file: apps/${{ matrix.project }}/${{ matrix.executable }}.generated.Dockerfile
+          file: ${{ steps.dockerfile_path.outputs.dockerfile_path }}
           push: true
           tags: ${{ steps.image_name.outputs.image_name }}
           cache-from: type=gha

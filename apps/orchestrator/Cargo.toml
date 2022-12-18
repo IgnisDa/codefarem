@@ -4,21 +4,21 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0.65"
-async-graphql = { workspace = true }
-async-graphql-rocket = "4.0.13"
-async-trait = { workspace = true }
 auth = { path = "../../libs/auth" }
-comrak = "0.15.0"
-chrono = { workspace = true }
-derive-getters = "0.2.0"
-dotenv = "0.15.0"
-edgedb-derive = { workspace = true }
-edgedb-protocol = { workspace = true }
-edgedb-tokio = { workspace = true }
 macros = { path = "../../libs/macros" }
 main_db = { path = "../../libs/main-db" }
 protobuf = { path = "../../libs/protobuf" }
+utilities = { path = "../../libs/utilities" }
+
+anyhow = { workspace = true }
+async-graphql = { workspace = true }
+async-graphql-rocket = { workspace = true }
+chrono = { workspace = true }
+derive-getters = { workspace = true }
+dotenv = { workspace = true }
+edgedb-derive = { workspace = true }
+edgedb-protocol = { workspace = true }
+edgedb-tokio = { workspace = true }
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -26,7 +26,4 @@ strum = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
 uuid = { workspace = true }
-utilities = { path = "../../libs/utilities" }
-slug = "0.1.4"
-rand = { workspace = true }
 jwks-client = "0.2.0"

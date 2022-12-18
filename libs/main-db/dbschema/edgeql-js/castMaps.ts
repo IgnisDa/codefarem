@@ -4,6 +4,7 @@ import * as literal from "./syntax/literal";
 import type * as _std from "./modules/std";
 import type * as _sys from "./modules/sys";
 import type * as _schema from "./modules/schema";
+import type * as _external from "./modules/external";
 import type * as _cfg from "./modules/cfg";
 import type * as _cal from "./modules/cal";
 export type scalarAssignableBy<T extends $.ScalarType> =
@@ -34,6 +35,7 @@ export type scalarAssignableBy<T extends $.ScalarType> =
   T extends _schema.$Cardinality ? _schema.$Cardinality : 
   T extends _schema.$AccessPolicyAction ? _schema.$AccessPolicyAction : 
   T extends _schema.$AccessKind ? _schema.$AccessKind : 
+  T extends _external.$InviteAs ? _external.$InviteAs : 
   T extends _cfg.$memory ? _cfg.$memory : 
   T extends _cfg.$ConnectionTransport ? _cfg.$ConnectionTransport : 
   T extends _cfg.$AllowBareDDL ? _cfg.$AllowBareDDL : 
@@ -72,6 +74,7 @@ export type scalarCastableFrom<T extends $.ScalarType> =
   T extends _schema.$Cardinality ? _schema.$Cardinality : 
   T extends _schema.$AccessPolicyAction ? _schema.$AccessPolicyAction : 
   T extends _schema.$AccessKind ? _schema.$AccessKind : 
+  T extends _external.$InviteAs ? _external.$InviteAs : 
   T extends _cfg.$memory ? _cfg.$memory : 
   T extends _cfg.$ConnectionTransport ? _cfg.$ConnectionTransport : 
   T extends _cfg.$AllowBareDDL ? _cfg.$AllowBareDDL : 
@@ -247,6 +250,12 @@ type getSharedParentScalar<A, B> =
   :
   A extends _schema.$AccessKind ?
     B extends _schema.$AccessKind ?
+    B
+    :
+    never
+  :
+  A extends _external.$InviteAs ?
+    B extends _external.$InviteAs ?
     B
     :
     never
@@ -480,6 +489,12 @@ function getSharedParentScalar<A extends $.ScalarType, B extends $.ScalarType>(a
     }
   if (a.__name__ === "schema::AccessKind") {
     if(b.__name__ === "schema::AccessKind") {
+      return b;
+    }
+    throw new Error(`Types are not castable: ${a.__name__}, ${b.__name__}`);
+    }
+  if (a.__name__ === "external::InviteAs") {
+    if(b.__name__ === "external::InviteAs") {
       return b;
     }
     throw new Error(`Types are not castable: ${a.__name__}, ${b.__name__}`);

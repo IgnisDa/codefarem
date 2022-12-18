@@ -1,24 +1,30 @@
-use super::{
-    dto::{
-        mutations::{
-            create_class::{CreateClassInput, CreateClassResultUnion},
-            create_question::{CreateQuestionInput, CreateQuestionResultUnion},
-            execute_code_for_question::{
-                ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
+use crate::{
+    config::AppConfig,
+    learning::{
+        dto::{
+            mutations::{
+                create_class::{CreateClassInput, CreateClassResultUnion},
+                create_question::{CreateQuestionInput, CreateQuestionResultUnion},
+                execute_code_for_question::{
+                    ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
+                },
+            },
+            queries::{
+                all_questions::QuestionPartialsDetails, class_details::ClassDetailsResultUnion,
+                question_details::QuestionDetailsResultUnion, test_case::TestCaseUnit,
             },
         },
-        queries::{
-            class_details::ClassDetailsResultUnion, question_details::QuestionDetailsResultUnion,
-            test_case::TestCaseUnit,
-        },
+        service::LearningService,
     },
-    service::{LearningService, LearningServiceTrait},
+    utils::RequestData,
 };
-use crate::RequestData;
-use async_graphql::{Context, ErrorExtensions, Object, Result};
+use async_graphql::{
+    connection::{Connection, EmptyFields},
+    Context, ErrorExtensions, Object, Result,
+};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
-use macros::{to_result_union_response, user_id_from_request};
-use utilities::users::AccountType;
+use macros::{hanko_id_from_request, to_result_union_response};
+use utilities::graphql::ConnectionArguments;
 use uuid::Uuid;
 
 /// The query segment for Learning
@@ -34,6 +40,17 @@ impl LearningQuery {
     /// Get all the types of test case units possible
     async fn test_case_units(&self, ctx: &Context<'_>) -> Vec<TestCaseUnit> {
         ctx.data_unchecked::<LearningService>().test_case_units()
+    }
+
+    /// Get all the questions
+    async fn all_questions(
+        &self,
+        ctx: &Context<'_>,
+        args: ConnectionArguments,
+    ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
+        ctx.data_unchecked::<LearningService>()
+            .all_questions(args.after, args.before, args.first, args.last)
+            .await
     }
 
     /// Get information about a class
@@ -71,12 +88,10 @@ impl LearningMutation {
         ctx: &Context<'_>,
         input: CreateClassInput,
     ) -> Result<CreateClassResultUnion> {
-        let user_id = user_id_from_request!(ctx);
-        // FIXME: Use correct value
-        let account_type = AccountType::Teacher;
+        let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(&user_id, &account_type, input.name(), input.teacher_ids())
+            .create_class(&hanko_id, input.name(), input.teacher_ids())
             .await;
         to_result_union_response!(output, CreateClassResultUnion)
     }
@@ -87,14 +102,11 @@ impl LearningMutation {
         ctx: &Context<'_>,
         input: CreateQuestionInput,
     ) -> Result<CreateQuestionResultUnion> {
-        let user_id = user_id_from_request!(ctx);
-        // FIXME: Use correct value
-        let account_type = AccountType::Teacher;
+        let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
             .create_question(
-                &user_id,
-                &account_type,
+                &hanko_id,
                 input.name(),
                 input.problem(),
                 input.test_cases(),

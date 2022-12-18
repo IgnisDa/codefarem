@@ -3,6 +3,12 @@
   "files": [],
   "references": [
     {
+      "path": "apps/admin/website"
+    },
+    {
+      "path": "apps/mails"
+    },
+    {
       "path": "apps/website"
     },
     {

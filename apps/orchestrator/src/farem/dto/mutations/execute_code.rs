@@ -1,7 +1,6 @@
 use async_graphql::{Enum, InputObject, SimpleObject, Union};
 use derive_getters::Getters;
-
-use crate::farem::service::SupportedLanguage;
+use utilities::SupportedLanguage;
 
 /// The input object used to execute some code
 #[derive(InputObject, Getters)]

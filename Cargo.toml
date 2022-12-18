@@ -2,34 +2,38 @@
 members = [
   "libs/auth",
   "libs/macros",
+  "libs/mailer",
   "libs/main-db",
   "libs/protobuf",
   "libs/utilities",
+  "apps/admin/backend",
   "apps/compilers",
   "apps/executor",
   "apps/orchestrator",
 ]
 
 [workspace.dependencies]
-async-graphql = { version = "4.0.14", features = ["log", "uuid"] }
-async-trait = { version = "0.1.57" }
-chrono = { version = "0.4.22" }
+anyhow = { version = "1.0.65" }
+async-graphql = { version = "5.0.3", features = ["log", "uuid"] }
+async-graphql-rocket = { version = "5.0.3" }
+chrono = { version = "0.4.22", features = ["serde"] }
+derive-getters = { version = "0.2.0" }
+dotenv = { version = "0.15.0" }
+duct = { version = "0.13.5" }
 edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
+env_logger = { version = "0.10.0" }
+lettre = { version = "0.10.1", features = [
+  "rustls-tls",
+  "smtp-transport",
+  "builder",
+], default-features = false }
+log = { version = "0.4.17" }
 rand = { version = "0.8.5" }
 serde = { version = "1.0.145", features = ["derive"] }
 serde_json = { version = "1.0.85" }
 strum = { version = "0.24.1", features = ["derive"] }
-tokio = { version = "1.21.1", features = ["rt", "macros", "rt-multi-thread"] }
+tokio = { version = "1.23.0", features = ["rt", "macros", "rt-multi-thread"] }
 tonic = { version = "0.8" }
 uuid = { version = "1.1.2", features = ["serde"] }
-env_logger = { version = "0.9.1" }
-log = { version = "0.4.17" }
-
-[profile.release]
-strip = true      # automatically strip symbols from the binary
-lto = true        # instructs the linker to optimize at the link stage
-opt-level = "z"   # optimize for size
-codegen-units = 1 # allow for maximum size reduction optimizations
-panic = "abort"   # removes the extra unwinding code

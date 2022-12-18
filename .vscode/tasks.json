@@ -6,16 +6,21 @@
             "detail": "Starts all the farem services",
             "type": "shell",
             "dependsOn": [
-                "cpp-compiler",
-                "go-compiler",
-                "rs-compiler",
+                "admin-website",
+                "admin-backend",
+                "c-service",
+                "python-service",
+                "cpp-service",
+                "go-service",
+                "rs-service",
+                "zig-service",
                 "executor",
                 "website",
                 "orchestrator"
             ]
         },
         {
-            "label": "cpp-compiler",
+            "label": "cpp-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin cpp-compiler'",
@@ -27,7 +32,43 @@
             },
         },
         {
-            "label": "go-compiler",
+            "label": "c-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin c-compiler'",
+            "detail": "Run the C compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5008"
+                }
+            },
+        },
+        {
+            "label": "python-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin python-compiler'",
+            "detail": "Run the Python compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5009"
+                }
+            },
+        },
+        {
+            "label": "zig-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin zig-compiler'",
+            "detail": "Run the zig compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5007"
+                }
+            },
+        },
+        {
+            "label": "go-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin go-compiler'",
@@ -39,7 +80,7 @@
             },
         },
         {
-            "label": "rs-compiler",
+            "label": "rs-service",
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin rs-compiler'",
@@ -66,7 +107,7 @@
             "label": "orchestrator",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package orchestrator'",
+            "command": "cargo watch --delay 1 -cqx 'run --package orchestrator'",
             "detail": "Run the orchestrator service",
             "options": {
                 "env": {
@@ -81,6 +122,38 @@
             "command": "moon run website:dev website:dev-routes",
             "detail": "Run the main website server",
             "options": {},
+        },
+        {
+            "label": "mails",
+            "type": "shell",
+            "isBackground": true,
+            "command": "moon run mails:dev",
+            "detail": "Run the mail preview server",
+            "options": {
+                "env": {
+                    "PORT": "5006"
+                }
+            },
+        },
+        {
+            "label": "admin-website",
+            "type": "shell",
+            "isBackground": true,
+            "command": "moon run admin-website:dev",
+            "detail": "Run the admin website server",
+            "options": {},
+        },
+        {
+            "label": "admin-backend",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --package admin-backend'",
+            "detail": "Run the admin backend server",
+            "options": {
+                "env": {
+                    "PORT": "5005"
+                }
+            },
         },
     ]
 }

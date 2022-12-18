@@ -5,13 +5,13 @@ export type $AllowBareDDL = {
   AlwaysAllow: $.$expr_Literal<$AllowBareDDL>;
   NeverAllow: $.$expr_Literal<$AllowBareDDL>;
 } & $.EnumType<"cfg::AllowBareDDL", ["AlwaysAllow", "NeverAllow"]>;
-const AllowBareDDL: $AllowBareDDL = $.makeType<$AllowBareDDL>(_.spec, "a1bd682b-678f-11ed-bd33-05dabca0fd85", _.syntax.literal);
+const AllowBareDDL: $AllowBareDDL = $.makeType<$AllowBareDDL>(_.spec, "25832f64-7730-11ed-a98a-97eea9bfc23b", _.syntax.literal);
 
 export type $ConnectionTransport = {
   TCP: $.$expr_Literal<$ConnectionTransport>;
   HTTP: $.$expr_Literal<$ConnectionTransport>;
 } & $.EnumType<"cfg::ConnectionTransport", ["TCP", "HTTP"]>;
-const ConnectionTransport: $ConnectionTransport = $.makeType<$ConnectionTransport>(_.spec, "a1be1f3a-678f-11ed-bcb9-814ff1958698", _.syntax.literal);
+const ConnectionTransport: $ConnectionTransport = $.makeType<$ConnectionTransport>(_.spec, "2583e410-7730-11ed-841f-61886eb7a595", _.syntax.literal);
 
 export type $memory = $.ScalarType<"cfg::memory", _.edgedb.ConfigMemory>;
 const memory: $.scalarTypeWithConstructor<$memory, string> = $.makeType<$.scalarTypeWithConstructor<$memory, string>>(_.spec, "00000000-0000-0000-0000-000000000130", _.syntax.literal);
@@ -19,7 +19,7 @@ const memory: $.scalarTypeWithConstructor<$memory, string> = $.makeType<$.scalar
 export type $ConfigObjectλShape = $.typeutil.flatten<_std.$BaseObjectλShape & {
 }>;
 type $ConfigObject = $.ObjectType<"cfg::ConfigObject", $ConfigObjectλShape, null>;
-const $ConfigObject = $.makeType<$ConfigObject>(_.spec, "a1bee3f3-678f-11ed-9626-79bd4f971330", _.syntax.literal);
+const $ConfigObject = $.makeType<$ConfigObject>(_.spec, "2584a05a-7730-11ed-8d2e-7ba3e41014e5", _.syntax.literal);
 
 const ConfigObject: $.$expr_PathNode<$.TypeSet<$ConfigObject, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($ConfigObject, $.Cardinality.Many), null, true);
 
@@ -41,7 +41,7 @@ export type $AbstractConfigλShape = $.typeutil.flatten<$ConfigObjectλShape & {
   "auth": $.LinkDesc<$Auth, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $AbstractConfig = $.ObjectType<"cfg::AbstractConfig", $AbstractConfigλShape, null>;
-const $AbstractConfig = $.makeType<$AbstractConfig>(_.spec, "a221355e-678f-11ed-b5e4-ffbf9dd8f5db", _.syntax.literal);
+const $AbstractConfig = $.makeType<$AbstractConfig>(_.spec, "25e68660-7730-11ed-a153-c5ed2aab8744", _.syntax.literal);
 
 const AbstractConfig: $.$expr_PathNode<$.TypeSet<$AbstractConfig, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($AbstractConfig, $.Cardinality.Many), null, true);
 
@@ -57,7 +57,7 @@ export type $AuthλShape = $.typeutil.flatten<$ConfigObjectλShape & {
   "<auth": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Auth = $.ObjectType<"cfg::Auth", $AuthλShape, null>;
-const $Auth = $.makeType<$Auth>(_.spec, "a206c214-678f-11ed-95bf-65ff5fd1a109", _.syntax.literal);
+const $Auth = $.makeType<$Auth>(_.spec, "25cbb69c-7730-11ed-84dd-c1415256e29c", _.syntax.literal);
 
 const Auth: $.$expr_PathNode<$.TypeSet<$Auth, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Auth, $.Cardinality.Many), null, true);
 
@@ -67,28 +67,28 @@ export type $AuthMethodλShape = $.typeutil.flatten<$ConfigObjectλShape & {
   "<method": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $AuthMethod = $.ObjectType<"cfg::AuthMethod", $AuthMethodλShape, null>;
-const $AuthMethod = $.makeType<$AuthMethod>(_.spec, "a1cbb933-678f-11ed-8f9e-3b4c37d388bf", _.syntax.literal);
+const $AuthMethod = $.makeType<$AuthMethod>(_.spec, "259131af-7730-11ed-8fd3-711ea7d0ba60", _.syntax.literal);
 
 const AuthMethod: $.$expr_PathNode<$.TypeSet<$AuthMethod, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($AuthMethod, $.Cardinality.Many), null, true);
 
 export type $ConfigλShape = $.typeutil.flatten<$AbstractConfigλShape & {
 }>;
 type $Config = $.ObjectType<"cfg::Config", $ConfigλShape, null>;
-const $Config = $.makeType<$Config>(_.spec, "a253b0c1-678f-11ed-8df6-9d1395d465ea", _.syntax.literal);
+const $Config = $.makeType<$Config>(_.spec, "261875f8-7730-11ed-a979-ef17a798d396", _.syntax.literal);
 
 const Config: $.$expr_PathNode<$.TypeSet<$Config, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Config, $.Cardinality.Many), null, true);
 
 export type $DatabaseConfigλShape = $.typeutil.flatten<$AbstractConfigλShape & {
 }>;
 type $DatabaseConfig = $.ObjectType<"cfg::DatabaseConfig", $DatabaseConfigλShape, null>;
-const $DatabaseConfig = $.makeType<$DatabaseConfig>(_.spec, "a2bff4e7-678f-11ed-a8b7-795813093a47", _.syntax.literal);
+const $DatabaseConfig = $.makeType<$DatabaseConfig>(_.spec, "27ace1c9-7730-11ed-bea4-673f969e942e", _.syntax.literal);
 
 const DatabaseConfig: $.$expr_PathNode<$.TypeSet<$DatabaseConfig, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($DatabaseConfig, $.Cardinality.Many), null, true);
 
 export type $InstanceConfigλShape = $.typeutil.flatten<$AbstractConfigλShape & {
 }>;
 type $InstanceConfig = $.ObjectType<"cfg::InstanceConfig", $InstanceConfigλShape, null>;
-const $InstanceConfig = $.makeType<$InstanceConfig>(_.spec, "a289f9c6-678f-11ed-b63d-992c909fb0b7", _.syntax.literal);
+const $InstanceConfig = $.makeType<$InstanceConfig>(_.spec, "26d1014c-7730-11ed-b19b-41cb2917b680", _.syntax.literal);
 
 const InstanceConfig: $.$expr_PathNode<$.TypeSet<$InstanceConfig, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($InstanceConfig, $.Cardinality.Many), null, true);
 
@@ -96,7 +96,7 @@ export type $JWTλShape = $.typeutil.flatten<Omit<$AuthMethodλShape, "transport
   "transports": $.PropertyDesc<$ConnectionTransport, $.Cardinality.Many, false, false, true, true>;
 }>;
 type $JWT = $.ObjectType<"cfg::JWT", $JWTλShape, null>;
-const $JWT = $.makeType<$JWT>(_.spec, "a1f71931-678f-11ed-a14c-fb6a36cc864b", _.syntax.literal);
+const $JWT = $.makeType<$JWT>(_.spec, "25bc26c5-7730-11ed-b9a0-e51fa178c7c8", _.syntax.literal);
 
 const JWT: $.$expr_PathNode<$.TypeSet<$JWT, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($JWT, $.Cardinality.Many), null, true);
 
@@ -104,14 +104,14 @@ export type $SCRAMλShape = $.typeutil.flatten<Omit<$AuthMethodλShape, "transpo
   "transports": $.PropertyDesc<$ConnectionTransport, $.Cardinality.Many, false, false, true, true>;
 }>;
 type $SCRAM = $.ObjectType<"cfg::SCRAM", $SCRAMλShape, null>;
-const $SCRAM = $.makeType<$SCRAM>(_.spec, "a1e781f2-678f-11ed-9710-bbe72e898aeb", _.syntax.literal);
+const $SCRAM = $.makeType<$SCRAM>(_.spec, "25ad3823-7730-11ed-a54d-d31b748cfcab", _.syntax.literal);
 
 const SCRAM: $.$expr_PathNode<$.TypeSet<$SCRAM, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($SCRAM, $.Cardinality.Many), null, true);
 
 export type $TrustλShape = $.typeutil.flatten<$AuthMethodλShape & {
 }>;
 type $Trust = $.ObjectType<"cfg::Trust", $TrustλShape, null>;
-const $Trust = $.makeType<$Trust>(_.spec, "a1d98424-678f-11ed-92df-5fe849ce8763", _.syntax.literal);
+const $Trust = $.makeType<$Trust>(_.spec, "259f3bdb-7730-11ed-99b0-674f2f3e3ca2", _.syntax.literal);
 
 const Trust: $.$expr_PathNode<$.TypeSet<$Trust, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Trust, $.Cardinality.Many), null, true);
 

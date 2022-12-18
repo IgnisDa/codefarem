@@ -2,11 +2,27 @@ use duct::cmd;
 use log::{error, info};
 use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
-    ExecutorInput, ExecutorOutput,
+    ExecutorInput, ExecutorOutput, Language,
 };
-use std::io::Write;
+use std::{io::Write, path::PathBuf};
 use tonic::{async_trait, transport::Server, Request, Response, Status};
-use utilities::generate_random_file;
+use utilities::{generate_random_file, get_server_url, CODEFAREM_TEMP_PATH};
+
+fn get_command_args(language: Language, file_path: PathBuf) -> Vec<String> {
+    let binding = file_path.to_string_lossy().to_string();
+    match language {
+        Language::Python => {
+            vec![
+                format!("--dir={}", CODEFAREM_TEMP_PATH.to_string_lossy()),
+                "--mapdir=/opt::/opt".to_string(),
+                "--".to_string(),
+                "/opt/wasi-python/bin/python3.wasm".to_string(),
+                binding,
+            ]
+        }
+        _ => vec![binding],
+    }
+}
 
 #[derive(Debug, Default)]
 struct ExecutorHandler {}
@@ -19,7 +35,10 @@ impl ExecutorService for ExecutorHandler {
     ) -> Result<Response<ExecutorOutput>, Status> {
         let (mut file, file_path) = generate_random_file(Some("wasm")).unwrap();
         file.write_all(request.get_ref().data.as_slice()).unwrap();
-        let mut program_args = vec![file_path.to_string_lossy().to_string()];
+        let mut program_args = vec![];
+        let language = Language::from_i32(request.get_ref().language).unwrap();
+        let command_args = get_command_args(language, file_path.clone());
+        program_args.extend(command_args);
         let arguments = request.get_ref().arguments.clone();
         if !arguments.is_empty() {
             program_args.extend(arguments);
@@ -52,12 +71,11 @@ impl ExecutorService for ExecutorHandler {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    let port = std::env::var("PORT").expect("Expected PORT to be set");
-    info!("Starting server on port {port:?}");
+    let server_url = get_server_url();
     let executor = ExecutorHandler::default();
     Server::builder()
         .add_service(ExecutorServiceServer::new(executor))
-        .serve(format!("0.0.0.0:{port}").parse()?)
+        .serve(server_url.parse()?)
         .await?;
     Ok(())
 }

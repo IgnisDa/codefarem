@@ -34,7 +34,6 @@ yarn-error.log
 testem.log
 
 # Types
-dts
 /typings
 
 # System Files
@@ -49,10 +48,6 @@ Thumbs.db
 .moon/cache
 .moon/docker
 
-# generated tsconfig
-tsconfig.tsbuildinfo
-tsconfig.build.tsbuildinfo
-
 # Build folders
 coverage/
 build/
@@ -61,7 +56,6 @@ dts/
 esm/
 mjs/
 umd/
-lib
 
 *.generated.Dockerfile
 
@@ -73,3 +67,13 @@ lib
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# next.js
+.next
+next-env.d.ts
+
+# remix
+apps/website/.cache
+
+# generated tsconfig
+*.tsbuildinfo

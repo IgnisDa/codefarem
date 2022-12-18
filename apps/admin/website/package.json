@@ -1,0 +1,33 @@
+{
+  "name": "@codefarem/admin-website",
+  "version": "0.0.0",
+  "dependencies": {
+    "@codefarem/generated": "workspace:*",
+    "@emotion/react": "11.10.5",
+    "@mantine/core": "5.9.2",
+    "@mantine/dates": "5.9.2",
+    "@mantine/form": "5.9.2",
+    "@mantine/hooks": "5.9.2",
+    "@mantine/modals": "5.9.2",
+    "@mantine/notifications": "5.9.2",
+    "@mantine/nprogress": "5.9.2",
+    "@tabler/icons": "1.116.1",
+    "@tanstack/react-query": "4.19.1",
+    "@tanstack/react-router": "beta",
+    "dayjs": "1.11.7",
+    "graphql-request": "5.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zod": "3.19.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.24",
+    "@types/react-dom": "18.0.8",
+    "@vitejs/plugin-react": "2.2.0",
+    "vite": "3.2.3",
+    "vite-tsconfig-paths": "4.0.2",
+    "vitest": "0.25.6"
+  },
+  "private": true,
+  "type": "module"
+}

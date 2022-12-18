@@ -1,5 +1,5 @@
 {
-  "dockerfile_path": "apps/compilers/{{ executable }}.generated.Dockerfile",
+  "dockerfile_path": "apps/compilers/${executable}.generated.Dockerfile",
   "apps": [
     {
       "EXECUTABLE_NAME": "rs-compiler",
@@ -15,7 +15,49 @@
     },
     {
       "EXECUTABLE_NAME": "cpp-compiler",
-      "IMAGE_NAME": "emscripten/emsdk",
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils",
+        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
+        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
+        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
+        "rm -rf tmp/*",
+        "zig version"
+      ],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAME": "c-compiler",
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils",
+        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
+        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
+        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
+        "rm -rf tmp/*",
+        "zig version"
+      ],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAME": "zig-compiler",
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils",
+        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
+        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
+        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
+        "rm -rf tmp/*",
+        "zig version"
+      ],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAME": "python-compiler",
+      "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     }

@@ -1,33 +1,42 @@
-use super::dto::{
-    mutations::{
-        create_class::CreateClassOutput,
-        create_question::CreateQuestionOutput,
-        execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
-    },
-    queries::{
-        class_details::ClassDetailsOutput,
-        question_details::QuestionDetailsOutput,
-        test_case::{TestCase, TestCaseUnit},
-    },
-};
 use crate::{
     farem::{
         dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
-        service::{FaremService, SupportedLanguage},
+        service::FaremService,
+    },
+    learning::dto::{
+        mutations::{
+            create_class::CreateClassOutput,
+            create_question::CreateQuestionOutput,
+            execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
+        },
+        queries::{
+            all_questions::QuestionPartialsDetails,
+            class_details::ClassDetailsOutput,
+            question_details::QuestionDetailsOutput,
+            test_case::{TestCase, TestCaseUnit},
+        },
     },
     utils::case_unit_to_argument,
 };
-use async_trait::async_trait;
+use async_graphql::{
+    connection::{query, Connection, Edge, EmptyFields},
+    Error, Result,
+};
 use auth::validate_user_role;
-use comrak::{markdown_to_html, ComrakOptions};
-use edgedb_tokio::Client as DbClient;
-use rand::{distributions::Alphanumeric, Rng};
-use slug::slugify;
+use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
-use utilities::{graphql::ApiError, models::IdObject, users::AccountType};
+use utilities::{
+    graphql::ApiError,
+    models::IdObject,
+    random_string,
+    users::{get_user_details_from_hanko_id, AccountType},
+    SupportedLanguage,
+};
 use uuid::Uuid;
 
+const ALL_QUESTIONS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/all-questions.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
@@ -57,50 +66,13 @@ const INSERT_TEST_CASE: &str =
 const UPDATE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/update-question.edgeql");
 
-#[async_trait]
-pub trait LearningServiceTrait: Sync + Send {
-    fn test_case_units(&self) -> Vec<TestCaseUnit>;
-
-    async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError>;
-
-    async fn question_details<'a>(
-        &self,
-        question_slug: &'_ str,
-    ) -> Result<QuestionDetailsOutput, ApiError>;
-
-    async fn create_class<'a>(
-        &self,
-        hanko_id: &'a str,
-        account_type: &AccountType,
-        name: &'a str,
-        teacher_ids: &[Uuid],
-    ) -> Result<CreateClassOutput, ApiError>;
-
-    async fn create_question<'a>(
-        &self,
-        hanko_id: &'a str,
-        account_type: &AccountType,
-        name: &'a str,
-        problem: &'a str,
-        test_cases: &[TestCase],
-        class_ids: &[Uuid],
-    ) -> Result<CreateQuestionOutput, ApiError>;
-
-    async fn execute_code_for_question(
-        &self,
-        question_slug: &'_ str,
-        input: &'_ str,
-        language: &SupportedLanguage,
-    ) -> Result<ExecuteCodeForQuestionOutput, ExecuteCodeError>;
-}
-
 pub struct LearningService {
-    db_conn: Arc<DbClient>,
+    db_conn: Arc<Client>,
     farem_service: Arc<FaremService>,
 }
 
 impl LearningService {
-    pub fn new(db_conn: &Arc<DbClient>, farem_service: &Arc<FaremService>) -> Self {
+    pub fn new(db_conn: &Arc<Client>, farem_service: &Arc<FaremService>) -> Self {
         Self {
             db_conn: db_conn.clone(),
             farem_service: farem_service.clone(),
@@ -108,15 +80,44 @@ impl LearningService {
     }
 }
 
-impl LearningService {}
-
-#[async_trait]
-impl LearningServiceTrait for LearningService {
-    fn test_case_units(&self) -> Vec<TestCaseUnit> {
+impl LearningService {
+    pub fn test_case_units(&self) -> Vec<TestCaseUnit> {
         TestCaseUnit::iter().collect()
     }
 
-    async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
+    pub async fn all_questions<'a>(
+        &self,
+        after: Option<String>,
+        before: Option<String>,
+        first: Option<i32>,
+        last: Option<i32>,
+    ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
+        query(
+            after,
+            before,
+            first,
+            last,
+            |after, before, first, last| async move {
+                let all_questions = self
+                    .db_conn
+                    .query::<QuestionPartialsDetails, _>(ALL_QUESTIONS, &())
+                    .await
+                    .unwrap_or_default();
+                let has_previous_page = false;
+                let has_next_page = false;
+                let mut connection = Connection::new(has_previous_page, has_next_page);
+                connection
+                    .edges
+                    .extend(all_questions.into_iter().map(|question| {
+                        Edge::with_additional_fields(question.id.to_string(), question, EmptyFields)
+                    }));
+                Ok::<_, Error>(connection)
+            },
+        )
+        .await
+    }
+
+    pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
         self.db_conn
             .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
             .await
@@ -125,7 +126,7 @@ impl LearningServiceTrait for LearningService {
             })
     }
 
-    async fn question_details<'a>(
+    pub async fn question_details<'a>(
         &self,
         question_slug: &'_ str,
     ) -> Result<QuestionDetailsOutput, ApiError> {
@@ -137,22 +138,19 @@ impl LearningServiceTrait for LearningService {
             .ok_or_else(|| ApiError {
                 error: format!("Question with slug={question_slug} not found"),
             })?;
-        let mut question = serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap();
-        question.rendered_problem = markdown_to_html(&question.problem, &ComrakOptions::default());
-        Ok(question)
+        Ok(serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap())
     }
 
-    async fn create_class<'a>(
+    pub async fn create_class<'a>(
         &self,
         hanko_id: &'a str,
-        account_type: &AccountType,
         name: &'a str,
         teacher_ids: &[Uuid],
     ) -> Result<CreateClassOutput, ApiError> {
-        validate_user_role(&AccountType::Teacher, account_type)?;
-        let all_teachers_to_insert = teacher_ids.to_vec();
-        // TODO: Insert correct teacher
-        // all_teachers_to_insert.push(*hanko_id);
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let mut all_teachers_to_insert = teacher_ids.to_vec();
+        all_teachers_to_insert.push(user_details.id);
         self.db_conn
             .query_required_single::<CreateClassOutput, _>(
                 CREATE_CLASS,
@@ -164,29 +162,17 @@ impl LearningServiceTrait for LearningService {
             })
     }
 
-    async fn create_question<'a>(
+    pub async fn create_question<'a>(
         &self,
         hanko_id: &'a str,
-        account_type: &AccountType,
         name: &'a str,
         problem: &'a str,
         test_cases: &[TestCase],
         class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError> {
-        validate_user_role(&AccountType::Teacher, account_type)?;
-        // FIXME: Insert correct teachers
-        // let all_teachers_to_insert = vec![*hanko_id];
-        let all_teachers_to_insert: Vec<Uuid> = vec![];
-        fn random_string(take: usize) -> String {
-            slugify(
-                rand::thread_rng()
-                    .sample_iter(&Alphanumeric)
-                    .take(take)
-                    .map(char::from)
-                    .collect::<String>(),
-            )
-            .to_ascii_uppercase()
-        }
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let all_teachers_to_insert = vec![user_details.id];
         let mut slug = random_string(8);
         loop {
             let is_slug_not_unique = self
@@ -282,7 +268,7 @@ impl LearningServiceTrait for LearningService {
         Ok(class)
     }
 
-    async fn execute_code_for_question(
+    pub async fn execute_code_for_question(
         &self,
         question_slug: &'_ str,
         code: &'_ str,
@@ -309,7 +295,7 @@ impl LearningServiceTrait for LearningService {
                 .collect::<Vec<_>>();
             let user_output = self
                 .farem_service
-                .send_execute_wasm_request(&compiled_wasm, &arguments)
+                .send_execute_wasm_request(&compiled_wasm, &arguments, language)
                 .await
                 .map_err(|f| ExecuteCodeError {
                     error: f,

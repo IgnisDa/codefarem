@@ -6,11 +6,14 @@
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt-get update -y",
-        "apt-get install -y curl xz-utils",
-        "rm -rf /var/apt/lists/*",
+        "apt-get install -y curl wget xz-utils",
         "curl https://wasmtime.dev/install.sh -sSf | bash",
         "apt-get remove --purge",
-        "cp /root/.wasmtime/bin/wasmtime /usr/local/bin"
+        "cp /root/.wasmtime/bin/wasmtime /usr/local/bin",
+        "wget https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz",
+        "tar -xf wasi-python-3.10.tgz --strip-components=1 -C /opt",
+        "rm -rf wasi-python-3.10.tgz",
+        "rm -rf /var/apt/lists/*"
       ],
       "ENVIRONMENT_VARIABLES": {}
     }

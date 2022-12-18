@@ -2,10 +2,20 @@ syntax = "proto3";
 
 package executor;
 
+enum Language {
+  Rust = 0;
+  Go = 1;
+  Cpp = 2;
+  C = 3;
+  Zig = 4;
+  Python = 5;
+}
+
 // The input required when executing a wasm source.
 message ExecutorInput {
   bytes data = 1;
   repeated string arguments = 2;
+  Language language = 3;
 }
 
 // The output of executing a wasm source.

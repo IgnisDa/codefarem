@@ -1,4 +1,3 @@
-import { Container, NextUIProvider } from '@nextui-org/react';
 import {
   Links,
   LiveReload,
@@ -8,10 +7,21 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
+import { NotificationsProvider } from '@mantine/notifications';
 import { json } from '@remix-run/node';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 import { ApplicationConfig } from './lib/config.server';
+import {
+  AppShell,
+  Box,
+  createEmotionCache,
+  MantineProvider,
+} from '@mantine/core';
+import { AppNavbar } from './lib/components/AppShell';
+import { StylesPlaceholder } from '@mantine/remix';
+
+createEmotionCache({ key: 'mantine' });
 
 export const links: LinksFunction = () => {
   return [];
@@ -24,7 +34,12 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader() {
-  return json({ ENV: { HANKO_URL: ApplicationConfig.HANKO_URL } });
+  return json({
+    ENV: {
+      HANKO_URL: ApplicationConfig.HANKO_URL,
+      NODE_ENV: process.env.NODE_ENV,
+    },
+  });
 }
 
 const Document: FC<{ children: ReactNode }> = ({ children }) => {
@@ -33,22 +48,29 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <html lang="en">
       <head>
+        <StylesPlaceholder />
         <Meta />
         <Links />
-        {typeof document === 'undefined' ? '__STYLES__' : null}
-      </head>
-      <body
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
-      >
-        <Container>{children}</Container>
-        <ScrollRestoration />
-        <Scripts />
         <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(ENV)}`,
-          }}
+          defer
+          data-domain="codefarem.ignisda.tech"
+          src="https://plausible.ignisda.tech/js/script.js"
         />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+      </head>
+      <body>
+        <AppShell navbar={<AppNavbar />} padding={0}>
+          <Box h={'100%'} py={40}>
+            {children}
+          </Box>
+          <ScrollRestoration />
+          <Scripts />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.ENV = ${JSON.stringify(ENV)}`,
+            }}
+          />
+          {ENV.NODE_ENV === 'development' && <LiveReload />}
+        </AppShell>
       </body>
     </html>
   );
@@ -56,11 +78,17 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
 
 export default function App() {
   return (
-    <Document>
-      <NextUIProvider>
-        <Outlet />
-      </NextUIProvider>
-    </Document>
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{ colorScheme: 'dark' }}
+    >
+      <NotificationsProvider>
+        <Document>
+          <Outlet />
+        </Document>
+      </NotificationsProvider>
+    </MantineProvider>
   );
 }
 

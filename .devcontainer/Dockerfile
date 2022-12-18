@@ -13,7 +13,7 @@ RUN groupadd -g ${GUID} ${USERNAME} ;\
     echo "ALL ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} ;\
     chmod 0440 /etc/sudoers.d/${USERNAME}
 
-RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip; do pacman -S --noconfirm $pkg; done
+RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip zig; do pacman -S --noconfirm $pkg; done
 
 RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
     printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/edgedb.sh ;\
@@ -27,6 +27,10 @@ RUN set -eu ;\
     tar zxvf "cargo-binstall.tgz" ;\
     mv "cargo-binstall" "/usr/bin/cargo-binstall"
 
+RUN wget "https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz" ;\
+    tar -xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
+    rm -rf "wasi-python-3.10.tgz"
+
 USER $USERNAME
 
 RUN set -eu ;\
@@ -34,8 +38,8 @@ RUN set -eu ;\
     curl --proto '=https' --tlsv1.2 -sSf https://sh.edgedb.com | sh -s -- -y --no-modify-path --verbose ;\
     curl "https://wasmtime.dev/install.sh" -sSf | bash ;\
     sudo cp "$HOME/.wasmtime/bin/wasmtime" "/usr/bin/wasmtime" ;\
-    rustup default nightly ;\
-    rustup target add wasm32-wasi
+    rustup default "1.65" ;\
+    rustup target add "wasm32-wasi"
 
 RUN set -eu ;\
     cd /tmp ;\
@@ -43,7 +47,7 @@ RUN set -eu ;\
     tar -xvf "paru-v1.11.2-x86_64.tar.zst" ;\
     sudo mv "paru" "/usr/bin/paru"
 
-RUN for pkg in emscripten protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
+RUN for pkg in protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
 
 RUN set -eu ;\
     cd /tmp ;\

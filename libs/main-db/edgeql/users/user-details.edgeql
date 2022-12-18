@@ -1,4 +1,5 @@
-SELECT users::User {
+SELECT DISTINCT users::User {
+  id,
   profile: {
     email,
     username

@@ -2,14 +2,14 @@ import { $ } from "edgedb";
 import * as _ from "../imports";
 import type * as _std from "./std";
 import type * as _learning from "./learning";
-export type $UserλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8ccbaf6fbc0493e7λShape & {
+export type $UserλShape = $.typeutil.flatten<_std.$Object_1cddb2f4773011ed977d63c742e2f33fλShape & {
   "auth": $.LinkDesc<$UserAuth, $.Cardinality.One, {}, false, false,  false, false>;
   "profile": $.LinkDesc<$UserProfile, $.Cardinality.One, {}, false, false,  false, false>;
   "<authored_by[is learning::Question]": $.LinkDesc<_learning.$Question, $.Cardinality.Many, {}, false, false,  false, false>;
   "<authored_by": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $User = $.ObjectType<"users::User", $UserλShape, null>;
-const $User = $.makeType<$User>(_.spec, "a8542bd9-72d3-11ed-ad8a-6ff449e62efb", _.syntax.literal);
+const $User = $.makeType<$User>(_.spec, "3b110c0c-77f1-11ed-8951-c70a798ff400", _.syntax.literal);
 
 const User: $.$expr_PathNode<$.TypeSet<$User, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($User, $.Cardinality.Many), null, true);
 
@@ -19,7 +19,7 @@ export type $StudentλShape = $.typeutil.flatten<$UserλShape & {
   "<students": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Student = $.ObjectType<"users::Student", $StudentλShape, null>;
-const $Student = $.makeType<$Student>(_.spec, "a8570ad1-72d3-11ed-9167-2d2cece4c4be", _.syntax.literal);
+const $Student = $.makeType<$Student>(_.spec, "3b13a460-77f1-11ed-866f-a59f1d366771", _.syntax.literal);
 
 const Student: $.$expr_PathNode<$.TypeSet<$Student, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Student, $.Cardinality.Many), null, true);
 
@@ -29,11 +29,11 @@ export type $TeacherλShape = $.typeutil.flatten<$UserλShape & {
   "<teachers": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $Teacher = $.ObjectType<"users::Teacher", $TeacherλShape, null>;
-const $Teacher = $.makeType<$Teacher>(_.spec, "a85b276e-72d3-11ed-9840-6351f8d4e260", _.syntax.literal);
+const $Teacher = $.makeType<$Teacher>(_.spec, "3b1940e2-77f1-11ed-b657-4f9b8cb3ea93", _.syntax.literal);
 
 const Teacher: $.$expr_PathNode<$.TypeSet<$Teacher, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($Teacher, $.Cardinality.Many), null, true);
 
-export type $UserAuthλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8ccbaf6fbc0493e7λShape & {
+export type $UserAuthλShape = $.typeutil.flatten<_std.$Object_1cddb2f4773011ed977d63c742e2f33fλShape & {
   "hanko_id": $.PropertyDesc<_std.$str, $.Cardinality.One, true, false, false, false>;
   "<auth[is users::User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
   "<auth[is users::Student]": $.LinkDesc<$Student, $.Cardinality.Many, {}, false, false,  false, false>;
@@ -41,11 +41,11 @@ export type $UserAuthλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8
   "<auth": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $UserAuth = $.ObjectType<"users::UserAuth", $UserAuthλShape, null>;
-const $UserAuth = $.makeType<$UserAuth>(_.spec, "a8508a86-72d3-11ed-a9db-215a1edf7a27", _.syntax.literal);
+const $UserAuth = $.makeType<$UserAuth>(_.spec, "3aed6c52-77f1-11ed-a078-6da6bf9dc356", _.syntax.literal);
 
 const UserAuth: $.$expr_PathNode<$.TypeSet<$UserAuth, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($UserAuth, $.Cardinality.Many), null, true);
 
-export type $UserProfileλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11ed8ccbaf6fbc0493e7λShape & {
+export type $UserProfileλShape = $.typeutil.flatten<_std.$Object_1cddb2f4773011ed977d63c742e2f33fλShape & {
   "email": $.PropertyDesc<_std.$str, $.Cardinality.One, true, false, false, false>;
   "username": $.PropertyDesc<_std.$str, $.Cardinality.One, true, false, false, false>;
   "<profile[is users::User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
@@ -54,7 +54,7 @@ export type $UserProfileλShape = $.typeutil.flatten<_std.$Object_99e11e7f678f11
   "<profile": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $UserProfile = $.ObjectType<"users::UserProfile", $UserProfileλShape, null>;
-const $UserProfile = $.makeType<$UserProfile>(_.spec, "a851d34b-72d3-11ed-8173-dd45688bab10", _.syntax.literal);
+const $UserProfile = $.makeType<$UserProfile>(_.spec, "3b0d772e-77f1-11ed-819d-2b7dc83b950c", _.syntax.literal);
 
 const UserProfile: $.$expr_PathNode<$.TypeSet<$UserProfile, $.Cardinality.Many>, null, true> = _.syntax.$PathNode($.$toSet($UserProfile, $.Cardinality.Many), null, true);
 

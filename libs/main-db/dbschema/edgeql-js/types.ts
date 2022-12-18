@@ -269,6 +269,20 @@ export namespace cfg {
   }
   export interface Trust extends AuthMethod {}
 }
+export namespace external {
+  export enum InviteAs {
+    Student = "Student",
+    Teacher = "Teacher",
+  }
+  export interface InviteLink extends std.$Object {
+    "email"?: string | null;
+    "expires_at": Date;
+    "used_at"?: Date | null;
+    "is_active": boolean;
+    "ia": InviteAs;
+    "token": string;
+  }
+}
 export namespace learning {
   export interface CaseUnit extends std.$Object {}
   export interface Class extends std.$Object {
@@ -424,6 +438,10 @@ export interface types {
     "JWT": cfg.JWT;
     "SCRAM": cfg.SCRAM;
     "Trust": cfg.Trust;
+  };
+  "external": {
+    "InviteAs": external.InviteAs;
+    "InviteLink": external.InviteLink;
   };
   "learning": {
     "CaseUnit": learning.CaseUnit;

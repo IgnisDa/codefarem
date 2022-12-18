@@ -1,17 +1,20 @@
-use super::{
-    dto::{
-        mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
-        queries::{
-            user_details::UserDetailsResultUnion,
-            user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
+use crate::{
+    config::AppConfig,
+    users::{
+        dto::{
+            mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
+            queries::{
+                user_details::UserDetailsResultUnion,
+                user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
+            },
         },
+        service::UserService,
     },
-    service::{UserService, UserServiceTrait},
+    utils::RequestData,
 };
-use crate::RequestData;
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
-use macros::{to_result_union_response, user_id_from_request};
+use macros::{hanko_id_from_request, to_result_union_response};
 
 /// The query segment for User
 #[derive(Default)]
@@ -25,10 +28,10 @@ pub struct UserMutation {}
 impl UserQuery {
     /// Get information about the current user
     async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
-        let user_id = user_id_from_request!(ctx);
+        let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<UserService>()
-            .user_details(&user_id)
+            .user_details(&hanko_id)
             .await;
         to_result_union_response!(output, UserDetailsResultUnion)
     }
@@ -60,8 +63,8 @@ impl UserMutation {
             .register_user(
                 input.username(),
                 input.email(),
-                input.account_type(),
                 input.hanko_id(),
+                input.invite_token(),
             )
             .await;
         to_result_union_response!(output, RegisterUserResultUnion)

@@ -2,17 +2,24 @@
 $schema: 'https://moonrepo.dev/schemas/workspace.json'
 
 projects:
-  website: 'apps/website'
+  # typescript projects
+  admin-website: 'apps/admin/website'
+  admin-backend: 'apps/admin/backend'
+  faker: 'libs/faker'
   generated: 'libs/generated'
   main-db: 'libs/main-db'
+  mails: 'apps/mails'
   react-ui: 'libs/react-ui'
-  faker: 'libs/faker'
+  website: 'apps/website'
+
   # rust projects
   compilers: 'apps/compilers'
   executor: 'apps/executor'
   orchestrator: 'apps/orchestrator'
+
   # python projects
   deployment: 'apps/deployment'
+
   # miscellaneous
   authenticator: 'apps/authenticator'
   examples: 'libs/examples'

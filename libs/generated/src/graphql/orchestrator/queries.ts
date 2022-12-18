@@ -47,7 +47,6 @@ export const QUESTION_DETAILS = graphql(`
       ... on QuestionDetailsOutput {
         name
         problem
-        renderedProblem
         numClasses
         authoredBy {
           profile {
@@ -83,6 +82,28 @@ export const USER_DETAILS = graphql(`
         profile {
           email
           username
+        }
+      }
+    }
+  }
+`);
+
+export const ALL_QUESTIONS = graphql(`
+  query AllQuestions($args: ConnectionArguments!) {
+    allQuestions(args: $args) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          createdTime
+          name
+          slug
+          numTestCases
         }
       }
     }

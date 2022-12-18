@@ -1,10 +1,9 @@
+use crate::learning::dto::queries::test_case::TestCase;
 use async_graphql::{InputObject, SimpleObject, Union};
 use derive_getters::Getters;
 use edgedb_derive::Queryable;
 use utilities::graphql::ApiError;
 use uuid::Uuid;
-
-use crate::learning::dto::queries::test_case::TestCase;
 
 /// The input object used to create a new question
 #[derive(Debug, InputObject, Getters)]

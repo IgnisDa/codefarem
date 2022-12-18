@@ -1,64 +1,43 @@
-use super::dto::mutations::execute_code::{
+use crate::farem::dto::mutations::execute_code::{
     ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput,
 };
-use async_graphql::Enum;
-use async_trait::async_trait;
 use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
-    executor::{executor_service_client::ExecutorServiceClient, ExecutorInput},
+    executor::{executor_service_client::ExecutorServiceClient, ExecutorInput, Language},
 };
-use strum::{EnumIter, IntoEnumIterator};
 use tonic::{transport::Channel, Request};
-
-#[async_trait]
-pub trait FaremServiceTrait: Sync + Send {
-    fn supported_languages(&self) -> Vec<SupportedLanguage>;
-
-    async fn language_example(&self, language: &SupportedLanguage) -> String;
-
-    async fn execute_code(
-        &self,
-        input: &'_ str,
-        arguments: &[String],
-        language: &SupportedLanguage,
-    ) -> Result<ExecuteCodeOutput, ExecuteCodeError>;
-}
+use utilities::SupportedLanguage;
 
 #[derive(Debug, Clone)]
 pub struct FaremService {
     executor_service: ExecutorServiceClient<Channel>,
-    cpp_compiler_service: CompilerServiceClient<Channel>,
-    go_compiler_service: CompilerServiceClient<Channel>,
-    rust_compiler_service: CompilerServiceClient<Channel>,
+    cpp_service: CompilerServiceClient<Channel>,
+    go_service: CompilerServiceClient<Channel>,
+    rust_service: CompilerServiceClient<Channel>,
+    zig_service: CompilerServiceClient<Channel>,
+    c_service: CompilerServiceClient<Channel>,
+    python_service: CompilerServiceClient<Channel>,
 }
 
 impl FaremService {
     pub fn new(
         executor_service: &ExecutorServiceClient<Channel>,
-        cpp_compiler_service: &CompilerServiceClient<Channel>,
-        go_compiler_service: &CompilerServiceClient<Channel>,
-        rust_compiler_service: &CompilerServiceClient<Channel>,
+        cpp_service: &CompilerServiceClient<Channel>,
+        go_service: &CompilerServiceClient<Channel>,
+        rust_service: &CompilerServiceClient<Channel>,
+        zig_service: &CompilerServiceClient<Channel>,
+        c_service: &CompilerServiceClient<Channel>,
+        python_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
             executor_service: executor_service.clone(),
-            cpp_compiler_service: cpp_compiler_service.clone(),
-            go_compiler_service: go_compiler_service.clone(),
-            rust_compiler_service: rust_compiler_service.clone(),
+            cpp_service: cpp_service.clone(),
+            go_service: go_service.clone(),
+            rust_service: rust_service.clone(),
+            zig_service: zig_service.clone(),
+            c_service: c_service.clone(),
+            python_service: python_service.clone(),
         }
-    }
-}
-
-#[derive(Enum, Clone, Copy, Debug, PartialEq, Eq, EnumIter)]
-#[graphql(rename_items = "lowercase")]
-pub enum SupportedLanguage {
-    Rust,
-    Go,
-    Cpp,
-}
-
-impl SupportedLanguage {
-    fn variants() -> Vec<Self> {
-        Self::iter().collect()
     }
 }
 
@@ -67,13 +46,16 @@ impl FaremService {
         &self,
         wasm: &[u8],
         arguments: &[String],
+        language: &SupportedLanguage,
     ) -> Result<String, String> {
+        let request_lang = Language::from(*language) as i32;
         let execute_result = self
             .executor_service
             .clone()
             .execute(ExecutorInput {
                 data: wasm.to_vec(),
                 arguments: arguments.to_vec(),
+                language: request_lang,
             })
             .await;
         match execute_result {
@@ -94,15 +76,18 @@ impl FaremService {
         language: &SupportedLanguage,
     ) -> Result<Vec<u8>, String> {
         let compiler_service = match language {
-            SupportedLanguage::Rust => &self.rust_compiler_service,
-            SupportedLanguage::Go => &self.go_compiler_service,
-            SupportedLanguage::Cpp => &self.cpp_compiler_service,
+            SupportedLanguage::Rust => &self.rust_service,
+            SupportedLanguage::Go => &self.go_service,
+            SupportedLanguage::C => &self.c_service,
+            SupportedLanguage::Cpp => &self.cpp_service,
+            SupportedLanguage::Zig => &self.zig_service,
+            SupportedLanguage::Python => &self.python_service,
         };
         self.send_compile_source_request(source, compiler_service)
             .await
     }
 
-    async fn send_compile_source_request(
+    pub async fn send_compile_source_request(
         &self,
         input: &'_ str,
         compiler_service: &CompilerServiceClient<Channel>,
@@ -124,19 +109,19 @@ impl FaremService {
             }
         }
     }
-}
 
-#[async_trait]
-impl FaremServiceTrait for FaremService {
-    fn supported_languages(&self) -> Vec<SupportedLanguage> {
+    pub fn supported_languages(&self) -> Vec<SupportedLanguage> {
         SupportedLanguage::variants()
     }
 
-    async fn language_example(&self, language: &SupportedLanguage) -> String {
+    pub async fn language_example(&self, language: &SupportedLanguage) -> String {
         let compiler_service = match language {
-            SupportedLanguage::Rust => &self.rust_compiler_service,
-            SupportedLanguage::Cpp => &self.cpp_compiler_service,
-            SupportedLanguage::Go => &self.go_compiler_service,
+            SupportedLanguage::Rust => &self.rust_service,
+            SupportedLanguage::Cpp => &self.cpp_service,
+            SupportedLanguage::C => &self.c_service,
+            SupportedLanguage::Go => &self.go_service,
+            SupportedLanguage::Zig => &self.zig_service,
+            SupportedLanguage::Python => &self.python_service,
         };
         compiler_service
             .clone()
@@ -148,7 +133,7 @@ impl FaremServiceTrait for FaremService {
             .clone()
     }
 
-    async fn execute_code(
+    pub async fn execute_code(
         &self,
         input: &'_ str,
         arguments: &[String],
@@ -161,7 +146,7 @@ impl FaremServiceTrait for FaremService {
                 error: f,
                 step: ExecuteCodeErrorStep::CompilationToWasm,
             })?;
-        self.send_execute_wasm_request(&wasm, arguments)
+        self.send_execute_wasm_request(&wasm, arguments, language)
             .await
             .map(|f| ExecuteCodeOutput { output: f })
             .map_err(|f| ExecuteCodeError {

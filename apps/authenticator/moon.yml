@@ -1,5 +1,8 @@
 type: 'application'
 
+dependsOn:
+  - deployment
+
 workspace:
   inheritedTasks:
     include: []

@@ -1,0 +1,8 @@
+type: 'library'
+
+dependsOn:
+  - deployment
+
+workspace:
+  inheritedTasks:
+    include: []
