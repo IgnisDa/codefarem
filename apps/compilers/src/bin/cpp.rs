@@ -9,12 +9,15 @@ async fn example() -> &'static str {
 fn compile(code: &'_ str) -> Result<Vec<u8>, Vec<u8>> {
     let (input_file_path, output_file_path) = generate_input_and_output_files("cpp", code);
     let command = cmd!(
-        "emcc",
+        "zig",
+        "build-exe",
         &input_file_path,
-        "-s",
-        "STANDALONE_WASM",
-        "-o",
-        &output_file_path
+        "-O",
+        "ReleaseSmall",
+        "-target",
+        "wasm32-wasi",
+        "-lc++",
+        format!("-femit-bin={}", output_file_path.to_str().unwrap())
     );
     run_command_and_capture_output(command, &output_file_path)
 }
