@@ -39,17 +39,21 @@ the technologies used:
 - [Remix][remix]: Framework used for the main website
 - [Vite][vite]: Framework used for the admin website
 - [Mantine][mantine]: Frontend framework in admin website
-- [Emscripten][emscripten]: Compiling `cpp` to `wasm`
-- [Tinygo][tinygo]: Compiling `go` to `wasm`
-- [Rust Wasi][rust-wasm32]: Compiling `rs` to `wasm`
+- [Tinygo][tinygo]: Compiling `Go` to `wasm`
+- [Rust Wasi][rust-wasm32]: Compiling `Rust` to `wasm`
+- [Zig][zig]: Compiling `Zig`, `C` and `Cpp` to `wasm`
+- [Python-Wasi][python-wasi]: Executing `Python` in a `wasm` environment
 - [Wasmtime][wasmtime]: Executing the compiled `wasm` output
+- [Docker][docker]: Containerization of the microservices
 
 [edgedb]: https://edgedb.com
 [hanko]: https://hanko.io
 [remix]: https://remix.run
 [mantine]: https://mantine.dev
 [vite]: https://vitejs.dev
-[emscripten]: https://emscripten.org
 [tinygo]: https://tinygo.org
 [rust-wasm32]: https://github.com/bytecodealliance/cargo-wasi
 [wasmtime]: https://wasmtime.dev
+[zig]: https://ziglang.org
+[python-wasi]: https://github.com/singlestore-labs/python-wasi
+[docker]: https://docker.com
