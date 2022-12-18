@@ -28,12 +28,12 @@ pub static CODEFAREM_TEMP_PATH: Lazy<PathBuf> = Lazy::new(|| {
 #[derive(Enum, Clone, Copy, Debug, PartialEq, Eq, EnumIter)]
 #[graphql(rename_items = "lowercase")]
 pub enum SupportedLanguage {
-    Rust,
-    Go,
+    Python,
     Cpp,
     C,
+    Rust,
+    Go,
     Zig,
-    Python,
 }
 
 impl From<SupportedLanguage> for Language {
