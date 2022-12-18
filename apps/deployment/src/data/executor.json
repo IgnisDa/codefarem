@@ -2,7 +2,7 @@
   "dockerfile_path": "apps/executor/executor.generated.Dockerfile",
   "apps": [
     {
-      "EXECUTABLE_NAME": "executor",
+      "EXECUTABLE_NAMES": ["executor"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt-get update -y",

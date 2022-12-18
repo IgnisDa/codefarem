@@ -2,19 +2,19 @@
   "dockerfile_path": "apps/compilers/${executable}.generated.Dockerfile",
   "apps": [
     {
-      "EXECUTABLE_NAME": "rs-compiler",
+      "EXECUTABLE_NAMES": ["rs-compiler"],
       "IMAGE_NAME": "rust:1.65",
       "COMMANDS": ["rustup target add wasm32-wasi"],
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAME": "go-compiler",
+      "EXECUTABLE_NAMES": ["go-compiler"],
       "IMAGE_NAME": "tinygo/tinygo",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAME": "cpp-compiler",
+      "EXECUTABLE_NAMES": ["c-compiler", "cpp-compiler", "zig-compiler"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt update",
@@ -28,35 +28,7 @@
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAME": "c-compiler",
-      "IMAGE_NAME": "ubuntu:latest",
-      "COMMANDS": [
-        "apt update",
-        "apt install -y wget xz-utils",
-        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
-        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
-        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
-        "rm -rf tmp/*",
-        "zig version"
-      ],
-      "ENVIRONMENT_VARIABLES": {}
-    },
-    {
-      "EXECUTABLE_NAME": "zig-compiler",
-      "IMAGE_NAME": "ubuntu:latest",
-      "COMMANDS": [
-        "apt update",
-        "apt install -y wget xz-utils",
-        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
-        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
-        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
-        "rm -rf tmp/*",
-        "zig version"
-      ],
-      "ENVIRONMENT_VARIABLES": {}
-    },
-    {
-      "EXECUTABLE_NAME": "swift-compiler",
+      "EXECUTABLE_NAMES": ["swift-compiler"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt update",
@@ -68,7 +40,7 @@
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAME": "python-compiler",
+      "EXECUTABLE_NAMES": ["python-compiler"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}

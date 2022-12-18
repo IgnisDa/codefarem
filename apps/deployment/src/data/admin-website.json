@@ -2,7 +2,7 @@
   "dockerfile_path": "apps/admin/website/admin-website.generated.Dockerfile",
   "apps": [
     {
-      "EXECUTABLE_NAME": "admin-website",
+      "EXECUTABLE_NAMES": ["admin-website"],
       "ENVIRONMENT_VARIABLES": {
         "VITE_API_BASE_URL": "{{ VITE_API_BASE_URL }}"
       }

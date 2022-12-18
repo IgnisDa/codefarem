@@ -27,7 +27,7 @@ jobs:
         id: executables
         run: |
           executables=$(node -e "
-            let executables = \`$(cat apps/deployment/src/data/*.json | jq .apps[].EXECUTABLE_NAME -r)\`.split('\n')
+            let executables = \`$(cat apps/deployment/src/data/*.json | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]')\`.split('\n')
             console.log(JSON.stringify(executables))
           ")
           echo "executables=$executables" >> $GITHUB_OUTPUT
@@ -82,7 +82,7 @@ jobs:
           executable: ${{ matrix.executable }}
         run: |
           for file in apps/deployment/src/data/*.json; do
-              for exe in $(cat "$file" | jq -r '.apps[].EXECUTABLE_NAME'); do
+              for exe in $(cat "$file" | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]'); do
                   if [[ "$exe" == "$executable" ]]; then
                       dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
                       echo "Found dockerfile path for executable '$executable': '$dockerfile_path'"

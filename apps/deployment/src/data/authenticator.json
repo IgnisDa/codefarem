@@ -2,7 +2,7 @@
   "dockerfile_path": "apps/authenticator/authenticator.generated.Dockerfile",
   "apps": [
     {
-      "EXECUTABLE_NAME": "authenticator"
+      "EXECUTABLE_NAMES": ["authenticator"]
     }
   ]
 }

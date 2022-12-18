@@ -24,12 +24,13 @@ def write_dockerfile(template_name: str, app: str):
         data = json.loads(data)
     apps = data["apps"]
     for context in apps:
-        filename = data["dockerfile_path"].replace(
-            "${executable}", context["EXECUTABLE_NAME"]
-        )
-        rendered = base.render(**context)
-        with open(filename, mode="w", encoding="utf-8") as dockerfile:
-            dockerfile.write(rendered)
+        for app in context["EXECUTABLE_NAMES"]:
+            filename = data["dockerfile_path"].replace("${executable}", app)
+            new_context = context.copy()
+            new_context["EXECUTABLE_NAME"] = app
+            rendered = base.render(**new_context)
+            with open(filename, mode="w", encoding="utf-8") as dockerfile:
+                dockerfile.write(rendered)
 
 
 @click.group()

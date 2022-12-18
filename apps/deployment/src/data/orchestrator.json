@@ -2,7 +2,7 @@
   "dockerfile_path": "apps/orchestrator/orchestrator.generated.Dockerfile",
   "apps": [
     {
-      "EXECUTABLE_NAME": "orchestrator",
+      "EXECUTABLE_NAMES": ["orchestrator"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {
