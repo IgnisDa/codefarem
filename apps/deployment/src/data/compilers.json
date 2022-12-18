@@ -56,6 +56,18 @@
       "ENVIRONMENT_VARIABLES": {}
     },
     {
+      "EXECUTABLE_NAME": "swift-compiler",
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils",
+        "wget https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.7-SNAPSHOT-2022-11-09-a/swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz",
+        "tar xf swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz --strip-components=2 -C /usr/local",
+        "rm -rf swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz"
+      ],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
       "EXECUTABLE_NAME": "python-compiler",
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
