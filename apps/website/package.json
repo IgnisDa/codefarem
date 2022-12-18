@@ -28,7 +28,6 @@
     "@remix-run/server-runtime": "1.8.2",
     "@routes-gen/remix": "0.3.5",
     "@tabler/icons": "1.116.1",
-    "@teamhanko/hanko-elements": "0.0.12-alpha",
     "@teamhanko/hanko-frontend-sdk": "0.0.9-alpha",
     "@tiptap/extension-highlight": "2.0.0-beta.207",
     "@tiptap/extension-link": "2.0.0-beta.207",
