@@ -13,6 +13,9 @@ pub struct ExecutorInput {
 pub struct ExecutorOutput {
     #[prost(bytes="vec", tag="1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+    /// The time elapsed to execute the wasm
+    #[prost(string, tag="2")]
+    pub elapsed: ::prost::alloc::string::String,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]

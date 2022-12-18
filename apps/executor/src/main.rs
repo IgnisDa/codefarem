@@ -4,7 +4,7 @@ use protobuf::generated::executor::{
     executor_service_server::{ExecutorService, ExecutorServiceServer},
     ExecutorInput, ExecutorOutput, Language,
 };
-use std::{io::Write, path::PathBuf};
+use std::{io::Write, path::PathBuf, time::Instant};
 use tonic::{async_trait, transport::Server, Request, Response, Status};
 use utilities::{generate_random_file, get_server_url, CODEFAREM_TEMP_PATH};
 
@@ -45,16 +45,19 @@ impl ExecutorService for ExecutorHandler {
         }
         let command = cmd("wasmtime", program_args);
         info!("Running command: {:?}", command);
+        let start = Instant::now();
         let command_output = command
             .unchecked()
             .stdout_capture()
             .stderr_capture()
             .run()
             .unwrap();
+        let elapsed = start.elapsed();
         if command_output.status.success() {
             info!("Executed wasmtime on file {:?} successfully", file_path);
             Ok(Response::new(ExecutorOutput {
                 data: command_output.stdout,
+                elapsed: format!("{:?}", elapsed),
             }))
         } else {
             error!(

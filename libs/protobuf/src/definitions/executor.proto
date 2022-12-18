@@ -22,6 +22,8 @@ message ExecutorInput {
 // The output of executing a wasm source.
 message ExecutorOutput {
   bytes data = 1;
+  // The time elapsed to execute the wasm
+  string elapsed = 2;
 }
 
 // The service definition.
