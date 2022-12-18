@@ -1,16 +1,5 @@
-import type { ActionArgs, LinksFunction } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
-import { useEffect, useState } from 'react';
-import { useForm, zodResolver } from '@mantine/form';
-import { Hanko, NotFoundError } from '@teamhanko/hanko-frontend-sdk';
-import { useFetcher } from '@remix-run/react';
-import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
-import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
-import { z } from 'zod';
-import { zx } from 'zodix';
-import { gqlClient } from '~/lib/services/graphql.server';
 import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
-import authStyles from '../../styles/auth/index.css';
+import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
 import {
   Button,
   Center,
@@ -19,8 +8,20 @@ import {
   Stepper,
   TextInput,
 } from '@mantine/core';
-import { IconMailOpened, IconShieldCheck } from '@tabler/icons';
+import { useForm, zodResolver } from '@mantine/form';
+import { PinInput } from '@mantine/labs';
 import { showNotification } from '@mantine/notifications';
+import { redirect } from '@remix-run/node';
+import { useFetcher } from '@remix-run/react';
+import { IconMailOpened, IconShieldCheck } from '@tabler/icons';
+import { Hanko, NotFoundError } from '@teamhanko/hanko-frontend-sdk';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
+import { zx } from 'zodix';
+import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
+import { gqlClient } from '~/lib/services/graphql.server';
+import authStyles from '../../styles/auth/index.css';
+import type { ActionArgs, LinksFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: authStyles }];
@@ -168,10 +169,15 @@ export default () => {
                 })}
               >
                 <Stack>
-                  <TextInput
-                    description="Enter the passcode sent to your email"
-                    {...passcodeForm.getInputProps('passcode')}
-                  />
+                  <Center>
+                    <PinInput
+                      length={6}
+                      autoFocus
+                      required
+                      size={'lg'}
+                      {...passcodeForm.getInputProps('passcode')}
+                    />
+                  </Center>
                   <Button type="submit" loading={isLoading}>
                     Submit
                   </Button>
