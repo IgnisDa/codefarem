@@ -150,7 +150,7 @@ export default () => {
   };
 
   return (
-    <Container w={'100%'} mx={{ xs: 10, md: 20 }}>
+    <Container>
       <Stack>
         <Title order={1}>Create a question</Title>
         <TextInput
