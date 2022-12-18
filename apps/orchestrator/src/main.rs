@@ -43,6 +43,7 @@ async fn rocket() -> _ {
         &app_state.zig_service,
         &app_state.c_service,
         &app_state.python_service,
+        &app_state.swift_service,
     );
     let user_service = UserService::new(&app_state.db_conn);
     let learning_service =

@@ -9,10 +9,11 @@
                 "admin-website",
                 "admin-backend",
                 "c-service",
-                "python-service",
                 "cpp-service",
                 "go-service",
+                "python-service",
                 "rs-service",
+                "swift-service",
                 "zig-service",
                 "executor",
                 "website",
@@ -52,6 +53,18 @@
             "options": {
                 "env": {
                     "PORT": "5009"
+                }
+            },
+        },
+        {
+            "label": "swift-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin swift-compiler'",
+            "detail": "Run the Python compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5010"
                 }
             },
         },

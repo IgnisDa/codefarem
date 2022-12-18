@@ -16,10 +16,12 @@ pub struct FaremService {
     rust_service: CompilerServiceClient<Channel>,
     zig_service: CompilerServiceClient<Channel>,
     c_service: CompilerServiceClient<Channel>,
+    swift_service: CompilerServiceClient<Channel>,
     python_service: CompilerServiceClient<Channel>,
 }
 
 impl FaremService {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         executor_service: &ExecutorServiceClient<Channel>,
         cpp_service: &CompilerServiceClient<Channel>,
@@ -28,6 +30,7 @@ impl FaremService {
         zig_service: &CompilerServiceClient<Channel>,
         c_service: &CompilerServiceClient<Channel>,
         python_service: &CompilerServiceClient<Channel>,
+        swift_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
             executor_service: executor_service.clone(),
@@ -37,6 +40,7 @@ impl FaremService {
             zig_service: zig_service.clone(),
             c_service: c_service.clone(),
             python_service: python_service.clone(),
+            swift_service: swift_service.clone(),
         }
     }
 }
@@ -82,6 +86,7 @@ impl FaremService {
             SupportedLanguage::Cpp => &self.cpp_service,
             SupportedLanguage::Zig => &self.zig_service,
             SupportedLanguage::Python => &self.python_service,
+            SupportedLanguage::Swift => &self.swift_service,
         };
         self.send_compile_source_request(source, compiler_service)
             .await
@@ -122,6 +127,7 @@ impl FaremService {
             SupportedLanguage::Go => &self.go_service,
             SupportedLanguage::Zig => &self.zig_service,
             SupportedLanguage::Python => &self.python_service,
+            SupportedLanguage::Swift => &self.swift_service,
         };
         compiler_service
             .clone()

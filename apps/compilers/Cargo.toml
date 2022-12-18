@@ -38,3 +38,7 @@ path = "src/bin/c.rs"
 [[bin]]
 name = "python-compiler"
 path = "src/bin/python.rs"
+
+[[bin]]
+name = "swift-compiler"
+path = "src/bin/swift.rs"

@@ -9,6 +9,7 @@ enum Language {
   C = 3;
   Zig = 4;
   Python = 5;
+  Swift = 6;
 }
 
 // The input required when executing a wasm source.

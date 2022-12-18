@@ -371,6 +371,7 @@ export enum SupportedLanguage {
   Go = 'go',
   Python = 'python',
   Rust = 'rust',
+  Swift = 'swift',
   Zig = 'zig'
 }
 

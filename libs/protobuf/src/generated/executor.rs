@@ -23,6 +23,7 @@ pub enum Language {
     C = 3,
     Zig = 4,
     Python = 5,
+    Swift = 6,
 }
 impl Language {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -37,6 +38,7 @@ impl Language {
             Language::C => "C",
             Language::Zig => "Zig",
             Language::Python => "Python",
+            Language::Swift => "Swift",
         }
     }
 }
