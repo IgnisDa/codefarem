@@ -100,8 +100,12 @@ export default () => {
                     userId = user.id;
                   } catch (e) {
                     if (e instanceof NotFoundError) {
-                      console.log('User not found, creating new user');
                       const user = await hankoSdk.user.create(values.email);
+                      showNotification({
+                        title: 'System Action',
+                        message: 'Created new user',
+                        color: 'blue',
+                      });
                       userId = user.id;
                     }
                   } finally {
