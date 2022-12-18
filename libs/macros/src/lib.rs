@@ -56,7 +56,10 @@ macro_rules! proto_server {
             ) -> Result<Response<CompileResponse>, Status> {
                 let resp = $compiler_handler(&request.into_inner().code);
                 match resp {
-                    Ok(s) => Ok(Response::new(CompileResponse { data: s.into() })),
+                    Ok(s) => Ok(Response::new(CompileResponse {
+                        data: s.0.into(),
+                        elapsed: s.1,
+                    })),
                     Err(e) => Err(Status::invalid_argument(String::from_utf8(e).unwrap())),
                 }
             }

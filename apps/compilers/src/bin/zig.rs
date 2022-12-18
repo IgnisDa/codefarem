@@ -6,7 +6,7 @@ async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/zig/example.zig").trim()
 }
 
-fn compile(code: &'_ str) -> Result<Vec<u8>, Vec<u8>> {
+fn compile(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
     let (input_file_path, output_file_path) = generate_input_and_output_files("zig", code);
     let command = cmd!(
         "zig",

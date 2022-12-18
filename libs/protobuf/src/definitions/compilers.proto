@@ -20,6 +20,8 @@ message Input {
 message CompileResponse {
   // The compiled wasm output
   bytes data = 1;
+  // The time elapsed to compile the source
+  string elapsed = 2;
 }
 
 // The farem related services

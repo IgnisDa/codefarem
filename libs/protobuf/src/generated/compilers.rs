@@ -20,6 +20,9 @@ pub struct CompileResponse {
     /// The compiled wasm output
     #[prost(bytes="vec", tag="1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+    /// The time elapsed to compile the source
+    #[prost(string, tag="2")]
+    pub elapsed: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod compiler_service_client {

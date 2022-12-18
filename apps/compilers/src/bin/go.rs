@@ -6,7 +6,7 @@ async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/go/example.go").trim()
 }
 
-fn farem(code: &'_ str) -> Result<Vec<u8>, Vec<u8>> {
+fn farem(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
     let (input_file_path, output_file_path) = generate_input_and_output_files("go", code);
     let command = cmd!(
         "tinygo",
