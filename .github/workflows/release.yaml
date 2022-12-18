@@ -26,8 +26,9 @@ jobs:
       - name: Get projects executables
         id: executables
         run: |
+          all_executables=$(cat apps/deployment/src/data/*.json | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]' | tr '\n' ' ' | xargs)
           executables=$(node -e "
-            let executables = \`$(cat apps/deployment/src/data/*.json | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]')\`.split('\n')
+            let executables = \`$all_executables\`.split(' ').filter(Boolean)
             console.log(JSON.stringify(executables))
           ")
           echo "executables=$executables" >> $GITHUB_OUTPUT
@@ -82,9 +83,15 @@ jobs:
           executable: ${{ matrix.executable }}
         run: |
           for file in apps/deployment/src/data/*.json; do
-              for exe in $(cat "$file" | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]'); do
+              executables=$(cat "$file" | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]' | tr '\n' ' ' | xargs)
+              executables=($executables)
+              # break from loop if dockerfile path was found
+              if [[ -n "$dockerfile_path" ]]; then
+                  break
+              fi
+              for exe in ${executables[@]}; do
                   if [[ "$exe" == "$executable" ]]; then
-                      dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
+                      dockerfile_path=$(envsubst < "$file" | jq -r '.dockerfile_path')
                       echo "Found dockerfile path for executable '$executable': '$dockerfile_path'"
                       break
                   fi
