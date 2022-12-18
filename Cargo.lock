@@ -507,6 +507,7 @@ dependencies = [
 name = "compilers"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "duct",
  "env_logger 0.10.0",
  "log",

@@ -2,6 +2,8 @@ use compilers::{generate_input_and_output_files, run_command_and_capture_output}
 use duct::cmd;
 use macros::proto_server;
 
+const VERSION: &str = include_str!(concat!(env!("OUT_DIR"), "/rust_version.txt"));
+
 async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/rs/example.rs").trim()
 }

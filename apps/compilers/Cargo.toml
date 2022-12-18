@@ -15,6 +15,9 @@ log = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
 
+[build-dependencies]
+anyhow = { workspace = true }
+
 [[bin]]
 name = "cpp-compiler"
 path = "src/bin/cpp.rs"
