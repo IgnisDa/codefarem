@@ -158,6 +158,7 @@ export default () => {
             setCode={setCode}
             setLanguage={setLanguage}
             supportedLanguages={supportedLanguages}
+            btnText={'Run test cases'}
           />
         </Flex>
       </Flex>

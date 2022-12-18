@@ -1,9 +1,9 @@
-import type { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
-import { Stack, Flex, Select, Button } from '@mantine/core';
-import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
-import Editor from '@monaco-editor/react';
-import type { Dispatch, SetStateAction } from 'react';
+import { Button, Flex, Select, Stack } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
+import Editor from '@monaco-editor/react';
+import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
+import type { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface CodeEditorProps {
   supportedLanguages: SupportedLanguage[];
@@ -13,6 +13,7 @@ interface CodeEditorProps {
   setLanguage: Dispatch<SetStateAction<SupportedLanguage>>;
   onSubmit: () => Promise<void>;
   isSubmittingLoading: boolean;
+  btnText: string;
 }
 
 export const CodeEditor = ({
@@ -23,6 +24,7 @@ export const CodeEditor = ({
   setCode,
   setLanguage,
   isSubmittingLoading,
+  btnText,
 }: CodeEditorProps) => {
   return (
     <Stack w={'100%'}>
@@ -66,7 +68,7 @@ export const CodeEditor = ({
           loading={isSubmittingLoading}
           onClick={onSubmit}
         >
-          Run Test Cases
+          {btnText}
         </Button>
       </Flex>
     </Stack>

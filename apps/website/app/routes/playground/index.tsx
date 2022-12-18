@@ -28,6 +28,7 @@ export async function loader(_args: LoaderArgs) {
     supportedLanguages,
   });
 }
+
 const inputSchema = z.object({
   input: z.string(),
   language: z.nativeEnum(SupportedLanguage),
@@ -73,6 +74,7 @@ export default () => {
         setCode={setCode}
         setLanguage={setLanguage}
         supportedLanguages={supportedLanguages}
+        btnText={'Execute'}
       />
       {JSON.stringify(fetcher.data)}
     </Container>
