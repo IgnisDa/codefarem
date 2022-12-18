@@ -2,6 +2,7 @@ pub mod graphql;
 pub mod models;
 pub mod users;
 
+use anyhow::{bail, Result as AnyhowResult};
 use async_graphql::Enum;
 use chrono::Utc;
 use figment::{providers::Env, Figment};
@@ -14,6 +15,7 @@ use std::{
     env,
     fs::{create_dir_all, File},
     path::PathBuf,
+    process::Command,
 };
 use strum::{EnumIter, IntoEnumIterator};
 
@@ -99,4 +101,16 @@ pub fn generate_random_file(extension: Option<&'_ str>) -> Result<(File, PathBuf
 /// Get the figment configuration that is used across the apps
 pub fn get_figment_config() -> Figment {
     Figment::new().merge(Env::prefixed("CODEFAREM_").split("__"))
+}
+
+// Return output of command
+pub fn get_command_output(command: &str, args: &[&str]) -> AnyhowResult<String> {
+    let cmd_output = Command::new(command).args(args).output();
+    match cmd_output {
+        Ok(output) => {
+            let version = String::from_utf8(output.stdout).unwrap();
+            Ok(version.trim().to_string())
+        }
+        Err(e) => bail!("Failed to execute {}: {}", command, e),
+    }
 }
