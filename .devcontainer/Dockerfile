@@ -28,8 +28,12 @@ RUN set -eu ;\
     mv "cargo-binstall" "/usr/bin/cargo-binstall"
 
 RUN wget "https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz" ;\
-    tar -xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
+    tar xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
     rm -rf "wasi-python-3.10.tgz"
+
+RUN wget 'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.7-SNAPSHOT-2022-11-09-a/swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz' ;\
+    tar xf 'swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz' --strip-components=2 -C /usr/local ;\
+    rm -rf 'swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz'
 
 USER $USERNAME
 
