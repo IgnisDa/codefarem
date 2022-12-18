@@ -27,7 +27,7 @@ macro_rules! hanko_id_from_request {
 
 #[macro_export]
 macro_rules! proto_server {
-    ($example_handler:ident, $compiler_handler:ident, $toolchain_info_handler:ident) => {
+    ($example_handler:ident, $compiler_handler:ident, $toolchain_version_handler:ident) => {
         use log::info;
         use protobuf::generated::compilers::{
             compiler_service_server::{CompilerService, CompilerServiceServer},
@@ -68,7 +68,7 @@ macro_rules! proto_server {
                 &self,
                 request: Request<VoidParams>,
             ) -> Result<Response<ToolchainInfoResponse>, Status> {
-                let version = $toolchain_info_handler();
+                let version = $toolchain_version_handler();
                 Ok(Response::new(ToolchainInfoResponse {
                     version: version.into(),
                 }))
