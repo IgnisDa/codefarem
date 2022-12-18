@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-    "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n": types.ExecuteCodeDocument,
+    "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n": types.ExecuteCodeDocument,
     "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.RegisterUserDocument,
     "\n  mutation CreateClass($input: CreateClassInput!) {\n    createClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateClassOutput {\n        id\n      }\n    }\n  }\n": types.CreateClassDocument,
     "\n  mutation CreateQuestion($input: CreateQuestionInput!) {\n    createQuestion(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateQuestionOutput {\n        slug\n      }\n    }\n  }\n": types.CreateQuestionDocument,
@@ -31,7 +31,7 @@ const documents = {
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -6,6 +6,10 @@ export const EXECUTE_CODE = graphql(`
       __typename
       ... on ExecuteCodeOutput {
         output
+        time {
+          compilation
+          execution
+        }
       }
       ... on ExecuteCodeError {
         error
