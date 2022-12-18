@@ -2,6 +2,7 @@ pub mod graphql;
 pub mod models;
 pub mod users;
 
+use anyhow::{bail, Result};
 use async_graphql::Enum;
 use chrono::Utc;
 use figment::{providers::Env, Figment};
@@ -12,8 +13,9 @@ use rand::{distributions::Alphanumeric, thread_rng, Rng};
 use slug::slugify;
 use std::{
     env,
-    fs::{create_dir_all, File},
+    fs::{create_dir_all, write, File},
     path::PathBuf,
+    process::Command,
 };
 use strum::{EnumIter, IntoEnumIterator};
 
@@ -99,4 +101,19 @@ pub fn generate_random_file(extension: Option<&'_ str>) -> Result<(File, PathBuf
 /// Get the figment configuration that is used across the apps
 pub fn get_figment_config() -> Figment {
     Figment::new().merge(Env::prefixed("CODEFAREM_").split("__"))
+}
+
+/// Write the output of a command to a file
+pub fn write_output_of_command_to_file(command: &str, args: &[&str], file: &str) -> Result<()> {
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let cmd_output = Command::new(command).args(args).output();
+    match cmd_output {
+        Ok(output) => {
+            let version = String::from_utf8(output.stdout).unwrap();
+            let path = format!("{}/{}", out_dir, file);
+            write(path, &version).unwrap();
+            Ok(())
+        }
+        Err(e) => bail!("Failed to execute {}: {}", command, e),
+    }
 }
