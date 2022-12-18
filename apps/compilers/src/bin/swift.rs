@@ -8,7 +8,7 @@ async fn example() -> &'static str {
 }
 
 fn version() -> String {
-    get_command_output("zig", &["version"]).unwrap()
+    get_command_output("swift", &["--version"]).unwrap()
 }
 
 fn compile(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {

@@ -6,7 +6,7 @@ async fn example() -> &'static str {
 }
 
 fn version() -> String {
-    get_command_output("zig", &["version"]).unwrap()
+    get_command_output("python3", &["--version"]).unwrap()
 }
 
 fn compile(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
