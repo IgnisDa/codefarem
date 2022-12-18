@@ -1,9 +1,8 @@
 import type { ActionArgs, LinksFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useEffect, useState } from 'react';
-import { ClientOnly } from 'remix-utils';
-import { Hanko } from '@teamhanko/hanko-frontend-sdk';
-import { registerHankoAuth } from '~/lib/services/hanko.client';
+import { useForm, zodResolver } from '@mantine/form';
+import { Hanko, NotFoundError } from '@teamhanko/hanko-frontend-sdk';
 import { useFetcher } from '@remix-run/react';
 import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
@@ -12,16 +11,16 @@ import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
 import authStyles from '../../styles/auth/index.css';
-import { Center, createStyles, Stack, TextInput } from '@mantine/core';
-
-const useStyles = createStyles((theme) => ({
-  container: {
-    width: '300px',
-    [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
-      width: '400px',
-    },
-  },
-}));
+import {
+  Button,
+  Center,
+  Paper,
+  Stack,
+  Stepper,
+  TextInput,
+} from '@mantine/core';
+import { IconMailOpened, IconShieldCheck } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
 
 export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: authStyles }];
@@ -53,40 +52,137 @@ export const action = async ({ request }: ActionArgs) => {
   return redirect(SUCCESSFUL_REDIRECT_PATH);
 };
 
+const emailSchema = z.object({
+  email: z.string().email(),
+  inviteToken: z.string().optional(),
+});
+const passcodeSchema = z.object({
+  passcode: z.string().length(6),
+});
+
 export default () => {
-  const { classes } = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
+  const [active, setActive] = useState(0);
+  const [hankoUserId, setHankoUserId] = useState('');
+  const [hankoSdk, setHankoSdk] = useState<Hanko>();
   const [inviteToken, setInviteToken] = useState('');
   const fetcher = useFetcher();
-
-  const handler = async () => {
-    const hanko = new Hanko(window.ENV.HANKO_URL);
-    const user = await hanko.user.getCurrent();
-    const data = authSchema.parse({
-      hankoId: user.id,
-      email: user.email,
-      inviteToken: inviteToken,
-    });
-    fetcher.submit(data, { method: 'post' });
-  };
-
-  useEffect(() => {
-    registerHankoAuth({ shadow: true });
-    document.addEventListener('hankoAuthSuccess', handler);
-    return () => document.removeEventListener('hankoAuthSuccess', handler);
+  const emailForm = useForm({
+    validate: zodResolver(emailSchema),
+    initialValues: { email: '', inviteToken: '' },
+  });
+  const passcodeForm = useForm({
+    validate: zodResolver(passcodeSchema),
+    initialValues: { passcode: '' },
   });
 
+  useEffect(() => {
+    setHankoSdk(new Hanko(window.ENV.HANKO_URL));
+  }, []);
+
   return (
-    <Center>
-      <Stack className={classes.container}>
-        <ClientOnly fallback={'Loading...'}>
-          {() => <hanko-auth lang="en" api={window.ENV.HANKO_URL} />}
-        </ClientOnly>
-        <TextInput
-          label="Invite Token"
-          value={inviteToken}
-          onChange={(event) => setInviteToken(event.currentTarget.value)}
-        />
-      </Stack>
+    <Center h={'100%'} mx={'md'}>
+      {hankoSdk ? (
+        <Paper withBorder p="md">
+          <Stepper active={active} onStepClick={setActive}>
+            <Stepper.Step
+              label="Credentials"
+              description="Enter your email"
+              icon={<IconMailOpened size={18} />}
+            >
+              <form
+                onSubmit={emailForm.onSubmit(async (values) => {
+                  setIsLoading(true);
+                  if (values.inviteToken) setInviteToken(values.inviteToken);
+                  let userId = null;
+                  try {
+                    const user = await hankoSdk.user.getInfo(values.email);
+                    userId = user.id;
+                  } catch (e) {
+                    if (e instanceof NotFoundError) {
+                      const user = await hankoSdk.user.create(values.email);
+                      showNotification({
+                        title: 'System Action',
+                        message: 'Created new user',
+                        color: 'blue',
+                      });
+                      userId = user.id;
+                    }
+                  } finally {
+                    if (userId) setHankoUserId(userId);
+                    if (!userId) {
+                      showNotification({
+                        title: 'Authorization Error',
+                        message: 'There was an error authorizing you',
+                        color: 'red',
+                      });
+                    } else {
+                      await hankoSdk.passcode.initialize(userId);
+                      setActive(1);
+                    }
+                  }
+                  setIsLoading(false);
+                })}
+              >
+                <Stack>
+                  <TextInput
+                    placeholder="ana@email.com"
+                    description="An email will be sent for verification"
+                    type={'email'}
+                    {...emailForm.getInputProps('email')}
+                  />
+                  <TextInput
+                    description="Enter invite token if you have one"
+                    {...emailForm.getInputProps('inviteToken')}
+                  />
+                  <Button type="submit" loading={isLoading}>
+                    Submit
+                  </Button>
+                </Stack>
+              </form>
+            </Stepper.Step>
+            <Stepper.Step
+              label="Verification"
+              description="Enter passcode"
+              icon={<IconShieldCheck size={18} />}
+              allowStepSelect={active >= 1}
+            >
+              <form
+                onSubmit={passcodeForm.onSubmit(async (values) => {
+                  setIsLoading(true);
+                  try {
+                    await hankoSdk.passcode.finalize(
+                      hankoUserId,
+                      values.passcode
+                    );
+                    const data = authSchema.parse({
+                      hankoId: hankoUserId,
+                      email: emailForm.values.email,
+                      inviteToken: inviteToken,
+                    });
+                    fetcher.submit(data, { method: 'post' });
+                  } catch (e) {
+                    console.log(JSON.stringify(e));
+                  }
+                  setIsLoading(false);
+                })}
+              >
+                <Stack>
+                  <TextInput
+                    description="Enter the passcode sent to your email"
+                    {...passcodeForm.getInputProps('passcode')}
+                  />
+                  <Button type="submit" loading={isLoading}>
+                    Submit
+                  </Button>
+                </Stack>
+              </form>
+            </Stepper.Step>
+          </Stepper>
+        </Paper>
+      ) : (
+        <>Loading...</>
+      )}
     </Center>
   );
 };
