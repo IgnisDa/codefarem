@@ -61,6 +61,7 @@ const passcodeSchema = z.object({
 });
 
 export default () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [active, setActive] = useState(0);
   const [hankoUserId, setHankoUserId] = useState('');
   const [hankoSdk, setHankoSdk] = useState<Hanko>();
@@ -91,6 +92,7 @@ export default () => {
             >
               <form
                 onSubmit={emailForm.onSubmit(async (values) => {
+                  setIsLoading(true);
                   if (values.inviteToken) setInviteToken(values.inviteToken);
                   let userId = null;
                   try {
@@ -115,6 +117,7 @@ export default () => {
                       setActive(1);
                     }
                   }
+                  setIsLoading(false);
                 })}
               >
                 <Stack>
@@ -128,7 +131,9 @@ export default () => {
                     description="Enter invite token if you have one"
                     {...emailForm.getInputProps('inviteToken')}
                   />
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit" loading={isLoading}>
+                    Submit
+                  </Button>
                 </Stack>
               </form>
             </Stepper.Step>
@@ -140,6 +145,7 @@ export default () => {
             >
               <form
                 onSubmit={passcodeForm.onSubmit(async (values) => {
+                  setIsLoading(true);
                   try {
                     await hankoSdk.passcode.finalize(
                       hankoUserId,
@@ -154,6 +160,7 @@ export default () => {
                   } catch (e) {
                     console.log(JSON.stringify(e));
                   }
+                  setIsLoading(false);
                 })}
               >
                 <Stack>
@@ -161,7 +168,9 @@ export default () => {
                     description="Enter the passcode sent to your email"
                     {...passcodeForm.getInputProps('passcode')}
                   />
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit" loading={isLoading}>
+                    Submit
+                  </Button>
                 </Stack>
               </form>
             </Stepper.Step>
