@@ -7,7 +7,7 @@ async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/zig/example.zig").trim()
 }
 
-fn toolchain_info() -> String {
+fn toolchain_version() -> String {
     get_command_output("zig", &["version"]).unwrap()
 }
 
@@ -26,4 +26,4 @@ fn compile(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
     run_command_and_capture_output(command, &output_file_path)
 }
 
-proto_server!(example, compile, toolchain_info);
+proto_server!(example, compile, toolchain_version);
