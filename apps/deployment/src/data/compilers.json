@@ -37,7 +37,9 @@
         "tar xf swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz --strip-components=2 -C /usr/local",
         "rm -rf swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz"
       ],
-      "ENVIRONMENT_VARIABLES": {}
+      "ENVIRONMENT_VARIABLES": {
+        "DEBIAN_FRONTEND": "noninteractive"
+      }
     },
     {
       "EXECUTABLE_NAMES": ["python-compiler"],
