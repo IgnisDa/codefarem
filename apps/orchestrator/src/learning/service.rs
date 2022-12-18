@@ -295,7 +295,7 @@ impl LearningService {
                 .collect::<Vec<_>>();
             let user_output = self
                 .farem_service
-                .send_execute_wasm_request(&compiled_wasm, &arguments, language)
+                .send_execute_wasm_request(&compiled_wasm.data, &arguments, language)
                 .await
                 .map_err(|f| ExecuteCodeError {
                     error: f,
@@ -308,9 +308,10 @@ impl LearningService {
                 .collect::<Vec<_>>()
                 .join("\n")
                 + "\n";
+            let user_output_str = String::from_utf8(user_output.data).unwrap();
             outputs.push(TestCaseStatus {
-                passed: user_output == expected_output,
-                user_output,
+                passed: user_output_str == expected_output,
+                user_output: user_output_str,
                 expected_output,
             });
         }

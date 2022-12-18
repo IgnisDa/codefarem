@@ -1,5 +1,5 @@
 use crate::farem::dto::mutations::execute_code::{
-    ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput,
+    ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput, ExecuteCodeTime,
 };
 use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
@@ -7,6 +7,12 @@ use protobuf::generated::{
 };
 use tonic::{transport::Channel, Request};
 use utilities::SupportedLanguage;
+
+#[derive(Debug, Clone)]
+pub struct StepResult {
+    pub data: Vec<u8>,
+    pub elapsed: String,
+}
 
 #[derive(Debug, Clone)]
 pub struct FaremService {
@@ -51,7 +57,7 @@ impl FaremService {
         wasm: &[u8],
         arguments: &[String],
         language: &SupportedLanguage,
-    ) -> Result<String, String> {
+    ) -> Result<StepResult, String> {
         let request_lang = Language::from(*language) as i32;
         let execute_result = self
             .executor_service
@@ -63,10 +69,10 @@ impl FaremService {
             })
             .await;
         match execute_result {
-            Ok(s) => {
-                let wasm = String::from_utf8(s.get_ref().data.clone()).unwrap();
-                Ok(wasm)
-            }
+            Ok(s) => Ok(StepResult {
+                data: s.get_ref().data.clone(),
+                elapsed: s.get_ref().elapsed.clone(),
+            }),
             Err(e) => {
                 let error = e.message().to_string();
                 Err(error)
@@ -78,7 +84,7 @@ impl FaremService {
         &self,
         source: &str,
         language: &SupportedLanguage,
-    ) -> Result<Vec<u8>, String> {
+    ) -> Result<StepResult, String> {
         let compiler_service = match language {
             SupportedLanguage::Rust => &self.rust_service,
             SupportedLanguage::Go => &self.go_service,
@@ -96,7 +102,7 @@ impl FaremService {
         &self,
         input: &'_ str,
         compiler_service: &CompilerServiceClient<Channel>,
-    ) -> Result<Vec<u8>, String> {
+    ) -> Result<StepResult, String> {
         let compile_result = compiler_service
             .clone()
             .compile_code(Input {
@@ -104,10 +110,10 @@ impl FaremService {
             })
             .await;
         match compile_result {
-            Ok(s) => {
-                let wasm = s.get_ref().data.clone();
-                Ok(wasm)
-            }
+            Ok(s) => Ok(StepResult {
+                data: s.get_ref().data.clone(),
+                elapsed: s.get_ref().elapsed.clone(),
+            }),
             Err(e) => {
                 let error = e.message().to_string();
                 Err(error)
@@ -145,16 +151,22 @@ impl FaremService {
         arguments: &[String],
         language: &SupportedLanguage,
     ) -> Result<ExecuteCodeOutput, ExecuteCodeError> {
-        let wasm = self
-            .compile_source(input, language)
+        let compilation =
+            self.compile_source(input, language)
+                .await
+                .map_err(|f| ExecuteCodeError {
+                    error: f,
+                    step: ExecuteCodeErrorStep::CompilationToWasm,
+                })?;
+        self.send_execute_wasm_request(&compilation.data, arguments, language)
             .await
-            .map_err(|f| ExecuteCodeError {
-                error: f,
-                step: ExecuteCodeErrorStep::CompilationToWasm,
-            })?;
-        self.send_execute_wasm_request(&wasm, arguments, language)
-            .await
-            .map(|f| ExecuteCodeOutput { output: f })
+            .map(|f| ExecuteCodeOutput {
+                output: String::from_utf8(f.data).unwrap(),
+                time: ExecuteCodeTime {
+                    compilation: compilation.elapsed,
+                    execution: f.elapsed,
+                },
+            })
             .map_err(|f| ExecuteCodeError {
                 error: f,
                 step: ExecuteCodeErrorStep::WasmExecution,

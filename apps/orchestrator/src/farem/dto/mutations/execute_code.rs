@@ -15,11 +15,24 @@ pub struct ExecuteCodeInput {
     language: SupportedLanguage,
 }
 
+/// The time taken for the various steps
+#[derive(Debug, SimpleObject)]
+pub struct ExecuteCodeTime {
+    /// The time taken to compile the code to wasm
+    pub compilation: String,
+
+    /// The time taken to execute the wasm
+    pub execution: String,
+}
+
 /// The result type if the code was compiled and executed successfully
 #[derive(Debug, SimpleObject)]
 pub struct ExecuteCodeOutput {
     /// The output of the code that was executed
     pub output: String,
+
+    /// The time taken for the various steps
+    pub time: ExecuteCodeTime,
 }
 
 /// The execution step in which an error was encountered
