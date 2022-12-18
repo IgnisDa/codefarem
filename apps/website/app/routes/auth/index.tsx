@@ -15,7 +15,11 @@ import { showNotification } from '@mantine/notifications';
 import { redirect } from '@remix-run/node';
 import { useFetcher } from '@remix-run/react';
 import { IconMailOpened, IconShieldCheck } from '@tabler/icons';
-import { Hanko, NotFoundError } from '@teamhanko/hanko-frontend-sdk';
+import {
+  Hanko,
+  InvalidPasscodeError,
+  NotFoundError,
+} from '@teamhanko/hanko-frontend-sdk';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -180,7 +184,12 @@ export default () => {
                     });
                     fetcher.submit(data, { method: 'post' });
                   } catch (e) {
-                    console.log(JSON.stringify(e));
+                    if (e instanceof InvalidPasscodeError)
+                      showNotification({
+                        title: 'Authorization Error',
+                        message: 'Invalid passcode',
+                        color: 'red',
+                      });
                   }
                   setIsLoading(false);
                 })}
