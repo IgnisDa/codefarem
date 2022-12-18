@@ -7,7 +7,7 @@ async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/go/example.go").trim()
 }
 
-fn version() -> String {
+fn toolchain_info() -> String {
     get_command_output("tinygo", &["version"]).unwrap()
 }
 
@@ -25,4 +25,4 @@ fn farem(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
     run_command_and_capture_output(command, &output_file_path)
 }
 
-proto_server!(example, farem);
+proto_server!(example, farem, toolchain_info);

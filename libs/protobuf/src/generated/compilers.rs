@@ -24,6 +24,13 @@ pub struct CompileResponse {
     #[prost(string, tag="2")]
     pub elapsed: ::prost::alloc::string::String,
 }
+/// The response returned when getting information about the compiler toolchain
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolchainInfoResponse {
+    /// The version of the compiler toolchain
+    #[prost(string, tag="1")]
+    pub version: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod compiler_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -134,6 +141,26 @@ pub mod compiler_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Get information about the compiler toolchain
+        pub async fn toolchain_info(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VoidParams>,
+        ) -> Result<tonic::Response<super::ToolchainInfoResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/compilers.CompilerService/ToolchainInfo",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -153,6 +180,11 @@ pub mod compiler_service_server {
             &self,
             request: tonic::Request<super::Input>,
         ) -> Result<tonic::Response<super::CompileResponse>, tonic::Status>;
+        /// Get information about the compiler toolchain
+        async fn toolchain_info(
+            &self,
+            request: tonic::Request<super::VoidParams>,
+        ) -> Result<tonic::Response<super::ToolchainInfoResponse>, tonic::Status>;
     }
     /// The farem related services
     #[derive(Debug)]
@@ -281,6 +313,46 @@ pub mod compiler_service_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = CompileCodeSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/compilers.CompilerService/ToolchainInfo" => {
+                    #[allow(non_camel_case_types)]
+                    struct ToolchainInfoSvc<T: CompilerService>(pub Arc<T>);
+                    impl<
+                        T: CompilerService,
+                    > tonic::server::UnaryService<super::VoidParams>
+                    for ToolchainInfoSvc<T> {
+                        type Response = super::ToolchainInfoResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::VoidParams>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move {
+                                (*inner).toolchain_info(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = ToolchainInfoSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

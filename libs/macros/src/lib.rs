@@ -27,11 +27,11 @@ macro_rules! hanko_id_from_request {
 
 #[macro_export]
 macro_rules! proto_server {
-    ($example_handler:ident, $compiler_handler:ident) => {
+    ($example_handler:ident, $compiler_handler:ident, $toolchain_info_handler:ident) => {
         use log::info;
         use protobuf::generated::compilers::{
             compiler_service_server::{CompilerService, CompilerServiceServer},
-            CompileResponse, Example, Input, VoidParams,
+            CompileResponse, Example, Input, ToolchainInfoResponse, VoidParams,
         };
         use tonic::{async_trait, transport::Server, Request, Response, Status};
         use utilities::get_server_url;
@@ -62,6 +62,16 @@ macro_rules! proto_server {
                     })),
                     Err(e) => Err(Status::invalid_argument(String::from_utf8(e).unwrap())),
                 }
+            }
+
+            async fn toolchain_info(
+                &self,
+                request: Request<VoidParams>,
+            ) -> Result<Response<ToolchainInfoResponse>, Status> {
+                let version = $toolchain_info_handler();
+                Ok(Response::new(ToolchainInfoResponse {
+                    version: version.into(),
+                }))
             }
         }
 

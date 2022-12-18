@@ -24,10 +24,18 @@ message CompileResponse {
   string elapsed = 2;
 }
 
+// The response returned when getting information about the compiler toolchain
+message ToolchainInfoResponse {
+  // The version of the compiler toolchain
+  string version = 1;
+}
+
 // The farem related services
 service CompilerService {
   // Get an example code snippet
   rpc ExampleCode(VoidParams) returns (Example);
   // Compile a given source code to wasm
   rpc CompileCode(Input) returns (CompileResponse);
+  // Get information about the compiler toolchain
+  rpc ToolchainInfo(VoidParams) returns (ToolchainInfoResponse);
 }

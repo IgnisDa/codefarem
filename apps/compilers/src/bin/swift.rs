@@ -7,7 +7,7 @@ async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/swift/example.swift").trim()
 }
 
-fn version() -> String {
+fn toolchain_info() -> String {
     get_command_output("swift", &["--version"]).unwrap()
 }
 
@@ -24,4 +24,4 @@ fn compile(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
     run_command_and_capture_output(command, &output_file_path)
 }
 
-proto_server!(example, compile);
+proto_server!(example, compile, toolchain_info);
