@@ -27,6 +27,10 @@ RUN set -eu ;\
     tar zxvf "cargo-binstall.tgz" ;\
     mv "cargo-binstall" "/usr/bin/cargo-binstall"
 
+RUN wget "https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz" ;\
+    tar -xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
+    rm -rf "wasi-python-3.10.tgz"
+
 USER $USERNAME
 
 RUN set -eu ;\
@@ -43,7 +47,7 @@ RUN set -eu ;\
     tar -xvf "paru-v1.11.2-x86_64.tar.zst" ;\
     sudo mv "paru" "/usr/bin/paru"
 
-RUN for pkg in emscripten protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
+RUN for pkg in protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
 
 RUN set -eu ;\
     cd /tmp ;\
@@ -51,7 +55,3 @@ RUN set -eu ;\
     sudo mv "moon" "/usr/bin/moon" ;\
     sudo chmod +x "/usr/bin/moon" ;\
     cargo binstall cargo-nextest cargo-watch --no-confirm
-
-RUN wget "https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz" ;\
-    tar -xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
-    rm -rf "wasi-python-3.10.tgz"
