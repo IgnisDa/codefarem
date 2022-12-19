@@ -16,6 +16,7 @@ async-graphql-rocket = { workspace = true }
 chrono = { workspace = true }
 derive-getters = { workspace = true }
 dotenv = { workspace = true }
+once_cell = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }

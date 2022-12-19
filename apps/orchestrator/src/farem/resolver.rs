@@ -1,5 +1,8 @@
 use crate::farem::{
-    dto::mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
+    dto::{
+        mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
+        queries::toolchain_information::ToolChainInformation,
+    },
     service::FaremService,
 };
 use async_graphql::{Context, Object, Result};
@@ -16,6 +19,14 @@ pub struct FaremMutation {}
 
 #[Object]
 impl FaremQuery {
+    /// Endpoint to get all toolchain information
+    // can use parallel iteration to get the data from all services and store it in a
+    // global variable (caching for later uses). Read:
+    // https://github.com/paulkernfeld/global-data-in-rust
+    async fn toolchain_information(&self, ctx: &Context<'_>) -> Vec<ToolChainInformation> {
+        ctx.data::<FaremService>().unwrap().toolchain_information()
+    }
+
     /// Get a list of all the languages that the service supports.
     async fn supported_languages(&self, ctx: &Context<'_>) -> Vec<SupportedLanguage> {
         ctx.data::<FaremService>().unwrap().supported_languages()

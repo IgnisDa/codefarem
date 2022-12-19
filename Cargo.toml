@@ -24,6 +24,7 @@ edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "m
 edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 env_logger = { version = "0.10.0" }
+once_cell = { version = "1.16.0" }
 lettre = { version = "0.10.1", features = [
   "rustls-tls",
   "smtp-transport",

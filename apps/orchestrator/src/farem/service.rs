@@ -1,12 +1,18 @@
-use crate::farem::dto::mutations::execute_code::{
-    ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput, ExecuteCodeTime,
+use crate::farem::dto::{
+    mutations::execute_code::{
+        ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput, ExecuteCodeTime,
+    },
+    queries::toolchain_information::ToolChainInformation,
 };
+use once_cell::sync::OnceCell;
 use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
     executor::{executor_service_client::ExecutorServiceClient, ExecutorInput, Language},
 };
 use tonic::{transport::Channel, Request};
 use utilities::SupportedLanguage;
+
+static TOOLCHAIN_INFORMATION: OnceCell<Vec<ToolChainInformation>> = OnceCell::new();
 
 #[derive(Debug, Clone)]
 pub struct StepResult {
@@ -49,9 +55,52 @@ impl FaremService {
             swift_service: swift_service.clone(),
         }
     }
+
+    fn service_from_language(
+        &self,
+        language: &SupportedLanguage,
+    ) -> &CompilerServiceClient<Channel> {
+        match language {
+            SupportedLanguage::Rust => &self.rust_service,
+            SupportedLanguage::Go => &self.go_service,
+            SupportedLanguage::C => &self.c_service,
+            SupportedLanguage::Cpp => &self.cpp_service,
+            SupportedLanguage::Zig => &self.zig_service,
+            SupportedLanguage::Python => &self.python_service,
+            SupportedLanguage::Swift => &self.swift_service,
+        }
+    }
+
+    pub async fn initialize(&self) {
+        let mut toolchain_information = vec![];
+        // TODO: parallelize this
+        for language in self.supported_languages().iter() {
+            let compiler_service = self.service_from_language(language);
+            let tf = compiler_service
+                .clone()
+                .toolchain_info(Request::new(VoidParams {}))
+                .await
+                .unwrap()
+                .into_inner();
+            toolchain_information.push(ToolChainInformation {
+                version: tf.version,
+                service: *language,
+            });
+        }
+        TOOLCHAIN_INFORMATION
+            .set(toolchain_information)
+            .expect("Toolchain information already initialized");
+    }
 }
 
 impl FaremService {
+    pub fn toolchain_information(&self) -> Vec<ToolChainInformation> {
+        TOOLCHAIN_INFORMATION
+            .get()
+            .expect("Toolchain information not initialized")
+            .clone()
+    }
+
     pub async fn send_execute_wasm_request(
         &self,
         wasm: &[u8],
@@ -85,15 +134,7 @@ impl FaremService {
         source: &str,
         language: &SupportedLanguage,
     ) -> Result<StepResult, String> {
-        let compiler_service = match language {
-            SupportedLanguage::Rust => &self.rust_service,
-            SupportedLanguage::Go => &self.go_service,
-            SupportedLanguage::C => &self.c_service,
-            SupportedLanguage::Cpp => &self.cpp_service,
-            SupportedLanguage::Zig => &self.zig_service,
-            SupportedLanguage::Python => &self.python_service,
-            SupportedLanguage::Swift => &self.swift_service,
-        };
+        let compiler_service = self.service_from_language(language);
         self.send_compile_source_request(source, compiler_service)
             .await
     }
@@ -126,15 +167,7 @@ impl FaremService {
     }
 
     pub async fn language_example(&self, language: &SupportedLanguage) -> String {
-        let compiler_service = match language {
-            SupportedLanguage::Rust => &self.rust_service,
-            SupportedLanguage::Cpp => &self.cpp_service,
-            SupportedLanguage::C => &self.c_service,
-            SupportedLanguage::Go => &self.go_service,
-            SupportedLanguage::Zig => &self.zig_service,
-            SupportedLanguage::Python => &self.python_service,
-            SupportedLanguage::Swift => &self.swift_service,
-        };
+        let compiler_service = self.service_from_language(language);
         compiler_service
             .clone()
             .example_code(Request::new(VoidParams {}))

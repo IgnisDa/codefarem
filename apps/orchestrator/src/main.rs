@@ -45,6 +45,7 @@ async fn rocket() -> _ {
         &app_state.python_service,
         &app_state.swift_service,
     );
+    farem_service.initialize().await;
     let user_service = UserService::new(&app_state.db_conn);
     let learning_service =
         LearningService::new(&app_state.db_conn, &Arc::new(farem_service.clone()));
