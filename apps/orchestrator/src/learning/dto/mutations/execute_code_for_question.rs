@@ -1,4 +1,6 @@
-use crate::farem::dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeInput};
+use crate::farem::dto::mutations::execute_code::{
+    ExecuteCodeError, ExecuteCodeInput, ExecuteCodeTime,
+};
 use async_graphql::{InputObject, SimpleObject, Union};
 use derive_getters::Getters;
 
@@ -22,6 +24,9 @@ pub struct TestCaseStatus {
 
     /// The expected output as defined in the test case
     pub expected_output: String,
+
+    /// The time taken for the various steps
+    pub time: ExecuteCodeTime,
 }
 
 /// The result type if the code was compiled and executed successfully

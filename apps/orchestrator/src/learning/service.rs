@@ -1,6 +1,6 @@
 use crate::{
     farem::{
-        dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
+        dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeTime},
         service::FaremService,
     },
     learning::dto::{
@@ -313,6 +313,10 @@ impl LearningService {
                 passed: user_output_str == expected_output,
                 user_output: user_output_str,
                 expected_output,
+                time: ExecuteCodeTime {
+                    compilation: compiled_wasm.elapsed.clone(),
+                    execution: user_output.elapsed,
+                },
             });
         }
         Ok(ExecuteCodeForQuestionOutput {
