@@ -78,6 +78,10 @@ export const EXECUTE_CODE_FOR_QUESTION = graphql(`
           passed
           userOutput
           expectedOutput
+          time {
+            compilation
+            execution
+          }
         }
       }
       ... on ExecuteCodeError {
