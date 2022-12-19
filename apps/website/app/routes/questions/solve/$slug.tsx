@@ -85,8 +85,10 @@ export async function action({ request }: ActionArgs) {
 
 const DisplayData = (data: TestCaseFragment) => {
   return match(data.unitType)
-    .with(TestCaseUnit.Number, TestCaseUnit.String, () =>
-      String(data.numberValue || data.stringValue)
+    .with(
+      TestCaseUnit.Number,
+      TestCaseUnit.String,
+      () => String(data.numberValue) || data.stringValue
     )
     .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
       (data.numberCollectionValue || data.stringCollectionValue || []).join(',')
@@ -120,22 +122,28 @@ export default () => {
                 <Accordion.Item key={idx} value={name}>
                   <Accordion.Control>{name}</Accordion.Control>
                   <Accordion.Panel>
-                    <Text>Inputs</Text>
-                    {testCase.inputs.map((input, idx) => (
-                      <Box key={idx}>
-                        <Code>
-                          {DisplayData(input.data as TestCaseFragment)}
-                        </Code>
+                    <Stack>
+                      <Box>
+                        <Text>Inputs</Text>
+                        {testCase.inputs.map((input, idx) => (
+                          <Box key={idx}>
+                            <Code>
+                              {DisplayData(input.data as TestCaseFragment)}
+                            </Code>
+                          </Box>
+                        ))}
                       </Box>
-                    ))}
-                    <Text>Outputs</Text>
-                    {testCase.outputs.map((output, idx) => (
-                      <Box key={idx}>
-                        <Code>
-                          {DisplayData(output.data as TestCaseFragment)}
-                        </Code>
+                      <Box>
+                        <Text>Outputs</Text>
+                        {testCase.outputs.map((output, idx) => (
+                          <Box key={idx}>
+                            <Code>
+                              {DisplayData(output.data as TestCaseFragment)}
+                            </Code>
+                          </Box>
+                        ))}
                       </Box>
-                    ))}
+                    </Stack>
                   </Accordion.Panel>
                 </Accordion.Item>
               );
