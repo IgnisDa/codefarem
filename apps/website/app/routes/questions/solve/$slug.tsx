@@ -1,38 +1,39 @@
-import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
+import {
+  SupportedLanguage,
+  TestCaseUnit,
+} from ':generated/graphql/orchestrator/generated/graphql';
 import { EXECUTE_CODE_FOR_QUESTION } from ':generated/graphql/orchestrator/mutations';
 import {
   QUESTION_DETAILS,
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
+import {
+  Accordion,
+  Box,
+  Code,
+  Container,
+  Grid,
+  Paper,
+  Stack,
+  Text,
+} from '@mantine/core';
+import { RichTextEditor } from '@mantine/tiptap';
 import { json } from '@remix-run/node';
-import type { ShouldReloadFunction } from '@remix-run/react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import { useState } from 'react';
 import { notFound } from 'remix-utils';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
-import { gqlClient } from '~/lib/services/graphql.server';
-import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
-import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
-import type { LoaderArgs, ActionArgs } from '@remix-run/node';
-import {
-  Accordion,
-  Code,
-  Text,
-  Container,
-  Flex,
-  Stack,
-  Box,
-  Space,
-  Paper,
-} from '@mantine/core';
-import { useEditor } from '@tiptap/react';
-import { RichTextEditor } from '@mantine/tiptap';
-import StarterKit from '@tiptap/starter-kit';
 import { CodeEditor } from '~/lib/components/CodeEditor';
+import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
+import type { ShouldReloadFunction } from '@remix-run/react';
+import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
+import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
 export const meta = metaFunction;
 
@@ -112,76 +113,75 @@ export default () => {
 
   return (
     <Container fluid mx={10}>
-      <Flex gap={20}>
-        <Stack w={'50%'}>
-          <RichTextEditor editor={editor}>
-            <RichTextEditor.Content />
-          </RichTextEditor>
-          <Accordion>
-            {questionDetails.testCases.map((testCase, idx) => {
-              const name = `Test Case ${idx + 1}`;
-              return (
-                <Accordion.Item key={idx} value={name}>
-                  <Accordion.Control>{name}</Accordion.Control>
-                  <Accordion.Panel>
-                    <Stack>
-                      <Box>
-                        <Text>Inputs</Text>
-                        {testCase.inputs.map((input, idx) => (
-                          <Box key={idx}>
-                            <Code>
-                              {DisplayData(input.data as TestCaseFragment)}
-                            </Code>
+      <Stack>
+        <Grid gutter={'lg'}>
+          <Grid.Col md={6}>
+            <Stack>
+              <RichTextEditor editor={editor}>
+                <RichTextEditor.Content />
+              </RichTextEditor>
+              <Accordion>
+                {questionDetails.testCases.map((testCase, idx) => {
+                  const name = `Test Case ${idx + 1}`;
+                  return (
+                    <Accordion.Item key={idx} value={name}>
+                      <Accordion.Control>{name}</Accordion.Control>
+                      <Accordion.Panel>
+                        <Stack>
+                          <Box>
+                            <Text>Inputs</Text>
+                            {testCase.inputs.map((input, idx) => (
+                              <Box key={idx}>
+                                <Code>
+                                  {DisplayData(input.data as TestCaseFragment)}
+                                </Code>
+                              </Box>
+                            ))}
                           </Box>
-                        ))}
-                      </Box>
-                      <Box>
-                        <Text>Outputs</Text>
-                        {testCase.outputs.map((output, idx) => (
-                          <Box key={idx}>
-                            <Code>
-                              {DisplayData(output.data as TestCaseFragment)}
-                            </Code>
+                          <Box>
+                            <Text>Outputs</Text>
+                            {testCase.outputs.map((output, idx) => (
+                              <Box key={idx}>
+                                <Code>
+                                  {DisplayData(output.data as TestCaseFragment)}
+                                </Code>
+                              </Box>
+                            ))}
                           </Box>
-                        ))}
-                      </Box>
-                    </Stack>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              );
-            })}
-          </Accordion>
-        </Stack>
-        <Flex w={'50%'}>
-          <CodeEditor
-            code={code}
-            isSubmittingLoading={fetcher.state === 'submitting'}
-            language={language}
-            onSubmit={async () => {
-              const data: inputSchemaType = {
-                input: JSON.stringify(code),
-                language,
-                questionSlug,
-              };
-              fetcher.submit(data, { method: 'post' });
-            }}
-            setCode={setCode}
-            setLanguage={setLanguage}
-            supportedLanguages={supportedLanguages}
-            btnText={'Run test cases'}
-          />
-        </Flex>
-      </Flex>
-      <Container>
+                        </Stack>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  );
+                })}
+              </Accordion>
+            </Stack>
+          </Grid.Col>
+          <Grid.Col md={6}>
+            <CodeEditor
+              code={code}
+              isSubmittingLoading={fetcher.state === 'submitting'}
+              language={language}
+              onSubmit={async () => {
+                const data: inputSchemaType = {
+                  input: JSON.stringify(code),
+                  language,
+                  questionSlug,
+                };
+                fetcher.submit(data, { method: 'post' });
+              }}
+              setCode={setCode}
+              setLanguage={setLanguage}
+              supportedLanguages={supportedLanguages}
+              btnText={'Run test cases'}
+            />
+          </Grid.Col>
+        </Grid>
         {fetcher.data && (
-          <>
-            <Space h={'lg'} />
-            <Paper shadow="lg" p="md" withBorder>
-              {JSON.stringify(fetcher.data)}
-            </Paper>
-          </>
+          <Paper shadow="lg" p="md" withBorder>
+            {JSON.stringify(fetcher.data)}
+          </Paper>
         )}
-      </Container>
+      </Stack>
     </Container>
   );
 };
