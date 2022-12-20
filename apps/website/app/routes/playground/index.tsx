@@ -1,19 +1,32 @@
+import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
+import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
 import {
   LANGUAGE_EXAMPLE,
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
-import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
-import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
+import {
+  Code,
+  Container,
+  createStyles,
+  Flex,
+  Paper,
+  ScrollArea,
+  Stack,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { json } from '@remix-run/node';
-import type { ShouldReloadFunction } from '@remix-run/react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zx } from 'zodix';
-import { gqlClient } from '~/lib/services/graphql.server';
-import type { LoaderArgs, ActionArgs } from '@remix-run/node';
-import { Container } from '@mantine/core';
 import { CodeEditor } from '~/lib/components/CodeEditor';
+import { gqlClient } from '~/lib/services/graphql.server';
+import { metaFunction } from '~/lib/utils';
+import type { ShouldReloadFunction } from '@remix-run/react';
+import type { LoaderArgs, ActionArgs } from '@remix-run/node';
+
+export const meta = metaFunction;
 
 export const unstable_shouldReload: ShouldReloadFunction = () => {
   return false;
@@ -29,6 +42,7 @@ export async function loader(_args: LoaderArgs) {
     languageExamples.set(lang, languageExample);
   }
   return json({
+    meta: { title: 'Playground' },
     languageExamples: Object.fromEntries(languageExamples),
     supportedLanguages,
   });
@@ -52,7 +66,14 @@ export async function action({ request }: ActionArgs) {
   return json({ output: executeCode.executeCode });
 }
 
+const useStyles = createStyles((theme) => ({
+  timeText: {
+    fontSize: theme.fontSizes.md,
+  },
+}));
+
 export default () => {
+  const { classes } = useStyles();
   const { languageExamples, supportedLanguages } =
     useLoaderData<typeof loader>();
   const [language, setLanguage] = useState(SupportedLanguage.Python);
@@ -65,23 +86,68 @@ export default () => {
 
   return (
     <Container>
-      <CodeEditor
-        code={code}
-        isSubmittingLoading={fetcher.state === 'submitting'}
-        language={language}
-        onSubmit={async () => {
-          const data: inputSchemaType = {
-            input: JSON.stringify(code),
-            language,
-          };
-          fetcher.submit(data, { method: 'post' });
-        }}
-        setCode={setCode}
-        setLanguage={setLanguage}
-        supportedLanguages={supportedLanguages}
-        btnText={'Execute'}
-      />
-      {JSON.stringify(fetcher.data)}
+      <Stack spacing={20}>
+        <CodeEditor
+          code={code}
+          isSubmittingLoading={fetcher.state === 'submitting'}
+          language={language}
+          onSubmit={async () => {
+            const data: inputSchemaType = {
+              input: JSON.stringify(code),
+              language,
+            };
+            fetcher.submit(data, { method: 'post' });
+          }}
+          setCode={setCode}
+          setLanguage={setLanguage}
+          supportedLanguages={supportedLanguages}
+          btnText={'Execute'}
+        />
+        {fetcher.data && (
+          <ScrollArea h={250}>
+            <Paper withBorder p="md">
+              {fetcher.data.output.__typename === 'ExecuteCodeOutput' ? (
+                <Stack>
+                  <Flex gap={10}>
+                    <Tooltip label={'Compilation time'}>
+                      <Code
+                        color={'yellow'}
+                        p={'xs'}
+                        className={classes.timeText}
+                      >
+                        {fetcher.data.output.time.compilation}
+                      </Code>
+                    </Tooltip>
+                    <Tooltip label={'Execution time'}>
+                      <Code
+                        color={'blue'}
+                        p={'xs'}
+                        className={classes.timeText}
+                      >
+                        {fetcher.data.output.time.execution}
+                      </Code>
+                    </Tooltip>
+                  </Flex>
+                  <Code>{fetcher.data.output.output}</Code>
+                </Stack>
+              ) : (
+                <Stack>
+                  <Text>
+                    Encountered an error in the{' '}
+                    <Text span td={'underline'}>
+                      {fetcher.data.output.step}
+                    </Text>{' '}
+                    step:
+                  </Text>
+                  <Code color={'red'} block>
+                    {fetcher.data.output.error}
+                  </Code>
+                </Stack>
+              )}
+            </Paper>
+          </ScrollArea>
+        )}
+      </Stack>
     </Container>
   );
 };
