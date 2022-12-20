@@ -10,17 +10,23 @@ import {
 } from '@remix-run/react';
 import { NotificationsProvider } from '@mantine/notifications';
 import { json } from '@remix-run/node';
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type {
+  LinksFunction,
+  MetaFunction,
+  ErrorBoundaryComponent,
+} from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
 import { ApplicationConfig } from './lib/config.server';
 import {
   AppShell,
   Box,
+  Center,
   createEmotionCache,
   MantineProvider,
 } from '@mantine/core';
 import { AppNavbar } from './lib/components/AppShell';
 import { StylesPlaceholder } from '@mantine/remix';
+import { ErrorPage } from './lib/components/ErrorPage';
 
 createEmotionCache({ key: 'mantine' });
 
@@ -97,6 +103,31 @@ export default function App() {
     </MantineProvider>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return (
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{ colorScheme: 'dark' }}
+    >
+      <html>
+        <head>
+          <title>Server Error</title>
+          <StylesPlaceholder />
+          <Meta />
+          <Links />
+        </head>
+        <body>
+          <Center h={'100vh'}>
+            <ErrorPage />
+          </Center>
+          <Scripts />
+        </body>
+      </html>
+    </MantineProvider>
+  );
+};
 
 declare global {
   interface Window {
