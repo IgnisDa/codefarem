@@ -1,4 +1,5 @@
 import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
+import type { MetaFunction } from '@remix-run/server-runtime';
 import { forbidden } from 'remix-utils';
 
 export const guessDataType = (data: string): TestCaseUnit => {
@@ -15,4 +16,10 @@ export const forbiddenError = () => {
         message: 'Forbidden',
         description: 'You are not allowed to access this route',
     });
+};
+
+
+export const metaFunction: MetaFunction = ({ data }) => {
+    if (!data) return {};
+    return data.meta;
 };

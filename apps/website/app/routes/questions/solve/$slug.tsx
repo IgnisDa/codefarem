@@ -16,7 +16,7 @@ import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
-import type { LoaderArgs, ActionArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 import {
   Accordion,
   Code,
@@ -32,11 +32,9 @@ import { useEditor } from '@tiptap/react';
 import { RichTextEditor } from '@mantine/tiptap';
 import StarterKit from '@tiptap/starter-kit';
 import { CodeEditor } from '~/lib/components/CodeEditor';
+import { metaFunction } from '~/lib/utils';
 
-export const meta: MetaFunction = ({ data }) => {
-  if (!data) return {};
-  return data.meta;
-};
+export const meta = metaFunction;
 
 export async function loader({ params }: LoaderArgs) {
   const { supportedLanguages } = await gqlClient.request(SUPPORTED_LANGUAGES);
