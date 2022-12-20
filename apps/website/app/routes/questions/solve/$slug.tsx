@@ -45,8 +45,7 @@ export async function loader({ params }: LoaderArgs) {
   const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
     questionSlug,
   });
-  if (questionDetails.__typename === 'ApiError')
-    throw notFound({ message: 'Not found' });
+  if (questionDetails.__typename === 'ApiError') throw notFound({});
   const meta = { title: `${questionDetails.name}` };
   return json({
     supportedLanguages,

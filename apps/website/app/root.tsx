@@ -115,7 +115,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = (_args) => {
     >
       <html>
         <head>
-          <title>Server Error</title>
+          <title>Internal Server Error</title>
           <StylesPlaceholder />
           <Meta />
           <Links />
@@ -148,7 +148,7 @@ export const CatchBoundary: CatchBoundaryComponent = () => {
     >
       <html>
         <head>
-          <title>{caught?.data?.message}</title>
+          <title>User Error</title>
           <StylesPlaceholder />
           <Meta />
           <Links />
