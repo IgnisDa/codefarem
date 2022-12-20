@@ -7,7 +7,7 @@ import {
   Anchor,
   Box,
 } from '@mantine/core';
-import { route } from 'routes-gen';
+import { SUCCESSFUL_REDIRECT_PATH } from '../constants';
 
 const useStyles = createStyles((theme) => ({
   label: {
@@ -55,7 +55,7 @@ export function ErrorPage() {
         development team was already notified.
       </Text>
       <Group position="center">
-        <Anchor href={route('/')}>
+        <Anchor href={SUCCESSFUL_REDIRECT_PATH}>
           <Button variant="white" size="md">
             Go back to home
           </Button>

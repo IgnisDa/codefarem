@@ -104,7 +104,7 @@ export default function App() {
   );
 }
 
-export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+export const ErrorBoundary: ErrorBoundaryComponent = (_args) => {
   return (
     <MantineProvider
       withGlobalStyles
