@@ -7,9 +7,9 @@
       "COMMANDS": [
         "apt-get update -y",
         "apt-get install -y curl xz-utils",
-        "curl https://wasmtime.dev/install.sh -sSf | bash",
+        "curl -LO https://github.com/bytecodealliance/wasmtime/releases/download/v3.0.1/wasmtime-v3.0.1-x86_64-linux.tar.xz",
+        "tar -xf wasmtime-v3.0.1-x86_64-linux.tar.xz --strip-components=1 -C /usr/local/bin",
         "apt-get remove --purge",
-        "cp /root/.wasmtime/bin/wasmtime /usr/local/bin",
         "curl -LO https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz",
         "tar -xf wasi-python-3.10.tgz --strip-components=1 -C /opt",
         "rm -rf wasi-python-3.10.tgz",
