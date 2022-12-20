@@ -35,6 +35,10 @@ RUN wget 'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.7-SN
     tar xf 'swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz' --strip-components=2 -C /usr/local ;\
     rm -rf 'swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz'
 
+RUN curl -LO 'https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-head-wasm32-unknown-wasi-full.tar.gz' ;\
+    tar xf 'ruby-head-wasm32-unknown-wasi-full.tar.gz' --strip-components=2 --one-top-level=wasi-ruby -C /opt ;\
+    rm -rf 'ruby-head-wasm32-unknown-wasi-full.tar.gz'
+
 USER $USERNAME
 
 RUN set -eu ;\
