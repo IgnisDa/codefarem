@@ -124,7 +124,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = (_args) => {
           <Center h={'100vh'}>
             <ErrorPage
               statusCode={500}
-              message={'Something bad just happened...'}
+              message={'Internal Server Error'}
               description={
                 "Our servers could not handle your request. Don't worry, our development team was already notified."
               }
@@ -157,10 +157,7 @@ export const CatchBoundary: CatchBoundaryComponent = () => {
           <Center h={'100vh'}>
             <ErrorPage
               statusCode={caught?.status}
-              message={
-                caught?.data?.message ||
-                'Could not find what you were looking for...'
-              }
+              message={caught?.data?.message || 'Not Found'}
               description={
                 caught?.data?.description ||
                 'We could not find what you were looking for. If you think it should be here, please contact us.'
