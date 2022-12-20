@@ -3,6 +3,7 @@ import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
 import {
   Button,
   Center,
+  createStyles,
   Paper,
   Stack,
   Stepper,
@@ -61,7 +62,16 @@ const passcodeSchema = z.object({
   passcode: z.string().length(6),
 });
 
+const useStyles = createStyles((_theme) => ({
+  pinInput: {
+    'div + div': {
+      [`@media (min-width: 400px)`]: { marginLeft: 7 },
+    },
+  },
+}));
+
 export default () => {
+  const { classes } = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [active, setActive] = useState(0);
   const [hankoUserId, setHankoUserId] = useState('');
@@ -126,6 +136,13 @@ export default () => {
                 })}
               >
                 <Stack>
+                  <PinInput
+                    length={6}
+                    autoFocus
+                    required
+                    size={'lg'}
+                    className={classes.pinInput}
+                  />
                   <TextInput
                     placeholder="ana@email.com"
                     description="An email will be sent for verification"
@@ -175,6 +192,7 @@ export default () => {
                       autoFocus
                       required
                       size={'lg'}
+                      className={classes.pinInput}
                       {...passcodeForm.getInputProps('passcode')}
                     />
                   </Center>
