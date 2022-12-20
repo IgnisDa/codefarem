@@ -1,4 +1,5 @@
 import {
+  ExecuteCodeErrorStep,
   SupportedLanguage,
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
@@ -10,12 +11,16 @@ import {
 import {
   Accordion,
   Box,
+  Center,
   Code,
   Container,
   Grid,
-  Paper,
+  Progress,
+  SimpleGrid,
   Stack,
   Text,
+  Tooltip,
+  UnstyledButton,
 } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { json } from '@remix-run/node';
@@ -29,6 +34,7 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
+import { DisplayOutput } from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
@@ -110,6 +116,11 @@ export default () => {
   const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState('');
   const fetcher = useFetcher<typeof action>();
+  const [selectedTestCase, setSelectedTestCase] = useState(0);
+  const testCaseStatus =
+    fetcher?.data?.executeCodeForQuestion.__typename ===
+      'ExecuteCodeForQuestionOutput' &&
+    fetcher.data.executeCodeForQuestion.testCaseStatuses.at(selectedTestCase)!;
 
   return (
     <Container fluid mx={10}>
@@ -177,9 +188,43 @@ export default () => {
           </Grid.Col>
         </Grid>
         {fetcher.data && (
-          <Paper shadow="lg" p="md" withBorder>
-            {JSON.stringify(fetcher.data)}
-          </Paper>
+          <Center w={'100%'}>
+            {fetcher.data.executeCodeForQuestion.__typename ===
+            'ExecuteCodeForQuestionOutput' ? (
+              <Stack w={{ base: 350, md: 500, xl: 650 }}>
+                <SimpleGrid cols={3} spacing={'xs'}>
+                  {fetcher.data.executeCodeForQuestion.testCaseStatuses.map(
+                    (t, idx) => (
+                      <Tooltip key={idx} label={`Test Case ${idx + 1}`}>
+                        <UnstyledButton
+                          onClick={() => setSelectedTestCase(idx)}
+                        >
+                          <Progress
+                            key={idx}
+                            value={100}
+                            color={t.passed ? 'green' : 'red'}
+                          />
+                        </UnstyledButton>
+                      </Tooltip>
+                    )
+                  )}
+                </SimpleGrid>
+                {testCaseStatus && (
+                  // FIXME: This component needs to be broken up into a different error and
+                  // success components
+                  <DisplayOutput
+                    type={testCaseStatus.passed ? 'error' : 'success'}
+                    successStepTimings={testCaseStatus.time}
+                    successOutput={testCaseStatus.userOutput}
+                    errorOutput={testCaseStatus.expectedOutput}
+                    errorStep={ExecuteCodeErrorStep.CompilationToWasm}
+                  />
+                )}
+              </Stack>
+            ) : (
+              <div>{JSON.stringify(fetcher.data.executeCodeForQuestion)}</div>
+            )}
+          </Center>
         )}
       </Stack>
     </Container>
