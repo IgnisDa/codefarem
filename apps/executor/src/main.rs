@@ -20,9 +20,12 @@ fn get_command_args(language: Language, file_path: PathBuf) -> Vec<String> {
                 binding,
             ]
         }
-        // FIXME: This does not work at all
         Language::Ruby => vec![
-            format!("--dir={}", CODEFAREM_TEMP_PATH.to_string_lossy()),
+            // FIXME: We need to specify the parent directory which seems a bit wonky
+            format!(
+                "--dir={}",
+                CODEFAREM_TEMP_PATH.parent().unwrap().to_string_lossy()
+            ),
             "--mapdir=/usr::/opt/wasi-ruby".to_string(),
             "--".to_string(),
             "/opt/wasi-ruby/local/bin/ruby".to_string(),
