@@ -4,25 +4,20 @@ import {
   LANGUAGE_EXAMPLE,
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
-import {
-  Code,
-  Container,
-  createStyles,
-  Flex,
-  Paper,
-  ScrollArea,
-  Stack,
-  Text,
-  Tooltip,
-} from '@mantine/core';
+import { Container, Stack } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
+import { DisplayOutput } from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
+import type {
+  ExecuteCodeError,
+  ExecuteCodeOutput,
+} from ':generated/graphql/orchestrator/generated/graphql';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -66,14 +61,7 @@ export async function action({ request }: ActionArgs) {
   return json({ output: executeCode.executeCode });
 }
 
-const useStyles = createStyles((theme) => ({
-  timeText: {
-    fontSize: theme.fontSizes.md,
-  },
-}));
-
 export default () => {
-  const { classes } = useStyles();
   const { languageExamples, supportedLanguages } =
     useLoaderData<typeof loader>();
   const [language, setLanguage] = useState(SupportedLanguage.Python);
@@ -104,48 +92,17 @@ export default () => {
           btnText={'Execute'}
         />
         {fetcher.data && (
-          <ScrollArea h={250}>
-            <Paper withBorder p="md">
-              {fetcher.data.output.__typename === 'ExecuteCodeOutput' ? (
-                <Stack>
-                  <Flex gap={10}>
-                    <Tooltip label={'Compilation time'}>
-                      <Code
-                        color={'yellow'}
-                        p={'xs'}
-                        className={classes.timeText}
-                      >
-                        {fetcher.data.output.time.compilation}
-                      </Code>
-                    </Tooltip>
-                    <Tooltip label={'Execution time'}>
-                      <Code
-                        color={'blue'}
-                        p={'xs'}
-                        className={classes.timeText}
-                      >
-                        {fetcher.data.output.time.execution}
-                      </Code>
-                    </Tooltip>
-                  </Flex>
-                  <Code>{fetcher.data.output.output}</Code>
-                </Stack>
-              ) : (
-                <Stack>
-                  <Text>
-                    Encountered an error in the{' '}
-                    <Text span td={'underline'}>
-                      {fetcher.data.output.step}
-                    </Text>{' '}
-                    step:
-                  </Text>
-                  <Code color={'red'} block>
-                    {fetcher.data.output.error}
-                  </Code>
-                </Stack>
-              )}
-            </Paper>
-          </ScrollArea>
+          <DisplayOutput
+            type={
+              fetcher.data.output.__typename === 'ExecuteCodeError'
+                ? 'error'
+                : 'success'
+            }
+            successStepTimings={(fetcher.data.output as ExecuteCodeOutput).time}
+            successOutput={(fetcher.data.output as ExecuteCodeOutput).output}
+            errorOutput={(fetcher.data.output as ExecuteCodeError).error}
+            errorStep={(fetcher.data.output as ExecuteCodeError).step}
+          />
         )}
       </Stack>
     </Container>
