@@ -42,6 +42,12 @@
       }
     },
     {
+      "EXECUTABLE_NAMES": ["ruby-compiler"],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
       "EXECUTABLE_NAMES": ["python-compiler"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
