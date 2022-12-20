@@ -1,4 +1,5 @@
 import type { ShouldReloadFunction } from '@remix-run/react';
+import { useCatch } from '@remix-run/react';
 import {
   Links,
   LiveReload,
@@ -27,6 +28,7 @@ import {
 import { AppNavbar } from './lib/components/AppShell';
 import { StylesPlaceholder } from '@mantine/remix';
 import { ErrorPage } from './lib/components/ErrorPage';
+import type { CatchBoundaryComponent } from '@remix-run/server-runtime/dist/routeModules';
 
 createEmotionCache({ key: 'mantine' });
 
@@ -120,7 +122,49 @@ export const ErrorBoundary: ErrorBoundaryComponent = (_args) => {
         </head>
         <body>
           <Center h={'100vh'}>
-            <ErrorPage />
+            <ErrorPage
+              statusCode={500}
+              message={'Something bad just happened...'}
+              description={
+                "Our servers could not handle your request. Don't worry, our development team was already notified."
+              }
+            />
+          </Center>
+          <Scripts />
+        </body>
+      </html>
+    </MantineProvider>
+  );
+};
+
+export const CatchBoundary: CatchBoundaryComponent = () => {
+  const caught = useCatch();
+
+  return (
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{ colorScheme: 'dark' }}
+    >
+      <html>
+        <head>
+          <title>{caught?.data?.message}</title>
+          <StylesPlaceholder />
+          <Meta />
+          <Links />
+        </head>
+        <body>
+          <Center h={'100vh'}>
+            <ErrorPage
+              statusCode={caught?.status}
+              message={
+                caught?.data?.message ||
+                'Could not find what you were looking for...'
+              }
+              description={
+                'We could not find what you were looking for. If you think it should be here, please contact us.'
+              }
+            />
           </Center>
           <Scripts />
         </body>

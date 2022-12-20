@@ -46,7 +46,7 @@ export async function loader({ params }: LoaderArgs) {
     questionSlug,
   });
   if (questionDetails.__typename === 'ApiError')
-    throw notFound({ title: 'Not found' });
+    throw notFound({ message: 'Not found' });
   const meta = { title: `${questionDetails.name}` };
   return json({
     supportedLanguages,

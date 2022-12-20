@@ -43,17 +43,28 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function ErrorPage() {
+interface ErrorPageProps {
+  statusCode: number;
+  message: string;
+  description?: string;
+}
+
+export function ErrorPage({
+  statusCode,
+  message,
+  description,
+}: ErrorPageProps) {
   const { classes } = useStyles();
 
   return (
     <Box>
-      <div className={classes.label}>500</div>
-      <Title className={classes.title}>Something bad just happened...</Title>
-      <Text size="lg" align="center" className={classes.description}>
-        Our servers could not handle your request. Don&apos;t worry, our
-        development team was already notified.
-      </Text>
+      <div className={classes.label}>{statusCode}</div>
+      <Title className={classes.title}>{message}</Title>
+      {description && (
+        <Text size="lg" align="center" className={classes.description}>
+          {description}
+        </Text>
+      )}
       <Group position="center">
         <Anchor href={SUCCESSFUL_REDIRECT_PATH}>
           <Button variant="white" size="md">
