@@ -1,6 +1,6 @@
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
-import { badRequest, notFound } from 'remix-utils';
+import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -11,12 +11,12 @@ import { CREATE_CLASS } from ':generated/graphql/orchestrator/mutations';
 import { getUserDetails } from '~/lib/services/user.server';
 import { Button, Container, Paper, TextInput, Title } from '@mantine/core';
 import { requireValidJwt } from '~/lib/services/auth.server';
+import { forbiddenError } from '~/lib/utils';
 
 export const loader = async ({ request }: LoaderArgs) => {
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
-  if (userDetails.accountType !== AccountType.Teacher)
-    throw notFound({ message: 'Route not found' });
+  if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
   return json({});
 };
 

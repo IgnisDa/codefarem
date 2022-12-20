@@ -162,6 +162,7 @@ export const CatchBoundary: CatchBoundaryComponent = () => {
                 'Could not find what you were looking for...'
               }
               description={
+                caught?.data?.description ||
                 'We could not find what you were looking for. If you think it should be here, please contact us.'
               }
             />

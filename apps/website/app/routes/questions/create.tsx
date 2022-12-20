@@ -22,7 +22,6 @@ import {
 import { json, redirect } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
-import { notFound } from 'remix-utils';
 import { route } from 'routes-gen';
 import { QuestionProblem } from '~/lib/components/QuestionProblem';
 import { requireValidJwt } from '~/lib/services/auth.server';
@@ -36,13 +35,12 @@ import type {
   OutputCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import { IconMinus, IconPlus } from '@tabler/icons';
-import { guessDataType } from '~/lib/utils';
+import { forbiddenError, guessDataType } from '~/lib/utils';
 
 export async function loader({ request }: LoaderArgs) {
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
-  if (userDetails.accountType !== AccountType.Teacher)
-    throw notFound({ message: 'Route not found' });
+  if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
   const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
   return json({ testCaseUnits });
 }
