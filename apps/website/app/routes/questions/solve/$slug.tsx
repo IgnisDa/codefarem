@@ -5,6 +5,7 @@ import {
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
 import { json } from '@remix-run/node';
+import type { ShouldReloadFunction } from '@remix-run/react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { notFound } from 'remix-utils';
@@ -54,6 +55,10 @@ export async function loader({ params }: LoaderArgs) {
     questionSlug,
   });
 }
+
+export const unstable_shouldReload: ShouldReloadFunction = () => {
+  return false;
+};
 
 const inputSchema = z.object({
   input: z.string(),

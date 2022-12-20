@@ -5,6 +5,7 @@ import {
 import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
 import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { json } from '@remix-run/node';
+import type { ShouldReloadFunction } from '@remix-run/react';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
@@ -13,6 +14,10 @@ import { gqlClient } from '~/lib/services/graphql.server';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 import { Container } from '@mantine/core';
 import { CodeEditor } from '~/lib/components/CodeEditor';
+
+export const unstable_shouldReload: ShouldReloadFunction = () => {
+  return false;
+};
 
 export async function loader(_args: LoaderArgs) {
   const { supportedLanguages } = await gqlClient.request(SUPPORTED_LANGUAGES);

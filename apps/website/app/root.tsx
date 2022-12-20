@@ -1,3 +1,4 @@
+import type { ShouldReloadFunction } from '@remix-run/react';
 import {
   Links,
   LiveReload,
@@ -22,6 +23,11 @@ import { AppNavbar } from './lib/components/AppShell';
 import { StylesPlaceholder } from '@mantine/remix';
 
 createEmotionCache({ key: 'mantine' });
+
+// https://remix.run/docs/en/v1/route/should-reload
+export const unstable_shouldReload: ShouldReloadFunction = () => {
+  return false;
+};
 
 export const links: LinksFunction = () => {
   return [];
