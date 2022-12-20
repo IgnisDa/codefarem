@@ -1,5 +1,4 @@
 import {
-  ExecuteCodeErrorStep,
   SupportedLanguage,
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
@@ -22,6 +21,7 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
+import { Prism } from '@mantine/prism';
 import { RichTextEditor } from '@mantine/tiptap';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
@@ -34,10 +34,7 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
-import {
-  DisplayErrorOutput,
-  DisplaySuccessOutput,
-} from '~/lib/components/DisplayOutput';
+import { DisplaySuccessOutput } from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
@@ -219,10 +216,16 @@ export default () => {
                       successOutput={testCaseStatus.userOutput}
                     />
                   ) : (
-                    <DisplayErrorOutput
-                      errorOutput={testCaseStatus.expectedOutput}
-                      errorStep={ExecuteCodeErrorStep.CompilationToWasm}
-                    />
+                    <SimpleGrid cols={2}>
+                      <DisplayErrorDifference
+                        title={'Expected Output'}
+                        output={testCaseStatus.expectedOutput}
+                      />
+                      <DisplayErrorDifference
+                        title={'Your Output'}
+                        output={testCaseStatus.userOutput}
+                      />
+                    </SimpleGrid>
                   ))}
               </Stack>
             ) : (
@@ -232,5 +235,22 @@ export default () => {
         )}
       </Stack>
     </Container>
+  );
+};
+
+const DisplayErrorDifference = ({
+  title,
+  output,
+}: {
+  title: string;
+  output: string;
+}) => {
+  return (
+    <Box>
+      <Center>
+        <Text td={'underline'}>{title}</Text>
+      </Center>
+      <Prism language={'markdown'}>{output}</Prism>
+    </Box>
   );
 };
