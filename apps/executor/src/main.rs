@@ -14,12 +14,20 @@ fn get_command_args(language: Language, file_path: PathBuf) -> Vec<String> {
         Language::Python => {
             vec![
                 format!("--dir={}", CODEFAREM_TEMP_PATH.to_string_lossy()),
-                "--mapdir=/opt::/opt".to_string(),
+                "--mapdir=/opt/wasi-python::/opt/wasi-python".to_string(),
                 "--".to_string(),
                 "/opt/wasi-python/bin/python3.wasm".to_string(),
                 binding,
             ]
         }
+        // FIXME: This does not work at all
+        Language::Ruby => vec![
+            format!("--dir={}", CODEFAREM_TEMP_PATH.to_string_lossy()),
+            "--mapdir=/usr::/opt/wasi-ruby".to_string(),
+            "--".to_string(),
+            "/opt/wasi-ruby/local/bin/ruby".to_string(),
+            binding,
+        ],
         _ => vec![binding],
     }
 }

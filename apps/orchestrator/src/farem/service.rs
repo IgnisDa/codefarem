@@ -30,6 +30,7 @@ pub struct FaremService {
     c_service: CompilerServiceClient<Channel>,
     swift_service: CompilerServiceClient<Channel>,
     python_service: CompilerServiceClient<Channel>,
+    ruby_service: CompilerServiceClient<Channel>,
 }
 
 impl FaremService {
@@ -43,6 +44,7 @@ impl FaremService {
         c_service: &CompilerServiceClient<Channel>,
         python_service: &CompilerServiceClient<Channel>,
         swift_service: &CompilerServiceClient<Channel>,
+        ruby_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
             executor_service: executor_service.clone(),
@@ -53,6 +55,7 @@ impl FaremService {
             c_service: c_service.clone(),
             python_service: python_service.clone(),
             swift_service: swift_service.clone(),
+            ruby_service: ruby_service.clone(),
         }
     }
 
@@ -68,6 +71,7 @@ impl FaremService {
             SupportedLanguage::Zig => &self.zig_service,
             SupportedLanguage::Python => &self.python_service,
             SupportedLanguage::Swift => &self.swift_service,
+            SupportedLanguage::Ruby => &self.ruby_service,
         }
     }
 

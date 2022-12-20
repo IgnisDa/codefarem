@@ -382,6 +382,7 @@ export enum SupportedLanguage {
   Cpp = 'cpp',
   Go = 'go',
   Python = 'python',
+  Ruby = 'ruby',
   Rust = 'rust',
   Swift = 'swift',
   Zig = 'zig'

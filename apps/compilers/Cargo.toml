@@ -42,3 +42,7 @@ path = "src/bin/python.rs"
 [[bin]]
 name = "swift-compiler"
 path = "src/bin/swift.rs"
+
+[[bin]]
+name = "ruby-compiler"
+path = "src/bin/ruby.rs"

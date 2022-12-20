@@ -14,6 +14,7 @@
                 "python-service",
                 "rs-service",
                 "swift-service",
+                "ruby-service",
                 "zig-service",
                 "executor",
                 "website",
@@ -61,10 +62,22 @@
             "type": "shell",
             "isBackground": true,
             "command": "cargo watch -cqx 'run --bin swift-compiler'",
-            "detail": "Run the Python compiler service",
+            "detail": "Run the Swift compiler service",
             "options": {
                 "env": {
                     "PORT": "5010"
+                }
+            },
+        },
+        {
+            "label": "ruby-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin ruby-compiler'",
+            "detail": "Run the Ruby compiler service",
+            "options": {
+                "env": {
+                    "PORT": "5011"
                 }
             },
         },
