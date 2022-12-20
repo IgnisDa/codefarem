@@ -11,13 +11,12 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
-import { DisplayOutput } from '~/lib/components/DisplayOutput';
+import {
+  DisplayErrorOutput,
+  DisplaySuccessOutput,
+} from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
-import type {
-  ExecuteCodeError,
-  ExecuteCodeOutput,
-} from ':generated/graphql/orchestrator/generated/graphql';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -91,19 +90,18 @@ export default () => {
           supportedLanguages={supportedLanguages}
           btnText={'Execute'}
         />
-        {fetcher.data && (
-          <DisplayOutput
-            type={
-              fetcher.data.output.__typename === 'ExecuteCodeError'
-                ? 'error'
-                : 'success'
-            }
-            successStepTimings={(fetcher.data.output as ExecuteCodeOutput).time}
-            successOutput={(fetcher.data.output as ExecuteCodeOutput).output}
-            errorOutput={(fetcher.data.output as ExecuteCodeError).error}
-            errorStep={(fetcher.data.output as ExecuteCodeError).step}
-          />
-        )}
+        {fetcher.data &&
+          (fetcher.data.output.__typename === 'ExecuteCodeError' ? (
+            <DisplayErrorOutput
+              errorOutput={fetcher.data.output.error}
+              errorStep={fetcher.data.output.step}
+            />
+          ) : (
+            <DisplaySuccessOutput
+              successStepTimings={fetcher.data.output.time}
+              successOutput={fetcher.data.output.output}
+            />
+          ))}
       </Stack>
     </Container>
   );

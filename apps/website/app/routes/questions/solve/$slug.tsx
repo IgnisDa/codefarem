@@ -34,7 +34,10 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
-import { DisplayOutput } from '~/lib/components/DisplayOutput';
+import {
+  DisplayErrorOutput,
+  DisplaySuccessOutput,
+} from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
@@ -209,17 +212,18 @@ export default () => {
                     )
                   )}
                 </SimpleGrid>
-                {testCaseStatus && (
-                  // FIXME: This component needs to be broken up into a different error and
-                  // success components
-                  <DisplayOutput
-                    type={testCaseStatus.passed ? 'error' : 'success'}
-                    successStepTimings={testCaseStatus.time}
-                    successOutput={testCaseStatus.userOutput}
-                    errorOutput={testCaseStatus.expectedOutput}
-                    errorStep={ExecuteCodeErrorStep.CompilationToWasm}
-                  />
-                )}
+                {testCaseStatus &&
+                  (testCaseStatus.passed ? (
+                    <DisplaySuccessOutput
+                      successStepTimings={testCaseStatus.time}
+                      successOutput={testCaseStatus.userOutput}
+                    />
+                  ) : (
+                    <DisplayErrorOutput
+                      errorOutput={testCaseStatus.expectedOutput}
+                      errorStep={ExecuteCodeErrorStep.CompilationToWasm}
+                    />
+                  ))}
               </Stack>
             ) : (
               <div>{JSON.stringify(fetcher.data.executeCodeForQuestion)}</div>

@@ -10,60 +10,71 @@ import {
 } from '@mantine/core';
 import type { ExecuteCodeErrorStep } from ':generated/graphql/orchestrator/generated/graphql';
 
-interface SuccessProps {
-  type: 'success';
-  successOutput: string;
-  successStepTimings: { compilation: string; execution: string };
-}
-
-interface ErrorProps {
-  type: 'error';
-  errorOutput: string;
-  errorStep: ExecuteCodeErrorStep;
-}
-
-type DisplayOutputProps = SuccessProps | ErrorProps;
-
 const useStyles = createStyles((theme) => ({
   timeText: { fontSize: theme.fontSizes.md },
 }));
 
-export const DisplayOutput = (props: DisplayOutputProps) => {
-  const { classes } = useStyles();
+interface SuccessProps {
+  successOutput: string;
+  successStepTimings: { compilation: string; execution: string };
+}
+
+const DisplayOutputWrapper = ({ children }: { children: JSX.Element }) => {
   return (
     <ScrollArea h={250}>
       <Paper withBorder p="md">
-        {props.type === 'success' ? (
-          <Stack>
-            <Flex gap={10}>
-              <Tooltip label={'Compilation time'}>
-                <Code color={'yellow'} p={'xs'} className={classes.timeText}>
-                  {props.successStepTimings.compilation}
-                </Code>
-              </Tooltip>
-              <Tooltip label={'Execution time'}>
-                <Code color={'blue'} p={'xs'} className={classes.timeText}>
-                  {props.successStepTimings.execution}
-                </Code>
-              </Tooltip>
-            </Flex>
-            <Code>{props.successOutput}</Code>
-          </Stack>
-        ) : (
-          <Stack>
-            <Text>
-              Encountered an error in the{' '}
-              <Text span td={'underline'}>
-                {props.errorStep}
-              </Text>{' '}
-              step:
-            </Text>
-            <Code color={'red'} block>
-              {props.errorOutput}
-            </Code>
-          </Stack>
-        )}
+        <Stack>{children}</Stack>
       </Paper>
     </ScrollArea>
+  );
+};
+
+export const DisplaySuccessOutput = ({
+  successOutput,
+  successStepTimings,
+}: SuccessProps) => {
+  const { classes } = useStyles();
+  return (
+    <DisplayOutputWrapper>
+      <>
+        <Flex gap={10}>
+          <Tooltip label={'Compilation time'}>
+            <Code color={'yellow'} p={'xs'} className={classes.timeText}>
+              {successStepTimings.compilation}
+            </Code>
+          </Tooltip>
+          <Tooltip label={'Execution time'}>
+            <Code color={'blue'} p={'xs'} className={classes.timeText}>
+              {successStepTimings.execution}
+            </Code>
+          </Tooltip>
+        </Flex>
+        <Code>{successOutput}</Code>
+      </>
+    </DisplayOutputWrapper>
+  );
+};
+
+interface ErrorProps {
+  errorOutput: string;
+  errorStep: ExecuteCodeErrorStep;
+}
+
+export const DisplayErrorOutput = ({ errorOutput, errorStep }: ErrorProps) => {
+  return (
+    <DisplayOutputWrapper>
+      <>
+        <Text>
+          Encountered an error in the{' '}
+          <Text span td={'underline'}>
+            {errorStep}
+          </Text>{' '}
+          step:
+        </Text>
+        <Code color={'red'} block>
+          {errorOutput}
+        </Code>
+      </>
+    </DisplayOutputWrapper>
   );
 };
