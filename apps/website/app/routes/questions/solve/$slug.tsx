@@ -254,8 +254,8 @@ export default () => {
                       successOutput={testCaseStatus.userOutput}
                     />
                   ) : (
-                    <Prism.Tabs>
-                      <Prism.TabsList defaultValue={'userOutput'}>
+                    <Prism.Tabs defaultValue={'userOutput'}>
+                      <Prism.TabsList>
                         <Prism.Tab value={'userOutput'}>User Output</Prism.Tab>
                         <Prism.Tab value={'expectedOutput'}>
                           Expected Output
