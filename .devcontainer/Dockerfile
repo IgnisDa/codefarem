@@ -15,12 +15,10 @@ RUN groupadd -g ${GUID} ${USERNAME} ;\
 
 RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip zig; do pacman -S --noconfirm $pkg; done
 
-RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
-    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/edgedb.sh ;\
-    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.moon/tools/moon/latest\n' >> /etc/profile.d/moon.sh ;\
-    chmod +x /etc/profile.d/cargo.sh ;\
-    chmod +x /etc/profile.d/edgedb.sh ;\
-    chmod +x /etc/profile.d/moon.sh
+RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/paths.sh ;\
+    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/paths.sh ;\
+    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.moon/tools/moon/latest\n' >> /etc/profile.d/paths.sh ;\
+    chmod +x /etc/profile.d/paths.sh
 
 RUN set -eu ;\
     cd /tmp ;\
