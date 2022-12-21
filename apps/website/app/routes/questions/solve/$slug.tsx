@@ -14,6 +14,7 @@ import {
   Code,
   Container,
   Grid,
+  Paper,
   Progress,
   SimpleGrid,
   Stack,
@@ -126,7 +127,6 @@ export default () => {
     fetcher.data.executeCodeForQuestion.testCaseStatuses.at(selectedTestCase)!;
 
   useEffect(() => {
-    console.log(fetcher.data);
     if (
       fetcher.data?.executeCodeForQuestion.__typename ===
       'ExecuteCodeForQuestionOutput'
@@ -254,41 +254,42 @@ export default () => {
                       successOutput={testCaseStatus.userOutput}
                     />
                   ) : (
-                    <SimpleGrid cols={2}>
-                      <DisplayErrorDifference
-                        title={'Expected Output'}
-                        output={testCaseStatus.expectedOutput}
-                      />
-                      <DisplayErrorDifference
-                        title={'Your Output'}
-                        output={testCaseStatus.userOutput}
-                      />
-                    </SimpleGrid>
+                    <Prism.Tabs>
+                      <Prism.TabsList defaultValue={'userOutput'}>
+                        <Prism.Tab value={'userOutput'}>User Output</Prism.Tab>
+                        <Prism.Tab value={'expectedOutput'}>
+                          Expected Output
+                        </Prism.Tab>
+                        <Prism.Tab value={'diff'}>Diff</Prism.Tab>
+                      </Prism.TabsList>
+
+                      <Prism.Panel value={'userOutput'} language={'markdown'}>
+                        {testCaseStatus.userOutput}
+                      </Prism.Panel>
+                      <Prism.Panel
+                        value={'expectedOutput'}
+                        language={'markdown'}
+                      >
+                        {testCaseStatus.expectedOutput}
+                      </Prism.Panel>
+                      <Prism.Panel value={'diff'} language={'diff'}>
+                        {testCaseStatus.diff}
+                      </Prism.Panel>
+                    </Prism.Tabs>
                   ))}
               </Stack>
             ) : (
-              <div>{JSON.stringify(fetcher.data.executeCodeForQuestion)}</div>
+              <Container size={'sm'}>
+                <Paper p={'md'} withBorder>
+                  <Code color={'red'}>
+                    {fetcher.data.executeCodeForQuestion.error}
+                  </Code>
+                </Paper>
+              </Container>
             )}
           </Center>
         )}
       </Stack>
     </Container>
-  );
-};
-
-const DisplayErrorDifference = ({
-  title,
-  output,
-}: {
-  title: string;
-  output: string;
-}) => {
-  return (
-    <Box>
-      <Center>
-        <Text td={'underline'}>{title}</Text>
-      </Center>
-      <Prism language={'markdown'}>{output}</Prism>
-    </Box>
   );
 };
