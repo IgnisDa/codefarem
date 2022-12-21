@@ -7,7 +7,9 @@ use crate::{
         mutations::{
             create_class::CreateClassOutput,
             create_question::CreateQuestionOutput,
-            execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
+            execute_code_for_question::{
+                ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
+            },
         },
         queries::{
             all_questions::QuestionPartialsDetails,
@@ -273,7 +275,7 @@ impl LearningService {
         question_slug: &'_ str,
         code: &'_ str,
         language: &SupportedLanguage,
-    ) -> Result<ExecuteCodeForQuestionOutput, ExecuteCodeError> {
+    ) -> Result<ExecuteCodeForQuestionOutput, ApiError> {
         let question_details = self
             .question_details(question_slug)
             .await
@@ -282,25 +284,31 @@ impl LearningService {
             .farem_service
             .compile_source(code, language)
             .await
-            .map_err(|f| ExecuteCodeError {
-                error: f,
-                step: ExecuteCodeErrorStep::CompilationToWasm,
+            .map_err(|f| ApiError {
+                error: format!("Failed to compile to wasm with error: {}", f),
             })?;
         let mut outputs = Vec::with_capacity(question_details.test_cases.len());
+        let mut total_passed = 0;
         for test_case in question_details.test_cases.iter() {
             let arguments = test_case
                 .inputs
                 .iter()
                 .map(case_unit_to_argument)
                 .collect::<Vec<_>>();
-            let user_output = self
+            let user_output = match self
                 .farem_service
                 .send_execute_wasm_request(&compiled_wasm.data, &arguments, language)
                 .await
-                .map_err(|f| ExecuteCodeError {
-                    error: f,
-                    step: ExecuteCodeErrorStep::WasmExecution,
-                })?;
+            {
+                Ok(f) => f,
+                Err(f) => {
+                    outputs.push(TestCaseResultUnion::Error(ExecuteCodeError {
+                        error: f,
+                        step: ExecuteCodeErrorStep::WasmExecution,
+                    }));
+                    continue;
+                }
+            };
             let expected_output = test_case
                 .outputs
                 .iter()
@@ -309,19 +317,23 @@ impl LearningService {
                 .join("\n")
                 + "\n";
             let user_output_str = String::from_utf8(user_output.data).unwrap();
-            outputs.push(TestCaseStatus {
-                passed: user_output_str == expected_output,
+            let passed = user_output_str == expected_output;
+            if passed {
+                total_passed += 1;
+            }
+            outputs.push(TestCaseResultUnion::Result(TestCaseSuccessStatus {
+                passed,
                 user_output: user_output_str,
                 expected_output,
                 time: ExecuteCodeTime {
                     compilation: compiled_wasm.elapsed.clone(),
                     execution: user_output.elapsed,
                 },
-            });
+            }));
         }
         Ok(ExecuteCodeForQuestionOutput {
             num_test_cases: outputs.len() as u8,
-            num_test_cases_failed: outputs.iter().filter(|&x| !x.passed).count() as u8,
+            num_test_cases_failed: total_passed,
             test_case_statuses: outputs,
         })
     }

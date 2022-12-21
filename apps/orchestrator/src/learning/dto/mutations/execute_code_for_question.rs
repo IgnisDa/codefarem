@@ -3,6 +3,7 @@ use crate::farem::dto::mutations::execute_code::{
 };
 use async_graphql::{InputObject, SimpleObject, Union};
 use derive_getters::Getters;
+use utilities::graphql::ApiError;
 
 /// The input object used to execute some code
 #[derive(InputObject, Getters)]
@@ -14,8 +15,10 @@ pub struct ExecuteCodeForQuestionInput {
     execute_input: ExecuteCodeInput,
 }
 
+/// The result type if a test case was executed successfully. Does not imply that the test
+/// case passed, just that the code was executed successfully.
 #[derive(Debug, SimpleObject)]
-pub struct TestCaseStatus {
+pub struct TestCaseSuccessStatus {
     /// Whether the test case passed or not
     pub passed: bool,
 
@@ -29,6 +32,15 @@ pub struct TestCaseStatus {
     pub time: ExecuteCodeTime,
 }
 
+#[derive(Debug, Union)]
+pub enum TestCaseResultUnion {
+    /// The type returned if executing code was successful
+    Result(TestCaseSuccessStatus),
+
+    /// The type returned if executing code was unsuccessful
+    Error(ExecuteCodeError),
+}
+
 /// The result type if the code was compiled and executed successfully
 #[derive(Debug, SimpleObject)]
 pub struct ExecuteCodeForQuestionOutput {
@@ -39,7 +51,7 @@ pub struct ExecuteCodeForQuestionOutput {
     pub num_test_cases_failed: u8,
 
     /// Data about individual test cases
-    pub test_case_statuses: Vec<TestCaseStatus>,
+    pub test_case_statuses: Vec<TestCaseResultUnion>,
 }
 
 /// The output object when executing code
@@ -49,5 +61,5 @@ pub enum ExecuteCodeForQuestionResultUnion {
     Result(ExecuteCodeForQuestionOutput),
 
     /// The type returned if executing code was unsuccessful
-    Error(ExecuteCodeError),
+    Error(ApiError),
 }
