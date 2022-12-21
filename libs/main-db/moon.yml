@@ -1,4 +1,5 @@
 type: 'library'
+language: 'typescript'
 
 fileGroups:
   dbschema:
