@@ -27,7 +27,7 @@ import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { notFound } from 'remix-utils';
 import invariant from 'tiny-invariant';
 import { match } from 'ts-pattern';
@@ -122,6 +122,24 @@ export default () => {
       'ExecuteCodeForQuestionOutput' &&
     fetcher.data.executeCodeForQuestion.testCaseStatuses.at(selectedTestCase)!;
 
+  useEffect(() => {
+    console.log(fetcher.data);
+    if (
+      fetcher.data?.executeCodeForQuestion.__typename ===
+      'ExecuteCodeForQuestionOutput'
+    ) {
+      // find the first test case that has failed, and select it
+      for (const [
+        testCaseIndex,
+        testCase,
+      ] of fetcher.data.executeCodeForQuestion.testCaseStatuses.entries())
+        if (!testCase.passed) {
+          setSelectedTestCase(testCaseIndex);
+          break;
+        }
+    }
+  }, [fetcher.data]);
+
   return (
     <Container fluid mx={10}>
       <Stack>
@@ -203,6 +221,7 @@ export default () => {
                             key={idx}
                             value={100}
                             color={t.passed ? 'green' : 'red'}
+                            size={idx === selectedTestCase ? 'md' : 'sm'}
                           />
                         </UnstyledButton>
                       </Tooltip>
