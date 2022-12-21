@@ -84,6 +84,7 @@ export const EXECUTE_CODE_FOR_QUESTION = graphql(`
             passed
             userOutput
             expectedOutput
+            diff
             time {
               compilation
               execution
