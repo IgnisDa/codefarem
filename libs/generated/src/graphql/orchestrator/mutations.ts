@@ -75,18 +75,24 @@ export const EXECUTE_CODE_FOR_QUESTION = graphql(`
         numTestCases
         numTestCasesFailed
         testCaseStatuses {
-          passed
-          userOutput
-          expectedOutput
-          time {
-            compilation
-            execution
+          __typename
+          ... on ExecuteCodeError {
+            error
+            step
+          }
+          ... on TestCaseSuccessStatus {
+            passed
+            userOutput
+            expectedOutput
+            time {
+              compilation
+              execution
+            }
           }
         }
       }
-      ... on ExecuteCodeError {
+      ... on ApiError {
         error
-        step
       }
     }
   }
