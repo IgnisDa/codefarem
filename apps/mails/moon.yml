@@ -1,6 +1,16 @@
-type: 'library'
-
 tasks:
   dev:
     command: 'email dev'
     local: true
+
+  build:
+    command: email
+    args:
+      - export
+      - '--pretty'
+      - '--outDir'
+      - dist
+    inputs:
+      - 'emails/**/*'
+    outputs:
+      - 'dist'

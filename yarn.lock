@@ -1675,20 +1675,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@codefarem/mails@workspace:apps/mails"
   dependencies:
-    "@react-email/button": 0.0.4
-    "@react-email/container": 0.0.4
-    "@react-email/head": 0.0.2
-    "@react-email/heading": 0.0.5
-    "@react-email/hr": 0.0.2
-    "@react-email/html": 0.0.2
-    "@react-email/img": 0.0.2
-    "@react-email/link": 0.0.2
-    "@react-email/preview": 0.0.2
-    "@react-email/render": 0.0.2
-    "@react-email/section": 0.0.1
-    "@react-email/text": 0.0.2
+    "@react-email/button": 0.0.5
+    "@react-email/container": 0.0.5
+    "@react-email/head": 0.0.3
+    "@react-email/heading": 0.0.6
+    "@react-email/hr": 0.0.3
+    "@react-email/html": 0.0.3
+    "@react-email/img": 0.0.3
+    "@react-email/link": 0.0.3
+    "@react-email/preview": 0.0.3
+    "@react-email/render": 0.0.3
+    "@react-email/section": 0.0.3
+    "@react-email/text": 0.0.3
     react: 18.2.0
-    react-email: 1.1.1
+    react-email: 1.4.0
   languageName: unknown
   linkType: soft
 
@@ -1977,6 +1977,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/android-arm64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/android-arm64@npm:0.16.4"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-arm@npm:0.15.12":
   version: 0.15.12
   resolution: "@esbuild/android-arm@npm:0.15.12"
@@ -1991,6 +1998,69 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/android-arm@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/android-arm@npm:0.16.4"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/android-x64@npm:0.16.4"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/darwin-arm64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/darwin-arm64@npm:0.16.4"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/darwin-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/darwin-x64@npm:0.16.4"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/freebsd-arm64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/freebsd-arm64@npm:0.16.4"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/freebsd-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/freebsd-x64@npm:0.16.4"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-arm64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-arm64@npm:0.16.4"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-arm@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-arm@npm:0.16.4"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-ia32@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-ia32@npm:0.16.4"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-loong64@npm:0.15.12":
   version: 0.15.12
   resolution: "@esbuild/linux-loong64@npm:0.15.12"
@@ -2002,6 +2072,90 @@ __metadata:
   version: 0.15.18
   resolution: "@esbuild/linux-loong64@npm:0.15.18"
   conditions: os=linux & cpu=loong64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-loong64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-loong64@npm:0.16.4"
+  conditions: os=linux & cpu=loong64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-mips64el@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-mips64el@npm:0.16.4"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-ppc64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-ppc64@npm:0.16.4"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-riscv64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-riscv64@npm:0.16.4"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-s390x@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-s390x@npm:0.16.4"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/linux-x64@npm:0.16.4"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/netbsd-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/netbsd-x64@npm:0.16.4"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/openbsd-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/openbsd-x64@npm:0.16.4"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/sunos-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/sunos-x64@npm:0.16.4"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-arm64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/win32-arm64@npm:0.16.4"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-ia32@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/win32-ia32@npm:0.16.4"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-x64@npm:0.16.4":
+  version: 0.16.4
+  resolution: "@esbuild/win32-x64@npm:0.16.4"
+  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -3764,112 +3918,112 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-email/button@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@react-email/button@npm:0.0.4"
-  dependencies:
-    react: 18.2.0
-  checksum: 5796963e3d4c7580e20cd6e1e22b9cacb449796444ae13ed99ea37782c3167accd021af91c873a9c338bc2fba1a742be0548bb5402c8c80aeb768e685dd9b86c
-  languageName: node
-  linkType: hard
-
-"@react-email/container@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@react-email/container@npm:0.0.4"
-  dependencies:
-    react: 18.2.0
-  checksum: c0a4d40e4f83ef516d87336f56b73c3079cfbf05e98496d7ef61bb5581fddc3c08fec24cf7d01b39fd7dee7b83b7867b0e9c76e91a4d94e3e024877b8cde79f0
-  languageName: node
-  linkType: hard
-
-"@react-email/head@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/head@npm:0.0.2"
-  dependencies:
-    react: 18.2.0
-  checksum: 8242b18ed054d93a5f7cff8601952726a78337de13bd9258258109af66b47537ec238b8d2831e1e7c0551822be7ed8350b954d6ac0b5bbfa1d1945878ba77f10
-  languageName: node
-  linkType: hard
-
-"@react-email/heading@npm:0.0.5":
+"@react-email/button@npm:0.0.5":
   version: 0.0.5
-  resolution: "@react-email/heading@npm:0.0.5"
+  resolution: "@react-email/button@npm:0.0.5"
+  dependencies:
+    react: 18.2.0
+  checksum: 814c4ef54d32bbdc86ec7070fa8f1c57b621ea08d3bef595306b416dd5c8752b50c3a6ea6c7001b7e644592614bdf1cf068f856a44ef55086a6759b095338983
+  languageName: node
+  linkType: hard
+
+"@react-email/container@npm:0.0.5":
+  version: 0.0.5
+  resolution: "@react-email/container@npm:0.0.5"
+  dependencies:
+    react: 18.2.0
+  checksum: 299d5735ec0a1d653fc5281ca92b2d1a82e38f3e2e9bf711174020fd9a6a28824bec11455ab377ff435832e23315922fd0fea00418c91142b41ce684a39077aa
+  languageName: node
+  linkType: hard
+
+"@react-email/head@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/head@npm:0.0.3"
+  dependencies:
+    react: 18.2.0
+  checksum: a6e3ae4ced6f044df2c91cf5ce81d6f4835fcb91985db0cfc885c05e9f91bcd08a5aa27e9ce7a0e52bd110a8b5745a8e30fbf0fea79068fe99a4a5b4c6665d8d
+  languageName: node
+  linkType: hard
+
+"@react-email/heading@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@react-email/heading@npm:0.0.6"
   dependencies:
     "@radix-ui/react-slot": 1.0.0
     react: 18.2.0
     utils: "*"
-  checksum: 47a94793a655c02c4388562e1656e38fe1cad256e552d755f158809ab88a90c11a1ecce747f25826f5ee08772f616acb159642e7a6844850dc9da1f5fe62ee38
+  checksum: bc67775b86419dd3f63f9bdf2af919ba6d6c6d806283c728f4337361c97a800c00e9983b883cc0ce14dc3e04f5f6074ee74bbd541e76ec18e71a3800d01b3e74
   languageName: node
   linkType: hard
 
-"@react-email/hr@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/hr@npm:0.0.2"
+"@react-email/hr@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/hr@npm:0.0.3"
   dependencies:
     react: 18.2.0
-  checksum: 33f9489c6dc40c0a86b012f788454ac65261337ed186c49c03691c24f4c21dff683d344779696ec2d0047ad632c5fa01db0d9b637ae2ea5774ea1b30e6441a42
+  checksum: e9c5bc21f4efaae525020a21b9f032dfd110b2fabca7f1486ce7165aa595e6ea646f7ef35b17131eddd80057fca91269f0855cff3c149c7f1a89b4c5a3a78a70
   languageName: node
   linkType: hard
 
-"@react-email/html@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/html@npm:0.0.2"
-  checksum: 913610bdebb8ed0367018e55082fe3e6d59edc742261880c3cfdd2f5984adccbce4fca6be0a0ac23ab01ec219925687289a015a91a2e610e1d55401a0c0074da
+"@react-email/html@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/html@npm:0.0.3"
+  checksum: b07f8fff3d74abe987dcbf66c3584db52043c27a4ecd0c0da3159d4fe47e43d3dadea1f7494562aec4dccaa8abe2f65f919365a66db4818249fd90b3e8f0e2bf
   languageName: node
   linkType: hard
 
-"@react-email/img@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/img@npm:0.0.2"
+"@react-email/img@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/img@npm:0.0.3"
   dependencies:
     react: 18.2.0
-  checksum: ffa00ddb6b5af2215a7fb62050b0bc13642ab25f353256c3b2a8c9217d0717f9e70b59a230f29fd155238585ac4e8f7df58e73dddcbe7a9a23b3ee9ab0b69532
+  checksum: 64b3b243da57e3a3e29d47f1033d68173edf4622a82e68593f5786f6869528c2dc7301a38ccce8c4544236b8b031ca6af1b283a99fc1ea0e0f0384dda847ca1a
   languageName: node
   linkType: hard
 
-"@react-email/link@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/link@npm:0.0.2"
+"@react-email/link@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/link@npm:0.0.3"
   dependencies:
     react: 18.2.0
-  checksum: d471b896c87baa5fb1da4a1d10a114a0a120c162876c756b837c1774c91eb2e3d126b8fad98c5cfcf21cc261e54d9b74056729fa58736f4ba09810608edaa41e
+  checksum: 3d1249a052e1ea8a4815eb607c56e84e62777c45acfa19551c6c6b8c9ecca88c0ae7ec16550a1bf56908923b7434c586805dc8b2ab8700ea9abffdc8059f6728
   languageName: node
   linkType: hard
 
-"@react-email/preview@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/preview@npm:0.0.2"
+"@react-email/preview@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/preview@npm:0.0.3"
   dependencies:
     react: 18.2.0
-  checksum: afb5ba5f7e079a37e5271f9c5cab3c5262e9cd7e6b35b4e27ab80555e58d9d20a37a21a66be230e1f1736da079090566f1f961471801706b7a741e6028163c46
+  checksum: 92ab41f7f20495603058ca299289fac9a7ba618f90669f3f831c9094490001bd8c30c59aeb3038d0a5af8f75b77a5ae28267472cef33501e338e198b4c29e187
   languageName: node
   linkType: hard
 
-"@react-email/render@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/render@npm:0.0.2"
+"@react-email/render@npm:*, @react-email/render@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/render@npm:0.0.3"
   dependencies:
     pretty: 2.0.0
     react-dom: 18.2.0
-  checksum: c9bcab0a823d993d97b47bda6333a5ce3a1781892e55ddf8f0c69dd366e3cbb5a3e9e0269adf4241837aa8d7e54aa5614bfa58061a1962e4577470e6a0b2de73
+  checksum: eabb7ae12e5726b36d3ee11c1ff5474ce9cce15f1b9ce33e385caae736f1327d8b6f905d6408a8e68b72487623cce723b1454b514c6b12e124c37d54c2d0fe45
   languageName: node
   linkType: hard
 
-"@react-email/section@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@react-email/section@npm:0.0.1"
+"@react-email/section@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/section@npm:0.0.3"
   dependencies:
     react: 18.2.0
-  checksum: d6ce3d6c36acf984c23945e8b70724e608d26d38e98638b3a0ca4d51f7ce096e8e1b6054ec7af0d41b67e76f4b417dd7df92d3c1c2b42efee3ed80f6bff98eb2
+  checksum: d270def11658a650ab7156171e0e89950b79441c8d5b6baa28e1c8c3cc862ff7d75cde7bf08cbc2c260ecd221b5fd8c2d157c9bc4e2c95a8f2fd61eefa73f13e
   languageName: node
   linkType: hard
 
-"@react-email/text@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@react-email/text@npm:0.0.2"
+"@react-email/text@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@react-email/text@npm:0.0.3"
   dependencies:
     react: 18.2.0
-  checksum: 2b868861b3eb3bbb3a81b975c9630f53d3d291bae0830dab68aa8ac913e83c4d4a353a147dabfdc0c4c3141674def25851eabc24dfb137065784878ae81edab9
+  checksum: 36473ff0f74fa827be2ef21ed9ccfde9178b853283ad667972390acfb9e774bd2a68fbd8148fe74121711108db8f99195cde00169a3a08a8148a28de2369e54f
   languageName: node
   linkType: hard
 
@@ -8765,6 +8919,83 @@ __metadata:
   bin:
     esbuild: bin/esbuild
   checksum: b344d52c57616917719ac2fa38a58eba7d3c9d2a295116272b3e16a4f6327dc42549274c06560d301f9235a6fe31ccb45499b31d04820dfb8527d89d9766a2ad
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:0.16.4":
+  version: 0.16.4
+  resolution: "esbuild@npm:0.16.4"
+  dependencies:
+    "@esbuild/android-arm": 0.16.4
+    "@esbuild/android-arm64": 0.16.4
+    "@esbuild/android-x64": 0.16.4
+    "@esbuild/darwin-arm64": 0.16.4
+    "@esbuild/darwin-x64": 0.16.4
+    "@esbuild/freebsd-arm64": 0.16.4
+    "@esbuild/freebsd-x64": 0.16.4
+    "@esbuild/linux-arm": 0.16.4
+    "@esbuild/linux-arm64": 0.16.4
+    "@esbuild/linux-ia32": 0.16.4
+    "@esbuild/linux-loong64": 0.16.4
+    "@esbuild/linux-mips64el": 0.16.4
+    "@esbuild/linux-ppc64": 0.16.4
+    "@esbuild/linux-riscv64": 0.16.4
+    "@esbuild/linux-s390x": 0.16.4
+    "@esbuild/linux-x64": 0.16.4
+    "@esbuild/netbsd-x64": 0.16.4
+    "@esbuild/openbsd-x64": 0.16.4
+    "@esbuild/sunos-x64": 0.16.4
+    "@esbuild/win32-arm64": 0.16.4
+    "@esbuild/win32-ia32": 0.16.4
+    "@esbuild/win32-x64": 0.16.4
+  dependenciesMeta:
+    "@esbuild/android-arm":
+      optional: true
+    "@esbuild/android-arm64":
+      optional: true
+    "@esbuild/android-x64":
+      optional: true
+    "@esbuild/darwin-arm64":
+      optional: true
+    "@esbuild/darwin-x64":
+      optional: true
+    "@esbuild/freebsd-arm64":
+      optional: true
+    "@esbuild/freebsd-x64":
+      optional: true
+    "@esbuild/linux-arm":
+      optional: true
+    "@esbuild/linux-arm64":
+      optional: true
+    "@esbuild/linux-ia32":
+      optional: true
+    "@esbuild/linux-loong64":
+      optional: true
+    "@esbuild/linux-mips64el":
+      optional: true
+    "@esbuild/linux-ppc64":
+      optional: true
+    "@esbuild/linux-riscv64":
+      optional: true
+    "@esbuild/linux-s390x":
+      optional: true
+    "@esbuild/linux-x64":
+      optional: true
+    "@esbuild/netbsd-x64":
+      optional: true
+    "@esbuild/openbsd-x64":
+      optional: true
+    "@esbuild/sunos-x64":
+      optional: true
+    "@esbuild/win32-arm64":
+      optional: true
+    "@esbuild/win32-ia32":
+      optional: true
+    "@esbuild/win32-x64":
+      optional: true
+  bin:
+    esbuild: bin/esbuild
+  checksum: c06e9b2e84f5c7cdb608fa15e5a241d155321097fe1362beab176bc8283f54ae2a9a7fcca741da2663ffb5fea98c6c47226edd22189d3effb14b457e46592d1b
   languageName: node
   linkType: hard
 
@@ -15436,14 +15667,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-email@npm:1.1.1":
-  version: 1.1.1
-  resolution: "react-email@npm:1.1.1"
+"react-email@npm:1.4.0":
+  version: 1.4.0
+  resolution: "react-email@npm:1.4.0"
   dependencies:
     "@commander-js/extra-typings": 9.4.1
+    "@react-email/render": "*"
     chokidar: 3.5.3
     commander: 9.4.1
     cpy: 8.1.2
+    esbuild: 0.16.4
     glob: 8.0.3
     log-symbols: 4.1.0
     ora: 5.4.1
@@ -15451,7 +15684,7 @@ __metadata:
     shelljs: 0.8.5
   bin:
     email: dist/index.js
-  checksum: 2fddc19c3499b8c20892cb0562f4fd54ebcebbaee8b574313b57c377112e7b7276433d949db9c85673b12a2aa7a16f9c28ea9d66388bbb5cecddf3b28d6a0b2a
+  checksum: a57c73c8b32151970730fd318003a4d8e43cba39c99c29997dafedd3d5ca506b1c01242171412bab1fb9fc0967175e0026fef81d36ac511210331552c18fd901
   languageName: node
   linkType: hard
 
