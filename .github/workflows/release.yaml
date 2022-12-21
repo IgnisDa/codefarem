@@ -41,7 +41,7 @@ jobs:
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
-          for project in "authenticator" "services" "executor" "orchestrator" "website" "admin-backend" "admin-website"
+          for project in "authenticator" "languages" "executor" "orchestrator" "website" "admin-backend" "admin-website"
           do
             echo "Generating dockerfile for '$project'..."
             poetry run python apps/deployment/src/docker.py "$project"

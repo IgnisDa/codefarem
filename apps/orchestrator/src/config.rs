@@ -13,14 +13,14 @@ use utilities::get_figment_config;
 #[derive(Debug, Deserialize)]
 pub struct ServiceConfig {
     pub executor: String,
-    pub cpp_compiler: String,
-    pub go_compiler: String,
-    pub zig_compiler: String,
-    pub c_compiler: String,
-    pub rust_compiler: String,
-    pub python_compiler: String,
-    pub swift_compiler: String,
-    pub ruby_compiler: String,
+    pub c_service: String,
+    pub cpp_service: String,
+    pub go_service: String,
+    pub python_service: String,
+    pub ruby_service: String,
+    pub rust_service: String,
+    pub swift_service: String,
+    pub zig_service: String,
     pub authenticator: String,
 }
 
@@ -56,21 +56,21 @@ impl AppState {
         let executor_service =
             ExecutorServiceClient::connect(config.service_urls.executor.clone()).await?;
         let cpp_service =
-            CompilerServiceClient::connect(config.service_urls.cpp_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.cpp_service.clone()).await?;
         let go_service =
-            CompilerServiceClient::connect(config.service_urls.go_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.go_service.clone()).await?;
         let rust_service =
-            CompilerServiceClient::connect(config.service_urls.rust_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.rust_service.clone()).await?;
         let zig_service =
-            CompilerServiceClient::connect(config.service_urls.zig_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.zig_service.clone()).await?;
         let c_service =
-            CompilerServiceClient::connect(config.service_urls.c_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.c_service.clone()).await?;
         let python_service =
-            CompilerServiceClient::connect(config.service_urls.python_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.python_service.clone()).await?;
         let swift_service =
-            CompilerServiceClient::connect(config.service_urls.swift_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.swift_service.clone()).await?;
         let ruby_service =
-            CompilerServiceClient::connect(config.service_urls.ruby_compiler.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.ruby_service.clone()).await?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),

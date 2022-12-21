@@ -1,5 +1,5 @@
-use compilers::{generate_input_and_output_files, run_command_and_capture_output};
 use duct::cmd;
+use languages::{generate_input_and_output_files, run_command_and_capture_output};
 use macros::proto_server;
 use utilities::get_command_output;
 

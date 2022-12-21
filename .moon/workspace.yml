@@ -13,8 +13,8 @@ projects:
   website: 'apps/website'
 
   # rust projects
-  compilers: 'apps/compilers'
   executor: 'apps/executor'
+  languages: 'apps/languages'
   orchestrator: 'apps/orchestrator'
 
   # python projects

@@ -1,8 +1,8 @@
 [package]
-name = "compilers"
+name = "languages"
 version = "0.1.0"
 edition = "2021"
-description = "This crate is responsible for compiling the source code into webassembly"
+description = "This crate is responsible for prviding services for various languages"
 
 [dependencies]
 macros = { path = "../../libs/macros" }

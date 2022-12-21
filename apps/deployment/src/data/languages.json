@@ -1,5 +1,5 @@
 {
-  "dockerfile_path": "apps/services/${executable}.generated.Dockerfile",
+  "dockerfile_path": "apps/languages/${executable}.generated.Dockerfile",
   "apps": [
     {
       "EXECUTABLE_NAMES": ["rs-service"],
