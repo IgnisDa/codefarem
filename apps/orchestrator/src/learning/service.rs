@@ -29,6 +29,7 @@ use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
 use utilities::{
+    diff::get_diff_of_lines,
     graphql::ApiError,
     models::IdObject,
     random_string,
@@ -321,10 +322,12 @@ impl LearningService {
             if passed {
                 total_passed += 1;
             }
+            let diff = get_diff_of_lines(&expected_output, user_output_str.as_str());
             outputs.push(TestCaseResultUnion::Result(TestCaseSuccessStatus {
                 passed,
                 user_output: user_output_str,
                 expected_output,
+                diff,
                 time: ExecuteCodeTime {
                     compilation: compiled_wasm.elapsed.clone(),
                     execution: user_output.elapsed,

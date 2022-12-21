@@ -2756,6 +2756,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "similar"
+version = "2.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "420acb44afdae038210c99e69aae24109f32f15500aa708e81d46c9f29d55fcf"
+
+[[package]]
 name = "slab"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3597,6 +3603,7 @@ dependencies = [
  "rand 0.8.5",
  "serde",
  "serde_json",
+ "similar",
  "slug",
  "strum",
  "uuid",

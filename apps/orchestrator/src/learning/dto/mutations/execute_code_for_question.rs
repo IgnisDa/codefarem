@@ -30,6 +30,9 @@ pub struct TestCaseSuccessStatus {
 
     /// The time taken for the various steps
     pub time: ExecuteCodeTime,
+
+    /// The diff between the user's output and the expected output
+    pub diff: String,
 }
 
 #[derive(Debug, Union)]

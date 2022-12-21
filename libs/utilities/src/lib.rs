@@ -1,3 +1,4 @@
+pub mod diff;
 pub mod graphql;
 pub mod models;
 pub mod users;
