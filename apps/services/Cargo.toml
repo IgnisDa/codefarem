@@ -16,33 +16,33 @@ tokio = { workspace = true }
 tonic = { workspace = true }
 
 [[bin]]
-name = "cpp-compiler"
-path = "src/bin/cpp.rs"
-
-[[bin]]
-name = "go-compiler"
-path = "src/bin/go.rs"
-
-[[bin]]
-name = "rs-compiler"
-path = "src/bin/rs.rs"
-
-[[bin]]
-name = "zig-compiler"
-path = "src/bin/zig.rs"
-
-[[bin]]
-name = "c-compiler"
+name = "c-service"
 path = "src/bin/c.rs"
 
 [[bin]]
-name = "python-compiler"
+name = "cpp-service"
+path = "src/bin/cpp.rs"
+
+[[bin]]
+name = "go-service"
+path = "src/bin/go.rs"
+
+[[bin]]
+name = "python-service"
 path = "src/bin/python.rs"
 
 [[bin]]
-name = "swift-compiler"
+name = "rs-service"
+path = "src/bin/rs.rs"
+
+[[bin]]
+name = "ruby-service"
+path = "src/bin/ruby.rs"
+
+[[bin]]
+name = "swift-service"
 path = "src/bin/swift.rs"
 
 [[bin]]
-name = "ruby-compiler"
-path = "src/bin/ruby.rs"
+name = "zig-service"
+path = "src/bin/zig.rs"

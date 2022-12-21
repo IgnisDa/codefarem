@@ -7,9 +7,9 @@ members = [
   "libs/protobuf",
   "libs/utilities",
   "apps/admin/backend",
-  "apps/compilers",
   "apps/executor",
   "apps/orchestrator",
+  "apps/services",
 ]
 
 [workspace.dependencies]

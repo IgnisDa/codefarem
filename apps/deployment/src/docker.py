@@ -58,9 +58,9 @@ def authenticator():
 
 
 @click.command()
-def compilers():
+def services():
     """Generate docker-files for the compilers"""
-    write_dockerfile("base", "compilers")
+    write_dockerfile("base", "services")
 
 
 @click.command()
@@ -84,7 +84,7 @@ def website():
 cli.add_command(admin_backend)
 cli.add_command(admin_website)
 cli.add_command(authenticator)
-cli.add_command(compilers)
+cli.add_command(services)
 cli.add_command(executor)
 cli.add_command(orchestrator)
 cli.add_command(website)
