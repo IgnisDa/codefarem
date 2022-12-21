@@ -9,6 +9,7 @@ use protobuf::generated::{
     compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
     executor::{executor_service_client::ExecutorServiceClient, ExecutorInput, Language},
 };
+use tokio::task::JoinSet;
 use tonic::{transport::Channel, Request};
 use utilities::SupportedLanguage;
 
@@ -76,21 +77,27 @@ impl FaremService {
     }
 
     pub async fn initialize(&self) {
-        let mut toolchain_information = vec![];
-        // TODO: parallelize this
-        for language in self.supported_languages().iter() {
-            let compiler_service = self.service_from_language(language);
-            let tf = compiler_service
-                .clone()
-                .toolchain_info(Request::new(VoidParams {}))
-                .await
-                .unwrap()
-                .into_inner();
-            toolchain_information.push(ToolChainInformation {
-                version: tf.version,
-                service: *language,
+        let mut set = JoinSet::new();
+        for language in self.supported_languages().into_iter() {
+            let compiler_service = self.service_from_language(&language).clone();
+            set.spawn(async move {
+                let tf = compiler_service
+                    .clone()
+                    .toolchain_info(Request::new(VoidParams {}))
+                    .await
+                    .unwrap()
+                    .into_inner();
+                ToolChainInformation {
+                    version: tf.version,
+                    service: language,
+                }
             });
         }
+        let mut toolchain_information = vec![];
+        while let Some(result) = set.join_next().await {
+            toolchain_information.push(result.unwrap());
+        }
+        toolchain_information.sort_by(|a, b| a.version.cmp(&b.version));
         TOOLCHAIN_INFORMATION
             .set(toolchain_information)
             .expect("Toolchain information already initialized");

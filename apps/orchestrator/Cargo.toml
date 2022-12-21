@@ -20,6 +20,7 @@ once_cell = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
+jwks-client = "0.2.0"
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -27,4 +28,3 @@ strum = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
 uuid = { workspace = true }
-jwks-client = "0.2.0"
