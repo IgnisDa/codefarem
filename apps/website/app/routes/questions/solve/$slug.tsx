@@ -34,7 +34,10 @@ import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
-import { DisplaySuccessOutput } from '~/lib/components/DisplayOutput';
+import {
+  DisplayErrorOutput,
+  DisplaySuccessOutput,
+} from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
@@ -133,7 +136,12 @@ export default () => {
         testCaseIndex,
         testCase,
       ] of fetcher.data.executeCodeForQuestion.testCaseStatuses.entries())
-        if (!testCase.passed) {
+        if (testCase.__typename === 'TestCaseSuccessStatus') {
+          if (!testCase.passed) {
+            setSelectedTestCase(testCaseIndex);
+            break;
+          }
+        } else {
           setSelectedTestCase(testCaseIndex);
           break;
         }
@@ -220,7 +228,13 @@ export default () => {
                           <Progress
                             key={idx}
                             value={100}
-                            color={t.passed ? 'green' : 'red'}
+                            color={
+                              t.__typename === 'ExecuteCodeError'
+                                ? 'red'
+                                : t.passed
+                                ? 'green'
+                                : 'red'
+                            }
                             size={idx === selectedTestCase ? 'md' : 'sm'}
                           />
                         </UnstyledButton>
@@ -229,7 +243,12 @@ export default () => {
                   )}
                 </SimpleGrid>
                 {testCaseStatus &&
-                  (testCaseStatus.passed ? (
+                  (testCaseStatus.__typename === 'ExecuteCodeError' ? (
+                    <DisplayErrorOutput
+                      errorOutput={testCaseStatus.error}
+                      errorStep={testCaseStatus.step}
+                    />
+                  ) : testCaseStatus.passed ? (
                     <DisplaySuccessOutput
                       successStepTimings={testCaseStatus.time}
                       successOutput={testCaseStatus.userOutput}
