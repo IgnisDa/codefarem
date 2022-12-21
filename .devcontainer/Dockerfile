@@ -17,8 +17,10 @@ RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip zig
 
 RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
     printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/edgedb.sh ;\
+    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.moon/tools/moon/latest\n' >> /etc/profile.d/moon.sh ;\
     chmod +x /etc/profile.d/cargo.sh ;\
-    chmod +x /etc/profile.d/edgedb.sh
+    chmod +x /etc/profile.d/edgedb.sh ;\
+    chmod +x /etc/profile.d/moon.sh
 
 RUN set -eu ;\
     cd /tmp ;\
@@ -57,9 +59,6 @@ RUN set -eu ;\
 
 RUN for pkg in protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
 
-RUN set -eu ;\
-    cd /tmp ;\
-    wget "https://github.com/moonrepo/moon/releases/latest/download/moon-x86_64-unknown-linux-musl" -O "moon" ;\
-    sudo mv "moon" "/usr/bin/moon" ;\
-    sudo chmod +x "/usr/bin/moon" ;\
-    cargo binstall cargo-nextest cargo-watch --no-confirm
+RUN curl -fsSL https://moonrepo.dev/install.sh | bash
+
+RUN cargo binstall cargo-nextest cargo-watch --no-confirm
