@@ -3,3 +3,18 @@ type: 'application'
 tasks:
   dev:
     command: 'cypress open'
+    local: true
+
+  test:
+    command: 'cypress run'
+    inputs:
+      - 'cypress.config.ts'
+      - 'cypress/**/*'
+    outputs:
+      - 'coverage'
+
+workspace:
+  inheritedTasks:
+    exclude:
+      - 'build'
+      - 'test'
