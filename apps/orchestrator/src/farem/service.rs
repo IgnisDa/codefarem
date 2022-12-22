@@ -32,6 +32,7 @@ pub struct FaremService {
     swift_service: CompilerServiceClient<Channel>,
     python_service: CompilerServiceClient<Channel>,
     ruby_service: CompilerServiceClient<Channel>,
+    grain_service: CompilerServiceClient<Channel>,
 }
 
 impl FaremService {
@@ -46,6 +47,7 @@ impl FaremService {
         python_service: &CompilerServiceClient<Channel>,
         swift_service: &CompilerServiceClient<Channel>,
         ruby_service: &CompilerServiceClient<Channel>,
+        grain_service: &CompilerServiceClient<Channel>,
     ) -> Self {
         Self {
             executor_service: executor_service.clone(),
@@ -57,6 +59,7 @@ impl FaremService {
             python_service: python_service.clone(),
             swift_service: swift_service.clone(),
             ruby_service: ruby_service.clone(),
+            grain_service: grain_service.clone(),
         }
     }
 

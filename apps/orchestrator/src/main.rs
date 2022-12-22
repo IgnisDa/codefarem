@@ -45,6 +45,7 @@ async fn rocket() -> _ {
         &app_state.python_service,
         &app_state.swift_service,
         &app_state.ruby_service,
+        &app_state.grain_service,
     );
     farem_service.initialize().await;
     let user_service = UserService::new(&app_state.db_conn);
