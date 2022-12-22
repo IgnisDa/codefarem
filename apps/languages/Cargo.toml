@@ -28,6 +28,10 @@ name = "go-service"
 path = "src/bin/go.rs"
 
 [[bin]]
+name = "grain-service"
+path = "src/bin/grain.rs"
+
+[[bin]]
 name = "python-service"
 path = "src/bin/python.rs"
 

@@ -15,6 +15,7 @@
                 "rs-service",
                 "swift-service",
                 "ruby-service",
+                "grain-service",
                 "zig-service",
                 "executor",
                 "website",
@@ -22,86 +23,14 @@
             ]
         },
         {
-            "label": "cpp-service",
+            "label": "executor",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin cpp-service'",
-            "detail": "Run the Cpp service",
+            "command": "cargo watch -cqx 'run --package executor'",
+            "detail": "Run the Wasm execution service",
             "options": {
                 "env": {
-                    "PORT": "5002"
-                }
-            },
-        },
-        {
-            "label": "c-service",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin c-service'",
-            "detail": "Run the C service",
-            "options": {
-                "env": {
-                    "PORT": "5008"
-                }
-            },
-        },
-        {
-            "label": "python-service",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin python-service'",
-            "detail": "Run the Python service",
-            "options": {
-                "env": {
-                    "PORT": "5009"
-                }
-            },
-        },
-        {
-            "label": "swift-service",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin swift-service'",
-            "detail": "Run the Swift service",
-            "options": {
-                "env": {
-                    "PORT": "5010"
-                }
-            },
-        },
-        {
-            "label": "ruby-service",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin ruby-service'",
-            "detail": "Run the Ruby service",
-            "options": {
-                "env": {
-                    "PORT": "5011"
-                }
-            },
-        },
-        {
-            "label": "zig-service",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin zig-service'",
-            "detail": "Run the Zig service",
-            "options": {
-                "env": {
-                    "PORT": "5007"
-                }
-            },
-        },
-        {
-            "label": "go-service",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --bin go-service'",
-            "detail": "Run the Go service",
-            "options": {
-                "env": {
-                    "PORT": "5003"
+                    "PORT": "5000"
                 }
             },
         },
@@ -118,14 +47,98 @@
             },
         },
         {
-            "label": "executor",
+            "label": "cpp-service",
             "type": "shell",
             "isBackground": true,
-            "command": "cargo watch -cqx 'run --package executor'",
-            "detail": "Run the Wasm execution service",
+            "command": "cargo watch -cqx 'run --bin cpp-service'",
+            "detail": "Run the Cpp service",
+            "options": {
+                "env": {
+                    "PORT": "5002"
+                }
+            },
+        },
+        {
+            "label": "go-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin go-service'",
+            "detail": "Run the Go service",
+            "options": {
+                "env": {
+                    "PORT": "5003"
+                }
+            },
+        },
+        {
+            "label": "zig-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin zig-service'",
+            "detail": "Run the Zig service",
             "options": {
                 "env": {
                     "PORT": "5004"
+                }
+            },
+        },
+        {
+            "label": "c-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin c-service'",
+            "detail": "Run the C service",
+            "options": {
+                "env": {
+                    "PORT": "5005"
+                }
+            },
+        },
+        {
+            "label": "python-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin python-service'",
+            "detail": "Run the Python service",
+            "options": {
+                "env": {
+                    "PORT": "5006"
+                }
+            },
+        },
+        {
+            "label": "swift-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin swift-service'",
+            "detail": "Run the Swift service",
+            "options": {
+                "env": {
+                    "PORT": "5007"
+                }
+            },
+        },
+        {
+            "label": "ruby-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin ruby-service'",
+            "detail": "Run the Ruby service",
+            "options": {
+                "env": {
+                    "PORT": "5008"
+                }
+            },
+        },
+        {
+            "label": "grain-service",
+            "type": "shell",
+            "isBackground": true,
+            "command": "cargo watch -cqx 'run --bin grain-service'",
+            "detail": "Run the Grain service",
+            "options": {
+                "env": {
+                    "PORT": "5009"
                 }
             },
         },
@@ -150,14 +163,14 @@
             "options": {},
         },
         {
-            "label": "mails",
+            "label": "admin-backend",
             "type": "shell",
             "isBackground": true,
-            "command": "moon run mails:dev",
-            "detail": "Run the mail preview server",
+            "command": "cargo watch -cqx 'run --package admin-backend'",
+            "detail": "Run the admin backend server",
             "options": {
                 "env": {
-                    "PORT": "5006"
+                    "PORT": "6001"
                 }
             },
         },
@@ -167,17 +180,21 @@
             "isBackground": true,
             "command": "moon run admin-website:dev",
             "detail": "Run the admin website server",
-            "options": {},
-        },
-        {
-            "label": "admin-backend",
-            "type": "shell",
-            "isBackground": true,
-            "command": "cargo watch -cqx 'run --package admin-backend'",
-            "detail": "Run the admin backend server",
             "options": {
                 "env": {
-                    "PORT": "5005"
+                    "PORT": "6002"
+                }
+            },
+        },
+        {
+            "label": "mails",
+            "type": "shell",
+            "isBackground": true,
+            "command": "moon run mails:dev",
+            "detail": "Run the mail preview server",
+            "options": {
+                "env": {
+                    "PORT": "6003"
                 }
             },
         },
