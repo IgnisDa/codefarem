@@ -8,4 +8,5 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+  port: 7000,
 });
