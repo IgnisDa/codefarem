@@ -8,8 +8,10 @@ import {
 } from ':generated/graphql/orchestrator/mutations';
 import {
   ActionIcon,
+  Alert,
   Button,
   Container,
+  Divider,
   Flex,
   ScrollArea,
   Select,
@@ -167,166 +169,178 @@ export default () => {
         </Flex>
         <Stack>
           <Text>Test cases</Text>
-          <Tabs value={activeTab} onTabChange={setActiveTab}>
-            <Tabs.List>
-              {testCases.map((_, idx) => (
-                <Tabs.Tab value={`t-${idx}`} key={idx}>
-                  Test Case {idx + 1}
-                </Tabs.Tab>
+          {testCases.length > 0 ? (
+            <Tabs value={activeTab} onTabChange={setActiveTab}>
+              <Tabs.List>
+                {testCases.map((_, idx) => (
+                  <Tabs.Tab value={`t-${idx}`} key={idx}>
+                    Test Case {idx + 1}
+                  </Tabs.Tab>
+                ))}
+              </Tabs.List>
+              {testCases.map((tCase, testCaseIdx) => (
+                <Tabs.Panel value={`t-${testCaseIdx}`} key={testCaseIdx}>
+                  <Flex>
+                    <Stack p={'sm'} w={'50%'}>
+                      <Flex justify="space-between">
+                        <Title order={3}>Inputs</Title>
+                        <Button
+                          variant="light"
+                          leftIcon={<IconPlus size={20} />}
+                          compact
+                          onClick={() => addCase(testCaseIdx, 'inputs')}
+                        >
+                          Add
+                        </Button>
+                      </Flex>
+                      {tCase.inputs.map((input, inputCaseIdx) => (
+                        <Flex gap={10} align={'center'} key={inputCaseIdx}>
+                          <TextInput
+                            required
+                            value={input.data}
+                            label="Data"
+                            onChange={(e) => {
+                              const value = e.currentTarget.value;
+                              setData(
+                                testCaseIdx,
+                                inputCaseIdx,
+                                'inputs',
+                                'data',
+                                value
+                              );
+                              const dataType = guessDataType(value);
+                              setData(
+                                testCaseIdx,
+                                inputCaseIdx,
+                                'inputs',
+                                'dataType',
+                                dataType
+                              );
+                            }}
+                          />
+                          <Select
+                            required
+                            data={testCaseUnits}
+                            value={input.dataType}
+                            label="Data type"
+                            onChange={(e) =>
+                              setData(
+                                testCaseIdx,
+                                inputCaseIdx,
+                                'inputs',
+                                'dataType',
+                                e!
+                              )
+                            }
+                          />
+                          <ActionIcon
+                            mt={20}
+                            variant="filled"
+                            onClick={() =>
+                              removeIndividualInputCase(
+                                testCaseIdx,
+                                inputCaseIdx,
+                                'inputs'
+                              )
+                            }
+                          >
+                            <IconMinus size={20} />
+                          </ActionIcon>
+                        </Flex>
+                      ))}
+                    </Stack>
+                    <Stack p={'sm'} w={'50%'}>
+                      <Flex justify="space-between">
+                        <Title order={3}>Outputs</Title>
+                        <Button
+                          variant="light"
+                          leftIcon={<IconPlus size={20} />}
+                          compact
+                          onClick={() => addCase(testCaseIdx, 'outputs')}
+                        >
+                          Add
+                        </Button>
+                      </Flex>
+                      {tCase.outputs.map((output, outputCaseIdx) => (
+                        <Flex gap={10} align={'center'} key={outputCaseIdx}>
+                          <TextInput
+                            required
+                            value={output.data}
+                            label="Data"
+                            onChange={(e) => {
+                              const value = e.currentTarget.value;
+                              setData(
+                                testCaseIdx,
+                                outputCaseIdx,
+                                'outputs',
+                                'data',
+                                value
+                              );
+                              const dataType = guessDataType(value);
+                              setData(
+                                testCaseIdx,
+                                outputCaseIdx,
+                                'outputs',
+                                'dataType',
+                                dataType
+                              );
+                            }}
+                          />
+                          <Select
+                            required
+                            data={testCaseUnits}
+                            value={output.dataType}
+                            label="Data type"
+                            onChange={(e) =>
+                              setData(
+                                testCaseIdx,
+                                outputCaseIdx,
+                                'outputs',
+                                'dataType',
+                                e!
+                              )
+                            }
+                          />
+                          <ActionIcon
+                            mt={20}
+                            variant="filled"
+                            onClick={() =>
+                              removeIndividualInputCase(
+                                testCaseIdx,
+                                outputCaseIdx,
+                                'outputs'
+                              )
+                            }
+                          >
+                            <IconMinus size={20} />
+                          </ActionIcon>
+                        </Flex>
+                      ))}
+                    </Stack>
+                  </Flex>
+                </Tabs.Panel>
               ))}
-            </Tabs.List>
-            {testCases.map((tCase, testCaseIdx) => (
-              <Tabs.Panel pt={10} value={`t-${testCaseIdx}`} key={testCaseIdx}>
-                <Flex gap={10}>
-                  <Stack w={'50%'}>
-                    <Flex px={10} justify="space-between">
-                      <Title order={3}>Inputs</Title>
-                      <Button
-                        variant="light"
-                        leftIcon={<IconPlus size={20} />}
-                        compact
-                        onClick={() => addCase(testCaseIdx, 'inputs')}
-                      >
-                        Add
-                      </Button>
-                    </Flex>
-                    {tCase.inputs.map((input, inputCaseIdx) => (
-                      <Flex gap={10} align={'center'} key={inputCaseIdx}>
-                        <TextInput
-                          required
-                          value={input.data}
-                          label="Data"
-                          onChange={(e) => {
-                            const value = e.currentTarget.value;
-                            setData(
-                              testCaseIdx,
-                              inputCaseIdx,
-                              'inputs',
-                              'data',
-                              value
-                            );
-                            const dataType = guessDataType(value);
-                            setData(
-                              testCaseIdx,
-                              inputCaseIdx,
-                              'inputs',
-                              'dataType',
-                              dataType
-                            );
-                          }}
-                        />
-                        <Select
-                          required
-                          data={testCaseUnits}
-                          value={input.dataType}
-                          label="Data type"
-                          onChange={(e) =>
-                            setData(
-                              testCaseIdx,
-                              inputCaseIdx,
-                              'inputs',
-                              'dataType',
-                              e!
-                            )
-                          }
-                        />
-                        <ActionIcon
-                          mt={20}
-                          variant="filled"
-                          onClick={() =>
-                            removeIndividualInputCase(
-                              testCaseIdx,
-                              inputCaseIdx,
-                              'inputs'
-                            )
-                          }
-                        >
-                          <IconMinus size={20} />
-                        </ActionIcon>
-                      </Flex>
-                    ))}
-                  </Stack>
-                  <Stack w={'50%'}>
-                    <Flex px={10} justify="space-between">
-                      <Title order={3}>Outputs</Title>
-                      <Button
-                        variant="light"
-                        leftIcon={<IconPlus size={20} />}
-                        compact
-                        onClick={() => addCase(testCaseIdx, 'outputs')}
-                      >
-                        Add
-                      </Button>
-                    </Flex>
-                    {tCase.outputs.map((output, outputCaseIdx) => (
-                      <Flex gap={10} align={'center'} key={outputCaseIdx}>
-                        <TextInput
-                          required
-                          value={output.data}
-                          label="Data"
-                          onChange={(e) => {
-                            const value = e.currentTarget.value;
-                            setData(
-                              testCaseIdx,
-                              outputCaseIdx,
-                              'outputs',
-                              'data',
-                              value
-                            );
-                            const dataType = guessDataType(value);
-                            setData(
-                              testCaseIdx,
-                              outputCaseIdx,
-                              'outputs',
-                              'dataType',
-                              dataType
-                            );
-                          }}
-                        />
-                        <Select
-                          required
-                          data={testCaseUnits}
-                          value={output.dataType}
-                          label="Data type"
-                          onChange={(e) =>
-                            setData(
-                              testCaseIdx,
-                              outputCaseIdx,
-                              'outputs',
-                              'dataType',
-                              e!
-                            )
-                          }
-                        />
-                        <ActionIcon
-                          mt={20}
-                          variant="filled"
-                          onClick={() =>
-                            removeIndividualInputCase(
-                              testCaseIdx,
-                              outputCaseIdx,
-                              'outputs'
-                            )
-                          }
-                        >
-                          <IconMinus size={20} />
-                        </ActionIcon>
-                      </Flex>
-                    ))}
-                  </Stack>
-                </Flex>
-              </Tabs.Panel>
-            ))}
-          </Tabs>
+            </Tabs>
+          ) : (
+            <Alert color={'yellow'}>You have not configured any test cases</Alert>
+          )}
         </Stack>
-        <Flex justify={'space-between'}>
-          <Button color={'red'} onClick={removeTestCase}>
+        <Divider variant={'dashed'} my={'md'} />
+        <Flex justify={'end'} gap={'md'}>
+          <Button
+            variant={'light'}
+            // I don't know why this has to be added, but otherwise there is a very slight
+            // negative margin
+            mt={1}
+            color={'red'}
+            onClick={removeTestCase}
+          >
             Remove test case
           </Button>
-          <Button onClick={addTestCase}>Add test case</Button>
-        </Flex>
-        <Flex justify={'end'}>
-          <Button variant="filled" color="green" onClick={onSubmit}>
+          <Button variant={'light'} onClick={addTestCase}>
+            Add test case
+          </Button>
+          <Button variant={'light'} color="green" onClick={onSubmit}>
             Create Question
           </Button>
         </Flex>
