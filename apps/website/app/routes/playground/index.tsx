@@ -5,10 +5,13 @@ import {
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
 import {
+  Box,
   Button,
   Container,
+  Divider,
   Drawer,
   Stack,
+  Title,
   useMantineTheme,
 } from '@mantine/core';
 import { json } from '@remix-run/node';
@@ -99,7 +102,7 @@ export default () => {
           btnText={'Execute'}
           leftButton={
             <Button color={'indigo'} onClick={() => setDrawerOpened(true)}>
-              Add arguments
+              Settings
             </Button>
           }
         />
@@ -123,11 +126,19 @@ export default () => {
         overlayOpacity={0.55}
         overlayBlur={3}
         position={'right'}
-        title={'Add arguments'}
+        title={<Title order={2}>Settings</Title>}
         padding={'xl'}
         size={'md'}
+        lockScroll
       >
-        Hello world
+        <Box>
+          <Title order={3}>Add arguments</Title>
+        </Box>
+        <Divider my={'md'} variant={'dashed'} />
+        {/* TODO: Add something that is actually useful here */}
+        <Box>
+          <Title order={3}>Useless thing</Title>
+        </Box>
       </Drawer>
     </Container>
   );

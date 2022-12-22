@@ -7,14 +7,12 @@ import {
   TEST_CASE_UNITS,
 } from ':generated/graphql/orchestrator/mutations';
 import {
-  ActionIcon,
   Alert,
   Button,
   Container,
   Divider,
   Flex,
   ScrollArea,
-  Select,
   Stack,
   Tabs,
   Text,
@@ -23,12 +21,15 @@ import {
 } from '@mantine/core';
 import { json, redirect } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
+import { IconPlus } from '@tabler/icons';
 import { useState } from 'react';
 import { route } from 'routes-gen';
 import { QuestionProblem } from '~/lib/components/QuestionProblem';
+import { TestCaseInput } from '~/lib/components/TestCases';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
+import { forbiddenError, guessDataType, metaFunction } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   CreateQuestionInput,
@@ -36,8 +37,6 @@ import type {
   InputCaseUnit,
   OutputCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
-import { IconMinus, IconPlus } from '@tabler/icons';
-import { forbiddenError, guessDataType, metaFunction } from '~/lib/utils';
 
 export const meta = metaFunction;
 
@@ -194,59 +193,46 @@ export default () => {
                         </Button>
                       </Flex>
                       {tCase.inputs.map((input, inputCaseIdx) => (
-                        <Flex gap={10} align={'center'} key={inputCaseIdx}>
-                          <TextInput
-                            required
-                            value={input.data}
-                            label="Data"
-                            onChange={(e) => {
-                              const value = e.currentTarget.value;
-                              setData(
-                                testCaseIdx,
-                                inputCaseIdx,
-                                'inputs',
-                                'data',
-                                value
-                              );
-                              const dataType = guessDataType(value);
-                              setData(
-                                testCaseIdx,
-                                inputCaseIdx,
-                                'inputs',
-                                'dataType',
-                                dataType
-                              );
-                            }}
-                          />
-                          <Select
-                            required
-                            data={testCaseUnits}
-                            value={input.dataType}
-                            label="Data type"
-                            onChange={(e) =>
-                              setData(
-                                testCaseIdx,
-                                inputCaseIdx,
-                                'inputs',
-                                'dataType',
-                                e!
-                              )
-                            }
-                          />
-                          <ActionIcon
-                            mt={20}
-                            variant="filled"
-                            onClick={() =>
-                              removeIndividualInputCase(
-                                testCaseIdx,
-                                inputCaseIdx,
-                                'inputs'
-                              )
-                            }
-                          >
-                            <IconMinus size={20} />
-                          </ActionIcon>
-                        </Flex>
+                        <TestCaseInput
+                          key={inputCaseIdx}
+                          textValue={input.data}
+                          onTextChange={(e) => {
+                            const value = e.currentTarget.value;
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'data',
+                              value
+                            );
+                            const dataType = guessDataType(value);
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'dataType',
+                              dataType
+                            );
+                          }}
+                          selectValue={input.dataType}
+                          testCaseUnits={testCaseUnits}
+                          onSelectChange={(e) =>
+                            setData(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs',
+                              'dataType',
+                              e
+                            )
+                          }
+                          actionBtnHandler={() =>
+                            removeIndividualInputCase(
+                              testCaseIdx,
+                              inputCaseIdx,
+                              'inputs'
+                            )
+                          }
+                        />
                       ))}
                     </Stack>
                     <Stack p={'sm'} w={'50%'}>
@@ -262,59 +248,46 @@ export default () => {
                         </Button>
                       </Flex>
                       {tCase.outputs.map((output, outputCaseIdx) => (
-                        <Flex gap={10} align={'center'} key={outputCaseIdx}>
-                          <TextInput
-                            required
-                            value={output.data}
-                            label="Data"
-                            onChange={(e) => {
-                              const value = e.currentTarget.value;
-                              setData(
-                                testCaseIdx,
-                                outputCaseIdx,
-                                'outputs',
-                                'data',
-                                value
-                              );
-                              const dataType = guessDataType(value);
-                              setData(
-                                testCaseIdx,
-                                outputCaseIdx,
-                                'outputs',
-                                'dataType',
-                                dataType
-                              );
-                            }}
-                          />
-                          <Select
-                            required
-                            data={testCaseUnits}
-                            value={output.dataType}
-                            label="Data type"
-                            onChange={(e) =>
-                              setData(
-                                testCaseIdx,
-                                outputCaseIdx,
-                                'outputs',
-                                'dataType',
-                                e!
-                              )
-                            }
-                          />
-                          <ActionIcon
-                            mt={20}
-                            variant="filled"
-                            onClick={() =>
-                              removeIndividualInputCase(
-                                testCaseIdx,
-                                outputCaseIdx,
-                                'outputs'
-                              )
-                            }
-                          >
-                            <IconMinus size={20} />
-                          </ActionIcon>
-                        </Flex>
+                        <TestCaseInput
+                          key={outputCaseIdx}
+                          textValue={output.data}
+                          onTextChange={(e) => {
+                            const value = e.currentTarget.value;
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'data',
+                              value
+                            );
+                            const dataType = guessDataType(value);
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'dataType',
+                              dataType
+                            );
+                          }}
+                          selectValue={output.dataType}
+                          testCaseUnits={testCaseUnits}
+                          onSelectChange={(e) =>
+                            setData(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs',
+                              'dataType',
+                              e
+                            )
+                          }
+                          actionBtnHandler={() =>
+                            removeIndividualInputCase(
+                              testCaseIdx,
+                              outputCaseIdx,
+                              'outputs'
+                            )
+                          }
+                        />
                       ))}
                     </Stack>
                   </Flex>
@@ -322,7 +295,9 @@ export default () => {
               ))}
             </Tabs>
           ) : (
-            <Alert color={'yellow'}>You have not configured any test cases</Alert>
+            <Alert color={'yellow'}>
+              You have not configured any test cases
+            </Alert>
           )}
         </Stack>
         <Divider variant={'dashed'} my={'md'} />
