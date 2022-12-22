@@ -12,6 +12,7 @@ import {
   Container,
   Divider,
   Flex,
+  Input,
   ScrollArea,
   Stack,
   Tabs,
@@ -161,10 +162,11 @@ export default () => {
           onChange={(e) => setName(e.currentTarget.value)}
         />
         <Flex direction={'column'}>
-          <Text>Problem statement</Text>
-          <ScrollArea h={210}>
-            <QuestionProblem text={problem} setText={setProblem} />
-          </ScrollArea>
+          <Input.Wrapper label="Problem statement" required>
+            <ScrollArea h={210}>
+              <QuestionProblem text={problem} setText={setProblem} />
+            </ScrollArea>
+          </Input.Wrapper>
         </Flex>
         <Stack>
           <Text>Test cases</Text>
