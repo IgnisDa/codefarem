@@ -1,8 +1,11 @@
-use crate::farem::dto::{
-    mutations::execute_code::{
-        ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput, ExecuteCodeTime,
+use crate::{
+    farem::dto::{
+        mutations::execute_code::{
+            ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeOutput, ExecuteCodeTime,
+        },
+        queries::toolchain_information::ToolChainInformation,
     },
-    queries::toolchain_information::ToolChainInformation,
+    learning::dto::queries::test_case::InputCaseUnit,
 };
 use once_cell::sync::OnceCell;
 use protobuf::generated::{
@@ -197,7 +200,7 @@ impl FaremService {
     pub async fn execute_code(
         &self,
         input: &'_ str,
-        arguments: &[String],
+        arguments: &[InputCaseUnit],
         language: &SupportedLanguage,
     ) -> Result<ExecuteCodeOutput, ExecuteCodeError> {
         let compilation =
@@ -207,7 +210,8 @@ impl FaremService {
                     error: f,
                     step: ExecuteCodeErrorStep::CompilationToWasm,
                 })?;
-        self.send_execute_wasm_request(&compilation.data, arguments, language)
+        let sanitized_args = arguments.iter().map(|f| f.data.clone()).collect::<Vec<_>>();
+        self.send_execute_wasm_request(&compilation.data, &sanitized_args, language)
             .await
             .map(|f| ExecuteCodeOutput {
                 output: String::from_utf8(f.data).unwrap(),

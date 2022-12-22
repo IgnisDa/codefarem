@@ -29,6 +29,7 @@ import {
 import { TestCaseInput } from '~/lib/components/TestCases';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { guessDataType, metaFunction } from '~/lib/utils';
+import type { InputCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -65,6 +66,7 @@ export async function action({ request }: ActionArgs) {
   const { input, language, args } = await zx.parseForm(request, inputSchema);
   // TODO: Convert the args to the correct type
   const sanitizedArgs = JSON.parse(args);
+  console.dir(sanitizedArgs, { depth: Infinity });
   const executeCode = await gqlClient.request(EXECUTE_CODE, {
     input: {
       code: JSON.parse(input),
@@ -83,9 +85,7 @@ export default () => {
   const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState(languageExamples[language]);
   const fetcher = useFetcher<typeof action>();
-  const [args, setArgs] = useState<{ data: string; dataType: TestCaseUnit }[]>(
-    []
-  );
+  const [args, setArgs] = useState<InputCaseUnit[]>([]);
   const testCaseUnits = Object.values(TestCaseUnit);
 
   useEffect(() => {
@@ -152,7 +152,11 @@ export default () => {
             onClick={() =>
               setArgs((state) => [
                 ...state,
-                { data: '', dataType: TestCaseUnit.String },
+                {
+                  data: '',
+                  dataType: TestCaseUnit.String,
+                  name: `arg${state.length}`,
+                },
               ])
             }
           >

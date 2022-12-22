@@ -1,3 +1,4 @@
+use crate::learning::dto::queries::test_case::InputCaseUnit;
 use async_graphql::{Enum, InputObject, SimpleObject, Union};
 use derive_getters::Getters;
 use utilities::SupportedLanguage;
@@ -9,7 +10,7 @@ pub struct ExecuteCodeInput {
     code: String,
 
     /// The arguments to be passed to the execution engine
-    arguments: Vec<String>,
+    arguments: Vec<InputCaseUnit>,
 
     /// The language that needs to be compiled
     language: SupportedLanguage,

@@ -140,7 +140,7 @@ export type ExecuteCodeForQuestionResultUnion = ApiError | ExecuteCodeForQuestio
 /** The input object used to execute some code */
 export type ExecuteCodeInput = {
   /** The arguments to be passed to the execution engine */
-  arguments: Array<Scalars['String']>;
+  arguments: Array<InputCaseUnit>;
   /** The code input that needs to be compiled */
   code: Scalars['String'];
   /** The language that needs to be compiled */
