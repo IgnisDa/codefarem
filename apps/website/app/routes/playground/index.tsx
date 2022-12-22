@@ -1,14 +1,15 @@
-import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
+import {
+  SupportedLanguage,
+  TestCaseUnit,
+} from ':generated/graphql/orchestrator/generated/graphql';
 import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
 import {
   LANGUAGE_EXAMPLE,
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
 import {
-  Box,
   Button,
   Container,
-  Divider,
   Drawer,
   Stack,
   Title,
@@ -16,6 +17,7 @@ import {
 } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
+import { IconSettings } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -24,8 +26,9 @@ import {
   DisplayErrorOutput,
   DisplaySuccessOutput,
 } from '~/lib/components/DisplayOutput';
+import { TestCaseInput } from '~/lib/components/TestCases';
 import { gqlClient } from '~/lib/services/graphql.server';
-import { metaFunction } from '~/lib/utils';
+import { guessDataType, metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -54,16 +57,19 @@ export async function loader(_args: LoaderArgs) {
 const inputSchema = z.object({
   input: z.string(),
   language: z.nativeEnum(SupportedLanguage),
+  args: z.string(),
 });
 type inputSchemaType = z.infer<typeof inputSchema>;
 
 export async function action({ request }: ActionArgs) {
-  const { input, language } = await zx.parseForm(request, inputSchema);
+  const { input, language, args } = await zx.parseForm(request, inputSchema);
+  // TODO: Convert the args to the correct type
+  const sanitizedArgs = JSON.parse(args);
   const executeCode = await gqlClient.request(EXECUTE_CODE, {
     input: {
       code: JSON.parse(input),
       language: language as SupportedLanguage,
-      arguments: [],
+      arguments: sanitizedArgs,
     },
   });
   return json({ output: executeCode.executeCode });
@@ -77,6 +83,10 @@ export default () => {
   const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState(languageExamples[language]);
   const fetcher = useFetcher<typeof action>();
+  const [args, setArgs] = useState<{ data: string; dataType: TestCaseUnit }[]>(
+    []
+  );
+  const testCaseUnits = Object.values(TestCaseUnit);
 
   useEffect(() => {
     setCode(languageExamples[language]);
@@ -93,6 +103,7 @@ export default () => {
             const data: inputSchemaType = {
               input: JSON.stringify(code),
               language,
+              args: JSON.stringify(args),
             };
             fetcher.submit(data, { method: 'post' });
           }}
@@ -101,7 +112,11 @@ export default () => {
           supportedLanguages={supportedLanguages}
           btnText={'Execute'}
           leftButton={
-            <Button color={'indigo'} onClick={() => setDrawerOpened(true)}>
+            <Button
+              color={'indigo'}
+              onClick={() => setDrawerOpened(true)}
+              leftIcon={<IconSettings />}
+            >
               Settings
             </Button>
           }
@@ -128,17 +143,48 @@ export default () => {
         position={'right'}
         title={<Title order={2}>Settings</Title>}
         padding={'xl'}
-        size={'md'}
+        size={'xl'}
         lockScroll
       >
-        <Box>
-          <Title order={3}>Add arguments</Title>
-        </Box>
-        <Divider my={'md'} variant={'dashed'} />
-        {/* TODO: Add something that is actually useful here */}
-        <Box>
-          <Title order={3}>Useless thing</Title>
-        </Box>
+        <Stack>
+          <Button
+            variant={'light'}
+            onClick={() =>
+              setArgs((state) => [
+                ...state,
+                { data: '', dataType: TestCaseUnit.String },
+              ])
+            }
+          >
+            Add argument
+          </Button>
+          {args.map((arg, idx) => (
+            <TestCaseInput
+              key={idx}
+              textValue={arg.data}
+              onTextChange={(e) => {
+                const newArgs = [...args];
+                const value = e.currentTarget.value;
+                const dataType = guessDataType(value);
+                newArgs[idx].data = value;
+                newArgs[idx].dataType = dataType;
+                setArgs(newArgs);
+              }}
+              selectValue={arg.dataType}
+              testCaseUnits={testCaseUnits}
+              onSelectChange={(e) => {
+                const newArgs = [...args];
+                newArgs[idx].dataType = e as TestCaseUnit;
+                setArgs(newArgs);
+              }}
+              actionBtnHandler={() => {
+                const newArgs = [...args];
+                newArgs.splice(idx, 1);
+                setArgs(newArgs);
+              }}
+            />
+          ))}
+        </Stack>
       </Drawer>
     </Container>
   );
