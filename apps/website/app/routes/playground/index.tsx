@@ -4,7 +4,13 @@ import {
   LANGUAGE_EXAMPLE,
   SUPPORTED_LANGUAGES,
 } from ':generated/graphql/orchestrator/queries';
-import { Container, Stack } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Drawer,
+  Stack,
+  useMantineTheme,
+} from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
@@ -61,6 +67,8 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default () => {
+  const theme = useMantineTheme();
+  const [drawerOpened, setDrawerOpened] = useState(false);
   const { languageExamples, supportedLanguages } =
     useLoaderData<typeof loader>();
   const [language, setLanguage] = useState(SupportedLanguage.Python);
@@ -89,6 +97,11 @@ export default () => {
           setLanguage={setLanguage}
           supportedLanguages={supportedLanguages}
           btnText={'Execute'}
+          leftButton={
+            <Button color={'indigo'} onClick={() => setDrawerOpened(true)}>
+              Add arguments
+            </Button>
+          }
         />
         {fetcher.data &&
           (fetcher.data.output.__typename === 'ExecuteCodeError' ? (
@@ -103,6 +116,19 @@ export default () => {
             />
           ))}
       </Stack>
+      <Drawer
+        opened={drawerOpened}
+        onClose={() => setDrawerOpened(false)}
+        overlayColor={theme.colors.dark[9]}
+        overlayOpacity={0.55}
+        overlayBlur={3}
+        position={'right'}
+        title={'Add arguments'}
+        padding={'xl'}
+        size={'md'}
+      >
+        Hello world
+      </Drawer>
     </Container>
   );
 };

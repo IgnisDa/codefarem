@@ -14,6 +14,7 @@ interface CodeEditorProps {
   onSubmit: () => Promise<void>;
   isSubmittingLoading: boolean;
   btnText: string;
+  leftButton?: React.ReactNode;
 }
 
 export const CodeEditor = ({
@@ -25,6 +26,7 @@ export const CodeEditor = ({
   setLanguage,
   isSubmittingLoading,
   btnText,
+  leftButton,
 }: CodeEditorProps) => {
   return (
     <Stack w={'100%'}>
@@ -60,9 +62,8 @@ export const CodeEditor = ({
         value={code}
         onChange={(value) => setCode(value || '')}
       />
-      <Flex justify={'space-between'} align={'center'}>
-        {/* TODO: Remove this element */}
-        <div></div>
+      <Flex justify={'end'} gap={'lg'} align={'center'}>
+        {leftButton ? leftButton : <div></div>}
         <Button
           leftIcon={<IconPlayerPlay size={24} />}
           loading={isSubmittingLoading}
