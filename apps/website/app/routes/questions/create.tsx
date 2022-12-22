@@ -35,14 +35,16 @@ import type {
   OutputCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import { IconMinus, IconPlus } from '@tabler/icons';
-import { forbiddenError, guessDataType } from '~/lib/utils';
+import { forbiddenError, guessDataType, metaFunction } from '~/lib/utils';
+
+export const meta = metaFunction;
 
 export async function loader({ request }: LoaderArgs) {
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
   const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
-  return json({ testCaseUnits });
+  return json({ testCaseUnits, meta: { title: 'Create Question' } });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -150,7 +152,7 @@ export default () => {
   return (
     <Container>
       <Stack>
-        <Title order={1}>Create a question</Title>
+        <Title order={1}>Create question</Title>
         <TextInput
           label="Name"
           required
