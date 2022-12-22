@@ -1,5 +1,9 @@
 type: 'application'
 
+dependsOn:
+  - id: website
+    scope: development
+
 tasks:
   dev:
     command: 'cypress open'
