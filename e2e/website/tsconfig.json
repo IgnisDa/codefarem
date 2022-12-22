@@ -9,6 +9,7 @@
     }
   ],
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "../../.moon/cache/types/e2e/website"
   }
 }

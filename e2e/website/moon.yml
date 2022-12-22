@@ -14,8 +14,6 @@ tasks:
     inputs:
       - 'cypress.config.ts'
       - 'cypress/**/*'
-    outputs:
-      - 'coverage'
 
 workspace:
   inheritedTasks:
