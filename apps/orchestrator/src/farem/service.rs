@@ -76,6 +76,7 @@ impl FaremService {
             SupportedLanguage::Python => &self.python_service,
             SupportedLanguage::Swift => &self.swift_service,
             SupportedLanguage::Ruby => &self.ruby_service,
+            SupportedLanguage::Grain => &self.grain_service,
         }
     }
 

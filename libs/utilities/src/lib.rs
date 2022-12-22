@@ -39,6 +39,7 @@ pub enum SupportedLanguage {
     Zig,
     Swift,
     Ruby,
+    Grain,
 }
 
 impl From<SupportedLanguage> for Language {
@@ -52,6 +53,7 @@ impl From<SupportedLanguage> for Language {
             SupportedLanguage::Python => Language::Python,
             SupportedLanguage::Swift => Language::Swift,
             SupportedLanguage::Ruby => Language::Ruby,
+            SupportedLanguage::Grain => Language::Grain,
         }
     }
 }

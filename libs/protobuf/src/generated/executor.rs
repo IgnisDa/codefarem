@@ -39,6 +39,7 @@ pub enum Language {
     Python = 5,
     Swift = 6,
     Ruby = 7,
+    Grain = 8,
 }
 impl Language {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -55,6 +56,7 @@ impl Language {
             Language::Python => "Python",
             Language::Swift => "Swift",
             Language::Ruby => "Ruby",
+            Language::Grain => "Grain",
         }
     }
 }

@@ -15,6 +15,7 @@ enum Language {
   Python = 5;
   Swift = 6;
   Ruby = 7;
+  Grain = 8;
 }
 
 // The input required when executing a wasm source.

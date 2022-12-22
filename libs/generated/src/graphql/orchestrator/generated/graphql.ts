@@ -381,6 +381,7 @@ export enum SupportedLanguage {
   C = 'c',
   Cpp = 'cpp',
   Go = 'go',
+  Grain = 'grain',
   Python = 'python',
   Ruby = 'ruby',
   Rust = 'rust',
