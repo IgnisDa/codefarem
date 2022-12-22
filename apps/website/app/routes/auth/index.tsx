@@ -140,13 +140,6 @@ export default () => {
                 })}
               >
                 <Stack>
-                  <PinInput
-                    length={6}
-                    autoFocus
-                    required
-                    size={'lg'}
-                    className={classes.pinInput}
-                  />
                   <TextInput
                     placeholder="ana@email.com"
                     description="An email will be sent for verification"
