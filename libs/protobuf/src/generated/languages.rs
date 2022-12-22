@@ -117,7 +117,7 @@ pub mod compiler_service_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/compilers.CompilerService/ExampleCode",
+                "/languages.CompilerService/ExampleCode",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -137,7 +137,7 @@ pub mod compiler_service_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/compilers.CompilerService/CompileCode",
+                "/languages.CompilerService/CompileCode",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -157,7 +157,7 @@ pub mod compiler_service_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/compilers.CompilerService/ToolchainInfo",
+                "/languages.CompilerService/ToolchainInfo",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -246,7 +246,7 @@ pub mod compiler_service_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
-                "/compilers.CompilerService/ExampleCode" => {
+                "/languages.CompilerService/ExampleCode" => {
                     #[allow(non_camel_case_types)]
                     struct ExampleCodeSvc<T: CompilerService>(pub Arc<T>);
                     impl<
@@ -286,7 +286,7 @@ pub mod compiler_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/compilers.CompilerService/CompileCode" => {
+                "/languages.CompilerService/CompileCode" => {
                     #[allow(non_camel_case_types)]
                     struct CompileCodeSvc<T: CompilerService>(pub Arc<T>);
                     impl<T: CompilerService> tonic::server::UnaryService<super::Input>
@@ -324,7 +324,7 @@ pub mod compiler_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/compilers.CompilerService/ToolchainInfo" => {
+                "/languages.CompilerService/ToolchainInfo" => {
                     #[allow(non_camel_case_types)]
                     struct ToolchainInfoSvc<T: CompilerService>(pub Arc<T>);
                     impl<
@@ -400,6 +400,6 @@ pub mod compiler_service_server {
         }
     }
     impl<T: CompilerService> tonic::server::NamedService for CompilerServiceServer<T> {
-        const NAME: &'static str = "compilers.CompilerService";
+        const NAME: &'static str = "languages.CompilerService";
     }
 }

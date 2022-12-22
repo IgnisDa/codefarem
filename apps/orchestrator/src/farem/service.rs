@@ -6,8 +6,8 @@ use crate::farem::dto::{
 };
 use once_cell::sync::OnceCell;
 use protobuf::generated::{
-    compilers::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
     executor::{executor_service_client::ExecutorServiceClient, ExecutorInput, Language},
+    languages::{compiler_service_client::CompilerServiceClient, Input, VoidParams},
 };
 use tokio::task::JoinSet;
 use tonic::{transport::Channel, Request};

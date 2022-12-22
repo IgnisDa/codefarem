@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package compilers;
+package languages;
 
 // A message type which can be used if no parameters are needed
 message VoidParams {

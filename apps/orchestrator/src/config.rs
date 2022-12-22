@@ -2,8 +2,8 @@ use anyhow::Result;
 use dotenv::dotenv;
 use edgedb_tokio::Client;
 use protobuf::generated::{
-    compilers::compiler_service_client::CompilerServiceClient,
     executor::executor_service_client::ExecutorServiceClient,
+    languages::compiler_service_client::CompilerServiceClient,
 };
 use serde::Deserialize;
 use std::sync::Arc;

@@ -29,7 +29,7 @@ macro_rules! hanko_id_from_request {
 macro_rules! proto_server {
     ($example_handler:ident, $compiler_handler:ident, $toolchain_version_handler:ident) => {
         use log::info;
-        use protobuf::generated::compilers::{
+        use protobuf::generated::languages::{
             compiler_service_server::{CompilerService, CompilerServiceServer},
             CompileResponse, Example, Input, ToolchainInfoResponse, VoidParams,
         };
