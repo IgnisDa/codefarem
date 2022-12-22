@@ -10,6 +10,7 @@ import {
 import {
   Button,
   Container,
+  Divider,
   Drawer,
   Stack,
   Title,
@@ -17,7 +18,7 @@ import {
 } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { IconSettings } from '@tabler/icons';
+import { IconDeviceFloppy, IconSettings } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { zx } from 'zodix';
@@ -64,9 +65,7 @@ type inputSchemaType = z.infer<typeof inputSchema>;
 
 export async function action({ request }: ActionArgs) {
   const { input, language, args } = await zx.parseForm(request, inputSchema);
-  // TODO: Convert the args to the correct type
   const sanitizedArgs = JSON.parse(args);
-  console.dir(sanitizedArgs, { depth: Infinity });
   const executeCode = await gqlClient.request(EXECUTE_CODE, {
     input: {
       code: JSON.parse(input),
@@ -145,6 +144,7 @@ export default () => {
         padding={'xl'}
         size={'xl'}
         lockScroll
+        withCloseButton={false}
       >
         <Stack>
           <Button
@@ -189,6 +189,16 @@ export default () => {
             />
           ))}
         </Stack>
+        <Divider my={'md'} variant={'dashed'} />
+        <Button
+          w={'100%'}
+          variant={'light'}
+          color={'green'}
+          onClick={() => setDrawerOpened(false)}
+          leftIcon={<IconDeviceFloppy />}
+        >
+          Done
+        </Button>
       </Drawer>
     </Container>
   );
