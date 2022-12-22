@@ -20,6 +20,9 @@ projects:
   # python projects
   deployment: 'apps/deployment'
 
+  # testing
+  website-e2e: 'e2e/website'
+
   # miscellaneous
   authenticator: 'apps/authenticator'
   examples: 'libs/examples'

@@ -12,6 +12,9 @@
       "path": "apps/website"
     },
     {
+      "path": "e2e/website"
+    },
+    {
       "path": "libs/faker"
     },
     {
