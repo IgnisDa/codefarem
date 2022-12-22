@@ -18,7 +18,7 @@ use std::{
     path::PathBuf,
     process::Command,
 };
-use strum::{EnumIter, IntoEnumIterator};
+use strum::{Display, EnumIter, IntoEnumIterator};
 
 pub static CODEFAREM_TEMP_PATH: Lazy<PathBuf> = Lazy::new(|| {
     let dir = env::temp_dir();
@@ -28,7 +28,7 @@ pub static CODEFAREM_TEMP_PATH: Lazy<PathBuf> = Lazy::new(|| {
 });
 
 /// All the languages that are supported by the service
-#[derive(Enum, Clone, Copy, Debug, PartialEq, Eq, EnumIter)]
+#[derive(Enum, Clone, Copy, Debug, Display, PartialEq, Eq, EnumIter)]
 #[graphql(rename_items = "lowercase")]
 pub enum SupportedLanguage {
     Python,
