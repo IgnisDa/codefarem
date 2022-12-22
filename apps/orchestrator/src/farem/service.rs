@@ -88,11 +88,13 @@ impl FaremService {
         for language in self.supported_languages().into_iter() {
             let compiler_service = self.service_from_language(&language).clone();
             set.spawn(async move {
-                println!("Initializing {:?}\n", language);
                 let tf = compiler_service
                     .clone()
                     .toolchain_info(Request::new(VoidParams {}))
                     .await
+                    .map_err(|f| {
+                        println!("Error: {:?} for language: {:?}", f, language);
+                    })
                     .unwrap()
                     .into_inner();
                 ToolChainInformation {
