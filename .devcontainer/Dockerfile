@@ -55,7 +55,10 @@ RUN set -eu ;\
     tar -xvf "paru-v1.11.2-x86_64.tar.zst" ;\
     sudo mv "paru" "/usr/bin/paru"
 
-RUN for pkg in protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
+RUN for pkg in \
+    "protobuf" "protolint" "grpcurl-bin" "python-poetry" \
+    "alsa-lib" "gtk3" "at-spi2-core" "nss" "xorg-server-xvfb"; \
+    do paru -S --noconfirm $pkg; done
 
 RUN curl -fsSL https://moonrepo.dev/install.sh | bash
 
