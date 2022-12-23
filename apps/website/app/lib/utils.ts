@@ -1,5 +1,5 @@
 import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
-import { forbidden } from 'remix-utils';
+import { forbidden, unprocessableEntity } from 'remix-utils';
 import { match } from 'ts-pattern';
 import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import type { MetaFunction } from '@remix-run/server-runtime';
@@ -17,6 +17,13 @@ export const forbiddenError = () => {
   throw forbidden({
     message: 'Forbidden',
     description: 'You are not allowed to access this route',
+  });
+};
+
+export const unprocessableEntityError = (description: string) => {
+  throw unprocessableEntity({
+    message: 'Unimplemented',
+    description,
   });
 };
 

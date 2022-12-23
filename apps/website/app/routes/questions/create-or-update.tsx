@@ -25,7 +25,7 @@ import { json, redirect } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { IconPlus } from '@tabler/icons';
 import { useState } from 'react';
-import { badRequest, unprocessableEntity } from 'remix-utils';
+import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
 import { z } from 'zod';
@@ -40,6 +40,7 @@ import {
   getDataRepresentation,
   guessDataType,
   metaFunction,
+  unprocessableEntityError,
 } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
@@ -108,7 +109,7 @@ export async function action({ request }: ActionArgs) {
   });
 
   if (action === LoaderAction.Update)
-    throw unprocessableEntity({ message: 'Update not implemented' });
+    return unprocessableEntityError('Updating questions is not supported yet');
 
   const input: CreateQuestionInput = JSON.parse(data);
 
