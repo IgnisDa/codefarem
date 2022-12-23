@@ -1,7 +1,4 @@
-import {
-  SupportedLanguage,
-  TestCaseUnit,
-} from ':generated/graphql/orchestrator/generated/graphql';
+import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
 import { EXECUTE_CODE_FOR_QUESTION } from ':generated/graphql/orchestrator/mutations';
 import {
   QUESTION_DETAILS,
@@ -31,7 +28,6 @@ import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useState } from 'react';
 import { notFound } from 'remix-utils';
 import invariant from 'tiny-invariant';
-import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
@@ -40,7 +36,7 @@ import {
   DisplaySuccessOutput,
 } from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
-import { metaFunction } from '~/lib/utils';
+import { getDataRepresentation, metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
@@ -95,19 +91,6 @@ export async function action({ request }: ActionArgs) {
   );
   return json({ executeCodeForQuestion });
 }
-
-const DisplayData = (data: TestCaseFragment) => {
-  return match(data.unitType)
-    .with(
-      TestCaseUnit.Number,
-      TestCaseUnit.String,
-      () => String(data.numberValue) || data.stringValue
-    )
-    .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
-      (data.numberCollectionValue || data.stringCollectionValue || []).join(',')
-    )
-    .exhaustive();
-};
 
 export default () => {
   const { supportedLanguages, questionDetails, questionSlug } =
@@ -170,7 +153,9 @@ export default () => {
                             {testCase.inputs.map((input, idx) => (
                               <Box key={idx}>
                                 <Code>
-                                  {DisplayData(input.data as TestCaseFragment)}
+                                  {getDataRepresentation(
+                                    input.data as TestCaseFragment
+                                  )}
                                 </Code>
                               </Box>
                             ))}
@@ -180,7 +165,9 @@ export default () => {
                             {testCase.outputs.map((output, idx) => (
                               <Box key={idx}>
                                 <Code>
-                                  {DisplayData(output.data as TestCaseFragment)}
+                                  {getDataRepresentation(
+                                    output.data as TestCaseFragment
+                                  )}
                                 </Code>
                               </Box>
                             ))}
