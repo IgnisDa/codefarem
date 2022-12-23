@@ -101,13 +101,22 @@ impl LearningService {
             first,
             last,
             |after, before, first, last| async move {
-                let first = first.unwrap_or(10) as i16;
-                let last = last.unwrap_or(10) as i16;
+                // either first or last or default if not provided
+                let limit = first.unwrap_or_else(|| last.unwrap_or(5)) as i16;
+
+                let convert = |id: Option<String>| id.map(|id| Uuid::parse_str(&id).unwrap());
+                let uuid_after = convert(after);
+                let uuid_before = convert(before);
+
                 let all_questions = self
                     .db_conn
-                    .query::<QuestionPartialsDetails, _>(PAGINATED_QUESTIONS, &(after, first))
+                    .query::<QuestionPartialsDetails, _>(
+                        PAGINATED_QUESTIONS,
+                        &(uuid_after, uuid_before, limit),
+                    )
                     .await
                     .unwrap();
+
                 let has_previous_page = false;
                 let has_next_page = false;
                 let mut connection = Connection::new(has_previous_page, has_next_page);

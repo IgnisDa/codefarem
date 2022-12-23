@@ -5,6 +5,9 @@ SELECT learning::Question {
   slug,
   num_test_cases := (count(.test_cases)),
 }
-FILTER  (.id > <uuid><optional str>$0) ?? true
+FILTER
+  (.id > <optional uuid>$0) ?? true # forward pagination
+  AND
+  (.id < <optional uuid>$1) ?? true # backward pagination
 ORDER BY .created_at
-LIMIT <int16>$1
+LIMIT <int16>$2
