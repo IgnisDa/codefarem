@@ -5,19 +5,23 @@ WITH
       (.id > <optional uuid>$0) ?? true # forward pagination
       AND
       (.id < <optional uuid>$1) ?? true # backward pagination
-    ORDER BY .id
-    LIMIT <int16>$2
+    # We need to ORDER BY ASC if `first` is specified and DESC if `last` is specified
+    ORDER BY .id {{DIRECTION}} # FIXME: We will have to use a hard replace, would be better if we could use parameters
+    LIMIT <optional int16>$2
   ),
   min_id := (SELECT min(selected.id)),
   max_id := (SELECT max(selected.id)),
 SELECT {
-  selected := selected {
-      id,
-      created_time := <str>.created_at, # use datetime that is supported by edgedb
-      name,
-      slug,
-      num_test_cases := (count(.test_cases)),
-  },
+  selected := (
+    SELECT selected {
+        id,
+        created_time := <str>.created_at, # use datetime that is supported by edgedb
+        name,
+        slug,
+        num_test_cases := (count(.test_cases)),
+    }
+    ORDER BY .id
+  ),
   has_previous_page := (EXISTS (
     SELECT learning::Question
     FILTER .id < min_id

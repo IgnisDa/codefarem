@@ -102,8 +102,14 @@ impl LearningService {
             first,
             last,
             |after, before, first, last| async move {
-                // either first or last or default if not provided
-                let limit = first.unwrap_or_else(|| last.unwrap_or(5)) as i16;
+                let mut direction = "ASC";
+
+                let first = first.map(|f| f as i16);
+                let last = last.map(|l| {
+                    direction = "DESC";
+                    l as i16
+                });
+                let limit = first.or(last);
 
                 let convert = |id: Option<String>| id.map(|id| Uuid::parse_str(&id).unwrap());
                 let after = convert(after);
@@ -116,12 +122,11 @@ impl LearningService {
                     has_next_page: bool,
                 }
 
+                let new_query = PAGINATED_QUESTIONS.replace("{{DIRECTION}}", direction);
+
                 let result = self
                     .db_conn
-                    .query_required_single::<QueryResult, _>(
-                        PAGINATED_QUESTIONS,
-                        &(after, before, limit),
-                    )
+                    .query_required_single::<QueryResult, _>(&new_query, &(after, before, limit))
                     .await
                     .unwrap();
 

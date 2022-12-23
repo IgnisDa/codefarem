@@ -17,16 +17,32 @@ import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import type { LoaderArgs } from '@remix-run/node';
 
-const elementsPerPage = 4;
+const elementsPerPage = 2;
+
+const schema = z.object({
+  after: z.string().optional(),
+  first: z.string().optional(),
+  before: z.string().optional(),
+  last: z.string().optional(),
+});
 
 export async function loader({ request }: LoaderArgs) {
-  const { after } = zx.parseQuery(request, {
-    after: z.string().optional(),
-  });
+  const { after, before, first, last } = zx.parseQuery(request, schema);
+  const args = {
+    first: !(first || last)
+      ? elementsPerPage
+      : first
+      ? parseInt(first)
+      : undefined,
+    after: after,
+    before: before,
+    last: last ? parseInt(last) : undefined,
+  };
   const { questionsConnection } = await gqlClient.request(
     QUESTIONS_CONNECTION,
-    { args: { first: elementsPerPage, after: after } }
+    { args }
   );
+  console.log(questionsConnection);
   return json({ allQuestions: questionsConnection });
 }
 
@@ -67,9 +83,9 @@ export default () => {
         <Flex justify={'center'} gap={20}>
           <Button
             component={'a'}
-            href={`${route('/questions/list')}?after=${
+            href={`${route('/questions/list')}?before=${
               allQuestions.pageInfo.startCursor
-            }`}
+            }&last=${elementsPerPage}`}
             disabled={!allQuestions.pageInfo.hasPreviousPage}
           >
             Previous
@@ -78,7 +94,7 @@ export default () => {
             component={'a'}
             href={`${route('/questions/list')}?after=${
               allQuestions.pageInfo.endCursor
-            }`}
+            }&first=${elementsPerPage}`}
             disabled={!allQuestions.pageInfo.hasNextPage}
           >
             Next
