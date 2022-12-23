@@ -89,7 +89,7 @@ impl LearningService {
         TestCaseUnit::iter().collect()
     }
 
-    pub async fn questions<'a>(
+    pub async fn questions_connection<'a>(
         &self,
         after: Option<String>,
         before: Option<String>,
