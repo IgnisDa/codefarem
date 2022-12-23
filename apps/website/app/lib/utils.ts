@@ -30,7 +30,7 @@ export const getDataRepresentation = (data: TestCaseFragment) => {
     .with(
       TestCaseUnit.Number,
       TestCaseUnit.String,
-      () => String(data.numberValue) || data.stringValue
+      () => String(data.numberValue) || data.stringValue || ''
     )
     .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
       (data.numberCollectionValue || data.stringCollectionValue || []).join(',')

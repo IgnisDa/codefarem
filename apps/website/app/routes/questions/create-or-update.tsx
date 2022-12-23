@@ -6,6 +6,7 @@ import {
   CREATE_QUESTION,
   TEST_CASE_UNITS,
 } from ':generated/graphql/orchestrator/mutations';
+import { QUESTION_DETAILS } from ':generated/graphql/orchestrator/queries';
 import {
   Alert,
   Button,
@@ -24,35 +25,92 @@ import { json, redirect } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { IconPlus } from '@tabler/icons';
 import { useState } from 'react';
+import { badRequest, unprocessableEntity } from 'remix-utils';
 import { route } from 'routes-gen';
+import invariant from 'tiny-invariant';
+import { z } from 'zod';
+import { zx } from 'zodix';
 import { QuestionProblem } from '~/lib/components/QuestionProblem';
 import { TestCaseInput } from '~/lib/components/TestCases';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import { forbiddenError, guessDataType, metaFunction } from '~/lib/utils';
+import {
+  forbiddenError,
+  getDataRepresentation,
+  guessDataType,
+  metaFunction,
+} from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   CreateQuestionInput,
   TestCase,
   InputCaseUnit,
   OutputCaseUnit,
+  TestCaseFragment,
 } from ':generated/graphql/orchestrator/generated/graphql';
 
 export const meta = metaFunction;
+
+enum LoaderAction {
+  Create = 'Create',
+  Update = 'Update',
+}
 
 export async function loader({ request }: LoaderArgs) {
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
   const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
-  return json({ testCaseUnits, meta: { title: 'Create Question' } });
+  const { questionSlug } = zx.parseQuery(request, {
+    questionSlug: z.string().optional(),
+  });
+  // an edit page was requested
+  if (!questionSlug)
+    return json({
+      action: LoaderAction.Create,
+      testCaseUnits,
+      meta: { title: 'Create Question' },
+    });
+  invariant(typeof questionSlug === 'string', 'Slug should be a string');
+  const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
+    questionSlug,
+  });
+  if (questionDetails.__typename === 'ApiError')
+    throw badRequest({
+      message: 'Question not found',
+      description: 'You requested to edit a question that does not exist',
+    });
+  const testCases = questionDetails.testCases.map((testCase) => {
+    const inputs = testCase.inputs.map((input, idx) => ({
+      data: getDataRepresentation(input.data as TestCaseFragment),
+      dataType: (input.data as TestCaseFragment).unitType,
+      name: `line${idx}`,
+    }));
+    const outputs = testCase.outputs.map((output) => ({
+      data: getDataRepresentation(output.data as TestCaseFragment),
+      dataType: (output.data as TestCaseFragment).unitType,
+    }));
+    return { inputs, outputs };
+  });
+  return json({
+    questionDetails,
+    testCases,
+    action: LoaderAction.Update,
+    testCaseUnits,
+  });
 }
 
 export async function action({ request }: ActionArgs) {
-  const input: CreateQuestionInput = JSON.parse(
-    (await request.formData()).get('data')?.toString() || ''
-  );
+  const { action, data } = await zx.parseForm(request, {
+    data: z.string(),
+    action: z.nativeEnum(LoaderAction),
+  });
+
+  if (action === LoaderAction.Update)
+    throw unprocessableEntity({ message: 'Update not implemented' });
+
+  const input: CreateQuestionInput = JSON.parse(data);
 
   const { createQuestion } = await gqlClient.request(
     CREATE_QUESTION,
@@ -77,34 +135,48 @@ type DataOrDataType = 'data' | 'dataType';
 export default () => {
   const fetcher = useFetcher();
 
+  const [activeTab, setActiveTab] = useState<string | null>('t-0');
+
+  const loaderData = useLoaderData<typeof loader>();
+  const { testCaseUnits, action } = loaderData;
+  const isEditPage = 'questionDetails' in loaderData;
+
   const onSubmit = async () => {
     // remove the name field from all the test case outputs
     const newTestCases = testCases.map((testCase) => {
       const outputs = testCase.outputs.map(({ name, ...rest }: any) => rest);
       return { ...testCase, outputs };
     });
-
     const data: CreateQuestionInput = {
       name: name,
       problem: problem,
       classIds: [],
       testCases: newTestCases,
     };
-    fetcher.submit({ data: JSON.stringify(data) }, { method: 'post' });
+    fetcher.submit(
+      { data: JSON.stringify(data), action: action },
+      { method: 'post' }
+    );
   };
 
-  const [activeTab, setActiveTab] = useState<string | null>('t-0');
-
-  const { testCaseUnits } = useLoaderData<typeof loader>();
-
-  const [testCases, setTestCases] = useState<Array<TestCase>>([
-    {
-      inputs: [{ data: '', dataType: TestCaseUnit.String, name: 'line0' }],
-      outputs: [{ data: '', dataType: TestCaseUnit.String }],
-    },
-  ]);
-  const [name, setName] = useState('');
-  const [problem, setProblem] = useState('');
+  const [testCases, setTestCases] = useState<Array<TestCase>>(
+    isEditPage
+      ? loaderData.testCases
+      : [
+          {
+            inputs: [
+              { data: '', dataType: TestCaseUnit.String, name: 'line0' },
+            ],
+            outputs: [{ data: '', dataType: TestCaseUnit.String }],
+          },
+        ]
+  );
+  const [name, setName] = useState(
+    isEditPage ? loaderData.questionDetails.name : ''
+  );
+  const [problem, setProblem] = useState(
+    isEditPage ? loaderData.questionDetails.problem : ''
+  );
 
   const addTestCase = () => {
     setTestCases((prev) => [
@@ -154,7 +226,7 @@ export default () => {
   return (
     <Container>
       <Stack>
-        <Title order={1}>Create question</Title>
+        <Title order={1}>{action} Question</Title>
         <TextInput
           label="Name"
           required
@@ -318,7 +390,7 @@ export default () => {
             Add test case
           </Button>
           <Button variant={'light'} color="green" onClick={onSubmit}>
-            Create Question
+            {action} Question
           </Button>
         </Flex>
       </Stack>
