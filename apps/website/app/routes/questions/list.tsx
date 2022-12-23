@@ -17,7 +17,7 @@ import { zx } from 'zodix';
 import { gqlClient } from '~/lib/services/graphql.server';
 import type { LoaderArgs } from '@remix-run/node';
 
-const elementsPerPage = 2;
+const elementsPerPage = 4;
 
 const schema = z.object({
   after: z.string().optional(),
