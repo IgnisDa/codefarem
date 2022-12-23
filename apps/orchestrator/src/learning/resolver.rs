@@ -42,14 +42,14 @@ impl LearningQuery {
         ctx.data_unchecked::<LearningService>().test_case_units()
     }
 
-    /// Get all the questions
-    async fn all_questions(
+    /// Get a paginated list of questions in the relay connection format
+    async fn questions(
         &self,
         ctx: &Context<'_>,
         args: ConnectionArguments,
     ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
         ctx.data_unchecked::<LearningService>()
-            .all_questions(args.after, args.before, args.first, args.last)
+            .questions(args.after, args.before, args.first, args.last)
             .await
     }
 

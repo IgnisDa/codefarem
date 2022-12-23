@@ -38,8 +38,8 @@ use utilities::{
 };
 use uuid::Uuid;
 
-const ALL_QUESTIONS: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/all-questions.edgeql");
+const PAGINATED_QUESTIONS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/paginated-questions.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
@@ -88,7 +88,7 @@ impl LearningService {
         TestCaseUnit::iter().collect()
     }
 
-    pub async fn all_questions<'a>(
+    pub async fn questions<'a>(
         &self,
         after: Option<String>,
         before: Option<String>,
@@ -101,11 +101,13 @@ impl LearningService {
             first,
             last,
             |after, before, first, last| async move {
+                let first = first.unwrap_or(10) as i16;
+                let last = last.unwrap_or(10) as i16;
                 let all_questions = self
                     .db_conn
-                    .query::<QuestionPartialsDetails, _>(ALL_QUESTIONS, &())
+                    .query::<QuestionPartialsDetails, _>(PAGINATED_QUESTIONS, &(after, first))
                     .await
-                    .unwrap_or_default();
+                    .unwrap();
                 let has_previous_page = false;
                 let has_next_page = false;
                 let mut connection = Connection::new(has_previous_page, has_next_page);
