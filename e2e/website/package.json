@@ -1,7 +1,6 @@
 {
   "name": "@codefarem/website-e2e",
   "devDependencies": {
-    "@codefarem/website": "workspace:^",
     "cypress": "12.2.0"
   }
 }

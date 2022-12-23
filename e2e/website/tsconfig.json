@@ -3,11 +3,7 @@
   "include": [
     "**/*"
   ],
-  "references": [
-    {
-      "path": "../../apps/website"
-    }
-  ],
+  "references": [],
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "../../.moon/cache/types/e2e/website"

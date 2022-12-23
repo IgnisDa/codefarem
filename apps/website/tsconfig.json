@@ -6,7 +6,7 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "moduleResolution": "Node",
-    "noEmit": false,
+    "noEmit": true,
     "paths": {
       ":faker": [
         "../../libs/faker/src/index.ts"

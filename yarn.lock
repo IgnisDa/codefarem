@@ -1734,12 +1734,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@codefarem/website-e2e@workspace:e2e/website"
   dependencies:
-    "@codefarem/website": "workspace:^"
     cypress: 12.2.0
   languageName: unknown
   linkType: soft
 
-"@codefarem/website@workspace:^, @codefarem/website@workspace:apps/website":
+"@codefarem/website@workspace:apps/website":
   version: 0.0.0-use.local
   resolution: "@codefarem/website@workspace:apps/website"
   dependencies:
