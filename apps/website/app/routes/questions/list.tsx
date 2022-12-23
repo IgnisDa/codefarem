@@ -42,7 +42,6 @@ export async function loader({ request }: LoaderArgs) {
     QUESTIONS_CONNECTION,
     { args }
   );
-  console.log(questionsConnection);
   return json({ allQuestions: questionsConnection });
 }
 
