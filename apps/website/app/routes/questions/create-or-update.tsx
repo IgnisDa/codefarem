@@ -150,7 +150,7 @@ export default () => {
     });
     const data: CreateQuestionInput = {
       name: name,
-      problem: problem,
+      problem: problem.trim(),
       classIds: [],
       testCases: newTestCases,
     };
