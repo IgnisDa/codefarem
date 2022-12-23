@@ -88,9 +88,9 @@ export const USER_DETAILS = graphql(`
   }
 `);
 
-export const ALL_QUESTIONS = graphql(`
-  query AllQuestions($args: ConnectionArguments!) {
-    allQuestions(args: $args) {
+export const QUESTIONS_CONNECTION = graphql(`
+  query questions($args: ConnectionArguments!) {
+    questionsConnection(args: $args) {
       pageInfo {
         hasPreviousPage
         hasNextPage
