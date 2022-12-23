@@ -106,7 +106,7 @@ export default function App() {
   );
 }
 
-export const ErrorBoundary: ErrorBoundaryComponent = (_args) => {
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <MantineProvider
       withGlobalStyles
@@ -128,6 +128,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = (_args) => {
               description={
                 "Our servers could not handle your request. Don't worry, our development team was already notified."
               }
+              stack={error.stack}
             />
           </Center>
           <Scripts />

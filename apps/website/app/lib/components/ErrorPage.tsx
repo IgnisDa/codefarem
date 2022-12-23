@@ -1,11 +1,16 @@
 import {
-  createStyles,
-  Title,
-  Text,
-  Button,
-  Group,
   Anchor,
   Box,
+  Button,
+  Code,
+  Container,
+  createStyles,
+  Group,
+  Paper,
+  ScrollArea,
+  Stack,
+  Text,
+  Title,
 } from '@mantine/core';
 import { SUCCESSFUL_REDIRECT_PATH } from '../constants';
 
@@ -15,7 +20,6 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 900,
     fontSize: 220,
     lineHeight: 1,
-    marginBottom: theme.spacing.xl * 1.5,
     color: theme.colors[theme.primaryColor][3],
 
     [theme.fn.smallerThan('sm')]: {
@@ -38,7 +42,6 @@ const useStyles = createStyles((theme) => ({
     maxWidth: 540,
     margin: 'auto',
     marginTop: theme.spacing.xl,
-    marginBottom: theme.spacing.xl * 1.5,
     color: theme.colors[theme.primaryColor][1],
   },
 }));
@@ -47,18 +50,20 @@ interface ErrorPageProps {
   statusCode: number;
   message: string;
   description?: string;
+  stack?: string;
 }
 
 export function ErrorPage({
   statusCode,
   message,
   description,
+  stack,
 }: ErrorPageProps) {
   const { classes } = useStyles();
 
   return (
-    <Box>
-      <div className={classes.label}>{statusCode}</div>
+    <Stack>
+      <Box className={classes.label}>{statusCode}</Box>
       <Title className={classes.title}>{message}</Title>
       {description && (
         <Text size="lg" align="center" className={classes.description}>
@@ -72,6 +77,15 @@ export function ErrorPage({
           </Button>
         </Anchor>
       </Group>
-    </Box>
+      <Container>
+        <Paper p={'sm'} withBorder>
+          <ScrollArea h={100}>
+            <Code color={'red'}>
+              {process.env.NODE_ENV === 'development' && stack}
+            </Code>
+          </ScrollArea>
+        </Paper>
+      </Container>
+    </Stack>
   );
 }
