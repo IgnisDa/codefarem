@@ -25,6 +25,7 @@ use async_graphql::{
     Error, Result,
 };
 use auth::validate_user_role;
+use edgedb_derive::Queryable;
 use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
@@ -105,24 +106,30 @@ impl LearningService {
                 let limit = first.unwrap_or_else(|| last.unwrap_or(5)) as i16;
 
                 let convert = |id: Option<String>| id.map(|id| Uuid::parse_str(&id).unwrap());
-                let uuid_after = convert(after);
-                let uuid_before = convert(before);
+                let after = convert(after);
+                let before = convert(before);
 
-                let all_questions = self
+                #[derive(Debug, Queryable)]
+                struct QueryResult {
+                    selected: Vec<QuestionPartialsDetails>,
+                    has_previous_page: bool,
+                    has_next_page: bool,
+                }
+
+                let result = self
                     .db_conn
-                    .query::<QuestionPartialsDetails, _>(
+                    .query_required_single::<QueryResult, _>(
                         PAGINATED_QUESTIONS,
-                        &(uuid_after, uuid_before, limit),
+                        &(after, before, limit),
                     )
                     .await
                     .unwrap();
 
-                let has_previous_page = false;
-                let has_next_page = false;
-                let mut connection = Connection::new(has_previous_page, has_next_page);
+                let mut connection =
+                    Connection::new(result.has_previous_page, result.has_next_page);
                 connection
                     .edges
-                    .extend(all_questions.into_iter().map(|question| {
+                    .extend(result.selected.into_iter().map(|question| {
                         Edge::with_additional_fields(question.id.to_string(), question, EmptyFields)
                     }));
                 Ok::<_, Error>(connection)
