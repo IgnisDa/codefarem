@@ -81,3 +81,6 @@ apps/website/.cache
 # cypress
 **/cypress/screenshots
 **/cypress/videos
+
+# react-email
+.react-email
