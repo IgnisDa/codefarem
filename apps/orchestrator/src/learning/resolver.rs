@@ -106,13 +106,7 @@ impl LearningMutation {
         let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_question(
-                &hanko_id,
-                input.name(),
-                input.problem(),
-                input.test_cases(),
-                input.class_ids(),
-            )
+            .create_question(&hanko_id, input.name(), input.problem(), input.test_cases())
             .await;
         to_result_union_response!(output, CreateQuestionResultUnion)
     }

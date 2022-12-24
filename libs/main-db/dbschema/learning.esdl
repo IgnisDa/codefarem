@@ -18,17 +18,9 @@ module learning {
         };
         # the actual question text, will store html content
         required property problem -> str;
-        # the classes in which this question is used
-        multi link classes -> learning::Class;
         # the test cases (and their expected outputs)
         multi link test_cases -> learning::TestCase {
             on source delete delete target;
-        };
-        # the people who created/edited the question
-        multi link authored_by -> users::User {
-            # allow deleting the author
-            on target delete allow;
-            on source delete allow;
         };
         # the time when this question was created
         required property created_at -> datetime {

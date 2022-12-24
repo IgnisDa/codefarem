@@ -85,8 +85,6 @@ export type CreateClassResultUnion = ApiError | CreateClassOutput;
 
 /** The input object used to create a new question */
 export type CreateQuestionInput = {
-  /** The classes in which the question must be asked */
-  classIds: Array<Scalars['UUID']>;
   /** The name/title of the question */
   name: Scalars['String'];
   /** The detailed text explaining the question */

@@ -194,11 +194,9 @@ impl LearningService {
         name: &'a str,
         problem: &'a str,
         test_cases: &[TestCase],
-        class_ids: &[Uuid],
     ) -> Result<CreateQuestionOutput, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
-        let all_teachers_to_insert = vec![user_details.id];
         let mut slug = random_string(8);
         loop {
             let is_slug_not_unique = self
@@ -211,17 +209,11 @@ impl LearningService {
             }
             slug = random_string(8);
         }
-        let class = self
+        let question = self
             .db_conn
             .query_required_single::<CreateQuestionOutput, _>(
                 CREATE_QUESTION,
-                &(
-                    name,
-                    problem,
-                    slug,
-                    class_ids.to_vec(),
-                    all_teachers_to_insert,
-                ),
+                &(name, problem, slug),
             )
             .await
             .map_err(|_| ApiError {
@@ -287,11 +279,11 @@ impl LearningService {
         self.db_conn
             .query_required_single::<IdObject, _>(
                 UPDATE_QUESTION,
-                &(class.id, test_cases_to_associate),
+                &(question.id, test_cases_to_associate),
             )
             .await
             .unwrap();
-        Ok(class)
+        Ok(question)
     }
 
     pub async fn execute_code_for_question(

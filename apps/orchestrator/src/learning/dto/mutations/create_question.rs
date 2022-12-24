@@ -14,9 +14,6 @@ pub struct CreateQuestionInput {
     /// The detailed text explaining the question
     problem: String,
 
-    /// The classes in which the question must be asked
-    class_ids: Vec<Uuid>,
-
     /// All the test cases that are related to this question
     test_cases: Vec<TestCase>,
 }
