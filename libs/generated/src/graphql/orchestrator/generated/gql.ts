@@ -26,6 +26,7 @@ const documents = {
     "\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        numClasses\n        authoredBy {\n          profile {\n            username\n          }\n        }\n        testCases {\n          inputs {\n            data {\n              ...TestCase\n            }\n          }\n          outputs {\n            data {\n              ...TestCase\n            }\n          }\n        }\n      }\n    }\n  }\n": types.QuestionDetailsDocument,
     "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n": types.UserDetailsDocument,
     "\n  query questions($args: ConnectionArguments!) {\n    questionsConnection(args: $args) {\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n      edges {\n        cursor\n        node {\n          createdTime\n          name\n          slug\n          numTestCases\n        }\n      }\n    }\n  }\n": types.QuestionsDocument,
+    "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n": types.ToolchainInformationDocument,
 };
 
 /**
@@ -80,6 +81,10 @@ export function graphql(source: "\n  query UserDetails {\n    userDetails {\n   
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query questions($args: ConnectionArguments!) {\n    questionsConnection(args: $args) {\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n      edges {\n        cursor\n        node {\n          createdTime\n          name\n          slug\n          numTestCases\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query questions($args: ConnectionArguments!) {\n    questionsConnection(args: $args) {\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n      edges {\n        cursor\n        node {\n          createdTime\n          name\n          slug\n          numTestCases\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n"): (typeof documents)["\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

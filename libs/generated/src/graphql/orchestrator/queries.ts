@@ -109,3 +109,13 @@ export const QUESTIONS_CONNECTION = graphql(`
     }
   }
 `);
+
+export const TOOLCHAIN_INFORMATION = graphql(`
+  query ToolchainInformation {
+    toolchainInformation {
+      service
+      version
+      languageLogo
+    }
+  }
+`);
