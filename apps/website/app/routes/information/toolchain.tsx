@@ -24,20 +24,20 @@ export const loader = async (_args: LoaderArgs) => {
 interface ToolchainDisplayProps {
   avatar: string;
   name: string;
-  email: string;
+  version: string;
 }
 
 export function ToolchainDisplay({
   avatar,
   name,
-  email,
+  version,
 }: ToolchainDisplayProps) {
   return (
-    <Tooltip label={name}>
+    <Tooltip label={name.toUpperCase()} position={'bottom-end'}>
       <Flex align={'center'} gap={20}>
         <Avatar src={avatar} size={94} radius="md" />
         <Stack>
-          <Code>{email}</Code>
+          <Code>{version}</Code>
         </Stack>
       </Flex>
     </Tooltip>
@@ -57,7 +57,7 @@ export default () => {
               <ToolchainDisplay
                 avatar={toolchain.languageLogo}
                 name={toolchain.service}
-                email={toolchain.version}
+                version={toolchain.version}
               />
             </Grid.Col>
           ))}
