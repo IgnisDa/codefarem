@@ -77,15 +77,17 @@ export function ErrorPage({
           </Button>
         </Anchor>
       </Group>
-      <Container>
-        <Paper p={'sm'} withBorder>
-          <ScrollArea h={100}>
-            <Code color={'red'}>
-              {process.env.NODE_ENV === 'development' && stack}
-            </Code>
-          </ScrollArea>
-        </Paper>
-      </Container>
+      {stack && (
+        <Container>
+          <Paper p={'sm'} withBorder>
+            <ScrollArea h={100}>
+              <Code color={'red'}>
+                {process.env.NODE_ENV === 'development' && stack}
+              </Code>
+            </ScrollArea>
+          </Paper>
+        </Container>
+      )}
     </Stack>
   );
 }

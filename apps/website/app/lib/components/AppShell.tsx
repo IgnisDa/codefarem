@@ -12,6 +12,7 @@ import {
   IconCode,
   IconQuestionMark,
   IconSchool,
+  IconInfoCircle,
 } from '@tabler/icons';
 import { route } from 'routes-gen';
 import { LinksGroup } from './LinksGroup';
@@ -90,6 +91,16 @@ const data = [
       {
         link: route('/questions/create-or-update'),
         label: 'Create',
+      },
+    ],
+  },
+  {
+    label: 'Information',
+    icon: IconInfoCircle,
+    links: [
+      {
+        link: route('/information/toolchain'),
+        label: 'Toolchain',
       },
     ],
   },
