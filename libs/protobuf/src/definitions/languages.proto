@@ -28,6 +28,8 @@ message CompileResponse {
 message ToolchainInfoResponse {
   // The version of the compiler toolchain
   string version = 1;
+  // The base 64 encoded logo of the language
+  string language_logo = 2;
 }
 
 // The farem related services

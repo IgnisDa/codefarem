@@ -30,6 +30,9 @@ pub struct ToolchainInfoResponse {
     /// The version of the compiler toolchain
     #[prost(string, tag="1")]
     pub version: ::prost::alloc::string::String,
+    /// The base 64 encoded logo of the language
+    #[prost(string, tag="2")]
+    pub language_logo: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod compiler_service_client {
