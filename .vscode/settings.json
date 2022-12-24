@@ -82,6 +82,7 @@
         "tokei",
         "trpc",
         "typecheck",
+        "upsert",
         "urql",
         "vite",
         "vitest",

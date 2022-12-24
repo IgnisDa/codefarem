@@ -47,14 +47,14 @@ export const CREATE_CLASS = graphql(`
   }
 `);
 
-export const CREATE_QUESTION = graphql(`
-  mutation CreateQuestion($input: CreateQuestionInput!) {
-    createQuestion(input: $input) {
+export const UPSERT_QUESTION = graphql(`
+  mutation UpsertQuestion($input: UpsertQuestionInput!) {
+    upsertQuestion(input: $input) {
       __typename
       ... on ApiError {
         error
       }
-      ... on CreateQuestionOutput {
+      ... on UpsertQuestionOutput {
         slug
       }
     }

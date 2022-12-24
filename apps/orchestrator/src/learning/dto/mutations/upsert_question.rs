@@ -5,9 +5,9 @@ use edgedb_derive::Queryable;
 use utilities::graphql::ApiError;
 use uuid::Uuid;
 
-/// The input object used to create a new question
+/// The input object used to upsert a question
 #[derive(Debug, InputObject, Getters)]
-pub struct CreateQuestionInput {
+pub struct UpsertQuestionInput {
     /// The name/title of the question
     name: String,
 
@@ -16,24 +16,27 @@ pub struct CreateQuestionInput {
 
     /// All the test cases that are related to this question
     test_cases: Vec<TestCase>,
+
+    /// The unique slug of the question in case it is being updated
+    update_slug: Option<String>,
 }
 
-/// The result type if the question was created successfully
+/// The result type if the question was upsert-ed successfully
 #[derive(Debug, SimpleObject, Queryable, Clone)]
-pub struct CreateQuestionOutput {
+pub struct UpsertQuestionOutput {
     /// The ID of the question
     pub id: Uuid,
 
-    /// The slug of the newly created question
+    /// The slug of the upsert-ed question
     pub slug: String,
 }
 
-/// The output object when creating a new question
+/// The output object when upsert-ing new question
 #[derive(Union)]
-pub enum CreateQuestionResultUnion {
-    /// The type returned if creating a new question was successful
-    Result(CreateQuestionOutput),
+pub enum UpsertQuestionResultUnion {
+    /// The type returned if upsert-ing the question was successful
+    Result(UpsertQuestionOutput),
 
-    /// The type returned if creating a new question was unsuccessful
+    /// The type returned if upsert-ing the question was unsuccessful
     Error(ApiError),
 }

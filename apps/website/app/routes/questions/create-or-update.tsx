@@ -3,8 +3,8 @@ import {
   TestCaseUnit,
 } from ':generated/graphql/orchestrator/generated/graphql';
 import {
-  CREATE_QUESTION,
   TEST_CASE_UNITS,
+  UPSERT_QUESTION,
 } from ':generated/graphql/orchestrator/mutations';
 import { QUESTION_DETAILS } from ':generated/graphql/orchestrator/queries';
 import {
@@ -39,15 +39,14 @@ import {
   getDataRepresentation,
   guessDataType,
   metaFunction,
-  unprocessableEntityError,
 } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
-  CreateQuestionInput,
   TestCase,
   InputCaseUnit,
   OutputCaseUnit,
   TestCaseFragment,
+  UpsertQuestionInput,
 } from ':generated/graphql/orchestrator/generated/graphql';
 
 export const meta = metaFunction;
@@ -103,28 +102,29 @@ export async function loader({ request }: LoaderArgs) {
     questionDetails,
     defaultTestCases: testCases,
     action: LoaderAction.Update,
+    questionSlug,
     testCaseUnits,
   });
 }
 
+const actionSchema = z.object({
+  data: z.string(),
+  updateSlug: z.string().optional(),
+});
+
 export async function action({ request }: ActionArgs) {
-  const { action, data } = await zx.parseForm(request, {
-    data: z.string(),
-    action: z.nativeEnum(LoaderAction),
-  });
+  const { data } = await zx.parseForm(request, actionSchema);
 
-  if (action === LoaderAction.Update)
-    return unprocessableEntityError('Updating questions is not supported yet');
+  const input: UpsertQuestionInput = JSON.parse(data);
+  console.dir(input, { depth: Infinity });
 
-  const input: CreateQuestionInput = JSON.parse(data);
-
-  const { createQuestion } = await gqlClient.request(
-    CREATE_QUESTION,
+  const { upsertQuestion } = await gqlClient.request(
+    UPSERT_QUESTION,
     { input },
     authenticatedRequest(request)
   );
-  if (createQuestion.__typename === 'ApiError')
-    throw new Error(createQuestion.error);
+  if (upsertQuestion.__typename === 'ApiError')
+    throw new Error(upsertQuestion.error);
   return redirect(route('/questions/list'));
 }
 
@@ -153,15 +153,14 @@ export default () => {
       const outputs = testCase.outputs.map(({ name, ...rest }: any) => rest);
       return { ...testCase, outputs };
     });
-    const data: CreateQuestionInput = {
+    const data: UpsertQuestionInput = {
       name: name,
       problem: problem.trim(),
       testCases: newTestCases,
+      updateSlug: isEditPage ? loaderData.questionSlug : undefined,
     };
-    fetcher.submit(
-      { data: JSON.stringify(data), action: action },
-      { method: 'post' }
-    );
+    const validatedData = actionSchema.parse({ data: JSON.stringify(data) });
+    fetcher.submit(validatedData, { method: 'post' });
   };
 
   const [testCases, setTestCases] = useState<Array<TestCase>>(defaultTestCases);

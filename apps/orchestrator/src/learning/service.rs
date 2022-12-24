@@ -6,10 +6,10 @@ use crate::{
     learning::dto::{
         mutations::{
             create_class::CreateClassOutput,
-            create_question::CreateQuestionOutput,
             execute_code_for_question::{
                 ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
             },
+            upsert_question::UpsertQuestionOutput,
         },
         queries::{
             all_questions::QuestionPartialsDetails,
@@ -49,8 +49,10 @@ const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
 const CREATE_CLASS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/create-class.edgeql");
-const CREATE_QUESTION: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/create-question.edgeql");
+const UPSERT_QUESTION: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/upsert-question.edgeql");
+const DELETE_TEST_CASES: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/delete-test-cases.edgeql");
 const INSERT_NUMBER_COLLECTION_UNIT: &str = include_str!(
     "../../../../libs/main-db/edgeql/learning/test-cases/number-collection-unit.edgeql"
 );
@@ -188,37 +190,59 @@ impl LearningService {
             })
     }
 
-    pub async fn create_question<'a>(
+    // TODO: Convert this into an upsert
+
+    // 1. Convert create question to an upsert:
+    // https://www.edgedb.com/tutorial/data-mutations/upsert/conditional-inserts To
+    // 2. To update a question's test cases, just delete all of the old ones and create the
+    // new ones that are specified in the input data.
+    pub async fn upsert_question<'a>(
         &self,
         hanko_id: &'a str,
         name: &'a str,
         problem: &'a str,
         test_cases: &[TestCase],
-    ) -> Result<CreateQuestionOutput, ApiError> {
+        update_slug: &'a Option<String>,
+    ) -> Result<UpsertQuestionOutput, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
-        let mut slug = random_string(8);
-        loop {
-            let is_slug_not_unique = self
-                .db_conn
-                .query_required_single::<bool, _>(IS_SLUG_NOT_UNIQUE, &(&slug,))
-                .await
-                .unwrap();
-            if !is_slug_not_unique {
-                break;
+        // either the slug of the question to update or a new unique slug
+        let slug = if let Some(update_slug) = update_slug {
+            update_slug.to_string()
+        } else {
+            let mut new_slug = random_string(8);
+            loop {
+                let is_slug_not_unique = self
+                    .db_conn
+                    .query_required_single::<bool, _>(IS_SLUG_NOT_UNIQUE, &(&new_slug,))
+                    .await
+                    .unwrap();
+                if !is_slug_not_unique {
+                    break;
+                }
+                new_slug = random_string(8);
             }
-            slug = random_string(8);
-        }
+            new_slug
+        };
         let question = self
             .db_conn
-            .query_required_single::<CreateQuestionOutput, _>(
-                CREATE_QUESTION,
+            .query_required_single::<UpsertQuestionOutput, _>(
+                UPSERT_QUESTION,
                 &(name, problem, slug),
             )
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error creating the question, please try again.".to_string(),
+            .map_err(|e| {
+                dbg!(e);
+                ApiError {
+                    error: "There was an error creating the question, please try again."
+                        .to_string(),
+                }
             })?;
+        // delete all of the old test cases if any
+        self.db_conn
+            .query_json(DELETE_TEST_CASES, &(question.id,))
+            .await
+            .unwrap();
         fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
             match test_case {
                 TestCaseUnit::Number => INSERT_NUMBER_UNIT,

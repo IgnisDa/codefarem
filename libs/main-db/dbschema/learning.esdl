@@ -21,6 +21,7 @@ module learning {
         # the test cases (and their expected outputs)
         multi link test_cases -> learning::TestCase {
             on source delete delete target;
+            on target delete allow;
         };
         # the time when this question was created
         required property created_at -> datetime {
@@ -29,6 +30,7 @@ module learning {
     }
 
     type TestCase {
+        link question := .<test_cases[is learning::Question];
         # the inputs that are passed to the question
         multi link inputs -> learning::InputCaseUnit {
             on source delete delete target;

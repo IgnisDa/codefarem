@@ -4,10 +4,10 @@ use crate::{
         dto::{
             mutations::{
                 create_class::{CreateClassInput, CreateClassResultUnion},
-                create_question::{CreateQuestionInput, CreateQuestionResultUnion},
                 execute_code_for_question::{
                     ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
                 },
+                upsert_question::{UpsertQuestionInput, UpsertQuestionResultUnion},
             },
             queries::{
                 all_questions::QuestionPartialsDetails, class_details::ClassDetailsResultUnion,
@@ -97,18 +97,24 @@ impl LearningMutation {
         to_result_union_response!(output, CreateClassResultUnion)
     }
 
-    /// Create a new question
-    async fn create_question(
+    /// Upsert a question (create if it doesn't exist, update if it does)
+    async fn upsert_question(
         &self,
         ctx: &Context<'_>,
-        input: CreateQuestionInput,
-    ) -> Result<CreateQuestionResultUnion> {
+        input: UpsertQuestionInput,
+    ) -> Result<UpsertQuestionResultUnion> {
         let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_question(&hanko_id, input.name(), input.problem(), input.test_cases())
+            .upsert_question(
+                &hanko_id,
+                input.name(),
+                input.problem(),
+                input.test_cases(),
+                input.update_slug(),
+            )
             .await;
-        to_result_union_response!(output, CreateQuestionResultUnion)
+        to_result_union_response!(output, UpsertQuestionResultUnion)
     }
 
     /// Execute an input code for the selected language and question
