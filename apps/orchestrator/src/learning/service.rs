@@ -345,7 +345,7 @@ impl LearningService {
             if passed {
                 total_passed += 1;
             }
-            let diff = get_diff_of_lines(&expected_output, user_output_str.as_str());
+            let diff = get_diff_of_lines(user_output_str.as_str(), &expected_output);
             outputs.push(TestCaseResultUnion::Result(TestCaseSuccessStatus {
                 passed,
                 user_output: user_output_str,
