@@ -61,6 +61,7 @@
     "routes-gen": "0.5.2",
     "tiny-invariant": "1.2.0",
     "ts-pattern": "4.0.5",
+    "ufo": "1.0.1",
     "uuid": "9.0.0",
     "zod": "3.19.1",
     "zodix": "0.1.0"

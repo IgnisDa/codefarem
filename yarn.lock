@@ -1809,6 +1809,7 @@ __metadata:
     routes-gen: 0.5.2
     tiny-invariant: 1.2.0
     ts-pattern: 4.0.5
+    ufo: 1.0.1
     uuid: 9.0.0
     zod: 3.19.1
     zodix: 0.1.0
@@ -18610,6 +18611,13 @@ __metadata:
   version: 0.7.32
   resolution: "ua-parser-js@npm:0.7.32"
   checksum: 6b6b035dd78a0ab3369f166ab6f26225d823d83630788806d634f16259297a8f4ae6fe0be4e48f4353ac10dffded3971d7745c55d1432fdfc78a893ba58ef044
+  languageName: node
+  linkType: hard
+
+"ufo@npm:1.0.1":
+  version: 1.0.1
+  resolution: "ufo@npm:1.0.1"
+  checksum: 63024876f21b7cc44267255a8043062046d3215e09212bd682787a13ccf1e0c5d23f7686a7f1bc7ac9f34c7e8a88100af234f42b509db50f17ce638af6ac87cc
   languageName: node
   linkType: hard
 
