@@ -27,7 +27,7 @@ macro_rules! hanko_id_from_request {
 
 #[macro_export]
 macro_rules! proto_server {
-    ($example_handler:ident, $compiler_handler:ident, $toolchain_version_handler:ident, $language_logo:ident) => {
+    ($example:ident, $compiler_handler:ident, $toolchain_version_handler:ident, $language_logo:ident) => {
         use log::info;
         use protobuf::generated::languages::{
             compiler_service_server::{CompilerService, CompilerServiceServer},
@@ -46,7 +46,7 @@ macro_rules! proto_server {
                 request: Request<VoidParams>,
             ) -> Result<Response<Example>, Status> {
                 Ok(Response::new(Example {
-                    data: $example_handler().await.into(),
+                    data: $example.into(),
                 }))
             }
 
