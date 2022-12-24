@@ -28,15 +28,6 @@ jobs:
         if: ${{ steps.affected.outputs.affected != '' }}
         name: Setup environment
 
-      - uses: edgedb/setup-edgedb@v1
-        if: ${{ steps.affected.outputs.affected != '' }}
-
-      - name: Initialize project
-        if: ${{ steps.affected.outputs.affected != '' }}
-        run: |
-          cd libs/main-db
-          edgedb project init --non-interactive
-
       - name: Run CI on all the affected projects
         if: ${{ steps.affected.outputs.affected != '' }}
         run: 'moon ci --base $BASE'

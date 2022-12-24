@@ -6,6 +6,10 @@ fileGroups:
     - 'dbschema/**/*.esdl'
 
 tasks:
+  test:
+    options:
+      runInCI: false
+
   generate:
     command:
       - edgeql-js

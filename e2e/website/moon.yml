@@ -10,6 +10,8 @@ tasks:
     inputs:
       - 'cypress.config.ts'
       - 'cypress/**/*'
+    options:
+      runInCI: false
 
 workspace:
   inheritedTasks:
