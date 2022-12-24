@@ -5,4 +5,6 @@ use utilities::SupportedLanguage;
 pub struct ToolChainInformation {
     pub service: SupportedLanguage,
     pub version: String,
+    // A base64 encoded image
+    pub language_logo: String,
 }

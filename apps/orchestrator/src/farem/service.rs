@@ -100,6 +100,7 @@ impl FaremService {
                 ToolChainInformation {
                     version: tf.version,
                     service: language,
+                    language_logo: tf.language_logo,
                 }
             });
         }
