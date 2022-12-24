@@ -1,4 +1,5 @@
 use proc_macro::TokenStream;
+use quote::quote;
 use std::{env, path::PathBuf};
 
 #[proc_macro]
@@ -11,5 +12,5 @@ pub fn embed_image_as_base64(image_path: TokenStream) -> TokenStream {
         panic!("Image path does not exist: {:?}", image_path);
     }
     let base64 = image_base64::to_base64(image_path.to_str().unwrap());
-    format!("\"{base64}\"").parse().unwrap()
+    quote! { #base64 }.into()
 }

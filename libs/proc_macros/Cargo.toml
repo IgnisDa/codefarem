@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 image-base64 = "0.1.0"
+quote = "1.0.23"
 
 [lib]
 proc-macro = true

@@ -1,4 +1,7 @@
 use macros::proto_server;
+use proc_macros::embed_image_as_base64;
+
+const LOGO: &str = embed_image_as_base64!("logo/python.png");
 
 async fn example() -> &'static str {
     include_str!("../../../../libs/examples/src/python/example.py").trim()
@@ -14,4 +17,4 @@ fn compile(code: &'_ str) -> Result<(Vec<u8>, String), Vec<u8>> {
     Ok((code.as_bytes().to_vec(), "0ms".to_string()))
 }
 
-proto_server!(example, compile, toolchain_version);
+proto_server!(example, compile, toolchain_version, LOGO);

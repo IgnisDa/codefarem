@@ -6,6 +6,7 @@ description = "This crate is responsible for prviding services for various langu
 
 [dependencies]
 macros = { path = "../../libs/macros" }
+proc_macros = { path = "../../libs/proc_macros" }
 protobuf = { path = "../../libs/protobuf" }
 utilities = { path = "../../libs/utilities" }
 

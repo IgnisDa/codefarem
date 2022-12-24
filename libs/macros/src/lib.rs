@@ -27,7 +27,7 @@ macro_rules! hanko_id_from_request {
 
 #[macro_export]
 macro_rules! proto_server {
-    ($example_handler:ident, $compiler_handler:ident, $toolchain_version_handler:ident) => {
+    ($example_handler:ident, $compiler_handler:ident, $toolchain_version_handler:ident, $logo:ident) => {
         use log::info;
         use protobuf::generated::languages::{
             compiler_service_server::{CompilerService, CompilerServiceServer},
@@ -38,6 +38,10 @@ macro_rules! proto_server {
 
         #[derive(Debug, Default)]
         pub struct CompilerHandler {}
+
+        fn logo_base64() -> String {
+            $logo.to_string()
+        }
 
         #[async_trait]
         impl CompilerService for CompilerHandler {
