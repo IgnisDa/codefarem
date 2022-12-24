@@ -4,6 +4,7 @@ members = [
   "libs/macros",
   "libs/mailer",
   "libs/main-db",
+  "libs/proc_macros",
   "libs/protobuf",
   "libs/utilities",
   "apps/admin/backend",

@@ -1,0 +1,10 @@
+[package]
+name = "proc_macros"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+image-base64 = "0.1.0"
+
+[lib]
+proc-macro = true
