@@ -2,12 +2,6 @@ SELECT learning::Question {
   created_at,
   name,
   problem,
-  num_classes := (SELECT count(.classes)),
-  authored_by: {
-    profile: {
-      username
-    }
-  },
   test_cases: {
     id,
     inputs := (

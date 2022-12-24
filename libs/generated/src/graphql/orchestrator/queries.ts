@@ -47,12 +47,6 @@ export const QUESTION_DETAILS = graphql(`
       ... on QuestionDetailsOutput {
         name
         problem
-        numClasses
-        authoredBy {
-          profile {
-            username
-          }
-        }
         testCases {
           inputs {
             data {

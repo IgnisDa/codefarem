@@ -48,9 +48,6 @@ pub struct QuestionDetailsOutput {
     /// The detailed markdown text explaining the question
     pub problem: String,
 
-    /// The number of classes that have this question
-    pub num_classes: u8,
-
     /// The users who have created/edited this question
     pub authored_by: Vec<AuthoredByInformation>,
 
