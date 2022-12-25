@@ -38,7 +38,7 @@ for (const executable of allExecutables) {
   }
   if (!dockerfilePath)
     throw new Error(`Could not find Dockerfile for ${executable}`);
-  await $`docker buildx build --cache-from type=gha --cache-to type=gha,mode=max --tag '${imageName}' --file '${dockerfilePath}' .`;
+  await $`docker buildx build --cache-from=type=gha --cache-to=type=gha,mode=max --tag '${imageName}' --file '${dockerfilePath}' .`;
   await $`docker images`;
   await $`docker push '${imageName}'`;
 }
