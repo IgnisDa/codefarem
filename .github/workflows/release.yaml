@@ -8,10 +8,8 @@ env:
 
 jobs:
   build-and-push:
-    name: 'Build the initial binaries and generate dockerfile(s)'
+    name: 'Build and push containers to the Github registry'
     runs-on: 'ubuntu-latest'
-    outputs:
-      executables: ${{ steps.executables.outputs.executables }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -87,7 +85,9 @@ jobs:
           ACTOR: ${{ github.actor }}
           REGISTRY: ${{ env.REGISTRY }}
         run: |
-          for executable in ${{ steps.executables.outputs.executables }}
+          executables=${{ steps.executables.outputs.executables }}
+          executables=($executables)
+          for executable in "${executables[@]}"
           do
             npx zx apps/deployment/src/build-and-push.mjs "$executable"
           done
