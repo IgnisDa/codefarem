@@ -20,19 +20,19 @@ pub struct FaremMutation {}
 #[Object]
 impl FaremQuery {
     /// Endpoint to get all toolchain information
-    // can use parallel iteration to get the data from all services and store it in a
-    // global variable (caching for later uses). Read:
-    // https://github.com/paulkernfeld/global-data-in-rust
+    #[graphql(cache_control(max_age = 604800))]
     async fn toolchain_information(&self, ctx: &Context<'_>) -> Vec<ToolChainInformation> {
         ctx.data_unchecked::<FaremService>().toolchain_information()
     }
 
     /// Get a list of all the languages that the service supports.
+    #[graphql(cache_control(max_age = 604800))]
     async fn supported_languages(&self, ctx: &Context<'_>) -> Vec<SupportedLanguage> {
         ctx.data_unchecked::<FaremService>().supported_languages()
     }
 
     /// Get an example code snippet for a particular language
+    #[graphql(cache_control(max_age = 604800))]
     async fn language_example(&self, ctx: &Context<'_>, language: SupportedLanguage) -> String {
         ctx.data_unchecked::<FaremService>()
             .language_example(&language)
