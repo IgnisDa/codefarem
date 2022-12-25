@@ -45,22 +45,15 @@ jobs:
         run: npx zx apps/deployment/src/generate-dockerfiles.mjs
 
       - name: Build the Rust projects
-        run: |
-          for executable in "languages" "executor" "orchestrator" "admin-backend"
-          do
-            echo "Building executable '$executable'..."
-            cargo build --release --package "$executable"
-          done
+        run: npx zx apps/deployment/src/build-project-type.mjs rust
 
       - name: Build the Nodejs projects
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }} # for admin-website
-        run: |
-          for executable in "website" "admin-website"
-          do
-            echo "Building executable '$executable'..."
-            moon run $executable:build
-          done
+        run: npx zx apps/deployment/src/build-project-type.mjs nodejs
+
+      - name: Build the misc projects
+        run: npx zx apps/deployment/src/build-project-type.mjs miscellaneous
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
