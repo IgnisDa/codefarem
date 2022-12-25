@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable no-template-curly-in-string */
 
 import { readFileSync } from 'node:fs';
 import { globby } from 'globby';
@@ -27,7 +28,10 @@ for (const file of globs) {
     (app) => app.EXECUTABLE_NAMES
   );
   if (executablesInFile.includes(executable)) {
-    dockerfilePath = contents.dockerfile_path;
+    dockerfilePath = contents.dockerfile_path.replace(
+      '${executable}',
+      executable
+    );
     break;
   }
 }
