@@ -2,4 +2,6 @@ type: 'application'
 
 workspace:
   inheritedTasks:
-    include: []
+    include:
+      - lint
+      - typecheck
