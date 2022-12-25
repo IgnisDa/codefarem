@@ -1,5 +1,6 @@
 {
   "dockerfile_path": "apps/orchestrator/orchestrator.generated.Dockerfile",
+  "project_type": "rust",
   "apps": [
     {
       "EXECUTABLE_NAMES": ["orchestrator"],

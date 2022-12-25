@@ -1,5 +1,6 @@
 {
   "dockerfile_path": "apps/executor/executor.generated.Dockerfile",
+  "project_type": "rust",
   "apps": [
     {
       "EXECUTABLE_NAMES": ["executor"],

@@ -79,11 +79,4 @@ jobs:
         env:
           ACTOR: ${{ github.actor }}
           REGISTRY: ${{ env.REGISTRY }}
-        run: |
-          # TODO: Replace with dasel
-          all_executables=$(cat apps/deployment/src/data/*.json | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]' | tr '\n' ' ' | xargs)
-          all_executables=($all_executables)
-          for executable in "${all_executables[@]}"
-          do
-            npx zx apps/deployment/src/build-and-push.mjs "$executable"
-          done
+        run: npx zx apps/deployment/src/build-images-and-push.mjs
