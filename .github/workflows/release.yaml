@@ -49,8 +49,6 @@ jobs:
           echo "Discovered executables: $all_executables"
 
       - name: Generate project dockerfile(s)
-        env:
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
           for project in "authenticator" "languages" "executor" "orchestrator" "website" "admin-backend" "admin-website"
           do
@@ -67,6 +65,8 @@ jobs:
           done
 
       - name: Build the Nodejs projects
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }} # for admin-website
         run: |
           for executable in "website" "admin-website"
           do

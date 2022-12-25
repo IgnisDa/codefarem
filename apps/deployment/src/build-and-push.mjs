@@ -27,7 +27,7 @@ for (const file of globs) {
     (app) => app.EXECUTABLE_NAMES
   );
   if (executablesInFile.includes(executable)) {
-    dockerfilePath = file;
+    dockerfilePath = contents.dockerfile_path;
     break;
   }
 }
@@ -35,5 +35,5 @@ for (const file of globs) {
 if (!dockerfilePath)
   throw new Error(`Could not find Dockerfile for ${executable}`);
 
-await $`docker buildx build -t ${imageName} --cache-from type=gha --cache-to type=gha,mode=max --file ${dockerfilePath} .`;
-await $`docker push ${imageName}`;
+await $`docker buildx build -t '${imageName}' --cache-from type=gha --cache-to type=gha,mode=max --file '${dockerfilePath}' .`;
+await $`docker push '${imageName}'`;
