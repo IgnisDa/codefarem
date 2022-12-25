@@ -7,8 +7,8 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  generate:
-    name: 'Generate dockerfile(s)'
+  build-initial:
+    name: 'Build the initial binaries and generate dockerfile(s)'
     runs-on: 'ubuntu-latest'
     outputs:
       executables: ${{ steps.executables.outputs.executables }}
@@ -19,6 +19,12 @@ jobs:
 
       - uses: ./.github/actions/setup-moon
         name: Setup moon
+
+      - uses: ./.github/actions/setup-node
+        name: Setup Nodejs
+
+      - uses: ./.github/actions/setup-rust
+        name: Setup Rust
 
       - uses: ./.github/actions/set-base-commit
         name: Set base commit
@@ -54,12 +60,20 @@ jobs:
           path: apps/**/*.generated.Dockerfile
           if-no-files-found: error
 
+      - name: Build the Rust binaries
+        run: |
+          for executable in "languages" "executor" "orchestrator" "admin-backend"
+          do
+            echo "Building executable '$executable'..."
+            cargo build --release --bin "$executable"
+          done
+
   build:
     name: 'Build and push containers'
-    needs: generate
+    needs: build-initial
     strategy:
       matrix:
-        executable: ${{ fromJSON(needs.generate.outputs.executables) }}
+        executable: ${{ fromJSON(needs.build-initial.outputs.executables) }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: read

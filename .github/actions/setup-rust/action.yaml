@@ -1,0 +1,13 @@
+name: Setup Rust
+
+description: Setup Rust, cache and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Use Rust
+      run: rustup toolchain install stable --profile minimal
+      shell: bash
+
+    - name: Cache cargo registry
+      uses: Swatinem/rust-cache@v2
