@@ -35,9 +35,6 @@ for (const file of globs) {
 if (!dockerfilePath)
   throw new Error(`Could not find Dockerfile for ${executable}`);
 
-await $`docker buildx build
-        -t '${imageName}'
-        --file '${dockerfilePath}'
-        .`;
+await $`docker build -t '${imageName}' --file '${dockerfilePath}' .`;
 await $`docker images`;
 await $`docker push '${imageName}'`;
