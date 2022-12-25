@@ -5,6 +5,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  CYPRESS_INSTALL_BINARY: '0'
 
 jobs:
   build-and-push:
