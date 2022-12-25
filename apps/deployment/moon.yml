@@ -1,5 +1,4 @@
 type: 'application'
-language: 'unknown' # TODO: change this to 'python'
 
 workspace:
   inheritedTasks:

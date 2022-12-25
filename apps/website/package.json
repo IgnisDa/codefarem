@@ -2,6 +2,7 @@
   "name": "@codefarem/website",
   "version": "0.0.0",
   "dependencies": {
+    "@codefarem/deployment": "workspace:^",
     "@codefarem/faker": "workspace:*",
     "@codefarem/generated": "workspace:*",
     "@codefarem/react-ui": "workspace:*",

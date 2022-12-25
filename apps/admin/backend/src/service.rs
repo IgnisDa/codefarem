@@ -36,7 +36,7 @@ impl Service {
         account_type: &AccountType,
         valid_for: &'_ str,
     ) -> Result<CreateInviteLinkOutput, ApiError> {
-        // TODO: Add check to confirm it is unique
+        // TODO: Add check to confirm it is unique and that the email is not already in use
         let token = random_string(10);
         let duration = humantime::parse_duration(valid_for).map_err(|_| ApiError {
             error: format!("Could not convert {valid_for:?} to a valid duration"),

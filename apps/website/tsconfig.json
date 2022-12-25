@@ -50,6 +50,9 @@
     },
     {
       "path": "../../libs/react-ui"
+    },
+    {
+      "path": "../deployment"
     }
   ]
 }

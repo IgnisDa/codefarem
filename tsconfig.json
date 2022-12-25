@@ -6,6 +6,9 @@
       "path": "apps/admin/website"
     },
     {
+      "path": "apps/deployment"
+    },
+    {
       "path": "apps/mails"
     },
     {

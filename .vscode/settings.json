@@ -35,6 +35,7 @@
         "fontsource",
         "fstream",
         "gapcursor",
+        "globby",
         "graphiql",
         "hanko",
         "Hasher",
