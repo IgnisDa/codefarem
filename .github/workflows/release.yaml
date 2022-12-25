@@ -34,12 +34,8 @@ jobs:
         id: executables
         run: |
           all_executables=$(cat apps/deployment/src/data/*.json | jq -r '.apps[].EXECUTABLE_NAMES | flatten[]' | tr '\n' ' ' | xargs)
-          executables=$(node -e "
-            let executables = \`$all_executables\`.split(' ').filter(Boolean)
-            console.log(JSON.stringify(executables))
-          ")
-          echo "executables=$executables" >> $GITHUB_OUTPUT
-          echo "Discovered executables: $executables"
+          echo "all_executables=$all_executables" >> $GITHUB_OUTPUT
+          echo "Discovered executables: $all_executables"
 
       - name: Generate project dockerfile(s)
         env:
@@ -85,9 +81,9 @@ jobs:
           ACTOR: ${{ github.actor }}
           REGISTRY: ${{ env.REGISTRY }}
         run: |
-          executables=${{ steps.executables.outputs.executables }}
-          executables=($executables)
-          for executable in "${executables[@]}"
+          all_executables=${{ steps.executables.outputs.all_executables }}
+          all_executables=($all_executables)
+          for executable in "${all_executables[@]}"
           do
             npx zx apps/deployment/src/build-and-push.mjs "$executable"
           done
