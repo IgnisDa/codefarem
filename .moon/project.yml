@@ -20,7 +20,7 @@ tasks:
     command:
       - eslint
       - '--ext'
-      - '.js,.jsx,.ts,.tsx'
+      - '.js,.mjs,.jsx,.ts,.tsx'
       - '--fix'
       - '--report-unused-disable-directives'
       - '--no-error-on-unmatched-pattern'

@@ -1,8 +1,5 @@
 #!/usr/bin/env zx
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import { readFileSync } from 'node:fs';
 import { basename, parse } from 'node:path';
 import { globby } from 'globby';
