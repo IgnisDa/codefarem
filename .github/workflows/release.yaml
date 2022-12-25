@@ -20,9 +20,6 @@ jobs:
       - uses: ./.github/actions/setup-moon
         name: Setup moon
 
-      - uses: ./.github/actions/setup-node
-        name: Setup Nodejs
-
       - uses: ./.github/actions/setup-rust
         name: Setup Rust
 
@@ -65,7 +62,7 @@ jobs:
           for executable in "languages" "executor" "orchestrator" "admin-backend"
           do
             echo "Building executable '$executable'..."
-            cargo build --release --bin "$executable"
+            cargo build --release --package "$executable"
           done
 
   build:
