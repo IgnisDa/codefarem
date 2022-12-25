@@ -1,4 +1,4 @@
-FROM base AS runner
+FROM {{ IMAGE_NAME }}
 WORKDIR /app
 COPY apps/website/ci/* ./
 COPY apps/website/build/* ./

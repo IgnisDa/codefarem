@@ -4,6 +4,7 @@
   "apps": [
     {
       "EXECUTABLE_NAMES": ["website"],
+      "IMAGE_NAME": "node:19.3.0",
       "ENVIRONMENT_VARIABLES": {}
     }
   ]
