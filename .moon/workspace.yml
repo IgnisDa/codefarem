@@ -9,7 +9,6 @@ projects:
   generated: 'libs/generated'
   main-db: 'libs/main-db'
   mails: 'apps/mails'
-  react-ui: 'libs/react-ui'
   website: 'apps/website'
 
   # rust projects

@@ -4,5 +4,4 @@
 module.exports = {
   appDirectory: 'app',
   ignoredRouteFiles: ['**/.*'],
-  watchPaths: ['../../libs/react-ui/*'],
 };
