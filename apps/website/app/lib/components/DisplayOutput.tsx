@@ -49,7 +49,7 @@ export const DisplaySuccessOutput = ({
             </Code>
           </Tooltip>
         </Flex>
-        <Code>{successOutput}</Code>
+        <Code block>{successOutput}</Code>
       </>
     </DisplayOutputWrapper>
   );
