@@ -231,12 +231,8 @@ impl LearningService {
                 &(name, problem, slug),
             )
             .await
-            .map_err(|e| {
-                dbg!(e);
-                ApiError {
-                    error: "There was an error creating the question, please try again."
-                        .to_string(),
-                }
+            .map_err(|_| ApiError {
+                error: "There was an error creating the question, please try again.".to_string(),
             })?;
         // delete all of the old test cases if any
         self.db_conn
@@ -349,13 +345,17 @@ impl LearningService {
                     continue;
                 }
             };
-            let expected_output = test_case
-                .outputs
-                .iter()
-                .map(case_unit_to_argument)
-                .collect::<Vec<_>>()
-                .join("\n")
-                + "\n";
+            let expected_output = if test_case.outputs.is_empty() {
+                "".to_string()
+            } else {
+                test_case
+                    .outputs
+                    .iter()
+                    .map(case_unit_to_argument)
+                    .collect::<Vec<_>>()
+                    .join("\n")
+                    + "\n"
+            };
             let user_output_str = String::from_utf8(user_output.data).unwrap();
             let passed = user_output_str == expected_output;
             if passed {
