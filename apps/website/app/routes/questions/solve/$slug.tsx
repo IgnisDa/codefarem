@@ -16,6 +16,7 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  Title,
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
@@ -137,6 +138,7 @@ export default () => {
         <Grid gutter={'lg'}>
           <Grid.Col md={6}>
             <Stack>
+              <Title>{questionDetails.name}</Title>
               <RichTextEditor editor={editor}>
                 <RichTextEditor.Content />
               </RichTextEditor>
