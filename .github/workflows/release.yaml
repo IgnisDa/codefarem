@@ -96,5 +96,5 @@ jobs:
           all_executables=($all_executables)
           for executable in "${all_executables[@]}"
           do
-            npx zx apps/deployment/src/build-and-push.mjs "$executable"
+            executable=$executable npx zx apps/deployment/src/build-and-push.mjs "$executable"
           done
