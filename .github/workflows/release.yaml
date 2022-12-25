@@ -17,14 +17,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: ./.github/actions/setup-node
+        name: Setup Nodejs
+
       - uses: ./.github/actions/setup-moon
         name: Setup moon
 
       - uses: ./.github/actions/setup-rust
         name: Setup Rust
 
-      - uses: ./.github/actions/set-base-commit
-        name: Set base commit
+      - uses: ./.github/actions/setup-python
+        name: Setup python environment
+
+      - name: Setup moon dependencies
+        run: moon setup
 
       - name: Get projects executables
         id: executables
@@ -36,9 +42,6 @@ jobs:
           ")
           echo "executables=$executables" >> $GITHUB_OUTPUT
           echo "Discovered executables: $executables"
-
-      - uses: ./.github/actions/setup-python
-        name: Setup python environment
 
       - name: Generate project dockerfile(s)
         env:
@@ -57,12 +60,20 @@ jobs:
           path: apps/**/*.generated.Dockerfile
           if-no-files-found: error
 
-      - name: Build the Rust binaries
+      - name: Build the Rust projects
         run: |
           for executable in "languages" "executor" "orchestrator" "admin-backend"
           do
             echo "Building executable '$executable'..."
             cargo build --release --package "$executable"
+          done
+
+      - name: Build the Nodejs projects
+        run: |
+          for executable in "website" "admin-website"
+          do
+            echo "Building executable '$executable'..."
+            moon run $executable:build
           done
 
   build:
