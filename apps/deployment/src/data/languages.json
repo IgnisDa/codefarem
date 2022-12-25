@@ -10,7 +10,7 @@
     },
     {
       "EXECUTABLE_NAMES": ["go-service"],
-      "IMAGE_NAME": "tinygo/tinygo",
+      "IMAGE_NAME": "tinygo/tinygo:0.26.0",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     },
