@@ -2,7 +2,8 @@
   "dockerfile_path": "apps/website/website.generated.Dockerfile",
   "apps": [
     {
-      "EXECUTABLE_NAMES": ["website"]
+      "EXECUTABLE_NAMES": ["website"],
+      "ENVIRONMENT_VARIABLES": {}
     }
   ]
 }
