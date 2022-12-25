@@ -14,7 +14,7 @@ runs:
     - shell: bash
       run: |
         mkdir -p "$PWD/tools"
-        curl -sSLf "https://github.com/TomWright/dasel/releases/download/v{{ inputs.version }}/dasel_linux_amd64" -L -o ./tools/dasel
+        curl -sSLf "https://github.com/TomWright/dasel/releases/download/v${{ inputs.version }}/dasel_linux_amd64" -L -o ./tools/dasel
         chmod +x ./tools/dasel
 
     - shell: bash
