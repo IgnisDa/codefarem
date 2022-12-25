@@ -1,23 +1,3 @@
-import type { ShouldReloadFunction } from '@remix-run/react';
-import { useCatch } from '@remix-run/react';
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-} from '@remix-run/react';
-import { NotificationsProvider } from '@mantine/notifications';
-import { json } from '@remix-run/node';
-import type {
-  LinksFunction,
-  MetaFunction,
-  ErrorBoundaryComponent,
-} from '@remix-run/node';
-import type { FC, ReactNode } from 'react';
-import { ApplicationConfig } from './lib/config.server';
 import {
   AppShell,
   Box,
@@ -25,9 +5,29 @@ import {
   createEmotionCache,
   MantineProvider,
 } from '@mantine/core';
-import { AppNavbar } from './lib/components/AppShell';
+import { NotificationsProvider } from '@mantine/notifications';
 import { StylesPlaceholder } from '@mantine/remix';
+import { json } from '@remix-run/node';
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useCatch,
+  useLoaderData,
+} from '@remix-run/react';
+import { AppNavbar } from './lib/components/AppShell';
 import { ErrorPage } from './lib/components/ErrorPage';
+import { ApplicationConfig } from './lib/config.server';
+import type { ShouldReloadFunction } from '@remix-run/react';
+import type {
+  LinksFunction,
+  MetaFunction,
+  ErrorBoundaryComponent,
+} from '@remix-run/node';
+import type { FC, ReactNode } from 'react';
 import type { CatchBoundaryComponent } from '@remix-run/server-runtime/dist/routeModules';
 
 createEmotionCache({ key: 'mantine' });
@@ -113,7 +113,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
       withNormalizeCSS
       theme={{ colorScheme: 'dark' }}
     >
-      <html>
+      <html lang="en">
         <head>
           <title>Internal Server Error</title>
           <StylesPlaceholder />
@@ -147,7 +147,7 @@ export const CatchBoundary: CatchBoundaryComponent = () => {
       withNormalizeCSS
       theme={{ colorScheme: 'dark' }}
     >
-      <html>
+      <html lang="en">
         <head>
           <title>User Error</title>
           <StylesPlaceholder />
@@ -176,6 +176,7 @@ declare global {
   interface Window {
     ENV: {
       HANKO_URL: string;
+      NODE_ENV: string;
     };
   }
 }
