@@ -29,7 +29,7 @@ import {
 } from '~/lib/components/DisplayOutput';
 import { TestCaseInput } from '~/lib/components/TestCases';
 import { gqlClient } from '~/lib/services/graphql.server';
-import { guessDataType, metaFunction } from '~/lib/utils';
+import { metaFunction } from '~/lib/utils';
 import type { InputCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
@@ -147,6 +147,7 @@ export default () => {
         withCloseButton={false}
       >
         <Stack>
+          {JSON.stringify(args)}
           <Button
             variant={'light'}
             onClick={() =>
@@ -169,9 +170,7 @@ export default () => {
               onTextChange={(e) => {
                 const newArgs = [...args];
                 const value = e.currentTarget.value;
-                const dataType = guessDataType(value);
                 newArgs[idx].data = value;
-                newArgs[idx].dataType = dataType;
                 setArgs(newArgs);
               }}
               selectValue={arg.dataType}

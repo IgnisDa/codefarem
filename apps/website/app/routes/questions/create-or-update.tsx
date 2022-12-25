@@ -38,7 +38,6 @@ import { getUserDetails } from '~/lib/services/user.server';
 import {
   forbiddenError,
   getDataRepresentation,
-  guessDataType,
   metaFunction,
 } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
@@ -274,14 +273,6 @@ export default () => {
                                   'data',
                                   value
                                 );
-                                const dataType = guessDataType(value);
-                                setData(
-                                  testCaseIdx,
-                                  inputCaseIdx,
-                                  'inputs',
-                                  'dataType',
-                                  dataType
-                                );
                               }}
                               selectValue={input.dataType}
                               testCaseUnits={testCaseUnits}
@@ -330,14 +321,6 @@ export default () => {
                                   'outputs',
                                   'data',
                                   value
-                                );
-                                const dataType = guessDataType(value);
-                                setData(
-                                  testCaseIdx,
-                                  outputCaseIdx,
-                                  'outputs',
-                                  'dataType',
-                                  dataType
                                 );
                               }}
                               selectValue={output.dataType}

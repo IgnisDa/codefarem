@@ -1,7 +1,8 @@
 import { ActionIcon, Flex, Select, TextInput } from '@mantine/core';
+import { IconMinus } from '@tabler/icons';
+import { guessDataType } from '../utils';
 import type { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
 import type { ChangeEventHandler, MouseEventHandler } from 'react';
-import { IconMinus } from '@tabler/icons';
 
 type TestCaseProps = {
   textValue: string;
@@ -28,7 +29,11 @@ export const TestCaseInput = ({
         required
         value={textValue}
         label="Data"
-        onChange={onTextChange}
+        onChange={(e) => {
+          onTextChange(e);
+          const dataType = guessDataType(e.currentTarget.value);
+          onSelectChange(dataType);
+        }}
       />
       <Select
         required
