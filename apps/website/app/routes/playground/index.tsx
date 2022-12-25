@@ -147,7 +147,6 @@ export default () => {
         withCloseButton={false}
       >
         <Stack>
-          {JSON.stringify(args)}
           <Button
             variant={'light'}
             onClick={() =>
