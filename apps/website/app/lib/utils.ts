@@ -1,14 +1,23 @@
 import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
+import { isNumber } from 'lodash';
 import { forbidden, unprocessableEntity } from 'remix-utils';
 import { match } from 'ts-pattern';
 import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import type { MetaFunction } from '@remix-run/server-runtime';
 
+/* Guess the data type for an input based on the properties of its contents. */
 export const guessDataType = (data: string): TestCaseUnit => {
   if (!isNaN(Number(data))) return TestCaseUnit.Number;
-  else if (data.match(/^[0-9]+(,[0-9]+)*$/))
+  else if (
+    data
+      .split(',')
+      .map((f) => (f ? Number(f) : null))
+      // replace every NaN with null
+      .map((f) => (String(f) === 'NaN' ? null : f))
+      .every((n) => isNumber(n))
+  )
     return TestCaseUnit.NumberCollection;
-  else if (data.match(/^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$/))
+  else if (data.includes(',') && data.split(',').every(Boolean))
     return TestCaseUnit.StringCollection;
   return TestCaseUnit.String;
 };
