@@ -2,11 +2,16 @@ name: Setup Rust
 
 description: Setup Rust, cache and install dependencies
 
+inputs:
+  rust-toolchain:
+    description: The rust toolchain version to use
+    required: true
+
 runs:
   using: composite
   steps:
     - name: Use Rust
-      run: rustup toolchain install stable --profile minimal
+      run: rustup toolchain install ${{ inputs.rust-toolchain }}
       shell: bash
 
     - name: Cache cargo registry

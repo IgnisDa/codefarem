@@ -21,8 +21,19 @@ jobs:
       - uses: ./.github/actions/setup-moon
         name: Setup moon
 
+      - uses: ./.github/actions/setup-dasel
+        name: Setup dasel
+
+      - name: Get Rust version
+        id: rust-version
+        run: |
+          toolchain_version=$(dasel -r toml --file rust-toolchain.toml '.toolchain.channel')
+          echo "toolchain_version=$toolchain_version" >> $GITHUB_OUTPUT
+
       - uses: ./.github/actions/setup-rust
         name: Setup Rust
+        with:
+          rust-toolchain: ${{ steps.rust-version.outputs.toolchain_version }}
 
       - uses: ./.github/actions/setup-python
         name: Setup python environment
