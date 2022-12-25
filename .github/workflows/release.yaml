@@ -92,7 +92,7 @@ jobs:
           ACTOR: ${{ github.actor }}
           REGISTRY: ${{ env.REGISTRY }}
         run: |
-          all_executables=${{ steps.executables.outputs.all_executables }}
+          all_executables="${{ steps.executables.outputs.all_executables }}"
           all_executables=($all_executables)
           for executable in "${all_executables[@]}"
           do
