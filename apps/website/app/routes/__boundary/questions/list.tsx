@@ -162,7 +162,19 @@ export default () => {
                               </Anchor>
                             </Menu.Item>
                             <Menu.Item icon={<IconCopy size={14} />}>
-                              Duplicate
+                              <Anchor
+                                href={withQuery(
+                                  `${route('/questions/create-or-update')}`,
+                                  {
+                                    questionSlug: node.slug,
+                                    action: 'Duplicate',
+                                  }
+                                )}
+                                variant={'text'}
+                                display={'block'}
+                              >
+                                Duplicate
+                              </Anchor>
                             </Menu.Item>
                             <Menu.Divider />
                             <Menu.Label>Danger zone</Menu.Label>

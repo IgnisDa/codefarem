@@ -49,16 +49,20 @@ export const meta = metaFunction;
 enum LoaderAction {
   Create = 'Create',
   Update = 'Update',
+  Duplicate = 'Duplicate',
 }
+
+const querySchema = z.object({
+  questionSlug: z.string().optional(),
+  action: z.nativeEnum(LoaderAction).optional(),
+});
 
 export async function loader({ request }: LoaderArgs) {
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
+  const { questionSlug, action } = zx.parseQuery(request, querySchema);
   const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
-  const { questionSlug } = zx.parseQuery(request, {
-    questionSlug: z.string().optional(),
-  });
   // an edit page was requested
   if (!questionSlug)
     return json({
@@ -96,7 +100,7 @@ export async function loader({ request }: LoaderArgs) {
   return json({
     questionDetails,
     defaultTestCases: testCases,
-    action: LoaderAction.Update,
+    action: action ?? LoaderAction.Update,
     questionSlug,
     testCaseUnits,
   });
@@ -108,9 +112,13 @@ const actionSchema = z.object({
 });
 
 export async function action({ request }: ActionArgs) {
+  const { action } = zx.parseQuery(request, querySchema);
   const { data } = await zx.parseForm(request, actionSchema);
 
   const input: UpsertQuestionInput = JSON.parse(data);
+  if (action === LoaderAction.Duplicate)
+    // remove the slug from the input
+    delete input.updateSlug;
 
   const { upsertQuestion } = await gqlClient.request(
     UPSERT_QUESTION,
