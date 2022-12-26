@@ -44,10 +44,8 @@ export const metaFunction: MetaFunction = ({ data }) => {
 
 export const getDataRepresentation = (data: TestCaseFragment) => {
   return match(data.unitType)
-    .with(TestCaseUnit.Number, TestCaseUnit.String, () => {
-      if (data.stringValue === '') return '';
-      return data.stringValue || String(data.numberValue) || '';
-    })
+    .with(TestCaseUnit.String, () => data.stringValue)
+    .with(TestCaseUnit.Number, () => String(data.numberValue))
     .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
       (data.numberCollectionValue || data.stringCollectionValue || []).join(',')
     )
