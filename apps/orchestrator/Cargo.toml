@@ -28,3 +28,4 @@ strum = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
 uuid = { workspace = true }
+tokio-cron-scheduler = "0.8.1"

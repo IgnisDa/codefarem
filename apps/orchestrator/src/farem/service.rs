@@ -109,6 +109,7 @@ impl FaremService {
             toolchain_information.push(result.unwrap());
         }
         toolchain_information.sort_by(|a, b| a.version.cmp(&b.version));
+        dbg!(&toolchain_information);
         TOOLCHAIN_INFORMATION
             .set(toolchain_information)
             .expect("Toolchain information already initialized");

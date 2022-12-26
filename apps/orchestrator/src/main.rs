@@ -10,6 +10,7 @@ use orchestrator::{
 };
 use rocket::{get, launch, post, response::content::RawHtml, routes, State};
 use std::sync::Arc;
+use tokio_cron_scheduler::{Job, JobScheduler};
 
 type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
@@ -47,7 +48,11 @@ async fn rocket() -> _ {
         &app_state.ruby_service,
         &app_state.grain_service,
     );
+
+    let cloned_farem_service = farem_service.clone();
+
     farem_service.initialize().await;
+
     let user_service = UserService::new(&app_state.db_conn);
     let learning_service =
         LearningService::new(&app_state.db_conn, &Arc::new(farem_service.clone()));
@@ -62,6 +67,24 @@ async fn rocket() -> _ {
     .data(app_state.config)
     .extension(Analyzer)
     .finish();
-    let mounter = rocket::build().manage(schema);
-    mounter.mount("/", routes![graphiql, graphql_request])
+
+    let scheduler = JobScheduler::new().await.unwrap();
+
+    scheduler
+        .add(
+            Job::new_async("1/7 * * * * *", move |_uuid, _l| {
+                Box::pin(async {
+                    cloned_farem_service.clone().initialize().await;
+                })
+            })
+            .expect("defining 7 seconds job"),
+        )
+        .await
+        .unwrap();
+
+    scheduler.start().await.unwrap();
+
+    rocket::build()
+        .manage(schema)
+        .mount("/", routes![graphiql, graphql_request])
 }
