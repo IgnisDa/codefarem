@@ -53,9 +53,20 @@ export async function loader({ params }: LoaderArgs) {
   });
   if (questionDetails.__typename === 'ApiError') throw notFound({});
   const meta = { title: `${questionDetails.name}` };
+  const combinedQuestionDetails = {
+    ...questionDetails,
+    combinedTestCases: questionDetails.testCases.map((testCase, index) => ({
+      input: testCase.inputs
+        .map((input) => getDataRepresentation(input.data as TestCaseFragment))
+        .join(' '),
+      output: testCase.outputs
+        .map((output) => getDataRepresentation(output.data as TestCaseFragment))
+        .join('\n'),
+    })),
+  };
   return json({
     supportedLanguages,
-    questionDetails,
+    combinedQuestionDetails,
     meta,
     questionSlug,
   });
@@ -94,12 +105,12 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default () => {
-  const { supportedLanguages, questionDetails, questionSlug } =
+  const { supportedLanguages, combinedQuestionDetails, questionSlug } =
     useLoaderData<typeof loader>();
   const editor = useEditor({
     extensions: [StarterKit],
     editable: false,
-    content: questionDetails.problem,
+    content: combinedQuestionDetails.problem,
   });
   const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState('');
@@ -138,48 +149,33 @@ export default () => {
         <Grid gutter={'lg'}>
           <Grid.Col md={6}>
             <Stack>
-              <Title>{questionDetails.name}</Title>
+              <Title>{combinedQuestionDetails.name}</Title>
               <RichTextEditor editor={editor}>
                 <RichTextEditor.Content />
               </RichTextEditor>
               <Accordion>
-                {questionDetails.testCases.map((testCase, idx) => {
-                  const name = `Test Case ${idx + 1}`;
-                  return (
-                    <Accordion.Item key={idx} value={name}>
-                      <Accordion.Control>{name}</Accordion.Control>
-                      <Accordion.Panel>
-                        <Stack>
-                          <Box>
-                            {/* TODO: Combine all the inputs into one */}
-                            <Text>Inputs</Text>
-                            {testCase.inputs.map((input, idx) => (
-                              <Box key={idx}>
-                                <Code>
-                                  {getDataRepresentation(
-                                    input.data as TestCaseFragment
-                                  )}
-                                </Code>
-                              </Box>
-                            ))}
-                          </Box>
-                          <Box>
-                            <Text>Outputs</Text>
-                            {testCase.outputs.map((output, idx) => (
-                              <Box key={idx}>
-                                <Code>
-                                  {getDataRepresentation(
-                                    output.data as TestCaseFragment
-                                  )}
-                                </Code>
-                              </Box>
-                            ))}
-                          </Box>
-                        </Stack>
-                      </Accordion.Panel>
-                    </Accordion.Item>
-                  );
-                })}
+                {combinedQuestionDetails.combinedTestCases.map(
+                  (testCase, idx) => {
+                    const name = `Test Case ${idx + 1}`;
+                    return (
+                      <Accordion.Item key={idx} value={name}>
+                        <Accordion.Control>{name}</Accordion.Control>
+                        <Accordion.Panel>
+                          <Stack>
+                            <Box>
+                              <Text>Inputs</Text>
+                              <Code block>{testCase.input}</Code>
+                            </Box>
+                            <Box>
+                              <Text>Outputs</Text>
+                              <Code block>{testCase.output}</Code>
+                            </Box>
+                          </Stack>
+                        </Accordion.Panel>
+                      </Accordion.Item>
+                    );
+                  }
+                )}
               </Accordion>
             </Stack>
           </Grid.Col>
