@@ -26,7 +26,9 @@ pub struct TestCaseData {
 #[derive(Debug, SimpleObject, Deserialize)]
 pub struct QuestionData {
     /// The data related to this input
-    pub data: TestCaseData,
+    pub normalized_data: String,
+
+    pub unit_type: TestCaseUnit,
 }
 
 #[derive(Debug, SimpleObject, Deserialize)]

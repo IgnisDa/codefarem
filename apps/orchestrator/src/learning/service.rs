@@ -19,7 +19,6 @@ use crate::{
             test_case::{TestCase, TestCaseUnit},
         },
     },
-    utils::case_unit_to_argument,
 };
 use async_graphql::{
     connection::{query, Connection, Edge, EmptyFields},
@@ -349,7 +348,7 @@ impl LearningService {
             let arguments = test_case
                 .inputs
                 .iter()
-                .map(case_unit_to_argument)
+                .map(|f| f.normalized_data.clone())
                 .collect::<Vec<_>>();
             let user_output = match self
                 .farem_service
@@ -371,7 +370,7 @@ impl LearningService {
                 test_case
                     .outputs
                     .iter()
-                    .map(case_unit_to_argument)
+                    .map(|f| f.normalized_data.clone())
                     .collect::<Vec<_>>()
                     .join("\n")
                     + "\n"
