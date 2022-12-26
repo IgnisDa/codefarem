@@ -6,6 +6,7 @@ use crate::{
     learning::dto::{
         mutations::{
             create_class::CreateClassOutput,
+            delete_question::DeleteQuestionOutput,
             execute_code_for_question::{
                 ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
             },
@@ -45,6 +46,8 @@ const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/question-details.edgeql");
+const DELETE_QUESTION: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/delete-question.edgeql");
 const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
 const CREATE_CLASS: &str =
@@ -303,6 +306,23 @@ impl LearningService {
             )
             .await
             .unwrap();
+        Ok(question)
+    }
+
+    pub async fn delete_question<'a>(
+        &self,
+        hanko_id: &'a str,
+        question_slug: &'a str,
+    ) -> Result<DeleteQuestionOutput, ApiError> {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let question = self
+            .db_conn
+            .query_required_single::<DeleteQuestionOutput, _>(DELETE_QUESTION, &(question_slug,))
+            .await
+            .map_err(|_| ApiError {
+                error: "There was an error deleting the question, please try again.".to_string(),
+            })?;
         Ok(question)
     }
 

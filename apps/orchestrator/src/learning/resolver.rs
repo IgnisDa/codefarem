@@ -4,6 +4,7 @@ use crate::{
         dto::{
             mutations::{
                 create_class::{CreateClassInput, CreateClassResultUnion},
+                delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
                     ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
                 },
@@ -115,6 +116,20 @@ impl LearningMutation {
             )
             .await;
         to_result_union_response!(output, UpsertQuestionResultUnion)
+    }
+
+    /// Delete a question
+    async fn delete_question(
+        &self,
+        ctx: &Context<'_>,
+        input: DeleteQuestionInput,
+    ) -> Result<DeleteQuestionResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .delete_question(&hanko_id, input.question_slug())
+            .await;
+        to_result_union_response!(output, DeleteQuestionResultUnion)
     }
 
     /// Execute an input code for the selected language and question
