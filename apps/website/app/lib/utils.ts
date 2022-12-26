@@ -1,8 +1,6 @@
 import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
 import { isNumber } from 'lodash';
 import { forbidden, unprocessableEntity } from 'remix-utils';
-import { match } from 'ts-pattern';
-import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import type { MetaFunction } from '@remix-run/server-runtime';
 
 /* Guess the data type for an input based on the properties of its contents. */
@@ -40,14 +38,4 @@ export const unprocessableEntityError = (description: string) => {
 export const metaFunction: MetaFunction = ({ data }) => {
   if (!data) return {};
   return data.meta;
-};
-
-export const getDataRepresentation = (data: TestCaseFragment) => {
-  return match(data.unitType)
-    .with(TestCaseUnit.String, () => data.stringValue)
-    .with(TestCaseUnit.Number, () => String(data.numberValue))
-    .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
-      (data.numberCollectionValue || data.stringCollectionValue || []).join(',')
-    )
-    .exhaustive();
 };

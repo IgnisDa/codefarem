@@ -26,17 +26,6 @@ export const USER_WITH_EMAIL = graphql(`
   }
 `);
 
-export const TEST_CASE_DATA_FRAGMENT = graphql(`
-  fragment TestCase on TestCaseData {
-    __typename
-    numberCollectionValue
-    stringCollectionValue
-    numberValue
-    stringValue
-    unitType
-  }
-`);
-
 export const QUESTION_DETAILS = graphql(`
   query QuestionDetails($questionSlug: String!) {
     questionDetails(questionSlug: $questionSlug) {
@@ -49,14 +38,12 @@ export const QUESTION_DETAILS = graphql(`
         problem
         testCases {
           inputs {
-            data {
-              ...TestCase
-            }
+            normalizedData
+            unitType
           }
           outputs {
-            data {
-              ...TestCase
-            }
+            normalizedData
+            unitType
           }
         }
       }

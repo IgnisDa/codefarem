@@ -37,9 +37,8 @@ import {
   DisplaySuccessOutput,
 } from '~/lib/components/DisplayOutput';
 import { gqlClient } from '~/lib/services/graphql.server';
-import { getDataRepresentation, metaFunction } from '~/lib/utils';
+import { metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
-import type { TestCaseFragment } from ':generated/graphql/orchestrator/generated/graphql';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
 export const meta = metaFunction;
@@ -55,12 +54,10 @@ export async function loader({ params }: LoaderArgs) {
   const meta = { title: `${questionDetails.name}` };
   const combinedQuestionDetails = {
     ...questionDetails,
-    combinedTestCases: questionDetails.testCases.map((testCase, index) => ({
-      input: testCase.inputs
-        .map((input) => getDataRepresentation(input.data as TestCaseFragment))
-        .join(' '),
+    combinedTestCases: questionDetails.testCases.map((testCase) => ({
+      input: testCase.inputs.map((input) => input.normalizedData).join(' '),
       output: testCase.outputs
-        .map((output) => getDataRepresentation(output.data as TestCaseFragment))
+        .map((output) => output.normalizedData)
         .join('\n'),
     })),
   };

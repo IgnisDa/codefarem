@@ -35,17 +35,12 @@ import { TestCaseInput } from '~/lib/components/TestCases';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import {
-  forbiddenError,
-  getDataRepresentation,
-  metaFunction,
-} from '~/lib/utils';
+import { forbiddenError, metaFunction } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   TestCase,
   InputCaseUnit,
   OutputCaseUnit,
-  TestCaseFragment,
   UpsertQuestionInput,
 } from ':generated/graphql/orchestrator/generated/graphql';
 
@@ -88,13 +83,13 @@ export async function loader({ request }: LoaderArgs) {
     });
   const testCases = questionDetails.testCases.map((testCase) => {
     const inputs = testCase.inputs.map((input, idx) => ({
-      data: getDataRepresentation(input.data as TestCaseFragment),
-      dataType: (input.data as TestCaseFragment).unitType,
+      data: input.normalizedData,
+      dataType: input.unitType,
       name: `line${idx}`,
     }));
     const outputs = testCase.outputs.map((output) => ({
-      data: getDataRepresentation(output.data as TestCaseFragment),
-      dataType: (output.data as TestCaseFragment).unitType,
+      data: output.normalizedData,
+      dataType: output.unitType,
     }));
     return { inputs, outputs };
   });
