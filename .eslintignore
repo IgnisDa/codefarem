@@ -26,3 +26,5 @@ lib
 
 next-env.d.ts
 vite-env.d.ts
+
+*timestamp*
