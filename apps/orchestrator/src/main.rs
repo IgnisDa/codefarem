@@ -62,6 +62,8 @@ async fn rocket() -> _ {
     .data(app_state.config)
     .extension(Analyzer)
     .finish();
-    let mounter = rocket::build().manage(schema);
-    mounter.mount("/", routes![graphiql, graphql_request])
+
+    rocket::build()
+        .manage(schema)
+        .mount("/", routes![graphiql, graphql_request])
 }
