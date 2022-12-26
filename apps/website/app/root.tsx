@@ -1,7 +1,6 @@
 import {
   AppShell,
   Box,
-  Center,
   createEmotionCache,
   MantineProvider,
 } from '@mantine/core';
@@ -15,20 +14,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
   useLoaderData,
 } from '@remix-run/react';
 import { AppNavbar } from './lib/components/AppShell';
-import { ErrorPage } from './lib/components/ErrorPage';
 import { ApplicationConfig } from './lib/config.server';
 import type { ShouldReloadFunction } from '@remix-run/react';
-import type {
-  LinksFunction,
-  MetaFunction,
-  ErrorBoundaryComponent,
-} from '@remix-run/node';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
-import type { CatchBoundaryComponent } from '@remix-run/server-runtime/dist/routeModules';
 
 createEmotionCache({ key: 'mantine' });
 
@@ -105,72 +97,6 @@ export default function App() {
     </MantineProvider>
   );
 }
-
-export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
-  return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{ colorScheme: 'dark' }}
-    >
-      <html lang="en">
-        <head>
-          <title>Internal Server Error</title>
-          <StylesPlaceholder />
-          <Meta />
-          <Links />
-        </head>
-        <body>
-          <Center h={'100vh'}>
-            <ErrorPage
-              statusCode={500}
-              message={'Internal Server Error'}
-              description={
-                "Our servers could not handle your request. Don't worry, our development team was already notified."
-              }
-              stack={error.stack}
-            />
-          </Center>
-          <Scripts />
-        </body>
-      </html>
-    </MantineProvider>
-  );
-};
-
-export const CatchBoundary: CatchBoundaryComponent = () => {
-  const caught = useCatch();
-
-  return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{ colorScheme: 'dark' }}
-    >
-      <html lang="en">
-        <head>
-          <title>User Error</title>
-          <StylesPlaceholder />
-          <Meta />
-          <Links />
-        </head>
-        <body>
-          <Center h={'100vh'}>
-            <ErrorPage
-              statusCode={caught?.status}
-              message={caught?.data?.message || 'Not Found'}
-              description={
-                caught?.data?.description ||
-                'We could not find what you were looking for. If you think it should be here, please contact us.'
-              }
-            />
-          </Center>
-          <Scripts />
-        </body>
-      </html>
-    </MantineProvider>
-  );
-};
 
 declare global {
   interface Window {

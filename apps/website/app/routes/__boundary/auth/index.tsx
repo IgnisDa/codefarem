@@ -25,7 +25,7 @@ import { z } from 'zod';
 import { zx } from 'zodix';
 import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { gqlClient } from '~/lib/services/graphql.server';
-import authStyles from '../../styles/auth/index.css';
+import authStyles from '../../../styles/auth/index.css';
 import type { ActionArgs, LinksFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => {

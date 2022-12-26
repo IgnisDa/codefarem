@@ -1,17 +1,17 @@
+import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
+import { CREATE_CLASS } from ':generated/graphql/orchestrator/mutations';
+import { Button, Container, Paper, TextInput, Title } from '@mantine/core';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
-import type { ActionArgs, LoaderArgs } from '@remix-run/node';
-import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
-import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
-import { CREATE_CLASS } from ':generated/graphql/orchestrator/mutations';
-import { getUserDetails } from '~/lib/services/user.server';
-import { Button, Container, Paper, TextInput, Title } from '@mantine/core';
 import { requireValidJwt } from '~/lib/services/auth.server';
+import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
+import { getUserDetails } from '~/lib/services/user.server';
 import { forbiddenError } from '~/lib/utils';
+import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 
 export const loader = async ({ request }: LoaderArgs) => {
   await requireValidJwt(request);

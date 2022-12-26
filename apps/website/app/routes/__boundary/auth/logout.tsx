@@ -1,8 +1,8 @@
-import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
 import { redirect } from '@remix-run/node';
-import type { DataFunctionArgs } from '@remix-run/node';
 import { serialize } from 'cookie';
 import { ApplicationConfig } from '~/lib/config.server';
+import { FAILURE_REDIRECT_PATH } from '~/lib/constants';
+import type { DataFunctionArgs } from '@remix-run/node';
 
 export const loader = async (_args: DataFunctionArgs) => {
   const hankoCookie = serialize('hanko', '', {
