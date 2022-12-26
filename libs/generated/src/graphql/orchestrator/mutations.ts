@@ -98,3 +98,17 @@ export const EXECUTE_CODE_FOR_QUESTION = graphql(`
     }
   }
 `);
+
+export const DELETE_QUESTION = graphql(`
+  mutation DeleteQuestion($input: DeleteQuestionInput!) {
+    deleteQuestion(input: $input) {
+      __typename
+      ... on DeleteQuestionOutput {
+        id
+      }
+      ... on ApiError {
+        error
+      }
+    }
+  }
+`);
