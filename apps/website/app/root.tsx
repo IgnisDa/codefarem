@@ -1,4 +1,13 @@
 import {
+  AppShell,
+  Box,
+  createEmotionCache,
+  MantineProvider,
+} from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
+import { StylesPlaceholder } from '@mantine/remix';
+import { json } from '@remix-run/node';
+import {
   Links,
   LiveReload,
   Meta,
@@ -7,21 +16,18 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
-import { NotificationsProvider } from '@mantine/notifications';
-import { json } from '@remix-run/node';
+import { AppNavbar } from './lib/components/AppShell';
+import { ApplicationConfig } from './lib/config.server';
+import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import type { FC, ReactNode } from 'react';
-import { ApplicationConfig } from './lib/config.server';
-import {
-  AppShell,
-  Box,
-  createEmotionCache,
-  MantineProvider,
-} from '@mantine/core';
-import { AppNavbar } from './lib/components/AppShell';
-import { StylesPlaceholder } from '@mantine/remix';
 
 createEmotionCache({ key: 'mantine' });
+
+// https://remix.run/docs/en/v1/route/should-reload
+export const unstable_shouldReload: ShouldReloadFunction = () => {
+  return false;
+};
 
 export const links: LinksFunction = () => {
   return [];
@@ -96,6 +102,7 @@ declare global {
   interface Window {
     ENV: {
       HANKO_URL: string;
+      NODE_ENV: string;
     };
   }
 }

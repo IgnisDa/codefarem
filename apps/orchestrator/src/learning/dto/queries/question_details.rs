@@ -26,7 +26,9 @@ pub struct TestCaseData {
 #[derive(Debug, SimpleObject, Deserialize)]
 pub struct QuestionData {
     /// The data related to this input
-    pub data: TestCaseData,
+    pub normalized_data: String,
+
+    pub unit_type: TestCaseUnit,
 }
 
 #[derive(Debug, SimpleObject, Deserialize)]
@@ -47,12 +49,6 @@ pub struct QuestionDetailsOutput {
 
     /// The detailed markdown text explaining the question
     pub problem: String,
-
-    /// The number of classes that have this question
-    pub num_classes: u8,
-
-    /// The users who have created/edited this question
-    pub authored_by: Vec<AuthoredByInformation>,
 
     /// All the test cases that are related to this question
     pub test_cases: Vec<QuestionTestCase>,

@@ -1,18 +1,15 @@
-name: Setup
+name: Setup Moon
 
 description: Setup global moon cli
-
-inputs:
-  moon-version:
-    description: Moon version
-    required: false
-    default: '0.20.1'
 
 runs:
   using: composite
   steps:
-    - uses: supplypike/setup-bin@v1
-      with:
-        uri: 'https://github.com/moonrepo/moon/releases/latest/download/moon-x86_64-unknown-linux-musl'
-        name: 'moon'
-        version: ${{ inputs.moon-version }}
+    - shell: bash
+      run: curl -fsSL https://moonrepo.dev/install.sh | bash
+
+    - shell: bash
+      run: echo '$HOME/.moon/tools/moon/latest' >> $GITHUB_PATH
+
+    - shell: bash
+      run: moon --version

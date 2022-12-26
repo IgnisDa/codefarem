@@ -2,6 +2,7 @@
   "name": "@codefarem/admin-website",
   "version": "0.0.0",
   "dependencies": {
+    "@codefarem/deployment": "workspace:^",
     "@codefarem/generated": "workspace:*",
     "@emotion/react": "11.10.5",
     "@mantine/core": "5.9.2",

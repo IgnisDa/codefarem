@@ -1,0 +1,69 @@
+{
+  "dockerfile_path": "apps/languages/${executable}.generated.Dockerfile",
+  "project_type": "rust",
+  "apps": [
+    {
+      "EXECUTABLE_NAMES": ["rs-service"],
+      "IMAGE_NAME": "rust:1.65",
+      "COMMANDS": ["rustup target add wasm32-wasi"],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAMES": ["go-service"],
+      "IMAGE_NAME": "tinygo/tinygo:0.26.0",
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAMES": ["c-service", "cpp-service", "zig-service"],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils",
+        "wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz",
+        "tar xf zig-linux-x86_64-0.9.1.tar.xz",
+        "cp -r zig-linux-x86_64-0.9.1/. /usr/local/bin/",
+        "rm -rf tmp/*",
+        "zig version"
+      ],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAMES": ["swift-service"],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget xz-utils binutils git gnupg2 libc6-dev libcurl4 libedit2 libgcc-9-dev libpython2.7 libsqlite3-0 libstdc++-9-dev libxml2 libz3-dev pkg-config tzdata zlib1g-dev",
+        "wget https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.7-SNAPSHOT-2022-11-09-a/swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz",
+        "tar xf swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz --strip-components=2 -C /usr/local",
+        "rm -rf swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz"
+      ],
+      "ENVIRONMENT_VARIABLES": {
+        "DEBIAN_FRONTEND": "noninteractive"
+      }
+    },
+    {
+      "EXECUTABLE_NAMES": ["ruby-service"],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAMES": ["python-service"],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [],
+      "ENVIRONMENT_VARIABLES": {}
+    },
+    {
+      "EXECUTABLE_NAMES": ["grain-service"],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y curl",
+        "curl -L --output /usr/local/bin/grain https://github.com/grain-lang/grain/releases/download/grain-v0.5.9/grain-linux-x64",
+        "chmod +x /usr/local/bin/grain"
+      ],
+      "ENVIRONMENT_VARIABLES": {}
+    }
+  ]
+}

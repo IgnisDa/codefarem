@@ -21,6 +21,7 @@
   "private": true,
   "workspaces": [
     "apps/**",
-    "libs/*"
+    "libs/*",
+    "e2e/*"
   ]
 }

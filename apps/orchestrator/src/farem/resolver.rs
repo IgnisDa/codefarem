@@ -1,5 +1,8 @@
 use crate::farem::{
-    dto::mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
+    dto::{
+        mutations::execute_code::{ExecuteCodeInput, ExecuteCodeResultUnion},
+        queries::toolchain_information::ToolChainInformation,
+    },
     service::FaremService,
 };
 use async_graphql::{Context, Object, Result};
@@ -16,15 +19,22 @@ pub struct FaremMutation {}
 
 #[Object]
 impl FaremQuery {
+    /// Endpoint to get all toolchain information
+    #[graphql(cache_control(max_age = 604800))]
+    async fn toolchain_information(&self, ctx: &Context<'_>) -> Vec<ToolChainInformation> {
+        ctx.data_unchecked::<FaremService>().toolchain_information()
+    }
+
     /// Get a list of all the languages that the service supports.
+    #[graphql(cache_control(max_age = 604800))]
     async fn supported_languages(&self, ctx: &Context<'_>) -> Vec<SupportedLanguage> {
-        ctx.data::<FaremService>().unwrap().supported_languages()
+        ctx.data_unchecked::<FaremService>().supported_languages()
     }
 
     /// Get an example code snippet for a particular language
+    #[graphql(cache_control(max_age = 604800))]
     async fn language_example(&self, ctx: &Context<'_>, language: SupportedLanguage) -> String {
-        ctx.data::<FaremService>()
-            .unwrap()
+        ctx.data_unchecked::<FaremService>()
             .language_example(&language)
             .await
     }
@@ -40,8 +50,7 @@ impl FaremMutation {
         input: ExecuteCodeInput,
     ) -> Result<ExecuteCodeResultUnion> {
         let output = ctx
-            .data::<FaremService>()
-            .unwrap()
+            .data_unchecked::<FaremService>()
             .execute_code(input.code(), input.arguments(), input.language())
             .await;
         to_result_union_response!(output, ExecuteCodeResultUnion)

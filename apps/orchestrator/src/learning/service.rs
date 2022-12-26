@@ -1,13 +1,16 @@
 use crate::{
     farem::{
-        dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep},
+        dto::mutations::execute_code::{ExecuteCodeError, ExecuteCodeErrorStep, ExecuteCodeTime},
         service::FaremService,
     },
     learning::dto::{
         mutations::{
             create_class::CreateClassOutput,
-            create_question::CreateQuestionOutput,
-            execute_code_for_question::{ExecuteCodeForQuestionOutput, TestCaseStatus},
+            delete_question::DeleteQuestionOutput,
+            execute_code_for_question::{
+                ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
+            },
+            upsert_question::UpsertQuestionOutput,
         },
         queries::{
             all_questions::QuestionPartialsDetails,
@@ -16,17 +19,18 @@ use crate::{
             test_case::{TestCase, TestCaseUnit},
         },
     },
-    utils::case_unit_to_argument,
 };
 use async_graphql::{
     connection::{query, Connection, Edge, EmptyFields},
     Error, Result,
 };
 use auth::validate_user_role;
+use edgedb_derive::Queryable;
 use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
 use utilities::{
+    diff::get_diff_of_lines,
     graphql::ApiError,
     models::IdObject,
     random_string,
@@ -35,18 +39,22 @@ use utilities::{
 };
 use uuid::Uuid;
 
-const ALL_QUESTIONS: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/all-questions.edgeql");
+const PAGINATED_QUESTIONS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/paginated-questions.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/question-details.edgeql");
+const DELETE_QUESTION: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/delete-question.edgeql");
 const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
 const CREATE_CLASS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/create-class.edgeql");
-const CREATE_QUESTION: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/create-question.edgeql");
+const UPSERT_QUESTION: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/upsert-question.edgeql");
+const DELETE_TEST_CASES: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/delete-test-cases.edgeql");
 const INSERT_NUMBER_COLLECTION_UNIT: &str = include_str!(
     "../../../../libs/main-db/edgeql/learning/test-cases/number-collection-unit.edgeql"
 );
@@ -85,7 +93,7 @@ impl LearningService {
         TestCaseUnit::iter().collect()
     }
 
-    pub async fn all_questions<'a>(
+    pub async fn questions_connection<'a>(
         &self,
         after: Option<String>,
         before: Option<String>,
@@ -98,17 +106,39 @@ impl LearningService {
             first,
             last,
             |after, before, first, last| async move {
-                let all_questions = self
+                let mut direction = "ASC";
+
+                let first = first.map(|f| f as i16);
+                let last = last.map(|l| {
+                    direction = "DESC";
+                    l as i16
+                });
+                let limit = first.or(last);
+
+                let convert = |id: Option<String>| id.map(|id| Uuid::parse_str(&id).unwrap());
+                let after = convert(after);
+                let before = convert(before);
+
+                #[derive(Debug, Queryable)]
+                struct QueryResult {
+                    selected: Vec<QuestionPartialsDetails>,
+                    has_previous_page: bool,
+                    has_next_page: bool,
+                }
+
+                let new_query = PAGINATED_QUESTIONS.replace("{{DIRECTION}}", direction);
+
+                let result = self
                     .db_conn
-                    .query::<QuestionPartialsDetails, _>(ALL_QUESTIONS, &())
+                    .query_required_single::<QueryResult, _>(&new_query, &(after, before, limit))
                     .await
-                    .unwrap_or_default();
-                let has_previous_page = false;
-                let has_next_page = false;
-                let mut connection = Connection::new(has_previous_page, has_next_page);
+                    .unwrap();
+
+                let mut connection =
+                    Connection::new(result.has_previous_page, result.has_next_page);
                 connection
                     .edges
-                    .extend(all_questions.into_iter().map(|question| {
+                    .extend(result.selected.into_iter().map(|question| {
                         Edge::with_additional_fields(question.id.to_string(), question, EmptyFields)
                     }));
                 Ok::<_, Error>(connection)
@@ -162,45 +192,55 @@ impl LearningService {
             })
     }
 
-    pub async fn create_question<'a>(
+    // TODO: Convert this into an upsert
+
+    // 1. Convert create question to an upsert:
+    // https://www.edgedb.com/tutorial/data-mutations/upsert/conditional-inserts To
+    // 2. To update a question's test cases, just delete all of the old ones and create the
+    // new ones that are specified in the input data.
+    pub async fn upsert_question<'a>(
         &self,
         hanko_id: &'a str,
         name: &'a str,
         problem: &'a str,
         test_cases: &[TestCase],
-        class_ids: &[Uuid],
-    ) -> Result<CreateQuestionOutput, ApiError> {
+        update_slug: &'a Option<String>,
+    ) -> Result<UpsertQuestionOutput, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
-        let all_teachers_to_insert = vec![user_details.id];
-        let mut slug = random_string(8);
-        loop {
-            let is_slug_not_unique = self
-                .db_conn
-                .query_required_single::<bool, _>(IS_SLUG_NOT_UNIQUE, &(&slug,))
-                .await
-                .unwrap();
-            if !is_slug_not_unique {
-                break;
+        // either the slug of the question to update or a new unique slug
+        let slug = if let Some(update_slug) = update_slug {
+            update_slug.to_string()
+        } else {
+            let mut new_slug = random_string(8);
+            loop {
+                let is_slug_not_unique = self
+                    .db_conn
+                    .query_required_single::<bool, _>(IS_SLUG_NOT_UNIQUE, &(&new_slug,))
+                    .await
+                    .unwrap();
+                if !is_slug_not_unique {
+                    break;
+                }
+                new_slug = random_string(8);
             }
-            slug = random_string(8);
-        }
-        let class = self
+            new_slug
+        };
+        let question = self
             .db_conn
-            .query_required_single::<CreateQuestionOutput, _>(
-                CREATE_QUESTION,
-                &(
-                    name,
-                    problem,
-                    slug,
-                    class_ids.to_vec(),
-                    all_teachers_to_insert,
-                ),
+            .query_required_single::<UpsertQuestionOutput, _>(
+                UPSERT_QUESTION,
+                &(name, problem, slug),
             )
             .await
             .map_err(|_| ApiError {
                 error: "There was an error creating the question, please try again.".to_string(),
             })?;
+        // delete all of the old test cases if any
+        self.db_conn
+            .query_json(DELETE_TEST_CASES, &(question.id,))
+            .await
+            .unwrap();
         fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
             match test_case {
                 TestCaseUnit::Number => INSERT_NUMBER_UNIT,
@@ -261,11 +301,28 @@ impl LearningService {
         self.db_conn
             .query_required_single::<IdObject, _>(
                 UPDATE_QUESTION,
-                &(class.id, test_cases_to_associate),
+                &(question.id, test_cases_to_associate),
             )
             .await
             .unwrap();
-        Ok(class)
+        Ok(question)
+    }
+
+    pub async fn delete_question<'a>(
+        &self,
+        hanko_id: &'a str,
+        question_slug: &'a str,
+    ) -> Result<DeleteQuestionOutput, ApiError> {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let question = self
+            .db_conn
+            .query_required_single::<DeleteQuestionOutput, _>(DELETE_QUESTION, &(question_slug,))
+            .await
+            .map_err(|_| ApiError {
+                error: "There was an error deleting the question, please try again.".to_string(),
+            })?;
+        Ok(question)
     }
 
     pub async fn execute_code_for_question(
@@ -273,7 +330,7 @@ impl LearningService {
         question_slug: &'_ str,
         code: &'_ str,
         language: &SupportedLanguage,
-    ) -> Result<ExecuteCodeForQuestionOutput, ExecuteCodeError> {
+    ) -> Result<ExecuteCodeForQuestionOutput, ApiError> {
         let question_details = self
             .question_details(question_slug)
             .await
@@ -282,41 +339,62 @@ impl LearningService {
             .farem_service
             .compile_source(code, language)
             .await
-            .map_err(|f| ExecuteCodeError {
-                error: f,
-                step: ExecuteCodeErrorStep::CompilationToWasm,
+            .map_err(|f| ApiError {
+                error: format!("Failed to compile to wasm with error: {}", f),
             })?;
         let mut outputs = Vec::with_capacity(question_details.test_cases.len());
+        let mut total_passed = 0;
         for test_case in question_details.test_cases.iter() {
             let arguments = test_case
                 .inputs
                 .iter()
-                .map(case_unit_to_argument)
+                .map(|f| f.normalized_data.clone())
                 .collect::<Vec<_>>();
-            let user_output = self
+            let user_output = match self
                 .farem_service
-                .send_execute_wasm_request(&compiled_wasm, &arguments, language)
+                .send_execute_wasm_request(&compiled_wasm.data, &arguments, language)
                 .await
-                .map_err(|f| ExecuteCodeError {
-                    error: f,
-                    step: ExecuteCodeErrorStep::WasmExecution,
-                })?;
-            let expected_output = test_case
-                .outputs
-                .iter()
-                .map(case_unit_to_argument)
-                .collect::<Vec<_>>()
-                .join("\n")
-                + "\n";
-            outputs.push(TestCaseStatus {
-                passed: user_output == expected_output,
-                user_output,
+            {
+                Ok(f) => f,
+                Err(f) => {
+                    outputs.push(TestCaseResultUnion::Error(ExecuteCodeError {
+                        error: f,
+                        step: ExecuteCodeErrorStep::WasmExecution,
+                    }));
+                    continue;
+                }
+            };
+            let expected_output = if test_case.outputs.is_empty() {
+                "".to_string()
+            } else {
+                test_case
+                    .outputs
+                    .iter()
+                    .map(|f| f.normalized_data.clone())
+                    .collect::<Vec<_>>()
+                    .join("\n")
+                    + "\n"
+            };
+            let user_output_str = String::from_utf8(user_output.data).unwrap();
+            let passed = user_output_str == expected_output;
+            if passed {
+                total_passed += 1;
+            }
+            let diff = get_diff_of_lines(user_output_str.as_str(), &expected_output);
+            outputs.push(TestCaseResultUnion::Result(TestCaseSuccessStatus {
+                passed,
+                user_output: user_output_str,
                 expected_output,
-            });
+                diff,
+                time: ExecuteCodeTime {
+                    compilation: compiled_wasm.elapsed.clone(),
+                    execution: user_output.elapsed,
+                },
+            }));
         }
         Ok(ExecuteCodeForQuestionOutput {
             num_test_cases: outputs.len() as u8,
-            num_test_cases_failed: outputs.iter().filter(|&x| !x.passed).count() as u8,
+            num_test_cases_failed: total_passed,
             test_case_statuses: outputs,
         })
     }

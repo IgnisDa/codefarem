@@ -1,8 +1,9 @@
 {
   "dockerfile_path": "apps/admin/backend/admin-backend.generated.Dockerfile",
+  "project_type": "rust",
   "apps": [
     {
-      "EXECUTABLE_NAME": "admin-backend",
+      "EXECUTABLE_NAMES": ["admin-backend"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}

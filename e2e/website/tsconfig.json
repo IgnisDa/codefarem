@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "include": [
+    "**/*"
+  ],
+  "references": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "../../.moon/cache/types/e2e/website"
+  }
+}

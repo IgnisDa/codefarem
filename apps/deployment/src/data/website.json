@@ -1,8 +1,11 @@
 {
   "dockerfile_path": "apps/website/website.generated.Dockerfile",
+  "project_type": "nodejs",
   "apps": [
     {
-      "EXECUTABLE_NAME": "website"
+      "EXECUTABLE_NAMES": ["website"],
+      "IMAGE_NAME": "node:19.1.0",
+      "ENVIRONMENT_VARIABLES": {}
     }
   ]
 }

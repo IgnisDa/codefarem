@@ -5,97 +5,56 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  CYPRESS_INSTALL_BINARY: '0'
 
 jobs:
-  generate:
-    name: 'Generate dockerfile(s)'
+  build-and-push:
+    name: 'Build and push containers to the Github registry'
     runs-on: 'ubuntu-latest'
-    outputs:
-      executables: ${{ steps.executables.outputs.executables }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - uses: ./.github/actions/setup-node
+        name: Setup Nodejs
 
       - uses: ./.github/actions/setup-moon
         name: Setup moon
 
-      - uses: ./.github/actions/set-base-commit
-        name: Set base commit
+      - uses: ./.github/actions/setup-dasel
+        name: Setup dasel
 
-      - name: Get projects executables
-        id: executables
+      - name: Get Rust version
+        id: rust-version
         run: |
-          executables=$(node -e "
-            let executables = \`$(cat apps/deployment/src/data/*.json | jq .apps[].EXECUTABLE_NAME -r)\`.split('\n')
-            console.log(JSON.stringify(executables))
-          ")
-          echo "executables=$executables" >> $GITHUB_OUTPUT
-          echo "Discovered executables: $executables"
+          toolchain_version=$(dasel -r toml --file rust-toolchain.toml '.toolchain.channel')
+          echo "toolchain_version=$toolchain_version" >> $GITHUB_OUTPUT
+
+      - uses: ./.github/actions/setup-rust
+        name: Setup Rust
+        with:
+          rust-toolchain: ${{ steps.rust-version.outputs.toolchain_version }}
 
       - uses: ./.github/actions/setup-python
         name: Setup python environment
 
+      - name: Setup moon dependencies
+        run: moon setup
+
       - name: Generate project dockerfile(s)
+        run: npx zx apps/deployment/src/generate-dockerfiles.mjs
+
+      - name: Build the Rust projects
+        run: npx zx apps/deployment/src/build-project-type.mjs rust
+
+      - name: Build the Nodejs projects
         env:
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-        run: |
-          for project in "authenticator" "compilers" "executor" "orchestrator" "website" "admin-backend" "admin-website"
-          do
-            echo "Generating dockerfile for '$project'..."
-            poetry run python apps/deployment/src/docker.py "$project"
-          done
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }} # for admin-website
+        run: npx zx apps/deployment/src/build-project-type.mjs nodejs
 
-      - name: Save generated dockerfile(s)
-        uses: actions/upload-artifact@v3
-        with:
-          name: generated-dockerfile
-          path: apps/**/*.generated.Dockerfile
-          if-no-files-found: error
-
-  build:
-    name: 'Build and push containers'
-    needs: generate
-    strategy:
-      matrix:
-        executable: ${{ fromJSON(needs.generate.outputs.executables) }}
-    runs-on: 'ubuntu-latest'
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Get docker image name
-        id: image_name
-        run: |
-          image_name="${{ env.REGISTRY }}/${{ github.actor }}/codefarem--${{ matrix.executable }}:latest"
-          # lowercase the name
-          image_name=$(echo "$image_name" | tr '[:upper:]' '[:lower:]')
-          echo "image_name=$image_name" >> $GITHUB_OUTPUT
-
-      - name: Get dockerfile path
-        id: dockerfile_path
-        env:
-          executable: ${{ matrix.executable }}
-        run: |
-          for file in apps/deployment/src/data/*.json; do
-              for exe in $(cat "$file" | jq -r '.apps[].EXECUTABLE_NAME'); do
-                  if [[ "$exe" == "$executable" ]]; then
-                      dockerfile_path=$(envsubst < "$file" | jq '.dockerfile_path' -r)
-                      echo "Found dockerfile path for executable '$executable': '$dockerfile_path'"
-                      break
-                  fi
-              done
-          done
-          # throw error if no dockerfile path was found
-          if [[ -z "$dockerfile_path" ]]; then
-            echo "No dockerfile path found for executable '$executable'"
-            exit 1
-          fi
-          echo "dockerfile_path=$dockerfile_path" >> $GITHUB_OUTPUT
+      - name: Build the misc projects
+        run: npx zx apps/deployment/src/build-project-type.mjs miscellaneous
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
@@ -104,25 +63,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download generated dockerfile(s)
-        uses: actions/download-artifact@v3
-        with:
-          name: generated-dockerfile
-          # https://github.com/actions/upload-artifact#upload-using-multiple-paths-and-exclusions
-          path: apps
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ${{ steps.dockerfile_path.outputs.dockerfile_path }}
-          push: true
-          tags: ${{ steps.image_name.outputs.image_name }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Build images
+        env:
+          ACTOR: ${{ github.actor }}
+          REGISTRY: ${{ env.REGISTRY }}
+        run: npx zx apps/deployment/src/build-images-and-push.mjs

@@ -1,0 +1,53 @@
+[package]
+name = "languages"
+version = "0.1.0"
+edition = "2021"
+description = "This crate is responsible for prviding services for various languages"
+
+[dependencies]
+macros = { path = "../../libs/macros" }
+proc_macros = { path = "../../libs/proc_macros" }
+protobuf = { path = "../../libs/protobuf" }
+utilities = { path = "../../libs/utilities" }
+
+duct = { workspace = true }
+env_logger = { workspace = true }
+log = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+
+[[bin]]
+name = "c-service"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "cpp-service"
+path = "src/bin/cpp.rs"
+
+[[bin]]
+name = "go-service"
+path = "src/bin/go.rs"
+
+[[bin]]
+name = "grain-service"
+path = "src/bin/grain.rs"
+
+[[bin]]
+name = "python-service"
+path = "src/bin/python.rs"
+
+[[bin]]
+name = "rs-service"
+path = "src/bin/rs.rs"
+
+[[bin]]
+name = "ruby-service"
+path = "src/bin/ruby.rs"
+
+[[bin]]
+name = "swift-service"
+path = "src/bin/swift.rs"
+
+[[bin]]
+name = "zig-service"
+path = "src/bin/zig.rs"

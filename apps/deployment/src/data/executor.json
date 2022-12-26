@@ -1,19 +1,23 @@
 {
   "dockerfile_path": "apps/executor/executor.generated.Dockerfile",
+  "project_type": "rust",
   "apps": [
     {
-      "EXECUTABLE_NAME": "executor",
+      "EXECUTABLE_NAMES": ["executor"],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt-get update -y",
-        "apt-get install -y curl wget xz-utils",
-        "curl https://wasmtime.dev/install.sh -sSf | bash",
+        "apt-get install -y curl xz-utils",
+        "curl -LO https://github.com/bytecodealliance/wasmtime/releases/download/v3.0.1/wasmtime-v3.0.1-x86_64-linux.tar.xz",
+        "tar -xf wasmtime-v3.0.1-x86_64-linux.tar.xz --strip-components=1 -C /usr/local/bin",
         "apt-get remove --purge",
-        "cp /root/.wasmtime/bin/wasmtime /usr/local/bin",
-        "wget https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz",
+        "curl -LO https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz",
         "tar -xf wasi-python-3.10.tgz --strip-components=1 -C /opt",
         "rm -rf wasi-python-3.10.tgz",
-        "rm -rf /var/apt/lists/*"
+        "rm -rf /var/apt/lists/*",
+        "curl -LO https://github.com/ruby/ruby.wasm/releases/download/2022-12-25-a/ruby-head-wasm32-unknown-wasi-full.tar.gz",
+        "tar -xf ruby-head-wasm32-unknown-wasi-full.tar.gz --strip-components=2 --one-top-level=wasi-ruby -C /opt",
+        "rm -rf ruby-head-wasm32-unknown-wasi-full.tar.gz"
       ],
       "ENVIRONMENT_VARIABLES": {}
     }

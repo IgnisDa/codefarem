@@ -1,11 +1,10 @@
 {
   "dockerfile_path": "apps/admin/website/admin-website.generated.Dockerfile",
+  "project_type": "nodejs",
   "apps": [
     {
-      "EXECUTABLE_NAME": "admin-website",
-      "ENVIRONMENT_VARIABLES": {
-        "VITE_API_BASE_URL": "{{ VITE_API_BASE_URL }}"
-      }
+      "EXECUTABLE_NAMES": ["admin-website"],
+      "ENVIRONMENT_VARIABLES": {}
     }
   ]
 }

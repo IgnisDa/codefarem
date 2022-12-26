@@ -1,10 +1,14 @@
-import { RemixBrowser } from '@remix-run/react';
-import { hydrate } from 'react-dom';
 import { ClientProvider } from '@mantine/remix';
+import { RemixBrowser } from '@remix-run/react';
+import { StrictMode } from 'react';
+import { hydrate } from 'react-dom';
 
-hydrate(
-  <ClientProvider>
-    <RemixBrowser />
-  </ClientProvider>,
-  document
+const rootElement = (
+  <StrictMode>
+    <ClientProvider>
+      <RemixBrowser />
+    </ClientProvider>
+  </StrictMode>
 );
+
+hydrate(rootElement, document);

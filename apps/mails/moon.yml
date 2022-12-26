@@ -1,6 +1,19 @@
-type: 'library'
-
 tasks:
   dev:
     command: 'email dev'
     local: true
+
+  build:
+    command: email
+    args:
+      - export
+      - '--pretty'
+      - '--outDir'
+      - dist
+    inputs:
+      - 'emails/**/*'
+    outputs:
+      - 'dist'
+    # FIXME: remove this once https://github.com/zenorocha/react-email/issues/293 is fixed
+    options:
+      runInCI: false

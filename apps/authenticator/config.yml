@@ -25,7 +25,7 @@ service:
 
 server:
   public:
-    address: ':5000'
+    address: ':${PORT}'
     cors:
       enabled: true
       allow_credentials: true
@@ -33,7 +33,7 @@ server:
         - '${SERVER_PUBLIC_CORS_ALLOW_ORIGIN}'
 
 session:
-  lifespan: '24h'
+  lifespan: '${SESSION_LIFESPAN}'
   cookie:
     domain: '${SESSION_COOKIE_DOMAIN}'
     http_only: true

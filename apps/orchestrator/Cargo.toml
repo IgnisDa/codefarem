@@ -1,6 +1,6 @@
 [package]
 name = "orchestrator"
-version = "0.1.0"
+version = "0.0.0"
 edition = "2021"
 
 [dependencies]
@@ -16,9 +16,11 @@ async-graphql-rocket = { workspace = true }
 chrono = { workspace = true }
 derive-getters = { workspace = true }
 dotenv = { workspace = true }
+once_cell = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }
+jwks-client = "0.2.0"
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -26,4 +28,3 @@ strum = { workspace = true }
 tokio = { workspace = true }
 tonic = { workspace = true }
 uuid = { workspace = true }
-jwks-client = "0.2.0"

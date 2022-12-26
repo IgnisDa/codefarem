@@ -2,9 +2,9 @@
   "name": "@codefarem/website",
   "version": "0.0.0",
   "dependencies": {
+    "@codefarem/deployment": "workspace:^",
     "@codefarem/faker": "workspace:*",
     "@codefarem/generated": "workspace:*",
-    "@codefarem/react-ui": "workspace:*",
     "@emotion/react": "11.10.5",
     "@emotion/server": "11.10.0",
     "@headlessui/react": "1.7.2",
@@ -45,7 +45,7 @@
     "dayjs": "1.11.7",
     "env-var": "7.3.0",
     "graphql-request": "5.0.0",
-    "jsonwebtoken": "8.5.1",
+    "jsonwebtoken": "9.0.0",
     "lodash": "4.17.21",
     "luxon": "3.0.1",
     "prosemirror-commands": "1.5.0",
@@ -61,6 +61,7 @@
     "routes-gen": "0.5.2",
     "tiny-invariant": "1.2.0",
     "ts-pattern": "4.0.5",
+    "ufo": "1.0.1",
     "uuid": "9.0.0",
     "zod": "3.19.1",
     "zodix": "0.1.0"

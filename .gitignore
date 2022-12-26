@@ -77,3 +77,10 @@ apps/website/.cache
 
 # generated tsconfig
 *.tsbuildinfo
+
+# cypress
+**/cypress/screenshots
+**/cypress/videos
+
+# react-email
+.react-email

@@ -37,14 +37,6 @@ export type ApiError = {
   error: Scalars['String'];
 };
 
-export type AuthoredByInformation = {
-  profile: AuthoredByProfile;
-};
-
-export type AuthoredByProfile = {
-  username: Scalars['String'];
-};
-
 /** The result type if details about the class were found successfully */
 export type ClassDetailsOutput = {
   /** The name of the class */
@@ -56,9 +48,13 @@ export type ClassDetailsResultUnion = ApiError | ClassDetailsOutput;
 
 /** The arguments for connection connection parameters. */
 export type ConnectionArguments = {
+  /** The cursor to start from */
   after?: InputMaybe<Scalars['String']>;
+  /** The cursor to end at */
   before?: InputMaybe<Scalars['String']>;
+  /** The number of items to return from the start */
   first?: InputMaybe<Scalars['Int']>;
+  /** The number of items to return from the end */
   last?: InputMaybe<Scalars['Int']>;
 };
 
@@ -79,28 +75,20 @@ export type CreateClassOutput = {
 /** The output object when creating a new class */
 export type CreateClassResultUnion = ApiError | CreateClassOutput;
 
-/** The input object used to create a new question */
-export type CreateQuestionInput = {
-  /** The classes in which the question must be asked */
-  classIds: Array<Scalars['UUID']>;
-  /** The name/title of the question */
-  name: Scalars['String'];
-  /** The detailed text explaining the question */
-  problem: Scalars['String'];
-  /** All the test cases that are related to this question */
-  testCases: Array<TestCase>;
+/** The input object used to delete a question */
+export type DeleteQuestionInput = {
+  /** The unique slug of the question that needs to be deleted */
+  questionSlug: Scalars['String'];
 };
 
-/** The result type if the question was created successfully */
-export type CreateQuestionOutput = {
+/** The result type if the question was deleted successfully */
+export type DeleteQuestionOutput = {
   /** The ID of the question */
   id: Scalars['UUID'];
-  /** The slug of the newly created question */
-  slug: Scalars['String'];
 };
 
-/** The output object when creating a new question */
-export type CreateQuestionResultUnion = ApiError | CreateQuestionOutput;
+/** The output object when deleting question */
+export type DeleteQuestionResultUnion = ApiError | DeleteQuestionOutput;
 
 /** The result type if an error was encountered when executing code */
 export type ExecuteCodeError = {
@@ -131,16 +119,16 @@ export type ExecuteCodeForQuestionOutput = {
   /** The number of test cases that failed */
   numTestCasesFailed: Scalars['Int'];
   /** Data about individual test cases */
-  testCaseStatuses: Array<TestCaseStatus>;
+  testCaseStatuses: Array<TestCaseResultUnion>;
 };
 
 /** The output object when executing code */
-export type ExecuteCodeForQuestionResultUnion = ExecuteCodeError | ExecuteCodeForQuestionOutput;
+export type ExecuteCodeForQuestionResultUnion = ApiError | ExecuteCodeForQuestionOutput;
 
 /** The input object used to execute some code */
 export type ExecuteCodeInput = {
   /** The arguments to be passed to the execution engine */
-  arguments: Array<Scalars['String']>;
+  arguments: Array<InputCaseUnit>;
   /** The code input that needs to be compiled */
   code: Scalars['String'];
   /** The language that needs to be compiled */
@@ -151,10 +139,20 @@ export type ExecuteCodeInput = {
 export type ExecuteCodeOutput = {
   /** The output of the code that was executed */
   output: Scalars['String'];
+  /** The time taken for the various steps */
+  time: ExecuteCodeTime;
 };
 
 /** The output object when executing code */
 export type ExecuteCodeResultUnion = ExecuteCodeError | ExecuteCodeOutput;
+
+/** The time taken for the various steps */
+export type ExecuteCodeTime = {
+  /** The time taken to compile the code to wasm */
+  compilation: Scalars['String'];
+  /** The time taken to execute the wasm */
+  execution: Scalars['String'];
+};
 
 export type InputCaseUnit = {
   data: Scalars['String'];
@@ -167,8 +165,8 @@ export type InputCaseUnit = {
 export type MutationRoot = {
   /** Create a new class */
   createClass: CreateClassResultUnion;
-  /** Create a new question */
-  createQuestion: CreateQuestionResultUnion;
+  /** Delete a question */
+  deleteQuestion: DeleteQuestionResultUnion;
   /**
    * Takes some code as input and compiles it to wasm before executing it with the
    * supplied argument
@@ -178,6 +176,8 @@ export type MutationRoot = {
   executeCodeForQuestion: ExecuteCodeForQuestionResultUnion;
   /** Create a new user for the service */
   registerUser: RegisterUserResultUnion;
+  /** Upsert a question (create if it doesn't exist, update if it does) */
+  upsertQuestion: UpsertQuestionResultUnion;
 };
 
 
@@ -188,8 +188,8 @@ export type MutationRootCreateClassArgs = {
 
 
 /** The GraphQL top-level mutation type */
-export type MutationRootCreateQuestionArgs = {
-  input: CreateQuestionInput;
+export type MutationRootDeleteQuestionArgs = {
+  input: DeleteQuestionInput;
 };
 
 
@@ -208,6 +208,12 @@ export type MutationRootExecuteCodeForQuestionArgs = {
 /** The GraphQL top-level mutation type */
 export type MutationRootRegisterUserArgs = {
   input: RegisterUserInput;
+};
+
+
+/** The GraphQL top-level mutation type */
+export type MutationRootUpsertQuestionArgs = {
+  input: UpsertQuestionInput;
 };
 
 export type OutputCaseUnit = {
@@ -231,28 +237,27 @@ export type PageInfo = {
 
 /** The GraphQL top-level query type */
 export type QueryRoot = {
-  /** Get all the questions */
-  allQuestions: QuestionPartialsDetailsConnection;
   /** Get information about a class */
   classDetails: ClassDetailsResultUnion;
   /** Get an example code snippet for a particular language */
   languageExample: Scalars['String'];
   /** Get information about a question and the test cases related to it */
   questionDetails: QuestionDetailsResultUnion;
+  /**
+   * Get a paginated list of questions in the relay connection format. It uses a cursor
+   * based pagination.
+   */
+  questionsConnection: QuestionPartialsDetailsConnection;
   /** Get a list of all the languages that the service supports. */
   supportedLanguages: Array<SupportedLanguage>;
   /** Get all the types of test case units possible */
   testCaseUnits: Array<TestCaseUnit>;
+  /** Endpoint to get all toolchain information */
+  toolchainInformation: Array<ToolChainInformation>;
   /** Get information about the current user */
   userDetails: UserDetailsResultUnion;
   /** Check whether a user with the provided email exists in the service */
   userWithEmail: UserWithEmailResultUnion;
-};
-
-
-/** The GraphQL top-level query type */
-export type QueryRootAllQuestionsArgs = {
-  args: ConnectionArguments;
 };
 
 
@@ -275,23 +280,26 @@ export type QueryRootQuestionDetailsArgs = {
 
 
 /** The GraphQL top-level query type */
+export type QueryRootQuestionsConnectionArgs = {
+  args: ConnectionArguments;
+};
+
+
+/** The GraphQL top-level query type */
 export type QueryRootUserWithEmailArgs = {
   input: UserWithEmailInput;
 };
 
 export type QuestionData = {
   /** The data related to this input */
-  data: TestCaseData;
+  normalizedData: Scalars['String'];
+  unitType: TestCaseUnit;
 };
 
 /** The input object used to get details about a question */
 export type QuestionDetailsOutput = {
-  /** The users who have created/edited this question */
-  authoredBy: Array<AuthoredByInformation>;
   /** The name/title of the question */
   name: Scalars['String'];
-  /** The number of classes that have this question */
-  numClasses: Scalars['Int'];
   /** The detailed markdown text explaining the question */
   problem: Scalars['String'];
   /** All the test cases that are related to this question */
@@ -369,8 +377,11 @@ export enum SupportedLanguage {
   C = 'c',
   Cpp = 'cpp',
   Go = 'go',
+  Grain = 'grain',
   Python = 'python',
+  Ruby = 'ruby',
   Rust = 'rust',
+  Swift = 'swift',
   Zig = 'zig'
 }
 
@@ -381,19 +392,21 @@ export type TestCase = {
   outputs: Array<OutputCaseUnit>;
 };
 
-export type TestCaseData = {
-  numberCollectionValue?: Maybe<Array<Scalars['Float']>>;
-  numberValue?: Maybe<Scalars['Float']>;
-  stringCollectionValue?: Maybe<Array<Scalars['String']>>;
-  stringValue?: Maybe<Scalars['String']>;
-  unitType: TestCaseUnit;
-};
+export type TestCaseResultUnion = ExecuteCodeError | TestCaseSuccessStatus;
 
-export type TestCaseStatus = {
+/**
+ * The result type if a test case was executed successfully. Does not imply that the test
+ * case passed, just that the code was executed successfully.
+ */
+export type TestCaseSuccessStatus = {
+  /** The diff between the user's output and the expected output */
+  diff: Scalars['String'];
   /** The expected output as defined in the test case */
   expectedOutput: Scalars['String'];
   /** Whether the test case passed or not */
   passed: Scalars['Boolean'];
+  /** The time taken for the various steps */
+  time: ExecuteCodeTime;
   /** The output of the user's code */
   userOutput: Scalars['String'];
 };
@@ -404,6 +417,35 @@ export enum TestCaseUnit {
   String = 'STRING',
   StringCollection = 'STRING_COLLECTION'
 }
+
+export type ToolChainInformation = {
+  languageLogo: Scalars['String'];
+  service: SupportedLanguage;
+  version: Scalars['String'];
+};
+
+/** The input object used to upsert a question */
+export type UpsertQuestionInput = {
+  /** The name/title of the question */
+  name: Scalars['String'];
+  /** The detailed text explaining the question */
+  problem: Scalars['String'];
+  /** All the test cases that are related to this question */
+  testCases: Array<TestCase>;
+  /** The unique slug of the question in case it is being updated */
+  updateSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** The result type if the question was upsert-ed successfully */
+export type UpsertQuestionOutput = {
+  /** The ID of the question */
+  id: Scalars['UUID'];
+  /** The slug of the upsert-ed question */
+  slug: Scalars['String'];
+};
+
+/** The output object when upsert-ing new question */
+export type UpsertQuestionResultUnion = ApiError | UpsertQuestionOutput;
 
 /** The result type if details about the user were found successfully. */
 export type UserDetailsOutput = {
@@ -452,7 +494,7 @@ export type ExecuteCodeMutationVariables = Exact<{
 }>;
 
 
-export type ExecuteCodeMutation = { executeCode: { __typename: 'ExecuteCodeError', error: string, step: ExecuteCodeErrorStep } | { __typename: 'ExecuteCodeOutput', output: string } };
+export type ExecuteCodeMutation = { executeCode: { __typename: 'ExecuteCodeError', error: string, step: ExecuteCodeErrorStep } | { __typename: 'ExecuteCodeOutput', output: string, time: { compilation: string, execution: string } } };
 
 export type RegisterUserMutationVariables = Exact<{
   input: RegisterUserInput;
@@ -468,12 +510,12 @@ export type CreateClassMutationVariables = Exact<{
 
 export type CreateClassMutation = { createClass: { __typename: 'ApiError', error: string } | { __typename: 'CreateClassOutput', id: string } };
 
-export type CreateQuestionMutationVariables = Exact<{
-  input: CreateQuestionInput;
+export type UpsertQuestionMutationVariables = Exact<{
+  input: UpsertQuestionInput;
 }>;
 
 
-export type CreateQuestionMutation = { createQuestion: { __typename: 'ApiError', error: string } | { __typename: 'CreateQuestionOutput', slug: string } };
+export type UpsertQuestionMutation = { upsertQuestion: { __typename: 'ApiError', error: string } | { __typename: 'UpsertQuestionOutput', slug: string } };
 
 export type TestCaseUnitsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -485,7 +527,14 @@ export type ExecuteCodeForQuestionMutationVariables = Exact<{
 }>;
 
 
-export type ExecuteCodeForQuestionMutation = { executeCodeForQuestion: { __typename: 'ExecuteCodeError', error: string, step: ExecuteCodeErrorStep } | { __typename: 'ExecuteCodeForQuestionOutput', numTestCases: number, numTestCasesFailed: number, testCaseStatuses: Array<{ passed: boolean, userOutput: string, expectedOutput: string }> } };
+export type ExecuteCodeForQuestionMutation = { executeCodeForQuestion: { __typename: 'ApiError', error: string } | { __typename: 'ExecuteCodeForQuestionOutput', numTestCases: number, numTestCasesFailed: number, testCaseStatuses: Array<{ __typename: 'ExecuteCodeError', error: string, step: ExecuteCodeErrorStep } | { __typename: 'TestCaseSuccessStatus', passed: boolean, userOutput: string, expectedOutput: string, diff: string, time: { compilation: string, execution: string } }> } };
+
+export type DeleteQuestionMutationVariables = Exact<{
+  input: DeleteQuestionInput;
+}>;
+
+
+export type DeleteQuestionMutation = { deleteQuestion: { __typename: 'ApiError', error: string } | { __typename: 'DeleteQuestionOutput', id: string } };
 
 export type SupportedLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -506,37 +555,42 @@ export type UserWithEmailQueryVariables = Exact<{
 
 export type UserWithEmailQuery = { userWithEmail: { __typename: 'UserWithEmailError' } | { __typename: 'UserWithEmailOutput' } };
 
-export type TestCaseFragment = { __typename: 'TestCaseData', numberCollectionValue?: Array<number> | null, stringCollectionValue?: Array<string> | null, numberValue?: number | null, stringValue?: string | null, unitType: TestCaseUnit } & { ' $fragmentName'?: 'TestCaseFragment' };
-
 export type QuestionDetailsQueryVariables = Exact<{
   questionSlug: Scalars['String'];
 }>;
 
 
-export type QuestionDetailsQuery = { questionDetails: { __typename: 'ApiError', error: string } | { __typename: 'QuestionDetailsOutput', name: string, problem: string, numClasses: number, authoredBy: Array<{ profile: { username: string } }>, testCases: Array<{ inputs: Array<{ data: { ' $fragmentRefs'?: { 'TestCaseFragment': TestCaseFragment } } }>, outputs: Array<{ data: { ' $fragmentRefs'?: { 'TestCaseFragment': TestCaseFragment } } }> }> } };
+export type QuestionDetailsQuery = { questionDetails: { __typename: 'ApiError', error: string } | { __typename: 'QuestionDetailsOutput', name: string, problem: string, testCases: Array<{ inputs: Array<{ normalizedData: string, unitType: TestCaseUnit }>, outputs: Array<{ normalizedData: string, unitType: TestCaseUnit }> }> } };
 
 export type UserDetailsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UserDetailsQuery = { userDetails: { __typename: 'ApiError', error: string } | { __typename: 'UserDetailsOutput', accountType: AccountType, profile: { email: string, username: string } } };
 
-export type AllQuestionsQueryVariables = Exact<{
+export type QuestionsQueryVariables = Exact<{
   args: ConnectionArguments;
 }>;
 
 
-export type AllQuestionsQuery = { allQuestions: { pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null }, edges: Array<{ cursor: string, node: { createdTime: string, name: string, slug: string, numTestCases: number } }> } };
+export type QuestionsQuery = { questionsConnection: { pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null }, edges: Array<{ cursor: string, node: { createdTime: string, name: string, slug: string, numTestCases: number } }> } };
 
-export const TestCaseFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TestCase"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TestCaseData"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"numberCollectionValue"}},{"kind":"Field","name":{"kind":"Name","value":"stringCollectionValue"}},{"kind":"Field","name":{"kind":"Name","value":"numberValue"}},{"kind":"Field","name":{"kind":"Name","value":"stringValue"}},{"kind":"Field","name":{"kind":"Name","value":"unitType"}}]}}]} as unknown as DocumentNode<TestCaseFragment, unknown>;
-export const ExecuteCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ExecuteCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"executeCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"output"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"step"}}]}}]}}]}}]} as unknown as DocumentNode<ExecuteCodeMutation, ExecuteCodeMutationVariables>;
+export type ToolchainInformationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ToolchainInformationQuery = { toolchainInformation: Array<{ service: SupportedLanguage, version: string, languageLogo: string }> };
+
+
+export const ExecuteCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ExecuteCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"executeCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"output"}},{"kind":"Field","name":{"kind":"Name","value":"time"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"compilation"}},{"kind":"Field","name":{"kind":"Name","value":"execution"}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"step"}}]}}]}}]}}]} as unknown as DocumentNode<ExecuteCodeMutation, ExecuteCodeMutationVariables>;
 export const RegisterUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"registerUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterUserOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]} as unknown as DocumentNode<RegisterUserMutation, RegisterUserMutationVariables>;
 export const CreateClassDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateClass"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateClassInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createClass"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateClassOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<CreateClassMutation, CreateClassMutationVariables>;
-export const CreateQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<CreateQuestionMutation, CreateQuestionMutationVariables>;
+export const UpsertQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]}}]} as unknown as DocumentNode<UpsertQuestionMutation, UpsertQuestionMutationVariables>;
 export const TestCaseUnitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TestCaseUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"testCaseUnits"}}]}}]} as unknown as DocumentNode<TestCaseUnitsQuery, TestCaseUnitsQueryVariables>;
-export const ExecuteCodeForQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ExecuteCodeForQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeForQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"executeCodeForQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeForQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numTestCases"}},{"kind":"Field","name":{"kind":"Name","value":"numTestCasesFailed"}},{"kind":"Field","name":{"kind":"Name","value":"testCaseStatuses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"passed"}},{"kind":"Field","name":{"kind":"Name","value":"userOutput"}},{"kind":"Field","name":{"kind":"Name","value":"expectedOutput"}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"step"}}]}}]}}]}}]} as unknown as DocumentNode<ExecuteCodeForQuestionMutation, ExecuteCodeForQuestionMutationVariables>;
+export const ExecuteCodeForQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ExecuteCodeForQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeForQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"executeCodeForQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeForQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numTestCases"}},{"kind":"Field","name":{"kind":"Name","value":"numTestCasesFailed"}},{"kind":"Field","name":{"kind":"Name","value":"testCaseStatuses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExecuteCodeError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}},{"kind":"Field","name":{"kind":"Name","value":"step"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"TestCaseSuccessStatus"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"passed"}},{"kind":"Field","name":{"kind":"Name","value":"userOutput"}},{"kind":"Field","name":{"kind":"Name","value":"expectedOutput"}},{"kind":"Field","name":{"kind":"Name","value":"diff"}},{"kind":"Field","name":{"kind":"Name","value":"time"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"compilation"}},{"kind":"Field","name":{"kind":"Name","value":"execution"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]} as unknown as DocumentNode<ExecuteCodeForQuestionMutation, ExecuteCodeForQuestionMutationVariables>;
+export const DeleteQuestionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteQuestion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteQuestionInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteQuestion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"DeleteQuestionOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteQuestionMutation, DeleteQuestionMutationVariables>;
 export const SupportedLanguagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SupportedLanguages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"supportedLanguages"}}]}}]} as unknown as DocumentNode<SupportedLanguagesQuery, SupportedLanguagesQueryVariables>;
 export const LanguageExampleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LanguageExample"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"language"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SupportedLanguage"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"languageExample"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"language"},"value":{"kind":"Variable","name":{"kind":"Name","value":"language"}}}]}]}}]} as unknown as DocumentNode<LanguageExampleQuery, LanguageExampleQueryVariables>;
 export const UserWithEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserWithEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserWithEmailInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userWithEmail"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserWithEmailOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserWithEmailError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}}]}}]}}]} as unknown as DocumentNode<UserWithEmailQuery, UserWithEmailQueryVariables>;
-export const QuestionDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QuestionDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"questionSlug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionDetails"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"questionSlug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"questionSlug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QuestionDetailsOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"problem"}},{"kind":"Field","name":{"kind":"Name","value":"numClasses"}},{"kind":"Field","name":{"kind":"Name","value":"authoredBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"testCases"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"inputs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TestCase"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"outputs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TestCase"}}]}}]}}]}}]}}]}}]}},...TestCaseFragmentDoc.definitions]} as unknown as DocumentNode<QuestionDetailsQuery, QuestionDetailsQueryVariables>;
+export const QuestionDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"QuestionDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"questionSlug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionDetails"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"questionSlug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"questionSlug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QuestionDetailsOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"problem"}},{"kind":"Field","name":{"kind":"Name","value":"testCases"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"inputs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"normalizedData"}},{"kind":"Field","name":{"kind":"Name","value":"unitType"}}]}},{"kind":"Field","name":{"kind":"Name","value":"outputs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"normalizedData"}},{"kind":"Field","name":{"kind":"Name","value":"unitType"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<QuestionDetailsQuery, QuestionDetailsQueryVariables>;
 export const UserDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ApiError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"error"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UserDetailsOutput"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accountType"}},{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UserDetailsQuery, UserDetailsQueryVariables>;
-export const AllQuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AllQuestions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"args"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ConnectionArguments"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allQuestions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"args"},"value":{"kind":"Variable","name":{"kind":"Name","value":"args"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cursor"}},{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdTime"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"numTestCases"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AllQuestionsQuery, AllQuestionsQueryVariables>;
+export const QuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"questions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"args"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ConnectionArguments"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"questionsConnection"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"args"},"value":{"kind":"Variable","name":{"kind":"Name","value":"args"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"cursor"}},{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdTime"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"numTestCases"}}]}}]}}]}}]}}]} as unknown as DocumentNode<QuestionsQuery, QuestionsQueryVariables>;
+export const ToolchainInformationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ToolchainInformation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"toolchainInformation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"service"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"languageLogo"}}]}}]}}]} as unknown as DocumentNode<ToolchainInformationQuery, ToolchainInformationQueryVariables>;

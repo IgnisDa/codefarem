@@ -1,0 +1,20 @@
+type: 'application'
+
+tasks:
+  dev:
+    command: 'cypress open'
+    local: true
+
+  test:
+    command: 'cypress run'
+    inputs:
+      - 'cypress.config.ts'
+      - 'cypress/**/*'
+    options:
+      runInCI: false
+
+workspace:
+  inheritedTasks:
+    exclude:
+      - 'build'
+      - 'test'

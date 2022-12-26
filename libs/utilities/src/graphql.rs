@@ -33,8 +33,12 @@ pub struct UserDetailsOutput {
 /// The arguments for connection connection parameters.
 #[derive(Debug, Deserialize, Clone, InputObject)]
 pub struct ConnectionArguments {
+    /// The cursor to start from
     pub after: Option<String>,
+    /// The cursor to end at
     pub before: Option<String>,
+    /// The number of items to return from the start
     pub first: Option<i32>,
+    /// The number of items to return from the end
     pub last: Option<i32>,
 }

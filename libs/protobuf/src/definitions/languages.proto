@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package languages;
+
+// A message type which can be used if no parameters are needed
+message VoidParams {
+}
+
+// A code snippet example for a particular language
+message Example {
+  string data = 1;
+}
+
+// The input source that needs to be compiled
+message Input {
+  string code = 1;
+}
+
+// The response returned when compiling source to wasm
+message CompileResponse {
+  // The compiled wasm output
+  bytes data = 1;
+  // The time elapsed to compile the source
+  string elapsed = 2;
+}
+
+// The response returned when getting information about the compiler toolchain
+message ToolchainInfoResponse {
+  // The version of the compiler toolchain
+  string version = 1;
+  // The base 64 encoded logo of the language
+  string language_logo = 2;
+}
+
+// The farem related services
+service CompilerService {
+  // Get an example code snippet
+  rpc ExampleCode(VoidParams) returns (Example);
+  // Compile a given source code to wasm
+  rpc CompileCode(Input) returns (CompileResponse);
+  // Get information about the compiler toolchain
+  rpc ToolchainInfo(VoidParams) returns (ToolchainInfoResponse);
+}

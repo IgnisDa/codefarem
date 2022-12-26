@@ -4,7 +4,6 @@ dependsOn:
   - deployment
   - faker
   - generated
-  - react-ui
 
 fileGroups:
   remix:

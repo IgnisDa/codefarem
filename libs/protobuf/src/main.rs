@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .parent()
         .expect("Could not get parent")
         .join("generated");
-    for p in vec!["compilers", "executor"].iter() {
+    for p in vec!["languages", "executor"].iter() {
         let path = definitions_path.join(format!("{p}.proto"));
         tonic_build::configure()
             .out_dir(output_path.clone())

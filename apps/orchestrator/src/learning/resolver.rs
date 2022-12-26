@@ -4,10 +4,11 @@ use crate::{
         dto::{
             mutations::{
                 create_class::{CreateClassInput, CreateClassResultUnion},
-                create_question::{CreateQuestionInput, CreateQuestionResultUnion},
+                delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
                     ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
                 },
+                upsert_question::{UpsertQuestionInput, UpsertQuestionResultUnion},
             },
             queries::{
                 all_questions::QuestionPartialsDetails, class_details::ClassDetailsResultUnion,
@@ -42,14 +43,15 @@ impl LearningQuery {
         ctx.data_unchecked::<LearningService>().test_case_units()
     }
 
-    /// Get all the questions
-    async fn all_questions(
+    /// Get a paginated list of questions in the relay connection format. It uses a cursor
+    /// based pagination.
+    async fn questions_connection(
         &self,
         ctx: &Context<'_>,
         args: ConnectionArguments,
     ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
         ctx.data_unchecked::<LearningService>()
-            .all_questions(args.after, args.before, args.first, args.last)
+            .questions_connection(args.after, args.before, args.first, args.last)
             .await
     }
 
@@ -96,24 +98,38 @@ impl LearningMutation {
         to_result_union_response!(output, CreateClassResultUnion)
     }
 
-    /// Create a new question
-    async fn create_question(
+    /// Upsert a question (create if it doesn't exist, update if it does)
+    async fn upsert_question(
         &self,
         ctx: &Context<'_>,
-        input: CreateQuestionInput,
-    ) -> Result<CreateQuestionResultUnion> {
+        input: UpsertQuestionInput,
+    ) -> Result<UpsertQuestionResultUnion> {
         let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_question(
+            .upsert_question(
                 &hanko_id,
                 input.name(),
                 input.problem(),
                 input.test_cases(),
-                input.class_ids(),
+                input.update_slug(),
             )
             .await;
-        to_result_union_response!(output, CreateQuestionResultUnion)
+        to_result_union_response!(output, UpsertQuestionResultUnion)
+    }
+
+    /// Delete a question
+    async fn delete_question(
+        &self,
+        ctx: &Context<'_>,
+        input: DeleteQuestionInput,
+    ) -> Result<DeleteQuestionResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .delete_question(&hanko_id, input.question_slug())
+            .await;
+        to_result_union_response!(output, DeleteQuestionResultUnion)
     }
 
     /// Execute an input code for the selected language and question

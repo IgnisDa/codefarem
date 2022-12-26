@@ -18,17 +18,10 @@ module learning {
         };
         # the actual question text, will store html content
         required property problem -> str;
-        # the classes in which this question is used
-        multi link classes -> learning::Class;
         # the test cases (and their expected outputs)
         multi link test_cases -> learning::TestCase {
             on source delete delete target;
-        };
-        # the people who created/edited the question
-        multi link authored_by -> users::User {
-            # allow deleting the author
             on target delete allow;
-            on source delete allow;
         };
         # the time when this question was created
         required property created_at -> datetime {
@@ -37,6 +30,7 @@ module learning {
     }
 
     type TestCase {
+        link question := .<test_cases[is learning::Question];
         # the inputs that are passed to the question
         multi link inputs -> learning::InputCaseUnit {
             on source delete delete target;
@@ -53,6 +47,15 @@ module learning {
         };
         # the order in which the inputs are passed
         required property seq -> int32;
+
+        property normalized_data := (
+            SELECT (
+                array_join(.data[is learning::StringCollectionUnit].string_collection_value, ',') IF .data is learning::StringCollectionUnit ELSE
+                array_join(<array<str>>.data[is learning::NumberCollectionUnit].number_collection_value, ',') IF .data is learning::NumberCollectionUnit ELSE
+                <str>.data[is learning::NumberUnit].number_value IF .data is learning::NumberUnit ELSE
+                .data[is learning::StringUnit].string_value
+            )
+        )
     }
     type InputCaseUnit extending CommonCaseUnit {
         # the name of the input, to be used as a variable in the codegen

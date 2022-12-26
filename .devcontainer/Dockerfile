@@ -15,10 +15,10 @@ RUN groupadd -g ${GUID} ${USERNAME} ;\
 
 RUN for pkg in rustup nodejs npm python3 go tinygo fish curl wget python-pip zig; do pacman -S --noconfirm $pkg; done
 
-RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/cargo.sh ;\
-    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/edgedb.sh ;\
-    chmod +x /etc/profile.d/cargo.sh ;\
-    chmod +x /etc/profile.d/edgedb.sh
+RUN printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.cargo/bin\n' >> /etc/profile.d/paths.sh ;\
+    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.local/bin\n' >> /etc/profile.d/paths.sh ;\
+    printf '#!/bin/sh\nexport PATH=$PATH:$HOME/.moon/tools/moon/latest\n' >> /etc/profile.d/paths.sh ;\
+    chmod +x /etc/profile.d/paths.sh
 
 RUN set -eu ;\
     cd /tmp ;\
@@ -28,8 +28,16 @@ RUN set -eu ;\
     mv "cargo-binstall" "/usr/bin/cargo-binstall"
 
 RUN wget "https://github.com/singlestore-labs/python-wasi/releases/download/v3.10-alpha/wasi-python-3.10.tgz" ;\
-    tar -xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
+    tar xf "wasi-python-3.10.tgz" --strip-components=1 -C /opt ;\
     rm -rf "wasi-python-3.10.tgz"
+
+RUN wget 'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.7-SNAPSHOT-2022-11-09-a/swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz' ;\
+    tar xf 'swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz' --strip-components=2 -C /usr/local ;\
+    rm -rf 'swift-wasm-5.7-SNAPSHOT-2022-11-09-a-ubuntu22.04_x86_64.tar.gz'
+
+RUN curl -LO 'https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-head-wasm32-unknown-wasi-full.tar.gz' ;\
+    tar xf 'ruby-head-wasm32-unknown-wasi-full.tar.gz' --strip-components=2 --one-top-level=wasi-ruby -C /opt ;\
+    rm -rf 'ruby-head-wasm32-unknown-wasi-full.tar.gz'
 
 USER $USERNAME
 
@@ -47,11 +55,11 @@ RUN set -eu ;\
     tar -xvf "paru-v1.11.2-x86_64.tar.zst" ;\
     sudo mv "paru" "/usr/bin/paru"
 
-RUN for pkg in protobuf protolint grpcurl-bin python-poetry; do paru -S --noconfirm $pkg; done
+RUN for pkg in \
+    "protobuf" "protolint" "grpcurl-bin" "python-poetry" \
+    "alsa-lib" "gtk3" "at-spi2-core" "nss" "xorg-server-xvfb"; \
+    do paru -S --noconfirm $pkg; done
 
-RUN set -eu ;\
-    cd /tmp ;\
-    wget "https://github.com/moonrepo/moon/releases/latest/download/moon-x86_64-unknown-linux-musl" -O "moon" ;\
-    sudo mv "moon" "/usr/bin/moon" ;\
-    sudo chmod +x "/usr/bin/moon" ;\
-    cargo binstall cargo-nextest cargo-watch --no-confirm
+RUN curl -fsSL https://moonrepo.dev/install.sh | bash
+
+RUN cargo binstall cargo-nextest cargo-watch --no-confirm

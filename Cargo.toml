@@ -4,11 +4,12 @@ members = [
   "libs/macros",
   "libs/mailer",
   "libs/main-db",
+  "libs/proc_macros",
   "libs/protobuf",
   "libs/utilities",
   "apps/admin/backend",
-  "apps/compilers",
   "apps/executor",
+  "apps/languages",
   "apps/orchestrator",
 ]
 
@@ -24,6 +25,7 @@ edgedb-derive = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "m
 edgedb-protocol = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 edgedb-tokio = { git = "https://github.com/edgedb/edgedb-rust.git", branch = "master" }
 env_logger = { version = "0.10.0" }
+once_cell = { version = "1.16.0" }
 lettre = { version = "0.10.1", features = [
   "rustls-tls",
   "smtp-transport",
@@ -37,3 +39,6 @@ strum = { version = "0.24.1", features = ["derive"] }
 tokio = { version = "1.23.0", features = ["rt", "macros", "rt-multi-thread"] }
 tonic = { version = "0.8" }
 uuid = { version = "1.1.2", features = ["serde"] }
+
+[profile.release]
+strip = true

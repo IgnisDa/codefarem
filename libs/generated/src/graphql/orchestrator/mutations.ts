@@ -6,6 +6,10 @@ export const EXECUTE_CODE = graphql(`
       __typename
       ... on ExecuteCodeOutput {
         output
+        time {
+          compilation
+          execution
+        }
       }
       ... on ExecuteCodeError {
         error
@@ -43,14 +47,14 @@ export const CREATE_CLASS = graphql(`
   }
 `);
 
-export const CREATE_QUESTION = graphql(`
-  mutation CreateQuestion($input: CreateQuestionInput!) {
-    createQuestion(input: $input) {
+export const UPSERT_QUESTION = graphql(`
+  mutation UpsertQuestion($input: UpsertQuestionInput!) {
+    upsertQuestion(input: $input) {
       __typename
       ... on ApiError {
         error
       }
-      ... on CreateQuestionOutput {
+      ... on UpsertQuestionOutput {
         slug
       }
     }
@@ -71,14 +75,39 @@ export const EXECUTE_CODE_FOR_QUESTION = graphql(`
         numTestCases
         numTestCasesFailed
         testCaseStatuses {
-          passed
-          userOutput
-          expectedOutput
+          __typename
+          ... on ExecuteCodeError {
+            error
+            step
+          }
+          ... on TestCaseSuccessStatus {
+            passed
+            userOutput
+            expectedOutput
+            diff
+            time {
+              compilation
+              execution
+            }
+          }
         }
       }
-      ... on ExecuteCodeError {
+      ... on ApiError {
         error
-        step
+      }
+    }
+  }
+`);
+
+export const DELETE_QUESTION = graphql(`
+  mutation DeleteQuestion($input: DeleteQuestionInput!) {
+    deleteQuestion(input: $input) {
+      __typename
+      ... on DeleteQuestionOutput {
+        id
+      }
+      ... on ApiError {
+        error
       }
     }
   }

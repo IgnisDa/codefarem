@@ -9,16 +9,18 @@ projects:
   generated: 'libs/generated'
   main-db: 'libs/main-db'
   mails: 'apps/mails'
-  react-ui: 'libs/react-ui'
   website: 'apps/website'
 
   # rust projects
-  compilers: 'apps/compilers'
   executor: 'apps/executor'
+  languages: 'apps/languages'
   orchestrator: 'apps/orchestrator'
 
   # python projects
   deployment: 'apps/deployment'
+
+  # testing
+  website-e2e: 'e2e/website'
 
   # miscellaneous
   authenticator: 'apps/authenticator'
