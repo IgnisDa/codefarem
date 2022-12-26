@@ -28,6 +28,7 @@ import { useState } from 'react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import invariant from 'tiny-invariant';
+import { match } from 'ts-pattern';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { QuestionProblem } from '~/lib/components/QuestionProblem';
@@ -35,7 +36,7 @@ import { TestCaseInput } from '~/lib/components/TestCases';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import { forbiddenError, metaFunction } from '~/lib/utils';
+import { forbiddenError, metaFunction, PageAction } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   TestCase,
@@ -46,63 +47,79 @@ import type {
 
 export const meta = metaFunction;
 
-enum LoaderAction {
-  Create = 'Create',
-  Update = 'Update',
-  Duplicate = 'Duplicate',
-}
-
 const querySchema = z.object({
   questionSlug: z.string().optional(),
-  action: z.nativeEnum(LoaderAction).optional(),
 });
 
-export async function loader({ request }: LoaderArgs) {
+type SimplifiedTestCase = {
+  inputs: { data: string; dataType: TestCaseUnit; name: string }[];
+  outputs: { data: string; dataType: TestCaseUnit }[];
+};
+
+export async function loader({ request, params }: LoaderArgs) {
+  const action = params.choice as PageAction;
+
+  invariant(
+    Object.values(PageAction).includes(action),
+    'Invalid action provided'
+  );
+
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
-  const { questionSlug, action } = zx.parseQuery(request, querySchema);
+
+  const { questionSlug } = zx.parseQuery(request, querySchema);
   const { testCaseUnits } = await gqlClient.request(TEST_CASE_UNITS);
-  // an edit page was requested
-  if (!questionSlug)
-    return json({
-      action: LoaderAction.Create,
-      testCaseUnits,
-      defaultTestCases: [
+
+  const populatedData = await match(action)
+    .with(PageAction.Update, PageAction.Duplicate, async () => {
+      invariant(typeof questionSlug === 'string', 'Slug should be a string');
+      const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
+        questionSlug,
+      });
+      if (questionDetails.__typename === 'ApiError')
+        throw badRequest({
+          message: 'Question not found',
+          description: 'You requested to edit a question that does not exist',
+        });
+
+      const testCases: SimplifiedTestCase[] = questionDetails.testCases.map(
+        (testCase) => {
+          const change = (data: typeof testCase.inputs) =>
+            data.map((d, idx) => ({
+              data: d.normalizedData,
+              dataType: d.unitType,
+              name: `line${idx}`,
+            }));
+          const inputs = change(testCase.inputs);
+          const outputs = change(testCase.outputs);
+          return { inputs, outputs };
+        }
+      );
+      return {
+        name: questionDetails.name,
+        problem: questionDetails.problem,
+        testCases: testCases,
+      };
+    })
+    .with(PageAction.Create, () => ({
+      name: '',
+      problem: '',
+      testCases: [
         {
           inputs: [{ data: '', dataType: TestCaseUnit.String, name: 'line0' }],
           outputs: [{ data: '', dataType: TestCaseUnit.String }],
         },
       ],
-      meta: { title: 'Create Question' },
-    });
-  invariant(typeof questionSlug === 'string', 'Slug should be a string');
-  const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
-    questionSlug,
-  });
-  if (questionDetails.__typename === 'ApiError')
-    throw badRequest({
-      message: 'Question not found',
-      description: 'You requested to edit a question that does not exist',
-    });
-  const testCases = questionDetails.testCases.map((testCase) => {
-    const inputs = testCase.inputs.map((input, idx) => ({
-      data: input.normalizedData,
-      dataType: input.unitType,
-      name: `line${idx}`,
-    }));
-    const outputs = testCase.outputs.map((output) => ({
-      data: output.normalizedData,
-      dataType: output.unitType,
-    }));
-    return { inputs, outputs };
-  });
+    }))
+    .exhaustive();
+
   return json({
-    questionDetails,
-    defaultTestCases: testCases,
-    action: action ?? LoaderAction.Update,
+    populatedData,
+    action,
     questionSlug,
     testCaseUnits,
+    meta: { title: `${action} Question` },
   });
 }
 
@@ -111,12 +128,13 @@ const actionSchema = z.object({
   updateSlug: z.string().optional(),
 });
 
-export async function action({ request }: ActionArgs) {
-  const { action } = zx.parseQuery(request, querySchema);
+export async function action({ request, params }: ActionArgs) {
+  const action = params.choice as PageAction;
+
   const { data } = await zx.parseForm(request, actionSchema);
 
   const input: UpsertQuestionInput = JSON.parse(data);
-  if (action === LoaderAction.Duplicate)
+  if (action === PageAction.Duplicate)
     // remove the slug from the input
     delete input.updateSlug;
 
@@ -126,7 +144,7 @@ export async function action({ request }: ActionArgs) {
     authenticatedRequest(request)
   );
   if (upsertQuestion.__typename === 'ApiError')
-    throw new Error(upsertQuestion.error);
+    throw badRequest({ message: upsertQuestion.error });
   return redirect(route('/questions/list'));
 }
 
@@ -145,9 +163,8 @@ export default () => {
 
   const [activeTab, setActiveTab] = useState<string | null>('t-0');
 
-  const loaderData = useLoaderData<typeof loader>();
-  const { testCaseUnits, action, defaultTestCases } = loaderData;
-  const isEditPage = 'questionDetails' in loaderData;
+  const { testCaseUnits, action, populatedData, questionSlug } =
+    useLoaderData<typeof loader>();
 
   const onSubmit = async () => {
     // remove the name field from all the test case outputs
@@ -159,19 +176,17 @@ export default () => {
       name: name,
       problem: problem.trim(),
       testCases: newTestCases,
-      updateSlug: isEditPage ? loaderData.questionSlug : undefined,
+      updateSlug: questionSlug,
     };
     const validatedData = actionSchema.parse({ data: JSON.stringify(data) });
     fetcher.submit(validatedData, { method: 'post' });
   };
 
-  const [testCases, setTestCases] = useState<Array<TestCase>>(defaultTestCases);
-  const [name, setName] = useState(
-    isEditPage ? loaderData.questionDetails.name : ''
+  const [testCases, setTestCases] = useState<Array<TestCase>>(
+    populatedData.testCases
   );
-  const [problem, setProblem] = useState(
-    isEditPage ? loaderData.questionDetails.problem : ''
-  );
+  const [name, setName] = useState(populatedData.name);
+  const [problem, setProblem] = useState(populatedData.problem);
 
   const addTestCase = () => {
     setTestCases((prev) => [

@@ -31,7 +31,7 @@ import { getQuery, parseURL, withQuery } from 'ufo';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
-import { unprocessableEntityError } from '~/lib/utils';
+import { PageAction, unprocessableEntityError } from '~/lib/utils';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
 const defaultElementsPerPage = 10;
@@ -96,6 +96,14 @@ export default () => {
     <Container size={'sm'} h={'100%'}>
       <Stack spacing={'xl'}>
         <Title>All Questions</Title>
+        <Button
+          component="a"
+          href={route('/questions/:choice-action', {
+            choice: PageAction.Create,
+          })}
+        >
+          Create a new question
+        </Button>
         {allQuestions.edges.length === 0 ? (
           <Alert color={'red'}>There are no questions</Alert>
         ) : (
@@ -152,7 +160,9 @@ export default () => {
                             <Menu.Item icon={<IconEdit size={14} />}>
                               <Anchor
                                 href={withQuery(
-                                  `${route('/questions/create-or-update')}`,
+                                  `${route('/questions/:choice-action', {
+                                    choice: PageAction.Update,
+                                  })}`,
                                   { questionSlug: node.slug }
                                 )}
                                 variant={'text'}
@@ -164,10 +174,11 @@ export default () => {
                             <Menu.Item icon={<IconCopy size={14} />}>
                               <Anchor
                                 href={withQuery(
-                                  `${route('/questions/create-or-update')}`,
+                                  `${route('/questions/:choice-action', {
+                                    choice: PageAction.Duplicate,
+                                  })}`,
                                   {
                                     questionSlug: node.slug,
-                                    action: 'Duplicate',
                                   }
                                 )}
                                 variant={'text'}

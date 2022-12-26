@@ -88,10 +88,6 @@ const data = [
         link: route('/questions/list'),
         label: 'List',
       },
-      {
-        link: route('/questions/create-or-update'),
-        label: 'Create',
-      },
     ],
   },
   {

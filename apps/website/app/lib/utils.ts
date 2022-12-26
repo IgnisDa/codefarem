@@ -3,6 +3,12 @@ import { isNumber } from 'lodash';
 import { forbidden, unprocessableEntity } from 'remix-utils';
 import type { MetaFunction } from '@remix-run/server-runtime';
 
+export enum PageAction {
+  Create = 'Create',
+  Update = 'Update',
+  Duplicate = 'Duplicate',
+}
+
 /* Guess the data type for an input based on the properties of its contents. */
 export const guessDataType = (data: string): TestCaseUnit => {
   if (data === '') return TestCaseUnit.String;
