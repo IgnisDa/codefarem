@@ -7,6 +7,7 @@ import type { MetaFunction } from '@remix-run/server-runtime';
 
 /* Guess the data type for an input based on the properties of its contents. */
 export const guessDataType = (data: string): TestCaseUnit => {
+  if (data === '') return TestCaseUnit.String;
   if (!isNaN(Number(data))) return TestCaseUnit.Number;
   else if (
     data
@@ -43,11 +44,10 @@ export const metaFunction: MetaFunction = ({ data }) => {
 
 export const getDataRepresentation = (data: TestCaseFragment) => {
   return match(data.unitType)
-    .with(
-      TestCaseUnit.Number,
-      TestCaseUnit.String,
-      () => String(data.numberValue) || data.stringValue || ''
-    )
+    .with(TestCaseUnit.Number, TestCaseUnit.String, () => {
+      if (data.stringValue === '') return '';
+      return data.stringValue || String(data.numberValue) || '';
+    })
     .with(TestCaseUnit.NumberCollection, TestCaseUnit.StringCollection, () =>
       (data.numberCollectionValue || data.stringCollectionValue || []).join(',')
     )

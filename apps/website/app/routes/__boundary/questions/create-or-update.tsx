@@ -116,7 +116,6 @@ export async function action({ request }: ActionArgs) {
   const { data } = await zx.parseForm(request, actionSchema);
 
   const input: UpsertQuestionInput = JSON.parse(data);
-  console.dir(input, { depth: Infinity });
 
   const { upsertQuestion } = await gqlClient.request(
     UPSERT_QUESTION,

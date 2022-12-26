@@ -149,17 +149,18 @@ export default () => {
                           </Menu.Target>
                           <Menu.Dropdown>
                             <Menu.Label>Actions</Menu.Label>
-                            <Menu.Item
-                              icon={<IconEdit size={14} />}
-                              component={Anchor}
+                            {/* TODO: Use Menu.Item here */}
+                            <Anchor
                               href={withQuery(
                                 `${route('/questions/create-or-update')}`,
                                 { questionSlug: node.slug }
                               )}
                               variant={'text'}
                             >
-                              Update
-                            </Menu.Item>
+                              <Menu.Item icon={<IconEdit size={14} />}>
+                                Update
+                              </Menu.Item>
+                            </Anchor>
                             <Menu.Item icon={<IconCopy size={14} />}>
                               Duplicate
                             </Menu.Item>

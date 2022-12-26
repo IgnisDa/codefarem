@@ -151,6 +151,7 @@ export default () => {
                       <Accordion.Panel>
                         <Stack>
                           <Box>
+                            {/* TODO: Combine all the inputs into one */}
                             <Text>Inputs</Text>
                             {testCase.inputs.map((input, idx) => (
                               <Box key={idx}>
