@@ -28,3 +28,8 @@ next-env.d.ts
 vite-env.d.ts
 
 *timestamp*
+
+# graphql codegen
+fragment-masking.ts
+libs/generated/src/graphql/admin/index.ts
+libs/generated/src/graphql/orchestrator/index.ts

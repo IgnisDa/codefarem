@@ -1626,6 +1626,7 @@ __metadata:
   dependencies:
     "@codefarem/deployment": "workspace:^"
     "@codefarem/generated": "workspace:*"
+    "@codefarem/graphql": "workspace:*"
     "@emotion/react": 11.10.5
     "@mantine/core": 5.9.2
     "@mantine/dates": 5.9.2
@@ -1684,7 +1685,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@codefarem/graphql@workspace:libs/graphql":
+"@codefarem/graphql@workspace:*, @codefarem/graphql@workspace:libs/graphql":
   version: 0.0.0-use.local
   resolution: "@codefarem/graphql@workspace:libs/graphql"
   dependencies:

@@ -21,9 +21,9 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AccountType,
   CreateInviteLinkInput,
-} from ':generated/graphql/admin/generated/graphql';
-import { CREATE_INVITE_LINK } from ':generated/graphql/admin/mutations';
-import { ALL_INVITE_LINKS } from ':generated/graphql/admin/queries';
+} from ':generated/graphql/admin/graphql';
+import { CREATE_INVITE_LINK } from ':graphql/admin/mutations';
+import { ALL_INVITE_LINKS } from ':graphql/admin/queries';
 import { client } from '../services/graphql';
 
 const schema = z.object({

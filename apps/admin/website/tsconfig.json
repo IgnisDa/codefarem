@@ -23,6 +23,9 @@
     "paths": {
       ":generated/*": [
         "../../../libs/generated/src/*"
+      ],
+      ":graphql/*": [
+        "../../../libs/graphql/src/*"
       ]
     }
   },
@@ -32,6 +35,9 @@
   "references": [
     {
       "path": "../../../libs/generated"
+    },
+    {
+      "path": "../../../libs/graphql"
     },
     {
       "path": "../../deployment"
