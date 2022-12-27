@@ -10,51 +10,28 @@ import {
   Flex,
   Menu,
   Modal,
-  Select,
   Stack,
   Table,
   Text,
   Title,
 } from '@mantine/core';
 import { json } from '@remix-run/node';
-import {
-  Form,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from '@remix-run/react';
+import { Form, useLoaderData } from '@remix-run/react';
 import { IconCopy, IconDots, IconEdit, IconTrash } from '@tabler/icons';
 import { useState } from 'react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
-import { getQuery, parseURL, withQuery } from 'ufo';
+import { withQuery } from 'ufo';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
-import { PageAction, unprocessableEntityError } from '~/lib/utils';
+import { getArgs, PageAction, unprocessableEntityError } from '~/lib/utils';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
-const defaultElementsPerPage = 10;
-
-const schema = z.object({
-  after: z.string().optional(),
-  first: z.string().optional(),
-  before: z.string().optional(),
-  last: z.string().optional(),
-});
+const elementsPerPage = 10;
 
 export async function loader({ request }: LoaderArgs) {
-  const { after, before, first, last } = zx.parseQuery(request, schema);
-  const args = {
-    first: !(first || last)
-      ? defaultElementsPerPage
-      : first
-      ? parseInt(first)
-      : undefined,
-    after: after,
-    before: before,
-    last: last ? parseInt(last) : undefined,
-  };
+  const args = getArgs(request, elementsPerPage);
   const { questionsConnection } = await gqlClient.request(
     QUESTIONS_CONNECTION,
     { args }
@@ -88,8 +65,6 @@ export async function action({ request }: ActionArgs) {
 
 export default () => {
   const { allQuestions } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -245,28 +220,11 @@ export default () => {
               </tbody>
             </Table>
             <Flex justify={'end'} gap={20}>
-              <Select
-                defaultValue={defaultElementsPerPage.toString()}
-                onChange={(e) => {
-                  const parsedUrl = parseURL(location.search);
-                  const query = getQuery(parsedUrl.search);
-                  if (!query.first && !query.last) query.first = e;
-                  else if (query.first) query.first = e;
-                  else if (query.last) query.last = e;
-                  console.log(query);
-                  navigate(withQuery(route('/questions/list'), query));
-                }}
-                data={[
-                  { label: '10', value: '10' },
-                  { label: '15', value: '15' },
-                  { label: '20', value: '20' },
-                ]}
-              />
               <Button
                 component={'a'}
                 href={`${route('/questions/list')}?before=${
                   allQuestions.pageInfo.startCursor
-                }&last=${defaultElementsPerPage}`}
+                }&last=${elementsPerPage}`}
                 disabled={!allQuestions.pageInfo.hasPreviousPage}
               >
                 Previous
@@ -275,7 +233,7 @@ export default () => {
                 component={'a'}
                 href={`${route('/questions/list')}?after=${
                   allQuestions.pageInfo.endCursor
-                }&first=${defaultElementsPerPage}`}
+                }&first=${elementsPerPage}`}
                 disabled={!allQuestions.pageInfo.hasNextPage}
               >
                 Next

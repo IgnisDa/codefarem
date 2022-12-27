@@ -2,6 +2,8 @@ import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql'
 import { isNumber } from 'lodash';
 import { forbidden, unprocessableEntity } from 'remix-utils';
 import type { MetaFunction } from '@remix-run/server-runtime';
+import { z } from 'zod';
+import { zx } from 'zodix';
 
 export enum PageAction {
   Create = 'Create',
@@ -44,4 +46,26 @@ export const unprocessableEntityError = (description: string) => {
 export const metaFunction: MetaFunction = ({ data }) => {
   if (!data) return {};
   return data.meta;
+};
+
+export const argSchema = z.object({
+  after: z.string().optional(),
+  first: z.string().optional(),
+  before: z.string().optional(),
+  last: z.string().optional(),
+});
+
+export const getArgs = (request: Request, defaultElementsPerPage: number) => {
+  const { after, before, first, last } = zx.parseQuery(request, argSchema);
+  const args = {
+    first: !(first || last)
+      ? defaultElementsPerPage
+      : first
+      ? parseInt(first)
+      : undefined,
+    after: after,
+    before: before,
+    last: last ? parseInt(last) : undefined,
+  };
+  return args;
 };
