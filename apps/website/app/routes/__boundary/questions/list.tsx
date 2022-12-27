@@ -232,18 +232,20 @@ export default () => {
             <Flex justify={'end'} gap={20}>
               <Button
                 component={'a'}
-                href={`${route('/questions/list')}?before=${
-                  allQuestions.pageInfo.startCursor
-                }&last=${elementsPerPage}`}
+                href={withQuery(route('/questions/list'), {
+                  before: allQuestions.pageInfo.startCursor,
+                  last: String(elementsPerPage),
+                })}
                 disabled={!allQuestions.pageInfo.hasPreviousPage}
               >
                 Previous
               </Button>
               <Button
                 component={'a'}
-                href={`${route('/questions/list')}?after=${
-                  allQuestions.pageInfo.endCursor
-                }&first=${elementsPerPage}`}
+                href={withQuery(route('/questions/list'), {
+                  after: allQuestions.pageInfo.endCursor,
+                  first: String(elementsPerPage),
+                })}
                 disabled={!allQuestions.pageInfo.hasNextPage}
               >
                 Next
