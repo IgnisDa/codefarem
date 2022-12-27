@@ -2,6 +2,7 @@ import {
   Anchor,
   Box,
   Button,
+  Center,
   Code,
   Container,
   createStyles,
@@ -62,32 +63,34 @@ export function ErrorPage({
   const { classes } = useStyles();
 
   return (
-    <Stack>
-      <Box className={classes.label}>{statusCode}</Box>
-      <Title className={classes.title}>{message}</Title>
-      {description && (
-        <Text size="lg" align="center" className={classes.description}>
-          {description}
-        </Text>
-      )}
-      <Group position="center">
-        <Anchor href={SUCCESSFUL_REDIRECT_PATH}>
-          <Button variant="white" size="md">
-            Go back to home
-          </Button>
-        </Anchor>
-      </Group>
-      {stack && (
-        <Container>
-          <Paper p={'sm'} withBorder>
-            <ScrollArea h={100}>
-              <Code color={'red'}>
-                {process.env.NODE_ENV === 'development' && stack}
-              </Code>
-            </ScrollArea>
-          </Paper>
-        </Container>
-      )}
-    </Stack>
+    <Center h={'100%'}>
+      <Stack>
+        <Box className={classes.label}>{statusCode}</Box>
+        <Title className={classes.title}>{message}</Title>
+        {description && (
+          <Text size="lg" align="center" className={classes.description}>
+            {description}
+          </Text>
+        )}
+        <Group position="center">
+          <Anchor href={SUCCESSFUL_REDIRECT_PATH}>
+            <Button variant="white" size="md">
+              Go back to home
+            </Button>
+          </Anchor>
+        </Group>
+        {stack && (
+          <Container>
+            <Paper p={'sm'} withBorder>
+              <ScrollArea h={100}>
+                <Code color={'red'}>
+                  {process.env.NODE_ENV === 'development' && stack}
+                </Code>
+              </ScrollArea>
+            </Paper>
+          </Container>
+        )}
+      </Stack>
+    </Center>
   );
 }
