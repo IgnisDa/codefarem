@@ -1,33 +1,34 @@
-use std::sync::Arc;
-
 use async_graphql::{
     connection::{query, Connection, Edge, EmptyFields},
     Error, OutputType, Result,
 };
 use edgedb_protocol::queryable::Queryable;
 use edgedb_tokio::Client;
-use serde::{Deserialize, Serialize};
+use serde::{de::DeserializeOwned, Deserialize};
+use std::sync::Arc;
 use uuid::Uuid;
 
-trait HasId {
+pub trait HasId {
     fn id(&self) -> String;
 }
 
+#[derive(Default)]
 pub struct GraphQLConnectionService;
 
 impl GraphQLConnectionService {
     /// This is responsible for taking a database query and returning a paginated result
     /// according to the relay connection spec.
-    pub async fn paginate_db_query<T>(
+    pub async fn paginate_db_query<'a, T>(
+        &self,
         after: Option<String>,
         before: Option<String>,
         first: Option<i32>,
         last: Option<i32>,
-        db_query: String,
-        db_conn: Arc<Client>,
+        db_query: &'a str,
+        db_conn: &'a Arc<Client>,
     ) -> Result<Connection<String, T, EmptyFields, EmptyFields>>
     where
-        T: OutputType + Queryable + Deserialize<'static> + HasId,
+        T: OutputType + Queryable + DeserializeOwned + HasId,
     {
         query(
             after,
@@ -48,7 +49,7 @@ impl GraphQLConnectionService {
                 let after = convert(after);
                 let before = convert(before);
 
-                #[derive(Debug, Serialize, Deserialize)]
+                #[derive(Debug, Deserialize)]
                 struct QueryResult<U> {
                     selected: Vec<U>,
                     has_previous_page: bool,

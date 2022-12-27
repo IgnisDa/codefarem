@@ -1,6 +1,7 @@
 use async_graphql::SimpleObject;
 use edgedb_derive::Queryable;
 use serde::Deserialize;
+use utilities::services::graphql_connection::HasId;
 use uuid::Uuid;
 
 #[derive(Debug, SimpleObject, Deserialize, Queryable)]
@@ -21,4 +22,10 @@ pub struct QuestionPartialsDetails {
 
     /// The number of test cases that are related to this question
     pub num_test_cases: i64,
+}
+
+impl HasId for QuestionPartialsDetails {
+    fn id(&self) -> String {
+        self.id.to_string()
+    }
 }

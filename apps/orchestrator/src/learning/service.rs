@@ -21,11 +21,10 @@ use crate::{
     },
 };
 use async_graphql::{
-    connection::{query, Connection, Edge, EmptyFields},
-    Error, Result,
+    connection::{Connection, EmptyFields},
+    Result,
 };
 use auth::validate_user_role;
-use edgedb_derive::Queryable;
 use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
@@ -34,6 +33,7 @@ use utilities::{
     graphql::ApiError,
     models::IdObject,
     random_string,
+    services::GraphQLConnectionService,
     users::{get_user_details_from_hanko_id, AccountType},
     SupportedLanguage,
 };
@@ -41,6 +41,8 @@ use uuid::Uuid;
 
 const PAGINATED_QUESTIONS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/paginated-questions.edgeql");
+const PAGINATED_CLASSES: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/paginated-classes.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
@@ -77,13 +79,16 @@ const UPDATE_QUESTION: &str =
 pub struct LearningService {
     db_conn: Arc<Client>,
     farem_service: Arc<FaremService>,
+    graphql_connection_service: GraphQLConnectionService,
 }
 
 impl LearningService {
     pub fn new(db_conn: &Arc<Client>, farem_service: &Arc<FaremService>) -> Self {
+        let graphql_connection_service = GraphQLConnectionService::default();
         Self {
             db_conn: db_conn.clone(),
             farem_service: farem_service.clone(),
+            graphql_connection_service,
         }
     }
 }
@@ -100,51 +105,16 @@ impl LearningService {
         first: Option<i32>,
         last: Option<i32>,
     ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
-        query(
-            after,
-            before,
-            first,
-            last,
-            |after, before, first, last| async move {
-                let mut direction = "ASC";
-
-                let first = first.map(|f| f as i16);
-                let last = last.map(|l| {
-                    direction = "DESC";
-                    l as i16
-                });
-                let limit = first.or(last);
-
-                let convert = |id: Option<String>| id.map(|id| Uuid::parse_str(&id).unwrap());
-                let after = convert(after);
-                let before = convert(before);
-
-                #[derive(Debug, Queryable)]
-                struct QueryResult {
-                    selected: Vec<QuestionPartialsDetails>,
-                    has_previous_page: bool,
-                    has_next_page: bool,
-                }
-
-                let new_query = PAGINATED_QUESTIONS.replace("{{DIRECTION}}", direction);
-
-                let result = self
-                    .db_conn
-                    .query_required_single::<QueryResult, _>(&new_query, &(after, before, limit))
-                    .await
-                    .unwrap();
-
-                let mut connection =
-                    Connection::new(result.has_previous_page, result.has_next_page);
-                connection
-                    .edges
-                    .extend(result.selected.into_iter().map(|question| {
-                        Edge::with_additional_fields(question.id.to_string(), question, EmptyFields)
-                    }));
-                Ok::<_, Error>(connection)
-            },
-        )
-        .await
+        self.graphql_connection_service
+            .paginate_db_query(
+                after,
+                before,
+                first,
+                last,
+                PAGINATED_QUESTIONS,
+                &self.db_conn,
+            )
+            .await
     }
 
     pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
