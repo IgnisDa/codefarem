@@ -25,10 +25,17 @@ import { withQuery } from 'ufo';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
-import { getArgs, PageAction, unprocessableEntityError } from '~/lib/utils';
+import {
+  getArgs,
+  metaFunction,
+  PageAction,
+  unprocessableEntityError,
+} from '~/lib/utils';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
 const elementsPerPage = 10;
+
+export const meta = metaFunction;
 
 export async function loader({ request }: LoaderArgs) {
   const args = getArgs(request, elementsPerPage);
@@ -36,7 +43,10 @@ export async function loader({ request }: LoaderArgs) {
     QUESTIONS_CONNECTION,
     { args }
   );
-  return json({ allQuestions: questionsConnection });
+  return json({
+    allQuestions: questionsConnection,
+    meta: { title: 'All questions' },
+  });
 }
 
 enum ActionType {
