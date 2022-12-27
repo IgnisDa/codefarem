@@ -2,7 +2,7 @@ import { Button, Flex, Select, Stack } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import Editor from '@monaco-editor/react';
 import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
-import type { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
+import type { SupportedLanguage } from ':generated/graphql/orchestrator/graphql';
 import type { Dispatch, SetStateAction } from 'react';
 
 interface CodeEditorProps {

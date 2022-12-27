@@ -1,4 +1,4 @@
-import { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
+import { TestCaseUnit } from ':generated/graphql/orchestrator/graphql';
 import { isNumber } from 'lodash';
 import { forbidden, unprocessableEntity } from 'remix-utils';
 import type { MetaFunction } from '@remix-run/server-runtime';

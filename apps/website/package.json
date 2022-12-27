@@ -5,6 +5,7 @@
     "@codefarem/deployment": "workspace:^",
     "@codefarem/faker": "workspace:*",
     "@codefarem/generated": "workspace:*",
+    "@codefarem/graphql": "workspace:*",
     "@emotion/react": "11.10.5",
     "@emotion/server": "11.10.0",
     "@headlessui/react": "1.7.2",

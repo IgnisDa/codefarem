@@ -1,12 +1,12 @@
 import {
   AccountType,
   TestCaseUnit,
-} from ':generated/graphql/orchestrator/generated/graphql';
+} from ':generated/graphql/orchestrator/graphql';
 import {
   TEST_CASE_UNITS,
   UPSERT_QUESTION,
-} from ':generated/graphql/orchestrator/mutations';
-import { QUESTION_DETAILS } from ':generated/graphql/orchestrator/queries';
+} from ':graphql/orchestrator/mutations';
+import { QUESTION_DETAILS } from ':graphql/orchestrator/queries';
 import {
   Alert,
   Box,
@@ -44,7 +44,7 @@ import type {
   InputCaseUnit,
   OutputCaseUnit,
   UpsertQuestionInput,
-} from ':generated/graphql/orchestrator/generated/graphql';
+} from ':generated/graphql/orchestrator/graphql';
 
 export const meta = metaFunction;
 

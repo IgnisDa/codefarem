@@ -8,7 +8,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
-import type { ExecuteCodeErrorStep } from ':generated/graphql/orchestrator/generated/graphql';
+import type { ExecuteCodeErrorStep } from ':generated/graphql/orchestrator/graphql';
 
 const useStyles = createStyles((theme) => ({
   timeText: { fontSize: theme.fontSizes.md },

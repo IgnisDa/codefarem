@@ -1,9 +1,9 @@
-import { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
-import { EXECUTE_CODE_FOR_QUESTION } from ':generated/graphql/orchestrator/mutations';
+import { SupportedLanguage } from ':generated/graphql/orchestrator/graphql';
+import { EXECUTE_CODE_FOR_QUESTION } from ':graphql/orchestrator/mutations';
 import {
   QUESTION_DETAILS,
   SUPPORTED_LANGUAGES,
-} from ':generated/graphql/orchestrator/queries';
+} from ':graphql/orchestrator/queries';
 import {
   Accordion,
   Box,

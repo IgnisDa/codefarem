@@ -1,5 +1,5 @@
-import { DELETE_QUESTION } from ':generated/graphql/orchestrator/mutations';
-import { QUESTIONS_CONNECTION } from ':generated/graphql/orchestrator/queries';
+import { DELETE_QUESTION } from ':graphql/orchestrator/mutations';
+import { QUESTIONS_CONNECTION } from ':graphql/orchestrator/queries';
 import {
   ActionIcon,
   Alert,

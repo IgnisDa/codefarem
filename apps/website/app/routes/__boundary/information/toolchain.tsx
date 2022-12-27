@@ -1,4 +1,4 @@
-import { TOOLCHAIN_INFORMATION } from ':generated/graphql/orchestrator/queries';
+import { TOOLCHAIN_INFORMATION } from ':graphql/orchestrator/queries';
 import {
   Avatar,
   Code,

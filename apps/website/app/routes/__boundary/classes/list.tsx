@@ -1,4 +1,4 @@
-import { CLASSES_CONNECTION } from ':generated/graphql/orchestrator/queries';
+import { CLASSES_CONNECTION } from ':graphql/orchestrator/queries';
 import {
   Alert,
   Anchor,

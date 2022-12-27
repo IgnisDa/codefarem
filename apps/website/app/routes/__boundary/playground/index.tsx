@@ -1,12 +1,12 @@
 import {
   SupportedLanguage,
   TestCaseUnit,
-} from ':generated/graphql/orchestrator/generated/graphql';
-import { EXECUTE_CODE } from ':generated/graphql/orchestrator/mutations';
+} from ':generated/graphql/orchestrator/graphql';
+import { EXECUTE_CODE } from ':graphql/orchestrator/mutations';
 import {
   LANGUAGE_EXAMPLE,
   SUPPORTED_LANGUAGES,
-} from ':generated/graphql/orchestrator/queries';
+} from ':graphql/orchestrator/queries';
 import {
   Button,
   Container,
@@ -30,7 +30,7 @@ import {
 import { TestCaseInput } from '~/lib/components/TestCases';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
-import type { InputCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
+import type { InputCaseUnit } from ':generated/graphql/orchestrator/graphql';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 

@@ -1,5 +1,5 @@
-import { REGISTER_USER } from ':generated/graphql/orchestrator/mutations';
-import { USER_WITH_EMAIL } from ':generated/graphql/orchestrator/queries';
+import { REGISTER_USER } from ':graphql/orchestrator/mutations';
+import { USER_WITH_EMAIL } from ':graphql/orchestrator/queries';
 import {
   Button,
   Center,

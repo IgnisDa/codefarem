@@ -1,5 +1,5 @@
-import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
-import { CREATE_CLASS } from ':generated/graphql/orchestrator/mutations';
+import { AccountType } from ':generated/graphql/orchestrator/graphql';
+import { CREATE_CLASS } from ':graphql/orchestrator/mutations';
 import {
   Button,
   Container,
