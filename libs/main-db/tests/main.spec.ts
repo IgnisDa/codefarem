@@ -1,5 +1,5 @@
 import * as edgedb from 'edgedb';
-import { createUserInfo } from ':faker';
+import { createUserInfo, createUsername } from ':faker';
 import e from ':generated/edgeql-js';
 
 describe('Database behavior testing', () => {
@@ -28,7 +28,7 @@ describe('Database behavior testing', () => {
         name: 'CPP',
         students: e.select(e.users.Student),
         teachers: e.select(e.users.Teacher),
-        join_slug: 'abcd1',
+        join_slug: createUsername(),
       })
       .run(client);
     const classShape = e.shape(e.learning.Class, (c) => ({
@@ -67,7 +67,7 @@ describe('Database behavior testing', () => {
           teachers: e.select(e.users.Teacher, (t) => ({
             filter: e.op(t.id, '=', e.uuid(id)),
           })),
-          join_slug: `abcd${i}`,
+          join_slug: createUsername(),
         })
         .run(client);
     }
