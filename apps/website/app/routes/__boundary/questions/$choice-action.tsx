@@ -9,6 +9,7 @@ import {
 import { QUESTION_DETAILS } from ':generated/graphql/orchestrator/queries';
 import {
   Alert,
+  Box,
   Button,
   Container,
   Divider,
@@ -22,7 +23,7 @@ import {
   Title,
 } from '@mantine/core';
 import { json, redirect } from '@remix-run/node';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { Form, useFetcher, useLoaderData } from '@remix-run/react';
 import { IconPlus } from '@tabler/icons';
 import { useState } from 'react';
 import { badRequest } from 'remix-utils';
@@ -235,164 +236,170 @@ export default () => {
 
   return (
     <Container>
-      <Stack>
-        <Title order={1}>{action} Question</Title>
-        <TextInput
-          label="Name"
-          required
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
-        />
-        <Flex direction={'column'}>
-          <Input.Wrapper label="Problem statement" required>
-            <ScrollArea h={210}>
-              <QuestionProblem text={problem} setText={setProblem} />
-            </ScrollArea>
-          </Input.Wrapper>
-        </Flex>
+      <Box component={Form} action={'post'}>
         <Stack>
-          <Input.Wrapper required>
-            {testCases.length > 0 ? (
-              <Tabs value={activeTab} onTabChange={setActiveTab}>
-                <Tabs.List>
-                  {testCases.map((_, idx) => (
-                    <Tabs.Tab value={`t-${idx}`} key={idx}>
-                      Test Case {idx + 1}
-                    </Tabs.Tab>
+          <Title order={1}>{action} Question</Title>
+          <TextInput
+            label="Name"
+            required
+            value={name}
+            onChange={(e) => setName(e.currentTarget.value)}
+          />
+          <Flex direction={'column'}>
+            <Input.Wrapper label="Problem statement" required>
+              <ScrollArea h={210}>
+                <QuestionProblem text={problem} setText={setProblem} />
+              </ScrollArea>
+            </Input.Wrapper>
+          </Flex>
+          <Stack>
+            <Input.Wrapper required>
+              {testCases.length > 0 ? (
+                <Tabs value={activeTab} onTabChange={setActiveTab}>
+                  <Tabs.List>
+                    {testCases.map((_, idx) => (
+                      <Tabs.Tab value={`t-${idx}`} key={idx}>
+                        Test Case {idx + 1}
+                      </Tabs.Tab>
+                    ))}
+                  </Tabs.List>
+                  {testCases.map((tCase, testCaseIdx) => (
+                    <Tabs.Panel value={`t-${testCaseIdx}`} key={testCaseIdx}>
+                      <Grid>
+                        <Grid.Col md={6}>
+                          <Stack p={'sm'}>
+                            <Flex justify="space-between">
+                              <Title order={3}>Inputs</Title>
+                              <Button
+                                variant="light"
+                                leftIcon={<IconPlus size={20} />}
+                                compact
+                                onClick={() => addCase(testCaseIdx, 'inputs')}
+                              >
+                                Add
+                              </Button>
+                            </Flex>
+                            {tCase.inputs.map((input, inputCaseIdx) => (
+                              <TestCaseInput
+                                key={inputCaseIdx}
+                                textValue={input.data}
+                                onTextChange={(e) => {
+                                  const value = e.currentTarget.value;
+                                  setData(
+                                    testCaseIdx,
+                                    inputCaseIdx,
+                                    'inputs',
+                                    'data',
+                                    value
+                                  );
+                                }}
+                                selectValue={input.dataType}
+                                testCaseUnits={testCaseUnits}
+                                onSelectChange={(e) =>
+                                  setData(
+                                    testCaseIdx,
+                                    inputCaseIdx,
+                                    'inputs',
+                                    'dataType',
+                                    e
+                                  )
+                                }
+                                actionBtnHandler={() =>
+                                  removeIndividualInputCase(
+                                    testCaseIdx,
+                                    inputCaseIdx,
+                                    'inputs'
+                                  )
+                                }
+                              />
+                            ))}
+                          </Stack>
+                        </Grid.Col>
+                        <Grid.Col md={6}>
+                          <Stack p={'sm'}>
+                            <Flex justify="space-between">
+                              <Title order={3}>Outputs</Title>
+                              <Button
+                                variant="light"
+                                leftIcon={<IconPlus size={20} />}
+                                compact
+                                onClick={() => addCase(testCaseIdx, 'outputs')}
+                              >
+                                Add
+                              </Button>
+                            </Flex>
+                            {tCase.outputs.map((output, outputCaseIdx) => (
+                              <TestCaseInput
+                                key={outputCaseIdx}
+                                textValue={output.data}
+                                onTextChange={(e) => {
+                                  const value = e.currentTarget.value;
+                                  setData(
+                                    testCaseIdx,
+                                    outputCaseIdx,
+                                    'outputs',
+                                    'data',
+                                    value
+                                  );
+                                }}
+                                selectValue={output.dataType}
+                                testCaseUnits={testCaseUnits}
+                                onSelectChange={(e) =>
+                                  setData(
+                                    testCaseIdx,
+                                    outputCaseIdx,
+                                    'outputs',
+                                    'dataType',
+                                    e
+                                  )
+                                }
+                                actionBtnHandler={() =>
+                                  removeIndividualInputCase(
+                                    testCaseIdx,
+                                    outputCaseIdx,
+                                    'outputs'
+                                  )
+                                }
+                              />
+                            ))}
+                          </Stack>
+                        </Grid.Col>
+                      </Grid>
+                    </Tabs.Panel>
                   ))}
-                </Tabs.List>
-                {testCases.map((tCase, testCaseIdx) => (
-                  <Tabs.Panel value={`t-${testCaseIdx}`} key={testCaseIdx}>
-                    <Grid>
-                      <Grid.Col md={6}>
-                        <Stack p={'sm'}>
-                          <Flex justify="space-between">
-                            <Title order={3}>Inputs</Title>
-                            <Button
-                              variant="light"
-                              leftIcon={<IconPlus size={20} />}
-                              compact
-                              onClick={() => addCase(testCaseIdx, 'inputs')}
-                            >
-                              Add
-                            </Button>
-                          </Flex>
-                          {tCase.inputs.map((input, inputCaseIdx) => (
-                            <TestCaseInput
-                              key={inputCaseIdx}
-                              textValue={input.data}
-                              onTextChange={(e) => {
-                                const value = e.currentTarget.value;
-                                setData(
-                                  testCaseIdx,
-                                  inputCaseIdx,
-                                  'inputs',
-                                  'data',
-                                  value
-                                );
-                              }}
-                              selectValue={input.dataType}
-                              testCaseUnits={testCaseUnits}
-                              onSelectChange={(e) =>
-                                setData(
-                                  testCaseIdx,
-                                  inputCaseIdx,
-                                  'inputs',
-                                  'dataType',
-                                  e
-                                )
-                              }
-                              actionBtnHandler={() =>
-                                removeIndividualInputCase(
-                                  testCaseIdx,
-                                  inputCaseIdx,
-                                  'inputs'
-                                )
-                              }
-                            />
-                          ))}
-                        </Stack>
-                      </Grid.Col>
-                      <Grid.Col md={6}>
-                        <Stack p={'sm'}>
-                          <Flex justify="space-between">
-                            <Title order={3}>Outputs</Title>
-                            <Button
-                              variant="light"
-                              leftIcon={<IconPlus size={20} />}
-                              compact
-                              onClick={() => addCase(testCaseIdx, 'outputs')}
-                            >
-                              Add
-                            </Button>
-                          </Flex>
-                          {tCase.outputs.map((output, outputCaseIdx) => (
-                            <TestCaseInput
-                              key={outputCaseIdx}
-                              textValue={output.data}
-                              onTextChange={(e) => {
-                                const value = e.currentTarget.value;
-                                setData(
-                                  testCaseIdx,
-                                  outputCaseIdx,
-                                  'outputs',
-                                  'data',
-                                  value
-                                );
-                              }}
-                              selectValue={output.dataType}
-                              testCaseUnits={testCaseUnits}
-                              onSelectChange={(e) =>
-                                setData(
-                                  testCaseIdx,
-                                  outputCaseIdx,
-                                  'outputs',
-                                  'dataType',
-                                  e
-                                )
-                              }
-                              actionBtnHandler={() =>
-                                removeIndividualInputCase(
-                                  testCaseIdx,
-                                  outputCaseIdx,
-                                  'outputs'
-                                )
-                              }
-                            />
-                          ))}
-                        </Stack>
-                      </Grid.Col>
-                    </Grid>
-                  </Tabs.Panel>
-                ))}
-              </Tabs>
-            ) : (
-              <Alert color={'yellow'}>
-                You have not configured any test cases
-              </Alert>
-            )}
-          </Input.Wrapper>
-        </Stack>
-        <Divider variant={'dashed'} my={'md'} />
-        <Flex justify={{ base: 'center', md: 'end' }} gap={'md'} wrap={'wrap'}>
-          <Button
-            variant={'light'}
-            // I don't know why this has to be added, but otherwise there is a very slight
-            // negative margin
-            mt={1}
-            color={'red'}
-            onClick={removeTestCase}
+                </Tabs>
+              ) : (
+                <Alert color={'yellow'}>
+                  You have not configured any test cases
+                </Alert>
+              )}
+            </Input.Wrapper>
+          </Stack>
+          <Divider variant={'dashed'} my={'md'} />
+          <Flex
+            justify={{ base: 'center', md: 'end' }}
+            gap={'md'}
+            wrap={'wrap'}
           >
-            Remove test case
-          </Button>
-          <Button variant={'light'} onClick={addTestCase}>
-            Add test case
-          </Button>
-          <Button variant={'light'} color="green" onClick={onSubmit}>
-            {action} Question
-          </Button>
-        </Flex>
-      </Stack>
+            <Button
+              variant={'light'}
+              // I don't know why this has to be added, but otherwise there is a very slight
+              // negative margin
+              mt={1}
+              color={'red'}
+              onClick={removeTestCase}
+            >
+              Remove test case
+            </Button>
+            <Button variant={'light'} onClick={addTestCase}>
+              Add test case
+            </Button>
+            <Button variant={'light'} color="green" onClick={onSubmit}>
+              {action} Question
+            </Button>
+          </Flex>
+        </Stack>
+      </Box>
     </Container>
   );
 };

@@ -13,6 +13,7 @@ import {
   Grid,
   Paper,
   Progress,
+  ScrollArea,
   SimpleGrid,
   Stack,
   Text,
@@ -25,7 +26,6 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useState } from 'react';
 import { notFound } from 'remix-utils';
 import invariant from 'tiny-invariant';
@@ -36,6 +36,7 @@ import {
   DisplayErrorOutput,
   DisplaySuccessOutput,
 } from '~/lib/components/DisplayOutput';
+import { getDefaultExtensions } from '~/lib/editor';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
 import type { ShouldReloadFunction } from '@remix-run/react';
@@ -105,7 +106,7 @@ export default () => {
   const { supportedLanguages, combinedQuestionDetails, questionSlug } =
     useLoaderData<typeof loader>();
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: getDefaultExtensions(),
     editable: false,
     content: combinedQuestionDetails.problem,
   });
@@ -147,33 +148,41 @@ export default () => {
           <Grid.Col md={6}>
             <Stack>
               <Title>{combinedQuestionDetails.name}</Title>
-              <RichTextEditor editor={editor}>
-                <RichTextEditor.Content />
-              </RichTextEditor>
-              <Accordion>
-                {combinedQuestionDetails.combinedTestCases.map(
-                  (testCase, idx) => {
-                    const name = `Test Case ${idx + 1}`;
-                    return (
-                      <Accordion.Item key={idx} value={name}>
-                        <Accordion.Control>{name}</Accordion.Control>
-                        <Accordion.Panel>
-                          <Stack>
-                            <Box>
-                              <Text>Inputs</Text>
-                              <Code block>{testCase.input}</Code>
-                            </Box>
-                            <Box>
-                              <Text>Outputs</Text>
-                              <Code block>{testCase.output}</Code>
-                            </Box>
-                          </Stack>
-                        </Accordion.Panel>
-                      </Accordion.Item>
-                    );
-                  }
-                )}
-              </Accordion>
+              <Paper withBorder>
+                <ScrollArea h={250} type={'auto'}>
+                  <RichTextEditor editor={editor} sx={{ borderWidth: 0 }}>
+                    <RichTextEditor.Content />
+                  </RichTextEditor>
+                </ScrollArea>
+              </Paper>
+              <Paper withBorder>
+                <ScrollArea h={200} type={'auto'}>
+                  <Accordion>
+                    {combinedQuestionDetails.combinedTestCases.map(
+                      (testCase, idx) => {
+                        const name = `Test Case ${idx + 1}`;
+                        return (
+                          <Accordion.Item key={idx} value={name}>
+                            <Accordion.Control>{name}</Accordion.Control>
+                            <Accordion.Panel>
+                              <Stack>
+                                <Box>
+                                  <Text>Inputs</Text>
+                                  <Code block>{testCase.input}</Code>
+                                </Box>
+                                <Box>
+                                  <Text>Outputs</Text>
+                                  <Code block>{testCase.output}</Code>
+                                </Box>
+                              </Stack>
+                            </Accordion.Panel>
+                          </Accordion.Item>
+                        );
+                      }
+                    )}
+                  </Accordion>
+                </ScrollArea>
+              </Paper>
             </Stack>
           </Grid.Col>
           <Grid.Col md={6}>
