@@ -181,10 +181,11 @@ impl LearningService {
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
         let mut all_teachers_to_insert = teacher_ids.to_vec();
         all_teachers_to_insert.push(user_details.id);
+        let slug = random_string(8);
         self.db_conn
             .query_required_single::<CreateClassOutput, _>(
                 CREATE_CLASS,
-                &(name, all_teachers_to_insert),
+                &(name, all_teachers_to_insert, slug),
             )
             .await
             .map_err(|_| ApiError {
@@ -192,12 +193,6 @@ impl LearningService {
             })
     }
 
-    // TODO: Convert this into an upsert
-
-    // 1. Convert create question to an upsert:
-    // https://www.edgedb.com/tutorial/data-mutations/upsert/conditional-inserts To
-    // 2. To update a question's test cases, just delete all of the old ones and create the
-    // new ones that are specified in the input data.
     pub async fn upsert_question<'a>(
         &self,
         hanko_id: &'a str,

@@ -3,5 +3,6 @@ INSERT learning::Class {
   teachers := (
     SELECT users::Teacher
     FILTER .id in array_unpack(<array<uuid>>$1)
-  )
+  ),
+  join_slug := <str>$2,
 }

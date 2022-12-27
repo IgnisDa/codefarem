@@ -1,11 +1,18 @@
 module learning {
     type Class {
         required property name -> str;
-        multi link students -> users::Student;
+        multi link students -> users::Student {
+            on target delete allow;
+            on source delete allow;
+        };
+        required property join_slug -> str {
+            constraint exclusive;
+        };
         # must have one or more teachers
         multi link teachers -> users::Teacher {
             # if a teacher is deleted, silently remove them from the class
             on target delete allow;
+            on source delete allow;
         };
     }
     type Question {
@@ -47,7 +54,7 @@ module learning {
         };
         # the order in which the inputs are passed
         required property seq -> int32;
-
+        # the data, converted into a string
         property normalized_data := (
             SELECT (
                 array_join(.data[is learning::StringCollectionUnit].string_collection_value, ',') IF .data is learning::StringCollectionUnit ELSE
@@ -75,5 +82,32 @@ module learning {
     }
     type StringCollectionUnit extending learning::CaseUnit {
         required property string_collection_value -> array<str>;
+    }
+
+    # A folder that contains questions
+    type QuestionFolder {
+        required property name -> str;
+        link parent -> learning::QuestionFolder {
+            on source delete allow;
+            on target delete delete source;
+        };
+        required link class -> learning::Class {
+            on source delete allow;
+            on target delete delete source;
+        };
+    }
+
+    # A question that will appear in a class
+    type QuestionInstance {
+        # the folder in which this instance will appear
+        required link folder -> learning::QuestionFolder {
+            on source delete allow;
+            on target delete delete source;
+        };
+        # the question that this instance is based on
+        required link question -> learning::Question {
+            on source delete delete target;
+            on target delete allow;
+        };
     }
 }
