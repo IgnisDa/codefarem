@@ -69,3 +69,17 @@ export const getArgs = (request: Request, defaultElementsPerPage: number) => {
   };
   return args;
 };
+
+// Adapted from https://github.com/patidarparas13/generate-username-from-email
+/**
+ * Generates a username from an email address
+ * @param email The email address to generate a username from
+ * @returns The username
+ */
+export const generateUsernameFromEmail = (email: string) => {
+  const nameParts = email.split('@');
+  let name = nameParts[0];
+  name = name.toLowerCase();
+  name = name.replace(/\./g, '');
+  return name;
+};

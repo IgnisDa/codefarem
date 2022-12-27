@@ -25,6 +25,7 @@ import { z } from 'zod';
 import { zx } from 'zodix';
 import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { gqlClient } from '~/lib/services/graphql.server';
+import { generateUsernameFromEmail } from '~/lib/utils';
 import authStyles from '../../../styles/auth/index.css';
 import type { ActionArgs, LinksFunction } from '@remix-run/node';
 
@@ -47,7 +48,7 @@ export const action = async ({ request }: ActionArgs) => {
     input: { email },
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
-    const username = new Date().toISOString();
+    const username = generateUsernameFromEmail(email);
     await gqlClient.request(REGISTER_USER, {
       input: { email, username, hankoId, inviteToken: inviteToken || null },
     });
