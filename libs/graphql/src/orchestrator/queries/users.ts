@@ -31,3 +31,26 @@ export const USER_DETAILS = graphql(`
     }
   }
 `);
+
+export const SEARCH_USER_DETAILS_FRAGMENT = graphql(`
+  fragment SearchUserDetails on SearchUsersDetails {
+    id
+    profile {
+      email
+      username
+    }
+  }
+`);
+
+export const SEARCH_USERS = graphql(`
+  query SearchUsers($input: SearchUsersInput!) {
+    searchUsers(input: $input) {
+      teachers {
+        ...SearchUserDetails
+      }
+      students {
+        ...SearchUserDetails
+      }
+    }
+  }
+`);
