@@ -92,6 +92,8 @@ export type ConnectionArguments = {
 export type CreateClassInput = {
   /** The name of the class */
   name: Scalars['String'];
+  /** The students who are in the class */
+  studentIds: Array<Scalars['UUID']>;
   /** The teachers who are teaching the class */
   teacherIds: Array<Scalars['UUID']>;
 };

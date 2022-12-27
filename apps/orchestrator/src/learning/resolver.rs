@@ -105,7 +105,12 @@ impl LearningMutation {
         let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(&hanko_id, input.name(), input.teacher_ids())
+            .create_class(
+                &hanko_id,
+                input.name(),
+                input.teacher_ids(),
+                input.student_ids(),
+            )
             .await;
         to_result_union_response!(output, CreateClassResultUnion)
     }

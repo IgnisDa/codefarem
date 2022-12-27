@@ -12,6 +12,9 @@ pub struct CreateClassInput {
 
     /// The teachers who are teaching the class
     teacher_ids: Vec<Uuid>,
+
+    /// The students who are in the class
+    student_ids: Vec<Uuid>,
 }
 
 /// The result type if the class was created successfully

@@ -91,12 +91,12 @@ export const action = async ({ request }: ActionArgs) => {
 
   const { createClass } = await gqlClient.request(
     CREATE_CLASS,
-    { input: { name, teacherIds: teacherIds } },
+    { input: { name, teacherIds, studentIds } },
     authenticatedRequest(request)
   );
   if (createClass.__typename === 'ApiError')
     throw badRequest({ message: createClass.error });
-  throw redirect(route('/classes/:id', { id: createClass.id }));
+  throw redirect(route('/classes/list'));
 };
 
 export default () => {
