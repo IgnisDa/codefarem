@@ -1,6 +1,14 @@
 import { AccountType } from ':generated/graphql/orchestrator/generated/graphql';
 import { CREATE_CLASS } from ':generated/graphql/orchestrator/mutations';
-import { Button, Container, Paper, TextInput, Title } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Divider,
+  Flex,
+  Stack,
+  TextInput,
+  Title,
+} from '@mantine/core';
 import { json, redirect } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { badRequest } from 'remix-utils';
@@ -36,16 +44,23 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default () => {
   return (
-    <Container size={'xs'}>
-      <Title align="center">Create Class</Title>
-      <Paper withBorder shadow="md" p={25} mt={30} radius="md">
+    <Container>
+      <Stack>
+        <Title>Create Class</Title>
         <Form method="post">
           <TextInput label="Name" type={'text'} required name="name" />
-          <Button fullWidth mt="sm" type="submit">
-            Create
-          </Button>
+          <Divider variant={'dashed'} my={'md'} />
+          <Flex
+            justify={{ base: 'center', md: 'end' }}
+            gap={'md'}
+            wrap={'wrap'}
+          >
+            <Button variant={'light'} color="green" type={'submit'}>
+              Create class
+            </Button>
+          </Flex>
         </Form>
-      </Paper>
+      </Stack>
     </Container>
   );
 };
