@@ -1,18 +1,6 @@
 {
   "name": "@codefarem/main-db",
   "version": "0.0.0",
-  "devDependencies": {
-    "@codefarem/generated": "workspace:*",
-    "@swc/core": "1.3.7",
-    "@swc/jest": "0.2.23",
-    "@types/jest": "28.1.1",
-    "edgedb": "0.22.8",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "27.1.6",
-    "jest": "28.1.1",
-    "ts-jest": "28.0.5",
-    "tsconfig-paths": "4.1.0"
-  },
   "license": "MIT",
   "private": true
 }
