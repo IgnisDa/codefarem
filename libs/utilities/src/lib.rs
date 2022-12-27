@@ -1,6 +1,7 @@
 pub mod diff;
 pub mod graphql;
 pub mod models;
+pub mod services;
 pub mod users;
 
 use anyhow::{bail, Result as AnyhowResult};
