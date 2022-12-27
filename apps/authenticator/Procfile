@@ -1,0 +1,1 @@
+release: /set-env.sh && hanko migrate up

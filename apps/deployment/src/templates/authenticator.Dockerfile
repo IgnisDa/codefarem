@@ -8,7 +8,6 @@ RUN apt-get update ;\
     rm -rf /var/lib/apt/lists/* ;\
     update-ca-certificates
 COPY --from=deps /bin/envsub /bin/envsub
-COPY --from=builder /hanko .
-COPY apps/authenticator/start.sh .
-COPY apps/authenticator/config.yml .
-ENTRYPOINT ["/start.sh"]
+COPY --from=builder /hanko /usr/local/bin/hanko
+COPY apps/authenticator/* ./
+ENTRYPOINT ["hanko", "serve", "public"]
