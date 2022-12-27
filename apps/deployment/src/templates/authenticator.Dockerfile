@@ -11,4 +11,4 @@ WORKDIR /service
 COPY --from=deps /bin/envsub /bin/envsub
 COPY --from=builder /hanko /bin/hanko
 COPY apps/authenticator/* ./
-ENTRYPOINT /service/set-env.sh && hanko serve public
+CMD /service/set-env.sh && hanko serve public
