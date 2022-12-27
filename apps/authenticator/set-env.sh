@@ -6,8 +6,8 @@ export DATABASE_HOST=$(echo $DATABASE_URL | grep -oP "postgres://.*@\K(.+?):" | 
 export DATABASE_PORT=$(echo $DATABASE_URL | grep -oP "postgres://.*@.*:\K(\d+)/" | cut -d/ -f1)
 export DATABASE_NAME=$(echo $DATABASE_URL | grep -oP "postgres://.*@.*:.*/\K(.+?)$")
 
-mkdir -p /config
+mkdir -p /service/config
 
-(cat /config.yml) | envsub > /config/config.yaml
+(cat /service/config.yml) | envsub > /service/config/config.yaml
 
-echo "Wrote configuration to '/config/config.yaml'"
+echo "Wrote configuration..."
