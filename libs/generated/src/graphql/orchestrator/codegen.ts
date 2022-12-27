@@ -1,4 +1,7 @@
+import { join } from 'node:path';
 import type { CodegenConfig } from '@graphql-codegen/cli';
+
+import { definitionsLibraryPath } from '..';
 
 const config: CodegenConfig = {
   config: {
@@ -6,9 +9,11 @@ const config: CodegenConfig = {
       UUID: 'string',
     },
   },
-  documents: ['./src/graphql/orchestrator/{queries,mutations}/*.ts'],
+  documents: [
+    join(definitionsLibraryPath, 'orchestrator/{queries,mutations}/*.ts'),
+  ],
   generates: {
-    './src/graphql/orchestrator/generated/': {
+    './src/graphql/orchestrator/': {
       config: { skipTypename: true },
       plugins: [],
       preset: 'client',

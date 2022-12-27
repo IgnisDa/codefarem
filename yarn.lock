@@ -1684,6 +1684,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@codefarem/graphql@workspace:libs/graphql":
+  version: 0.0.0-use.local
+  resolution: "@codefarem/graphql@workspace:libs/graphql"
+  dependencies:
+    "@codefarem/generated": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@codefarem/mails@workspace:apps/mails":
   version: 0.0.0-use.local
   resolution: "@codefarem/mails@workspace:apps/mails"

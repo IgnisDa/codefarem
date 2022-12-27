@@ -1,4 +1,4 @@
-import { graphql } from '../generated';
+import { graphql } from ':generated/graphql/orchestrator';
 
 export const CREATE_CLASS = graphql(`
   mutation CreateClass($input: CreateClassInput!) {

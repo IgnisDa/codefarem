@@ -1,4 +1,4 @@
-import { graphql } from '../generated';
+import { graphql } from ':generated/graphql/orchestrator';
 
 export const EXECUTE_CODE = graphql(`
   mutation ExecuteCode($input: ExecuteCodeInput!) {

@@ -20,7 +20,7 @@ export enum AccountType {
   Teacher = 'TEACHER'
 }
 
-/** An error type with an attached field to tell what went wrong */
+/** An error type with an attached field to tell what went wrong. */
 export type ApiError = {
   /** The error describing what went wrong */
   error: Scalars['String'];

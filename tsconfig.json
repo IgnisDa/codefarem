@@ -24,6 +24,9 @@
       "path": "libs/generated"
     },
     {
+      "path": "libs/graphql"
+    },
+    {
       "path": "libs/main-db"
     }
   ]

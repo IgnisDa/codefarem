@@ -1,4 +1,4 @@
-import { graphql } from '../generated';
+import { graphql } from ':generated/graphql/orchestrator';
 
 export const REGISTER_USER = graphql(`
   mutation RegisterUser($input: RegisterUserInput!) {

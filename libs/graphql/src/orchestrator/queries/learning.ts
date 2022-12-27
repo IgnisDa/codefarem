@@ -1,4 +1,4 @@
-import { graphql } from '../generated';
+import { graphql } from ':generated/graphql/orchestrator';
 
 export const QUESTIONS_CONNECTION = graphql(`
   query questions($args: ConnectionArguments!) {

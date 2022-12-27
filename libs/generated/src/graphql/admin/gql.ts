@@ -13,14 +13,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-    "\n    mutation CreateInviteLink($input: CreateInviteLinkInput!) {\n      createInviteLink(input: $input) {\n        __typename\n        ...on CreateInviteLinkOutput {\n          token\n        }\n        ...on ApiError {\n          error\n        }\n      }\n    }\n": types.CreateInviteLinkDocument,
+    "\n  mutation CreateInviteLink($input: CreateInviteLinkInput!) {\n    createInviteLink(input: $input) {\n      __typename\n      ... on CreateInviteLinkOutput {\n        token\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.CreateInviteLinkDocument,
     "\n  query AllInviteLinks {\n    allInviteLinks {\n      id\n      token\n      isActive\n      email\n      expiresAt\n      usedAt\n      role\n    }\n  }\n": types.AllInviteLinksDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation CreateInviteLink($input: CreateInviteLinkInput!) {\n      createInviteLink(input: $input) {\n        __typename\n        ...on CreateInviteLinkOutput {\n          token\n        }\n        ...on ApiError {\n          error\n        }\n      }\n    }\n"): (typeof documents)["\n    mutation CreateInviteLink($input: CreateInviteLinkInput!) {\n      createInviteLink(input: $input) {\n        __typename\n        ...on CreateInviteLinkOutput {\n          token\n        }\n        ...on ApiError {\n          error\n        }\n      }\n    }\n"];
+export function graphql(source: "\n  mutation CreateInviteLink($input: CreateInviteLinkInput!) {\n    createInviteLink(input: $input) {\n      __typename\n      ... on CreateInviteLinkOutput {\n        token\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateInviteLink($input: CreateInviteLinkInput!) {\n    createInviteLink(input: $input) {\n      __typename\n      ... on CreateInviteLinkOutput {\n        token\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

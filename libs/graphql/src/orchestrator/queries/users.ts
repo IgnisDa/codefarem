@@ -1,4 +1,4 @@
-import { graphql } from '../generated';
+import { graphql } from ':generated/graphql/orchestrator';
 
 export const USER_WITH_EMAIL = graphql(`
   query UserWithEmail($input: UserWithEmailInput!) {

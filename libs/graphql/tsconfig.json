@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "outDir": "../../.moon/cache/types/libs/graphql",
+    "preserveConstEnums": true,
+    "strict": true,
+    "paths": {
+      ":generated/*": [
+        "../generated/src/*"
+      ]
+    }
+  },
+  "exclude": [],
+  "references": [
+    {
+      "path": "../generated"
+    }
+  ]
+}

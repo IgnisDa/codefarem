@@ -1,0 +1,9 @@
+{
+  "name": "@codefarem/graphql",
+  "version": "0.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@codefarem/generated": "workspace:*"
+  },
+  "private": true
+}
