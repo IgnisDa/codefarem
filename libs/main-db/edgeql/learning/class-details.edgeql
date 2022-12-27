@@ -1,3 +1,4 @@
+# get details about a class
 SELECT learning::Class {
   name
 }

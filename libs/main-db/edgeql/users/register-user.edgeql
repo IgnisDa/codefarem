@@ -1,3 +1,4 @@
+# create a new user, with the required account type
 SELECT (
   INSERT users::{User} {
     profile := (INSERT users::UserProfile {

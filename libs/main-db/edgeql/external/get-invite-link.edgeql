@@ -1,3 +1,4 @@
+# get invite link by its token
 SELECT external::InviteLink {
   id,
   is_active,

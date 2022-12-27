@@ -1,3 +1,4 @@
+# get a user's profile by their email
 SELECT users::UserProfile.<profile[is users::User] {
   id
 }

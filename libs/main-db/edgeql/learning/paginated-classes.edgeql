@@ -1,3 +1,4 @@
+# a query to get a list of classes, which supports forward and backward pagination
 WITH
   selected := (
     SELECT learning::Class

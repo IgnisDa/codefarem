@@ -1,3 +1,4 @@
+# create a new class
 INSERT learning::Class {
   name := <str>$0,
   teachers := (

@@ -1,3 +1,4 @@
+# create a new invite link
 SELECT (
   INSERT external::InviteLink {
     email := <optional str>$0,

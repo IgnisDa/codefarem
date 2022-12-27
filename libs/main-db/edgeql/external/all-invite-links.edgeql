@@ -1,3 +1,4 @@
+# get details about all the invite links
 SELECT external::InviteLink {
   id,
   token,

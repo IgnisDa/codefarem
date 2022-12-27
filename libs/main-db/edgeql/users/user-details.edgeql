@@ -1,3 +1,4 @@
+# get details of a user by their unique hanko_id
 SELECT DISTINCT users::User {
   id,
   profile: {
