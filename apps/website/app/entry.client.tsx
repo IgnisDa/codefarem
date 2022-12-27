@@ -1,7 +1,7 @@
 import { ClientProvider } from '@mantine/remix';
 import { RemixBrowser } from '@remix-run/react';
 import { StrictMode } from 'react';
-import { hydrate } from 'react-dom';
+import { hydrateRoot } from 'react-dom/client';
 
 const rootElement = (
   <StrictMode>
@@ -11,4 +11,4 @@ const rootElement = (
   </StrictMode>
 );
 
-hydrate(rootElement, document);
+hydrateRoot(document, rootElement);
