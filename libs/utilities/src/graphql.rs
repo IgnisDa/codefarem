@@ -1,5 +1,6 @@
 use crate::users::AccountType;
 use async_graphql::{InputObject, SimpleObject};
+use edgedb_derive::Queryable;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -11,7 +12,7 @@ pub struct ApiError {
 }
 
 /// The details of a user's profile.
-#[derive(Debug, SimpleObject, Deserialize, Clone)]
+#[derive(Debug, SimpleObject, Deserialize, Clone, Queryable)]
 pub struct UserProfileInformation {
     /// The email of the user
     pub email: String,

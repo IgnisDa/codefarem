@@ -1,6 +1,9 @@
 use crate::users::dto::{
     mutations::register_user::RegisterUserOutput,
-    queries::user_with_email::{UserWithEmailError, UserWithEmailOutput},
+    queries::{
+        search_users::SearchUsersGroup,
+        user_with_email::{UserWithEmailError, UserWithEmailOutput},
+    },
 };
 use chrono::DateTime;
 use edgedb_tokio::Client;
@@ -20,6 +23,8 @@ const USE_INVITE_LINK: &str =
     include_str!("../../../../libs/main-db/edgeql/external/use-invite-link.edgeql");
 const GET_INVITE_LINK: &str =
     include_str!("../../../../libs/main-db/edgeql/external/get-invite-link.edgeql");
+const SEARCH_USERS: &str =
+    include_str!("../../../../libs/main-db/edgeql/users/search-users.edgeql");
 
 pub struct UserService {
     db_conn: Arc<Client>,
@@ -34,6 +39,17 @@ impl UserService {
 }
 
 impl UserService {
+    pub async fn search_users<'a>(&self, username: &'a Option<String>) -> Vec<SearchUsersGroup> {
+        let username = username.clone().unwrap_or_default();
+        let results = self
+            .db_conn
+            .query_json(SEARCH_USERS, &(username,))
+            .await
+            .unwrap();
+        let results = results.to_string();
+        serde_json::from_str(&results).unwrap()
+    }
+
     pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
         get_user_details_from_hanko_id(hanko_id, &self.db_conn).await
     }

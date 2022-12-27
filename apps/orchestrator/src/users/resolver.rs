@@ -4,6 +4,7 @@ use crate::{
         dto::{
             mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
             queries::{
+                search_users::{SearchUsersGroup, SearchUsersInput},
                 user_details::UserDetailsResultUnion,
                 user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
             },
@@ -47,6 +48,18 @@ impl UserQuery {
             .user_with_email(input.email())
             .await;
         to_result_union_response!(output, UserWithEmailResultUnion)
+    }
+
+    /// Search for users in the service by username. If not username is provided, all users
+    /// are returned.
+    async fn search_users(
+        &self,
+        ctx: &Context<'_>,
+        input: SearchUsersInput,
+    ) -> Vec<SearchUsersGroup> {
+        ctx.data_unchecked::<UserService>()
+            .search_users(input.username())
+            .await
     }
 }
 
