@@ -52,11 +52,7 @@ impl UserQuery {
 
     /// Search for users in the service by username. If not username is provided, all users
     /// are returned.
-    async fn search_users(
-        &self,
-        ctx: &Context<'_>,
-        input: SearchUsersInput,
-    ) -> Vec<SearchUsersGroup> {
+    async fn search_users(&self, ctx: &Context<'_>, input: SearchUsersInput) -> SearchUsersGroup {
         ctx.data_unchecked::<UserService>()
             .search_users(input.username())
             .await

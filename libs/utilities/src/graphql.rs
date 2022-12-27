@@ -12,7 +12,7 @@ pub struct ApiError {
 }
 
 /// The details of a user's profile.
-#[derive(Debug, SimpleObject, Deserialize, Clone, Queryable)]
+#[derive(Debug, SimpleObject, Deserialize, Clone, Queryable, Default)]
 pub struct UserProfileInformation {
     /// The email of the user
     pub email: String,

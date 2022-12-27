@@ -8,9 +8,10 @@ use strum::Display;
 const USER_DETAILS: &str = include_str!("../../main-db/edgeql/users/user-details.edgeql");
 
 /// The types of accounts a user can create
-#[derive(Enum, Clone, Copy, PartialEq, Eq, Display, Serialize, Debug, Deserialize)]
+#[derive(Enum, Clone, Copy, PartialEq, Eq, Display, Serialize, Debug, Deserialize, Default)]
 pub enum AccountType {
     #[serde(rename = "users::Student")]
+    #[default]
     Student,
     #[serde(rename = "users::Teacher")]
     Teacher,

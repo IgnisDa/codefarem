@@ -1,7 +1,7 @@
 use crate::users::dto::{
     mutations::register_user::RegisterUserOutput,
     queries::{
-        search_users::SearchUsersGroup,
+        search_users::{SearchUsersDetails, SearchUsersGroup},
         user_with_email::{UserWithEmailError, UserWithEmailOutput},
     },
 };
@@ -39,15 +39,40 @@ impl UserService {
 }
 
 impl UserService {
-    pub async fn search_users<'a>(&self, username: &'a Option<String>) -> Vec<SearchUsersGroup> {
+    pub async fn search_users<'a>(&self, username: &'a Option<String>) -> SearchUsersGroup {
         let username = username.clone().unwrap_or_default();
+        #[derive(Debug, Deserialize, Default, Clone)]
+        pub struct SearchUsersKey {
+            pub account_type: AccountType,
+        }
+        // https://www.edgedb.com/docs/edgeql/group
+        #[derive(Debug, Deserialize, Default, Clone)]
+        pub struct SearchUsersGrouped {
+            /// the name of the group (in this case the account type)
+            pub key: SearchUsersKey,
+            pub grouping: Vec<String>,
+            /// the users in this group
+            pub elements: Vec<SearchUsersDetails>,
+        }
         let results = self
             .db_conn
             .query_json(SEARCH_USERS, &(username,))
             .await
             .unwrap();
         let results = results.to_string();
-        serde_json::from_str(&results).unwrap()
+        let data = serde_json::from_str::<Vec<SearchUsersGrouped>>(&results).unwrap();
+        let teachers = data
+            .clone()
+            .into_iter()
+            .find(|x| x.key.account_type == AccountType::Teacher)
+            .unwrap_or_default()
+            .elements;
+        let students = data
+            .into_iter()
+            .find(|x| x.key.account_type == AccountType::Student)
+            .unwrap_or_default()
+            .elements;
+        SearchUsersGroup { students, teachers }
     }
 
     pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
