@@ -14,30 +14,26 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n": types.ExecuteCodeDocument,
-    "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.RegisterUserDocument,
     "\n  mutation CreateClass($input: CreateClassInput!) {\n    createClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateClassOutput {\n        id\n      }\n    }\n  }\n": types.CreateClassDocument,
     "\n  mutation UpsertQuestion($input: UpsertQuestionInput!) {\n    upsertQuestion(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UpsertQuestionOutput {\n        slug\n      }\n    }\n  }\n": types.UpsertQuestionDocument,
     "\n  query TestCaseUnits {\n    testCaseUnits\n  }\n": types.TestCaseUnitsDocument,
     "\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          __typename\n          ... on ExecuteCodeError {\n            error\n            step\n          }\n          ... on TestCaseSuccessStatus {\n            passed\n            userOutput\n            expectedOutput\n            diff\n            time {\n              compilation\n              execution\n            }\n          }\n        }\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.ExecuteCodeForQuestionDocument,
     "\n  mutation DeleteQuestion($input: DeleteQuestionInput!) {\n    deleteQuestion(input: $input) {\n      __typename\n      ... on DeleteQuestionOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.DeleteQuestionDocument,
+    "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.RegisterUserDocument,
     "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n": types.SupportedLanguagesDocument,
     "\n  query LanguageExample($language: SupportedLanguage!) {\n    languageExample(language: $language)\n  }\n": types.LanguageExampleDocument,
-    "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n": types.UserWithEmailDocument,
-    "\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        testCases {\n          inputs {\n            normalizedData\n            unitType\n          }\n          outputs {\n            normalizedData\n            unitType\n          }\n        }\n      }\n    }\n  }\n": types.QuestionDetailsDocument,
-    "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n": types.UserDetailsDocument,
+    "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n": types.ToolchainInformationDocument,
     "\n  query questions($args: ConnectionArguments!) {\n    questionsConnection(args: $args) {\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n      edges {\n        cursor\n        node {\n          createdTime\n          name\n          slug\n          numTestCases\n        }\n      }\n    }\n  }\n": types.QuestionsDocument,
     "\n  query GetPaginatedClasses($args: ConnectionArguments!) {\n    classesConnection(args: $args) {\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n      edges {\n        cursor\n        node {\n          name\n          joinSlug\n          id\n          numTeachers\n          numStudents\n        }\n      }\n    }\n  }\n": types.GetPaginatedClassesDocument,
-    "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n": types.ToolchainInformationDocument,
+    "\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        testCases {\n          inputs {\n            normalizedData\n            unitType\n          }\n          outputs {\n            normalizedData\n            unitType\n          }\n        }\n      }\n    }\n  }\n": types.QuestionDetailsDocument,
+    "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n": types.UserWithEmailDocument,
+    "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n": types.UserDetailsDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -61,6 +57,10 @@ export function graphql(source: "\n  mutation DeleteQuestion($input: DeleteQuest
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on RegisterUserOutput {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n"): (typeof documents)["\n  query SupportedLanguages {\n    supportedLanguages\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -69,15 +69,7 @@ export function graphql(source: "\n  query LanguageExample($language: SupportedL
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        testCases {\n          inputs {\n            normalizedData\n            unitType\n          }\n          outputs {\n            normalizedData\n            unitType\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        testCases {\n          inputs {\n            normalizedData\n            unitType\n          }\n          outputs {\n            normalizedData\n            unitType\n          }\n        }\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n"): (typeof documents)["\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -89,7 +81,15 @@ export function graphql(source: "\n  query GetPaginatedClasses($args: Connection
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n"): (typeof documents)["\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n"];
+export function graphql(source: "\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        testCases {\n          inputs {\n            normalizedData\n            unitType\n          }\n          outputs {\n            normalizedData\n            unitType\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query QuestionDetails($questionSlug: String!) {\n    questionDetails(questionSlug: $questionSlug) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on QuestionDetailsOutput {\n        name\n        problem\n        testCases {\n          inputs {\n            normalizedData\n            unitType\n          }\n          outputs {\n            normalizedData\n            unitType\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

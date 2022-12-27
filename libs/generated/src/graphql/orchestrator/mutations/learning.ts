@@ -1,37 +1,4 @@
-import { graphql } from './generated';
-
-export const EXECUTE_CODE = graphql(`
-  mutation ExecuteCode($input: ExecuteCodeInput!) {
-    executeCode(input: $input) {
-      __typename
-      ... on ExecuteCodeOutput {
-        output
-        time {
-          compilation
-          execution
-        }
-      }
-      ... on ExecuteCodeError {
-        error
-        step
-      }
-    }
-  }
-`);
-
-export const REGISTER_USER = graphql(`
-  mutation RegisterUser($input: RegisterUserInput!) {
-    registerUser(input: $input) {
-      __typename
-      ... on RegisterUserOutput {
-        id
-      }
-      ... on ApiError {
-        error
-      }
-    }
-  }
-`);
+import { graphql } from '../generated';
 
 export const CREATE_CLASS = graphql(`
   mutation CreateClass($input: CreateClassInput!) {
