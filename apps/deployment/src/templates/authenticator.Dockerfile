@@ -10,4 +10,4 @@ RUN apt-get update ;\
 COPY --from=deps /bin/envsub /bin/envsub
 COPY --from=builder /hanko /usr/local/bin/hanko
 COPY apps/authenticator/* ./
-ENTRYPOINT ["hanko", "serve", "public"]
+ENTRYPOINT [ "/set-env.sh", "&&", "hanko", "serve", "public" ]
