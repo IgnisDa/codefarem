@@ -8,6 +8,6 @@ export DATABASE_NAME=$(echo $DATABASE_URL | grep -oP "postgres://.*@.*:.*/\K(.+?
 
 mkdir -p /service/config
 
-(cat /service/config.yml) | envsub > /service/config/config.yaml
+(cat /service/config.yml) | envsub --greedy-defaults > /service/config/config.yaml
 
 echo "Wrote configuration..."
