@@ -1,6 +1,6 @@
 import * as edgedb from 'edgedb';
 import { createUserInfo } from ':faker';
-import e from '../dbschema/edgeql-js';
+import e from ':generated/edgeql-js';
 
 describe('Database behavior testing', () => {
   let client: edgedb.Client;
@@ -28,6 +28,7 @@ describe('Database behavior testing', () => {
         name: 'CPP',
         students: e.select(e.users.Student),
         teachers: e.select(e.users.Teacher),
+        join_slug: 'abcd1',
       })
       .run(client);
     const classShape = e.shape(e.learning.Class, (c) => ({
@@ -66,6 +67,7 @@ describe('Database behavior testing', () => {
           teachers: e.select(e.users.Teacher, (t) => ({
             filter: e.op(t.id, '=', e.uuid(id)),
           })),
+          join_slug: `abcd${i}`,
         })
         .run(client);
     }

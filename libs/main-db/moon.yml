@@ -10,13 +10,17 @@ tasks:
     options:
       runInCI: false
 
+  # FIXME: Move this task to the generated project
   generate:
     command:
       - edgeql-js
+    args:
+      - '--output-dir'
+      - '../generated/src/edgeql-js'
     inputs:
       - '@group(dbschema)'
-    outputs:
-      - 'dbschema/edgeql-js'
+    # outputs:
+    #   - '../generated/src/edgeql-js'
     local: true
 
   lint-edgeql:

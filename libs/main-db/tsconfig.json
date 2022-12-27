@@ -12,6 +12,9 @@
     "paths": {
       ":faker": [
         "../faker/src/index.ts"
+      ],
+      ":generated/*": [
+        "../generated/src/*"
       ]
     },
     "outDir": "../../.moon/cache/types/libs/main-db"
@@ -28,6 +31,9 @@
   "references": [
     {
       "path": "../faker"
+    },
+    {
+      "path": "../generated"
     }
   ]
 }
