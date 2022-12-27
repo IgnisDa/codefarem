@@ -18,6 +18,7 @@ passcode:
     port: 1025
 
 session:
+  lifespan: '24h'
   cookie:
     secure: false
 
