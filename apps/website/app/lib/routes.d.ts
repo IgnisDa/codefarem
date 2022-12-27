@@ -2,11 +2,12 @@ declare module "routes-gen" {
   export type RouteParams = {
     "/": Record<string, never>;
     "/questions/:choice-action": { "choice": string };
+    "/classes/action/create": Record<string, never>;
     "/information/toolchain": Record<string, never>;
     "/questions/solve/:slug": { "slug": string };
     "/playground": Record<string, never>;
-    "/classes/create": Record<string, never>;
     "/questions/list": Record<string, never>;
+    "/classes/list": Record<string, never>;
     "/auth/logout": Record<string, never>;
     "/classes/:id": { "id": string };
     "/auth": Record<string, never>;
@@ -16,11 +17,12 @@ declare module "routes-gen" {
     T extends
       | ["/"]
       | ["/questions/:choice-action", RouteParams["/questions/:choice-action"]]
+      | ["/classes/action/create"]
       | ["/information/toolchain"]
       | ["/questions/solve/:slug", RouteParams["/questions/solve/:slug"]]
       | ["/playground"]
-      | ["/classes/create"]
       | ["/questions/list"]
+      | ["/classes/list"]
       | ["/auth/logout"]
       | ["/classes/:id", RouteParams["/classes/:id"]]
       | ["/auth"]

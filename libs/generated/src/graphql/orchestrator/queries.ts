@@ -91,6 +91,29 @@ export const QUESTIONS_CONNECTION = graphql(`
   }
 `);
 
+export const CLASSES_CONNECTION = graphql(`
+  query GetPaginatedClasses($args: ConnectionArguments!) {
+    classesConnection(args: $args) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          name
+          joinSlug
+          id
+          numTeachers
+          numStudents
+        }
+      }
+    }
+  }
+`)
+
 export const TOOLCHAIN_INFORMATION = graphql(`
   query ToolchainInformation {
     toolchainInformation {

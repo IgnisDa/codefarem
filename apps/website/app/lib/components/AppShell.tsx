@@ -78,7 +78,7 @@ const data = [
   {
     label: 'Classes',
     icon: IconSchool,
-    links: [{ link: route('/classes/create'), label: 'Create' }],
+    links: [{ link: route('/classes/list'), label: 'List' }],
   },
   {
     label: 'Questions',
