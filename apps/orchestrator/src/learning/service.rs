@@ -13,9 +13,10 @@ use crate::{
             upsert_question::UpsertQuestionOutput,
         },
         queries::{
-            all_questions::QuestionPartialsDetails,
+            class_connection::ClassPartialsDetails,
             class_details::ClassDetailsOutput,
             question_details::QuestionDetailsOutput,
+            questions_connection::QuestionPartialsDetails,
             test_case::{TestCase, TestCaseUnit},
         },
     },
@@ -114,6 +115,18 @@ impl LearningService {
                 PAGINATED_QUESTIONS,
                 &self.db_conn,
             )
+            .await
+    }
+
+    pub async fn classes_connection<'a>(
+        &self,
+        after: Option<String>,
+        before: Option<String>,
+        first: Option<i32>,
+        last: Option<i32>,
+    ) -> Result<Connection<String, ClassPartialsDetails, EmptyFields, EmptyFields>> {
+        self.graphql_connection_service
+            .paginate_db_query(after, before, first, last, PAGINATED_CLASSES, &self.db_conn)
             .await
     }
 

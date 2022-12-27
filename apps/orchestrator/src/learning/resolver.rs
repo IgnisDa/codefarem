@@ -11,8 +11,9 @@ use crate::{
                 upsert_question::{UpsertQuestionInput, UpsertQuestionResultUnion},
             },
             queries::{
-                all_questions::QuestionPartialsDetails, class_details::ClassDetailsResultUnion,
-                question_details::QuestionDetailsResultUnion, test_case::TestCaseUnit,
+                class_connection::ClassPartialsDetails, class_details::ClassDetailsResultUnion,
+                question_details::QuestionDetailsResultUnion,
+                questions_connection::QuestionPartialsDetails, test_case::TestCaseUnit,
             },
         },
         service::LearningService,
@@ -52,6 +53,17 @@ impl LearningQuery {
     ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
         ctx.data_unchecked::<LearningService>()
             .questions_connection(args.after, args.before, args.first, args.last)
+            .await
+    }
+
+    /// Get a paginated list of classes in the relay connection format.
+    async fn classes_connection(
+        &self,
+        ctx: &Context<'_>,
+        args: ConnectionArguments,
+    ) -> Result<Connection<String, ClassPartialsDetails, EmptyFields, EmptyFields>> {
+        ctx.data_unchecked::<LearningService>()
+            .classes_connection(args.after, args.before, args.first, args.last)
             .await
     }
 
