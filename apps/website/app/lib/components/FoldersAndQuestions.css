@@ -1,0 +1,11 @@
+.TreeNode {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.TreeNodeToolBar,
+.iconContainer {
+  display: inline-flex;
+  gap: 4px;
+}
