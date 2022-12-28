@@ -17,6 +17,7 @@ use crate::{
             class_details::ClassDetailsOutput,
             question_details::QuestionDetailsOutput,
             questions_connection::QuestionPartialsDetails,
+            search_questions::SearchQuestionsOutput,
             test_case::{TestCase, TestCaseUnit},
         },
     },
@@ -42,6 +43,8 @@ use uuid::Uuid;
 
 const PAGINATED_QUESTIONS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/paginated-questions.edgeql");
+const SEARCH_QUESTIONS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/search-questions.edgeql");
 const PAGINATED_CLASSES: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/paginated-classes.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
@@ -97,6 +100,14 @@ impl LearningService {
 impl LearningService {
     pub fn test_case_units(&self) -> Vec<TestCaseUnit> {
         TestCaseUnit::iter().collect()
+    }
+
+    pub async fn search_questions(&self, search_query: &Option<String>) -> SearchQuestionsOutput {
+        let search_query = search_query.clone().unwrap_or_default();
+        self.db_conn
+            .query_required_single::<SearchQuestionsOutput, _>(SEARCH_QUESTIONS, &(search_query,))
+            .await
+            .unwrap()
     }
 
     pub async fn questions_connection<'a>(

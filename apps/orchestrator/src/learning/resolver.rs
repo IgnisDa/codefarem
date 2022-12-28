@@ -13,7 +13,8 @@ use crate::{
             queries::{
                 class_connection::ClassPartialsDetails, class_details::ClassDetailsResultUnion,
                 question_details::QuestionDetailsResultUnion,
-                questions_connection::QuestionPartialsDetails, test_case::TestCaseUnit,
+                questions_connection::QuestionPartialsDetails,
+                search_questions::SearchQuestionsOutput, test_case::TestCaseUnit,
             },
         },
         service::LearningService,
@@ -26,7 +27,7 @@ use async_graphql::{
 };
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
-use utilities::graphql::ConnectionArguments;
+use utilities::graphql::{ConnectionArguments, SearchQueryInput};
 use uuid::Uuid;
 
 /// The query segment for Learning
@@ -42,6 +43,17 @@ impl LearningQuery {
     /// Get all the types of test case units possible
     async fn test_case_units(&self, ctx: &Context<'_>) -> Vec<TestCaseUnit> {
         ctx.data_unchecked::<LearningService>().test_case_units()
+    }
+
+    /// Search for questions. If no query is provided, all questions are returned.
+    async fn search_questions(
+        &self,
+        ctx: &Context<'_>,
+        input: SearchQueryInput,
+    ) -> SearchQuestionsOutput {
+        ctx.data_unchecked::<LearningService>()
+            .search_questions(input.query_string())
+            .await
     }
 
     /// Get a paginated list of questions in the relay connection format. It uses a cursor
