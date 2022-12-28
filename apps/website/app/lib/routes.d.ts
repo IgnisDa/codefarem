@@ -1,5 +1,6 @@
 declare module "routes-gen" {
   export type RouteParams = {
+    "/api/searchQuestion": Record<string, never>;
     "/": Record<string, never>;
     "/questions/:choice-action": { "choice": string };
     "/classes/action/create": Record<string, never>;
@@ -15,6 +16,7 @@ declare module "routes-gen" {
 
   export function route<
     T extends
+      | ["/api/searchQuestion"]
       | ["/"]
       | ["/questions/:choice-action", RouteParams["/questions/:choice-action"]]
       | ["/classes/action/create"]

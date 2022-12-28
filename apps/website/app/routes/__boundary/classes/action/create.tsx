@@ -16,17 +16,20 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
+import { useDebouncedState } from '@mantine/hooks';
 import { json, redirect } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
-import { forwardRef } from 'react';
+import { Form, useFetcher, useLoaderData } from '@remix-run/react';
+import { forwardRef, useEffect, useRef } from 'react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
+import { withQuery } from 'ufo';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
 import { forbiddenError } from '~/lib/utils';
+import type { SearchLoader } from '~/routes/api/searchQuestion';
 import type { SearchUserDetailsFragment } from ':generated/graphql/orchestrator/graphql';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type { FragmentType } from ':generated/graphql/orchestrator';
@@ -101,6 +104,19 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default () => {
   const { students, teachers } = useLoaderData<typeof loader>();
+  const fetcher = useFetcher<SearchLoader>();
+  const ref = useRef<HTMLFormElement | null>(null);
+  const [searchQuestion, setSearchQuestion] = useDebouncedState('', 300);
+
+  useEffect(() => {
+    if (searchQuestion) {
+      fetcher.load(
+        withQuery(route('/api/searchQuestion'), {
+          search: searchQuestion,
+        })
+      );
+    }
+  }, [searchQuestion]);
 
   return (
     <Container size={'sm'}>
@@ -123,7 +139,26 @@ export default () => {
               itemComponent={MultiSelectItem}
               searchable
             />
+            <MultiSelect
+              data={[
+                'react',
+                'vue',
+                'angular',
+                'svelte',
+                'ember',
+                'backbone',
+                'knockout',
+              ]}
+              required
+              label="Questions to add to the class"
+              placeholder="Start typing to search for questions"
+              searchable
+              clearable
+              nothingFound="Nothing found"
+              onSearchChange={setSearchQuestion}
+            />
             <Divider variant={'dashed'} />
+            {JSON.stringify(fetcher.data)}
             <Flex
               justify={{ base: 'center', md: 'end' }}
               gap={'md'}
