@@ -1793,7 +1793,6 @@ __metadata:
     prosemirror-schema-list: 1.2.2
     react: 18.2.0
     react-dom: 18.2.0
-    react-folder-tree: 5.1.1
     react-icons: 4.4.0
     remix-utils: 4.3.0
     routes-gen: 0.5.2
@@ -16009,35 +16008,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-folder-tree@npm:5.1.1":
-  version: 5.1.1
-  resolution: "react-folder-tree@npm:5.1.1"
-  dependencies:
-    prop-types: ^15.7.2
-    react-icons: ^4.1.0
-    use-tree-state: 1.0.0
-  peerDependencies:
-    react: ^16.8.0 || ^17
-    react-dom: ^16.8.0 || ^17
-  checksum: 9d2d4b1fdf9b0f3367bb8a1977fc1c8fcd376fc86f2629ac2310dfcb041466b5f2dadf82fdbe467f79e2d4aeb6d69a15ed5940ca26b855d05d1fff2db6f99b05
-  languageName: node
-  linkType: hard
-
 "react-icons@npm:4.4.0":
   version: 4.4.0
   resolution: "react-icons@npm:4.4.0"
   peerDependencies:
     react: "*"
   checksum: dd93a1dcc8ac8a3cf46a2b33e80b586fa967331fa5fcb90d061abf276155a8363a331643e203d67cb9bab4261d00a757da854bcce1fce2c6e4258bf3e33f711b
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:^4.1.0":
-  version: 4.7.1
-  resolution: "react-icons@npm:4.7.1"
-  peerDependencies:
-    react: "*"
-  checksum: ed3cbdc5fc0c4d7d2debf78fdc8c4c80aeacf85a506a9a3c11b1d5922de393ac0a6542012b7fb81761e9280c54d0f26827d50a92b54ec8f0c8e52364d89970b5
   languageName: node
   linkType: hard
 
@@ -18663,16 +18639,6 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
-  languageName: node
-  linkType: hard
-
-"use-tree-state@npm:1.0.0":
-  version: 1.0.0
-  resolution: "use-tree-state@npm:1.0.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17
-    react-dom: ^16.8.0 || ^17
-  checksum: 578c624351dc13100b33910a3d6f0fbd071779dc6730e52a186b3071b55f64b0c129edec94683aac4438dd38f1b0c98f84ce45d5d218dc2fef5e05ae000ed37c
   languageName: node
   linkType: hard
 
