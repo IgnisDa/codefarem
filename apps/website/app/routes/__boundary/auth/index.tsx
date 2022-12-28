@@ -26,12 +26,7 @@ import { zx } from 'zodix';
 import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { gqlClient } from '~/lib/services/graphql.server';
 import { generateUsernameFromEmail } from '~/lib/utils';
-import authStyles from '../../../styles/auth/index.css';
-import type { ActionArgs, LinksFunction } from '@remix-run/node';
-
-export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: authStyles }];
-};
+import type { ActionArgs } from '@remix-run/node';
 
 const authSchema = z.object({
   email: z.string().email(),
