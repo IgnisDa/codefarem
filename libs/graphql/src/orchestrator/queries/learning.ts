@@ -69,3 +69,16 @@ export const QUESTION_DETAILS = graphql(`
     }
   }
 `);
+
+export const SEARCH_QUESTIONS = graphql(`
+  query SearchQuestions($input: SearchQueryInput!) {
+    searchQuestions(input: $input) {
+      results {
+        id
+        name
+        numTestCases
+      }
+      total
+    }
+  }
+`);

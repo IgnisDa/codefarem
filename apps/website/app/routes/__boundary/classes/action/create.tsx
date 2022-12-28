@@ -19,7 +19,7 @@ import {
 import { useDebouncedState } from '@mantine/hooks';
 import { json, redirect } from '@remix-run/node';
 import { Form, useFetcher, useLoaderData } from '@remix-run/react';
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { withQuery } from 'ufo';
@@ -105,8 +105,10 @@ export const action = async ({ request }: ActionArgs) => {
 export default () => {
   const { students, teachers } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<SearchLoader>();
-  const ref = useRef<HTMLFormElement | null>(null);
   const [searchQuestion, setSearchQuestion] = useDebouncedState('', 300);
+  const [selectedQuestions, setSelectedQuestions] = useState(
+    new Set<{ label: string; value: string }>()
+  );
 
   useEffect(() => {
     if (searchQuestion) {
@@ -116,6 +118,7 @@ export default () => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuestion]);
 
   return (
@@ -140,25 +143,25 @@ export default () => {
               searchable
             />
             <MultiSelect
-              data={[
-                'react',
-                'vue',
-                'angular',
-                'svelte',
-                'ember',
-                'backbone',
-                'knockout',
-              ]}
+              data={[...selectedQuestions, ...(fetcher.data?.data || [])]}
               required
               label="Questions to add to the class"
               placeholder="Start typing to search for questions"
               searchable
               clearable
-              nothingFound="Nothing found"
               onSearchChange={setSearchQuestion}
+              onChange={(values) => {
+                setSelectedQuestions((prev) => {
+                  const newSet = new Set(prev);
+                  values.forEach((a) => {
+                    const data = fetcher.data?.data?.find((b) => b.value === a);
+                    if (data) newSet.add(data);
+                  });
+                  return newSet;
+                });
+              }}
             />
             <Divider variant={'dashed'} />
-            {JSON.stringify(fetcher.data)}
             <Flex
               justify={{ base: 'center', md: 'end' }}
               gap={'md'}
