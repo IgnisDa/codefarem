@@ -95,6 +95,7 @@ module learning {
             on source delete allow;
             on target delete delete source;
         };
+        multi link questions := .<folder[is learning::QuestionInstance];
     }
 
     # A question that will appear in a class
@@ -106,7 +107,12 @@ module learning {
         };
         # the question that this instance is based on
         required link question -> learning::Question {
-            on source delete delete target;
+            on source delete allow;
+            on target delete delete source;
+        };
+        # the test cases of the parent question that will be used for this instance
+        multi link test_cases -> learning::TestCase {
+            on source delete allow;
             on target delete allow;
         };
     }
