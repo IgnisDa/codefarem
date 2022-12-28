@@ -6,8 +6,8 @@ declare module "routes-gen" {
     "/information/toolchain": Record<string, never>;
     "/questions/solve/:slug": { "slug": string };
     "/playground": Record<string, never>;
-    "/questions/list": Record<string, never>;
-    "/classes/list": Record<string, never>;
+    "/questions": Record<string, never>;
+    "/classes": Record<string, never>;
     "/auth/logout": Record<string, never>;
     "/classes/:id": { "id": string };
     "/auth": Record<string, never>;
@@ -21,8 +21,8 @@ declare module "routes-gen" {
       | ["/information/toolchain"]
       | ["/questions/solve/:slug", RouteParams["/questions/solve/:slug"]]
       | ["/playground"]
-      | ["/questions/list"]
-      | ["/classes/list"]
+      | ["/questions"]
+      | ["/classes"]
       | ["/auth/logout"]
       | ["/classes/:id", RouteParams["/classes/:id"]]
       | ["/auth"]

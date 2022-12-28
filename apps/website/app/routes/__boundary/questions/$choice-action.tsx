@@ -146,7 +146,7 @@ export async function action({ request, params }: ActionArgs) {
   );
   if (upsertQuestion.__typename === 'ApiError')
     throw badRequest({ message: upsertQuestion.error });
-  return redirect(route('/questions/list'));
+  return redirect(route('/questions'));
 }
 
 const defaultOutput: OutputCaseUnit = {

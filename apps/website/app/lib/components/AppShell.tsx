@@ -78,14 +78,14 @@ const data = [
   {
     label: 'Classes',
     icon: IconSchool,
-    links: [{ link: route('/classes/list'), label: 'List' }],
+    links: [{ link: route('/classes'), label: 'List' }],
   },
   {
     label: 'Questions',
     icon: IconQuestionMark,
     links: [
       {
-        link: route('/questions/list'),
+        link: route('/questions'),
         label: 'List',
       },
     ],
