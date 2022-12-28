@@ -43,7 +43,7 @@ export const SEARCH_USER_DETAILS_FRAGMENT = graphql(`
 `);
 
 export const SEARCH_USERS = graphql(`
-  query SearchUsers($input: SearchUsersInput!) {
+  query SearchUsers($input: SearchQueryInput!) {
     searchUsers(input: $input) {
       teachers {
         ...SearchUserDetails

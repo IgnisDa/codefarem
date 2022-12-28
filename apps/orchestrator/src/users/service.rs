@@ -39,8 +39,8 @@ impl UserService {
 }
 
 impl UserService {
-    pub async fn search_users<'a>(&self, username: &'a Option<String>) -> SearchUsersGroup {
-        let username = username.clone().unwrap_or_default();
+    pub async fn search_users<'a>(&self, query_string: &'a Option<String>) -> SearchUsersGroup {
+        let username = query_string.clone().unwrap_or_default();
         #[derive(Debug, Deserialize, Default, Clone)]
         pub struct SearchUsersKey {
             pub account_type: AccountType,

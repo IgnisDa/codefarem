@@ -29,7 +29,7 @@ const documents = {
     "\n  query UserWithEmail($input: UserWithEmailInput!) {\n    userWithEmail(input: $input) {\n      __typename\n      ... on UserWithEmailOutput {\n        __typename\n      }\n      ... on UserWithEmailError {\n        __typename\n      }\n    }\n  }\n": types.UserWithEmailDocument,
     "\n  query UserDetails {\n    userDetails {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UserDetailsOutput {\n        accountType\n        profile {\n          email\n          username\n        }\n      }\n    }\n  }\n": types.UserDetailsDocument,
     "\n  fragment SearchUserDetails on SearchUsersDetails {\n    id\n    profile {\n      email\n      username\n    }\n  }\n": types.SearchUserDetailsFragmentDoc,
-    "\n  query SearchUsers($input: SearchUsersInput!) {\n    searchUsers(input: $input) {\n      teachers {\n        ...SearchUserDetails\n      }\n      students {\n        ...SearchUserDetails\n      }\n    }\n  }\n": types.SearchUsersDocument,
+    "\n  query SearchUsers($input: SearchQueryInput!) {\n    searchUsers(input: $input) {\n      teachers {\n        ...SearchUserDetails\n      }\n      students {\n        ...SearchUserDetails\n      }\n    }\n  }\n": types.SearchUsersDocument,
 };
 
 /**
@@ -99,7 +99,7 @@ export function graphql(source: "\n  fragment SearchUserDetails on SearchUsersDe
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query SearchUsers($input: SearchUsersInput!) {\n    searchUsers(input: $input) {\n      teachers {\n        ...SearchUserDetails\n      }\n      students {\n        ...SearchUserDetails\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchUsers($input: SearchUsersInput!) {\n    searchUsers(input: $input) {\n      teachers {\n        ...SearchUserDetails\n      }\n      students {\n        ...SearchUserDetails\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query SearchUsers($input: SearchQueryInput!) {\n    searchUsers(input: $input) {\n      teachers {\n        ...SearchUserDetails\n      }\n      students {\n        ...SearchUserDetails\n      }\n    }\n  }\n"): (typeof documents)["\n  query SearchUsers($input: SearchQueryInput!) {\n    searchUsers(input: $input) {\n      teachers {\n        ...SearchUserDetails\n      }\n      students {\n        ...SearchUserDetails\n      }\n    }\n  }\n"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

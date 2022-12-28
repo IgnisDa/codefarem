@@ -1,5 +1,6 @@
 use crate::users::AccountType;
 use async_graphql::{InputObject, SimpleObject};
+use derive_getters::Getters;
 use edgedb_derive::Queryable;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -42,4 +43,11 @@ pub struct ConnectionArguments {
     pub first: Option<i32>,
     /// The number of items to return from the end
     pub last: Option<i32>,
+}
+
+/// The input object used to query for some resource
+#[derive(InputObject, Getters)]
+pub struct SearchQueryInput {
+    /// The query to search by
+    query_string: Option<String>,
 }

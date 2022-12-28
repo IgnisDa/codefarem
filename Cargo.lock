@@ -3918,6 +3918,7 @@ dependencies = [
  "anyhow",
  "async-graphql",
  "chrono",
+ "derive-getters",
  "edgedb-derive",
  "edgedb-protocol",
  "edgedb-tokio",

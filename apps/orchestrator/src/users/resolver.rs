@@ -4,7 +4,7 @@ use crate::{
         dto::{
             mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
             queries::{
-                search_users::{SearchUsersGroup, SearchUsersInput},
+                search_users::SearchUsersGroup,
                 user_details::UserDetailsResultUnion,
                 user_with_email::{UserWithEmailInput, UserWithEmailResultUnion},
             },
@@ -16,6 +16,7 @@ use crate::{
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
+use utilities::graphql::SearchQueryInput;
 
 /// The query segment for User
 #[derive(Default)]
@@ -52,9 +53,9 @@ impl UserQuery {
 
     /// Search for users in the service by username. If not username is provided, all users
     /// are returned.
-    async fn search_users(&self, ctx: &Context<'_>, input: SearchUsersInput) -> SearchUsersGroup {
+    async fn search_users(&self, ctx: &Context<'_>, input: SearchQueryInput) -> SearchUsersGroup {
         ctx.data_unchecked::<UserService>()
-            .search_users(input.username())
+            .search_users(input.query_string())
             .await
     }
 }
