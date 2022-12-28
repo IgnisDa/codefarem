@@ -96,7 +96,7 @@ export const action = async ({ request }: ActionArgs) => {
   );
   if (createClass.__typename === 'ApiError')
     throw badRequest({ message: createClass.error });
-  throw redirect(route('/classes/list'));
+  throw redirect(route('/classes'));
 };
 
 export default () => {
