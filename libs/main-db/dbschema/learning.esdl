@@ -102,6 +102,11 @@ module learning {
             on source delete allow;
             on target delete delete source;
         };
+        # the date when this goal will start
+        required property start_date -> datetime {
+            default := (SELECT datetime_current());
+        };
+        # the date when this goal will end
         required property end_date -> datetime {
             default := (SELECT datetime_current() + <cal::relative_duration>'14 days');
         };
