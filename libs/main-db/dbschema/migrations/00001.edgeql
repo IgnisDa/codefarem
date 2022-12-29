@@ -1,4 +1,4 @@
-CREATE MIGRATION m1zacrhiehi2o3vp35r6i3qbgeut5xy3p5txgsiab4h75fvu4vlpmq
+CREATE MIGRATION m15m7qbpom52cmt46bwc4dcivvbgapucxma3c5zrttjfemfq3g7yga
     ONTO initial
 {
   CREATE MODULE external IF NOT EXISTS;
@@ -39,10 +39,10 @@ CREATE MIGRATION m1zacrhiehi2o3vp35r6i3qbgeut5xy3p5txgsiab4h75fvu4vlpmq
       );
       CREATE REQUIRED PROPERTY seq -> std::int32;
   };
-  CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::InputCaseUnit EXTENDING learning::CommonCaseUnit {
       CREATE REQUIRED PROPERTY name -> std::str;
   };
+  CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::Class {
       CREATE REQUIRED PROPERTY join_slug -> std::str {
           CREATE CONSTRAINT std::exclusive;
@@ -93,9 +93,9 @@ CREATE MIGRATION m1zacrhiehi2o3vp35r6i3qbgeut5xy3p5txgsiab4h75fvu4vlpmq
       CREATE MULTI LINK classes := (.<teachers[IS learning::Class]);
   };
   CREATE TYPE learning::Goal {
-      CREATE MULTI LINK class -> learning::Class {
+      CREATE REQUIRED LINK class -> learning::Class {
           ON SOURCE DELETE ALLOW;
-          ON TARGET DELETE ALLOW;
+          ON TARGET DELETE DELETE SOURCE;
       };
       CREATE REQUIRED PROPERTY color -> std::str {
           SET default := (SELECT
@@ -108,12 +108,18 @@ CREATE MIGRATION m1zacrhiehi2o3vp35r6i3qbgeut5xy3p5txgsiab4h75fvu4vlpmq
           );
       };
       CREATE REQUIRED PROPERTY name -> std::str;
-      CREATE CONSTRAINT std::exclusive ON ((.name, .color));
+      CREATE CONSTRAINT std::exclusive ON ((.name, .color, .class));
+      CREATE REQUIRED PROPERTY end_date -> std::datetime {
+          SET default := (SELECT
+              (std::datetime_current() + <cal::relative_duration>'14 days')
+          );
+      };
   };
-  CREATE TYPE learning::QuestionInstance {
-      CREATE REQUIRED LINK goal -> learning::Goal {
-          ON SOURCE DELETE ALLOW;
-          ON TARGET DELETE DELETE SOURCE;
+  CREATE TYPE learning::QuestionInstance;
+  ALTER TYPE learning::Goal {
+      CREATE REQUIRED MULTI LINK questions -> learning::QuestionInstance {
+          ON SOURCE DELETE DELETE TARGET;
+          ON TARGET DELETE ALLOW;
       };
   };
   CREATE TYPE learning::TestCase {

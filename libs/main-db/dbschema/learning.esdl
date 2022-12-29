@@ -98,23 +98,22 @@ module learning {
                 ))
             )
         };
-        multi link class -> learning::Class {
+        required link class -> learning::Class {
             on source delete allow;
-            on target delete allow;
+            on target delete delete source;
         };
         required property end_date -> datetime {
-            default := (SELECT datetime_current() + <duration>'14 days');
+            default := (SELECT datetime_current() + <cal::relative_duration>'14 days');
         };
-        constraint exclusive on ( (.name, .color) );
+        required multi link questions -> learning::QuestionInstance {
+            on source delete delete target;
+            on target delete allow;
+        };
+        constraint exclusive on ( (.name, .color, .class) );
     }
 
     # A question that will appear in a class
     type QuestionInstance {
-        # the goal that this question is associated with
-        required link goal -> learning::Goal {
-            on source delete allow;
-            on target delete delete source;
-        };
         # the question that this instance is based on
         required link question -> learning::Question {
             on source delete allow;
