@@ -1,3 +1,4 @@
+import { DateRangePicker } from '@mantine/dates';
 import { useFragment } from ':generated/graphql/orchestrator';
 import { AccountType } from ':generated/graphql/orchestrator/graphql';
 import { CREATE_CLASS } from ':graphql/orchestrator/mutations';
@@ -10,10 +11,12 @@ import {
   Badge,
   Button,
   Card,
+  ColorInput,
   Container,
   Divider,
   Flex,
   Group,
+  Input,
   MultiSelect,
   Stack,
   Text,
@@ -81,7 +84,15 @@ export const loader = async ({ request }: LoaderArgs) => {
     searchUsers.teachers,
     AccountType.Teacher
   );
-  return json({ students, teachers });
+  const defaultGoals = [
+    {
+      name: 'Learn the basics',
+      color: '#7b9c30',
+      dateRange: ['2022-12-30', '2022-12-31'] as [string, string],
+      questionInstances: [],
+    },
+  ];
+  return json({ students, teachers, defaultGoals });
 };
 
 export const action = async ({ request }: ActionArgs) => {
@@ -108,12 +119,20 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default () => {
-  const { students, teachers } = useLoaderData<typeof loader>();
+  const { students, teachers, defaultGoals } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<SearchLoader>();
   const [searchQuestion, setSearchQuestion] = useDebouncedState('', 300);
   const [selectedQuestions, setSelectedQuestions] = useState(
     new Set<{ label: string; value: string; numTestCases: number }>()
   );
+  const [goals, setGoals] = useState<
+    {
+      name: string;
+      color: string;
+      dateRange: [string, string];
+      questionInstances: string[];
+    }[]
+  >(defaultGoals);
 
   useEffect(() => {
     if (searchQuestion) {
@@ -127,12 +146,18 @@ export default () => {
   }, [searchQuestion]);
 
   return (
-    <Container size={'sm'}>
+    <Container size={780}>
       <Stack>
         <Title>Create Class</Title>
         <Form method="post">
           <Stack>
-            <TextInput label="Name" type={'text'} required name="name" />
+            <TextInput
+              label="Name"
+              type={'text'}
+              required
+              name="name"
+              placeholder={'A name for the class'}
+            />
             <MultiSelect
               name="teachersData"
               data={teachers}
@@ -149,53 +174,103 @@ export default () => {
               itemComponent={MultiSelectItem}
               searchable
             />
-            <MultiSelect
-              data={[...selectedQuestions, ...(fetcher.data?.data || [])]}
+
+            <Input.Wrapper
+              label="Goals"
+              description="Each goal can have multiple questions"
               required
-              name="selectedQuestions"
-              label="Questions to add to the class"
-              placeholder="Start typing to search for questions"
-              searchable
-              clearable
-              onSearchChange={setSearchQuestion}
-              onChange={(values) => {
-                setSelectedQuestions((prev) => {
-                  const newSet = new Set(prev);
-                  values.forEach((a) => {
-                    const data = fetcher.data?.data?.find((b) => b.value === a);
-                    if (data) newSet.add(data);
-                  });
-                  return newSet;
-                });
-              }}
-            />
-            {selectedQuestions.size > 0 && (
-              <Flex gap={15} wrap={'wrap'}>
-                {Array.from(selectedQuestions).map((q) => (
-                  <Card shadow="sm" radius="md" withBorder key={q.value}>
-                    <Group position="apart">
-                      <ActionIcon
-                        color={'red'}
-                        onClick={() => {
+            >
+              <Stack mt={'xs'}>
+                {goals.map((goal, i) => (
+                  <Card shadow="sm" radius="md" withBorder key={i}>
+                    <Stack>
+                      <Group>
+                        <TextInput
+                          label="Name"
+                          required
+                          value={goal.name}
+                          onChange={(e) => {
+                            setGoals((prev) => {
+                              const newGoals = [...prev];
+                              newGoals[i].name = e.target.value;
+                              return newGoals;
+                            });
+                          }}
+                        />
+                        <DateRangePicker
+                          label="Date range"
+                          required
+                          value={[
+                            new Date(goal.dateRange[0]),
+                            new Date(goal.dateRange[1]),
+                          ]}
+                          inputFormat="DD/MM/YYYY"
+                          dropdownType={'modal'}
+                        />
+                        <ColorInput label="Color" required value={goal.color} />
+                      </Group>
+                      <MultiSelect
+                        data={[
+                          ...selectedQuestions,
+                          ...(fetcher.data?.data || []),
+                        ]}
+                        required
+                        name="selectedQuestions"
+                        label="Questions for this goal"
+                        placeholder="Start typing to search for questions"
+                        searchable
+                        clearable
+                        onSearchChange={setSearchQuestion}
+                        onChange={(values) => {
                           setSelectedQuestions((prev) => {
                             const newSet = new Set(prev);
-                            newSet.delete(q);
+                            values.forEach((a) => {
+                              const data = fetcher.data?.data?.find(
+                                (b) => b.value === a
+                              );
+                              if (data) newSet.add(data);
+                            });
                             return newSet;
                           });
                         }}
-                      >
-                        <IconTrash />
-                      </ActionIcon>
-                      <Text weight={500}>{q.label}</Text>
-                      <Badge color="pink" variant="light">
-                        {q.numTestCases} test case
-                        {q.numTestCases !== 1 && 's'}
-                      </Badge>
-                    </Group>
+                      />
+                      {selectedQuestions.size > 0 && (
+                        <Flex gap={15} wrap={'wrap'}>
+                          {Array.from(selectedQuestions).map((q) => (
+                            <Card
+                              shadow="sm"
+                              radius="md"
+                              withBorder
+                              key={q.value}
+                            >
+                              <Group position="apart">
+                                <ActionIcon
+                                  color={'red'}
+                                  onClick={() => {
+                                    setSelectedQuestions((prev) => {
+                                      const newSet = new Set(prev);
+                                      newSet.delete(q);
+                                      return newSet;
+                                    });
+                                  }}
+                                >
+                                  <IconTrash />
+                                </ActionIcon>
+                                <Text weight={500}>{q.label}</Text>
+                                <Badge color="pink" variant="light">
+                                  {q.numTestCases} test case
+                                  {q.numTestCases !== 1 && 's'}
+                                </Badge>
+                              </Group>
+                            </Card>
+                          ))}
+                        </Flex>
+                      )}
+                    </Stack>
                   </Card>
                 ))}
-              </Flex>
-            )}
+              </Stack>
+            </Input.Wrapper>
             <Divider variant={'dashed'} />
             <Flex
               justify={{ base: 'center', md: 'end' }}
