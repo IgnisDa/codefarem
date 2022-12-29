@@ -1,1 +1,1 @@
-release: /service/set-env.sh && hanko migrate up
+release: /service/set-env-and-start.sh hanko migrate up
