@@ -1,4 +1,4 @@
-CREATE MIGRATION m1qtrqjqaeg2pdljvwi4w4fyjlbxcsscwtljsuvj7ewpdxhe4c2ina
+CREATE MIGRATION m1zacrhiehi2o3vp35r6i3qbgeut5xy3p5txgsiab4h75fvu4vlpmq
     ONTO initial
 {
   CREATE MODULE external IF NOT EXISTS;
@@ -39,10 +39,10 @@ CREATE MIGRATION m1qtrqjqaeg2pdljvwi4w4fyjlbxcsscwtljsuvj7ewpdxhe4c2ina
       );
       CREATE REQUIRED PROPERTY seq -> std::int32;
   };
+  CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::InputCaseUnit EXTENDING learning::CommonCaseUnit {
       CREATE REQUIRED PROPERTY name -> std::str;
   };
-  CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::Class {
       CREATE REQUIRED PROPERTY join_slug -> std::str {
           CREATE CONSTRAINT std::exclusive;
@@ -92,16 +92,29 @@ CREATE MIGRATION m1qtrqjqaeg2pdljvwi4w4fyjlbxcsscwtljsuvj7ewpdxhe4c2ina
   ALTER TYPE users::Teacher {
       CREATE MULTI LINK classes := (.<teachers[IS learning::Class]);
   };
-  CREATE TYPE learning::QuestionFolder {
-      CREATE REQUIRED LINK class -> learning::Class {
+  CREATE TYPE learning::Goal {
+      CREATE MULTI LINK class -> learning::Class {
           ON SOURCE DELETE ALLOW;
-          ON TARGET DELETE DELETE SOURCE;
+          ON TARGET DELETE ALLOW;
       };
-      CREATE LINK parent -> learning::QuestionFolder {
-          ON SOURCE DELETE ALLOW;
-          ON TARGET DELETE DELETE SOURCE;
+      CREATE REQUIRED PROPERTY color -> std::str {
+          SET default := (SELECT
+              std::assert_single((SELECT
+                  {'826AED', 'C879FF', 'FFB7FF', '3BF4FB', 'CAFF8A'} ORDER BY
+                      std::random() ASC
+              LIMIT
+                  1
+              ))
+          );
       };
       CREATE REQUIRED PROPERTY name -> std::str;
+      CREATE CONSTRAINT std::exclusive ON ((.name, .color));
+  };
+  CREATE TYPE learning::QuestionInstance {
+      CREATE REQUIRED LINK goal -> learning::Goal {
+          ON SOURCE DELETE ALLOW;
+          ON TARGET DELETE DELETE SOURCE;
+      };
   };
   CREATE TYPE learning::TestCase {
       CREATE MULTI LINK inputs -> learning::InputCaseUnit {
@@ -131,12 +144,8 @@ CREATE MIGRATION m1qtrqjqaeg2pdljvwi4w4fyjlbxcsscwtljsuvj7ewpdxhe4c2ina
   ALTER TYPE learning::TestCase {
       CREATE LINK question := (.<test_cases[IS learning::Question]);
   };
-  CREATE TYPE learning::QuestionInstance {
+  ALTER TYPE learning::QuestionInstance {
       CREATE REQUIRED LINK question -> learning::Question {
-          ON SOURCE DELETE DELETE TARGET;
-          ON TARGET DELETE ALLOW;
-      };
-      CREATE REQUIRED LINK folder -> learning::QuestionFolder {
           ON SOURCE DELETE ALLOW;
           ON TARGET DELETE DELETE SOURCE;
       };

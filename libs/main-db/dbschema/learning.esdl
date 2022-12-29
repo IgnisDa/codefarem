@@ -84,24 +84,31 @@ module learning {
         required property string_collection_value -> array<str>;
     }
 
-    # A folder that contains questions
-    type QuestionFolder {
+    # Each class has multiple goals. Each goal will have multiple questions associated
+    # with it for a student to 'achieve'.
+    type Goal {
         required property name -> str;
-        link parent -> learning::QuestionFolder {
-            on source delete allow;
-            on target delete delete source;
+        # a hex color for the goal
+        required property color -> str {
+            # https://coolors.co/826aed-c879ff-ffb7ff-3bf4fb-caff8a
+            default := (
+                SELECT assert_single((
+                  SELECT {"826AED", "C879FF", "FFB7FF", "3BF4FB", "CAFF8A"}
+                  ORDER BY random() LIMIT 1
+                ))
+            )
         };
-        required link class -> learning::Class {
+        multi link class -> learning::Class {
             on source delete allow;
-            on target delete delete source;
+            on target delete allow;
         };
-        multi link questions := .<folder[is learning::QuestionInstance];
+        constraint exclusive on ( (.name, .color) );
     }
 
     # A question that will appear in a class
     type QuestionInstance {
-        # the folder in which this instance will appear
-        required link folder -> learning::QuestionFolder {
+        # the goal that this question is associated with
+        required link goal -> learning::Goal {
             on source delete allow;
             on target delete delete source;
         };
@@ -110,10 +117,7 @@ module learning {
             on source delete allow;
             on target delete delete source;
         };
-        # the test cases of the parent question that will be used for this instance
-        multi link test_cases -> learning::TestCase {
-            on source delete allow;
-            on target delete allow;
-        };
+        # TODO: Allow teachers to associate a difficulty with a question so that the
+        # student can get more points for solving a harder question.
     }
 }
