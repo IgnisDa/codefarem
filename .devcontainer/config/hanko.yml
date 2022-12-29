@@ -15,7 +15,7 @@ passcode:
     from_address: no-reply@codefarem.io
   smtp:
     host: mail
-    port: 1025
+    port: 2500
 
 session:
   lifespan: '24h'

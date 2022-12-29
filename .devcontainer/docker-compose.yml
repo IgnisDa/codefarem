@@ -14,9 +14,10 @@ services:
     user: vscode
 
   mail:
-    image: mailhog/mailhog
+    image: derekahn/mailslurper
     ports:
-      - 8025:8025
+      - '8080:8080' # UI
+      - '8085:8085' # API
 
   # from https://github.com/teamhanko/hanko/blob/main/deploy/docker-compose/quickstart.yaml
 
