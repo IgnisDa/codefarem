@@ -17,6 +17,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const data = searchQuestions.results.map((s) => ({
     value: s.id,
     label: s.name,
+    numTestCases: s.numTestCases,
   }));
   return json({ data });
 };

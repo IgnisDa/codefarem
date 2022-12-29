@@ -6,10 +6,14 @@ import {
   SEARCH_USERS,
 } from ':graphql/orchestrator/queries';
 import {
+  ActionIcon,
+  Badge,
   Button,
+  Card,
   Container,
   Divider,
   Flex,
+  Group,
   MultiSelect,
   Stack,
   Text,
@@ -34,6 +38,7 @@ import type { SearchUserDetailsFragment } from ':generated/graphql/orchestrator/
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type { FragmentType } from ':generated/graphql/orchestrator';
 import type { ComponentPropsWithoutRef } from 'react';
+import { IconTrash } from '@tabler/icons';
 
 const convertFromFragmentList = (
   list: FragmentType<typeof SEARCH_USER_DETAILS_FRAGMENT>[],
@@ -80,15 +85,15 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 export const action = async ({ request }: ActionArgs) => {
-  const { name, studentsData, teachersData } = await zx.parseForm(
-    request.clone(),
-    {
+  const { name, studentsData, teachersData, selectedQuestions } =
+    await zx.parseForm(request.clone(), {
       name: z.string(),
       // the `MultiSelect` component returns a comma separated string of values
       studentsData: z.string(),
       teachersData: z.string(),
-    }
-  );
+      selectedQuestions: z.string(),
+    });
+
   const teacherIds = teachersData.split(',').filter(Boolean);
   const studentIds = studentsData.split(',').filter(Boolean);
 
@@ -107,7 +112,7 @@ export default () => {
   const fetcher = useFetcher<SearchLoader>();
   const [searchQuestion, setSearchQuestion] = useDebouncedState('', 300);
   const [selectedQuestions, setSelectedQuestions] = useState(
-    new Set<{ label: string; value: string }>()
+    new Set<{ label: string; value: string; numTestCases: number }>()
   );
 
   useEffect(() => {
@@ -132,6 +137,7 @@ export default () => {
               name="teachersData"
               data={teachers}
               label={'Teachers'}
+              placeholder="The teachers of the class, can be modified later"
               itemComponent={MultiSelectItem}
               searchable
             />
@@ -139,12 +145,14 @@ export default () => {
               name="studentsData"
               data={students}
               label={'Students'}
+              placeholder="The students of the class, can be modified later"
               itemComponent={MultiSelectItem}
               searchable
             />
             <MultiSelect
               data={[...selectedQuestions, ...(fetcher.data?.data || [])]}
               required
+              name="selectedQuestions"
               label="Questions to add to the class"
               placeholder="Start typing to search for questions"
               searchable
@@ -161,6 +169,33 @@ export default () => {
                 });
               }}
             />
+            {selectedQuestions.size > 0 && (
+              <Flex gap={15} wrap={'wrap'}>
+                {Array.from(selectedQuestions).map((q) => (
+                  <Card shadow="sm" radius="md" withBorder key={q.value}>
+                    <Group position="apart">
+                      <ActionIcon
+                        color={'red'}
+                        onClick={() => {
+                          setSelectedQuestions((prev) => {
+                            const newSet = new Set(prev);
+                            newSet.delete(q);
+                            return newSet;
+                          });
+                        }}
+                      >
+                        <IconTrash />
+                      </ActionIcon>
+                      <Text weight={500}>{q.label}</Text>
+                      <Badge color="pink" variant="light">
+                        {q.numTestCases} test case
+                        {q.numTestCases !== 1 && 's'}
+                      </Badge>
+                    </Group>
+                  </Card>
+                ))}
+              </Flex>
+            )}
             <Divider variant={'dashed'} />
             <Flex
               justify={{ base: 'center', md: 'end' }}
