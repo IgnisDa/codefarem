@@ -102,6 +102,9 @@ module learning {
             on source delete allow;
             on target delete allow;
         };
+        required property end_date -> datetime {
+            default := (SELECT datetime_current() + <duration>'14 days');
+        };
         constraint exclusive on ( (.name, .color) );
     }
 
