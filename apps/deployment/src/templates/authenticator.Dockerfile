@@ -9,7 +9,7 @@ RUN apt-get update ;\
     update-ca-certificates
 RUN curl -L "https://github.com/IgnisDa/rust-libs/releases/download/v0.3.0%2Bconnection-string-parser/connection-string-parser-x86_64-unknown-linux-musl.tar.gz" --output csp.tar.gz
 RUN tar -xvf csp.tar.gz
-RUN mv connection-string-parser /usr/local/bin
+RUN mv connection-string-parser /usr/local/bin/csp
 WORKDIR /service
 COPY --from=deps /bin/envsub /bin/envsub
 COPY --from=builder /hanko /bin/hanko
