@@ -39,9 +39,6 @@ RUN curl -LO 'https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-he
     tar xf 'ruby-head-wasm32-unknown-wasi-full.tar.gz' --strip-components=2 --one-top-level=wasi-ruby -C /opt ;\
     rm -rf 'ruby-head-wasm32-unknown-wasi-full.tar.gz'
 
-RUN curl -L --output /usr/local/bin/grain h"ttps://github.com/grain-lang/grain/releases/download/grain-v0.5.11/grain-linux-x64" ;\
-    chmod +x /usr/local/bin/grain
-
 USER $USERNAME
 
 RUN set -eu ;\

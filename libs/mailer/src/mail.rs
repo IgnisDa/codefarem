@@ -4,7 +4,6 @@ use lettre::Transport;
 use lettre::{
     message::MessageBuilder, transport::smtp::authentication::Credentials, Message, SmtpTransport,
 };
-use std::time::Duration;
 
 pub struct Mailer {
     mailer: SmtpTransport,
@@ -25,8 +24,8 @@ impl Mailer {
 
         let mailer = if cfg!(debug_assertions) {
             SmtpTransport::builder_dangerous(&smtp_host)
-                .timeout(Some(Duration::from_secs(10)))
                 .port(smtp_port)
+                .credentials(credentials)
                 .build()
         } else {
             SmtpTransport::relay(&smtp_host)
