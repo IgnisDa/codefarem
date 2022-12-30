@@ -3,11 +3,11 @@ use crate::{
     learning::{
         dto::{
             mutations::{
-                create_class::{CreateClassInput, CreateClassResultUnion},
                 delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
                     ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
                 },
+                upsert_class::{UpsertClassInput, UpsertClassResultUnion},
                 upsert_question::{UpsertQuestionInput, UpsertQuestionResultUnion},
             },
             queries::{
@@ -108,23 +108,23 @@ impl LearningQuery {
 
 #[Object]
 impl LearningMutation {
-    /// Create a new class
-    async fn create_class(
+    /// Create a new class or update an existing one
+    async fn upsert_class(
         &self,
         ctx: &Context<'_>,
-        input: CreateClassInput,
-    ) -> Result<CreateClassResultUnion> {
+        input: UpsertClassInput,
+    ) -> Result<UpsertClassResultUnion> {
         let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(
+            .upsert_class(
                 &hanko_id,
                 input.name(),
                 input.teacher_ids(),
                 input.student_ids(),
             )
             .await;
-        to_result_union_response!(output, CreateClassResultUnion)
+        to_result_union_response!(output, UpsertClassResultUnion)
     }
 
     /// Upsert a question (create if it doesn't exist, update if it does)

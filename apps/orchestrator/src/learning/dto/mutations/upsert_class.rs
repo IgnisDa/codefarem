@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 /// The input object used to create a new class
 #[derive(InputObject, Getters)]
-pub struct CreateClassInput {
+pub struct UpsertClassInput {
     /// The name of the class
     name: String,
 
@@ -19,16 +19,16 @@ pub struct CreateClassInput {
 
 /// The result type if the class was created successfully
 #[derive(SimpleObject, Queryable)]
-pub struct CreateClassOutput {
+pub struct UpsertClassOutput {
     /// The ID of the class
     id: Uuid,
 }
 
 /// The output object when creating a new class
 #[derive(Union)]
-pub enum CreateClassResultUnion {
+pub enum UpsertClassResultUnion {
     /// The type returned if creating a new class was successful
-    Result(CreateClassOutput),
+    Result(UpsertClassOutput),
 
     /// The type returned if creating a new class was unsuccessful
     Error(ApiError),

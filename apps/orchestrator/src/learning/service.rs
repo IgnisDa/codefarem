@@ -5,11 +5,11 @@ use crate::{
     },
     learning::dto::{
         mutations::{
-            create_class::CreateClassOutput,
             delete_question::DeleteQuestionOutput,
             execute_code_for_question::{
                 ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
             },
+            upsert_class::UpsertClassOutput,
             upsert_question::UpsertQuestionOutput,
         },
         queries::{
@@ -165,13 +165,13 @@ impl LearningService {
         Ok(serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap())
     }
 
-    pub async fn create_class<'a>(
+    pub async fn upsert_class<'a>(
         &self,
         hanko_id: &'a str,
         name: &'a str,
         teacher_ids: &[Uuid],
         student_ids: &[Uuid],
-    ) -> Result<CreateClassOutput, ApiError> {
+    ) -> Result<UpsertClassOutput, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
         let mut all_teachers_to_insert = teacher_ids.to_vec();
@@ -179,7 +179,7 @@ impl LearningService {
         let slug = random_string(8);
         let student_ids = student_ids.to_vec();
         self.db_conn
-            .query_required_single::<CreateClassOutput, _>(
+            .query_required_single::<UpsertClassOutput, _>(
                 CREATE_CLASS,
                 &(name, slug, all_teachers_to_insert, student_ids),
             )
