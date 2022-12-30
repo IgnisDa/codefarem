@@ -4,7 +4,7 @@ export const USER_WITH_EMAIL = graphql(`
   query UserWithEmail($input: UserWithEmailInput!) {
     userWithEmail(input: $input) {
       __typename
-      ... on UserWithEmailOutput {
+      ... on IdObject {
         __typename
       }
       ... on UserWithEmailError {

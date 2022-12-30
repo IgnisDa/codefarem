@@ -4,7 +4,7 @@ export const REGISTER_USER = graphql(`
   mutation RegisterUser($input: RegisterUserInput!) {
     registerUser(input: $input) {
       __typename
-      ... on RegisterUserOutput {
+      ... on IdObject {
         id
       }
       ... on ApiError {

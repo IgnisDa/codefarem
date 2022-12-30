@@ -7,7 +7,7 @@ export const UPSERT_CLASS = graphql(`
       ... on ApiError {
         error
       }
-      ... on UpsertClassOutput {
+      ... on IdObject {
         id
       }
     }
@@ -70,7 +70,7 @@ export const DELETE_QUESTION = graphql(`
   mutation DeleteQuestion($input: DeleteQuestionInput!) {
     deleteQuestion(input: $input) {
       __typename
-      ... on DeleteQuestionOutput {
+      ... on IdObject {
         id
       }
       ... on ApiError {
