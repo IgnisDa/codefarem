@@ -1,29 +1,24 @@
 import { DELETE_QUESTION } from ':graphql/orchestrator/mutations';
 import { QUESTIONS_CONNECTION } from ':graphql/orchestrator/queries';
 import {
-  ActionIcon,
   Alert,
   Anchor,
-  Box,
   Button,
   Container,
   Flex,
-  Menu,
-  Modal,
   Stack,
   Table,
   Text,
   Title,
 } from '@mantine/core';
 import { json } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
-import { IconCopy, IconDots, IconEdit, IconTrash } from '@tabler/icons';
-import { useState } from 'react';
+import { useLoaderData } from '@remix-run/react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { withQuery } from 'ufo';
 import { z } from 'zod';
 import { zx } from 'zodix';
+import { ListActions } from '~/lib/components/ListActions';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import {
   getArgs,
@@ -49,18 +44,14 @@ export async function loader({ request }: LoaderArgs) {
   });
 }
 
-enum ActionType {
-  DELETE = 'Delete',
-}
-
 const actionSchema = z.object({
-  action: z.nativeEnum(ActionType),
+  action: z.nativeEnum(PageAction),
   questionSlug: z.string(),
 });
 
 export async function action({ request }: ActionArgs) {
   const { action, questionSlug } = await zx.parseForm(request, actionSchema);
-  if (action === ActionType.DELETE) {
+  if (action === PageAction.Delete) {
     const { deleteQuestion } = await gqlClient.request(
       DELETE_QUESTION,
       { input: { questionSlug } },
@@ -75,7 +66,6 @@ export async function action({ request }: ActionArgs) {
 
 export default () => {
   const { allQuestions } = useLoaderData<typeof loader>();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Container size={'sm'} h={'100%'}>
@@ -134,95 +124,14 @@ export default () => {
                         <Text>
                           {new Date(node.createdTime).toLocaleDateString()}
                         </Text>
-                        <Menu width={200}>
-                          <Menu.Target>
-                            <ActionIcon variant={'default'}>
-                              <IconDots />
-                            </ActionIcon>
-                          </Menu.Target>
-                          <Menu.Dropdown>
-                            <Menu.Label>Actions</Menu.Label>
-                            <Menu.Item icon={<IconEdit size={14} />}>
-                              <Anchor
-                                href={withQuery(
-                                  `${route('/questions/:choice-action', {
-                                    choice: PageAction.Update,
-                                  })}`,
-                                  { questionSlug: node.slug }
-                                )}
-                                variant={'text'}
-                                display={'block'}
-                              >
-                                Update
-                              </Anchor>
-                            </Menu.Item>
-                            <Menu.Item icon={<IconCopy size={14} />}>
-                              <Anchor
-                                href={withQuery(
-                                  `${route('/questions/:choice-action', {
-                                    choice: PageAction.Duplicate,
-                                  })}`,
-                                  {
-                                    questionSlug: node.slug,
-                                  }
-                                )}
-                                variant={'text'}
-                                display={'block'}
-                              >
-                                Duplicate
-                              </Anchor>
-                            </Menu.Item>
-                            <Menu.Divider />
-                            <Menu.Label>Danger zone</Menu.Label>
-                            <Menu.Item
-                              color="red"
-                              icon={<IconTrash size={14} />}
-                              onClick={() => setIsModalOpen((o) => !o)}
-                            >
-                              Delete
-                            </Menu.Item>
-                          </Menu.Dropdown>
-                        </Menu>
-                        <Modal
-                          size="sm"
-                          centered
-                          title="Delete question"
-                          opened={isModalOpen}
-                          onClose={() => setIsModalOpen(false)}
-                          overlayOpacity={0.55}
-                          overlayBlur={3}
-                        >
-                          <Stack>
-                            <Box>
-                              Are you sure you want to delete this question?
-                              Deleting a question will also delete all the test
-                              cases associated with it.
-                            </Box>
-                            <Flex justify={'space-between'}>
-                              <Button
-                                variant="outline"
-                                onClick={() => setIsModalOpen(false)}
-                              >
-                                Cancel
-                              </Button>
-                              <Form method={'post'} reloadDocument>
-                                <input
-                                  type="hidden"
-                                  name="questionSlug"
-                                  value={node.slug}
-                                />
-                                <Button
-                                  color="red"
-                                  type={'submit'}
-                                  name={'action'}
-                                  value={ActionType.DELETE}
-                                >
-                                  {ActionType.DELETE}
-                                </Button>
-                              </Form>
-                            </Flex>
-                          </Stack>
-                        </Modal>
+                        <ListActions
+                          hasDuplicateAction
+                          modalText="Are you sure you want to delete this question? Deleting a question
+            will also delete all the test cases associated with it."
+                          page="questions"
+                          query={{ questionSlug: node.slug }}
+                          unique={node.slug}
+                        />
                       </Flex>
                     </td>
                   </tr>
