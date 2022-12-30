@@ -1,9 +1,6 @@
-use crate::users::dto::{
-    mutations::register_user::RegisterUserOutput,
-    queries::{
-        search_users::{SearchUsersDetails, SearchUsersGroup},
-        user_with_email::{UserWithEmailError, UserWithEmailOutput},
-    },
+use crate::users::dto::queries::{
+    search_users::{SearchUsersDetails, SearchUsersGroup},
+    user_with_email::UserWithEmailError,
 };
 use chrono::DateTime;
 use edgedb_tokio::Client;
@@ -11,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use utilities::{
     graphql::{ApiError, UserDetailsOutput},
+    models::IdObject,
     users::{get_user_details_from_hanko_id, AccountType},
 };
 use uuid::Uuid;
@@ -82,10 +80,10 @@ impl UserService {
     pub async fn user_with_email<'a>(
         &self,
         email: &'a str,
-    ) -> Result<UserWithEmailOutput, UserWithEmailError> {
+    ) -> Result<IdObject, UserWithEmailError> {
         let all_users = self
             .db_conn
-            .query::<UserWithEmailOutput, _>(USER_WITH_EMAIL, &(email,))
+            .query::<IdObject, _>(USER_WITH_EMAIL, &(email,))
             .await
             .unwrap();
         if all_users.is_empty() {
@@ -93,7 +91,7 @@ impl UserService {
                 error: format!("User with email={email} not found"),
             });
         }
-        Ok(all_users.get(0).unwrap().to_owned())
+        Ok(all_users.get(0).unwrap().clone())
     }
 
     pub async fn register_user<'a>(
@@ -102,7 +100,7 @@ impl UserService {
         email: &'a str,
         hanko_id: &'a str,
         invite_token: &Option<String>,
-    ) -> Result<RegisterUserOutput, ApiError> {
+    ) -> Result<IdObject, ApiError> {
         let account_type = if let Some(it) = invite_token {
             #[derive(Serialize, Deserialize)]
             struct A {
@@ -154,10 +152,7 @@ impl UserService {
         let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
         Ok(self
             .db_conn
-            .query_required_single::<RegisterUserOutput, _>(
-                new_query.as_str(),
-                &(username, email, hanko_id),
-            )
+            .query_required_single::<IdObject, _>(new_query.as_str(), &(username, email, hanko_id))
             .await
             .unwrap())
     }
