@@ -57,6 +57,8 @@ const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
 const UPSERT_CLASS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/upsert-class.edgeql");
+const ASSOCIATE_USERS_WITH_CLASS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/associate-users-with-class.edgeql");
 const UPSERT_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/upsert-question.edgeql");
 const DELETE_TEST_CASES: &str =
@@ -179,15 +181,26 @@ impl LearningService {
         all_teachers_to_insert.push(user_details.id);
         let slug = join_slug.clone().unwrap_or_else(|| random_string(8));
         let student_ids = student_ids.to_vec();
+        let id_object = self
+            .db_conn
+            .query_required_single::<IdObject, _>(UPSERT_CLASS, &(name, slug))
+            .await
+            .map_err(|e| {
+                dbg!(e);
+                ApiError {
+                    error: "There was an error creating the class, please try again.".to_string(),
+                }
+            })?;
         self.db_conn
-            .query_required_single::<IdObject, _>(
-                UPSERT_CLASS,
-                &(name, slug, all_teachers_to_insert, student_ids),
+            .query_required_single_json(
+                ASSOCIATE_USERS_WITH_CLASS,
+                &(id_object.id, all_teachers_to_insert, student_ids),
             )
             .await
             .map_err(|_| ApiError {
-                error: "There was an error creating the class, please try again.".to_string(),
-            })
+                error: "There was an error associating users with the class".to_string(),
+            })?;
+        Ok(id_object)
     }
 
     pub async fn upsert_question<'a>(
