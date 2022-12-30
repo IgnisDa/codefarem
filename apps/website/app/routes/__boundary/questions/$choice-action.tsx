@@ -103,7 +103,7 @@ export async function loader({ request, params }: LoaderArgs) {
         testCases: testCases,
       };
     })
-    .with(PageAction.Create, () => ({
+    .with(PageAction.Create, PageAction.Delete, () => ({
       name: '',
       problem: '',
       testCases: [

@@ -16,11 +16,10 @@ import { withQuery } from 'ufo';
 import { PageAction } from '../utils';
 
 interface ListActionsProps {
-  hasDuplicateAction: boolean;
+  hasDuplicateAction?: boolean;
   page: 'questions' | 'classes';
-  query: Record<string, string>;
+  query: { [key: string]: string };
   modalText: string;
-  unique: string;
 }
 
 export const ListActions = ({
@@ -28,7 +27,6 @@ export const ListActions = ({
   page,
   query,
   modalText,
-  unique,
 }: ListActionsProps) => {
   const [isModalOpen, handler] = useDisclosure(false);
 
@@ -91,7 +89,11 @@ export const ListActions = ({
               Cancel
             </Button>
             <Form method={'post'} reloadDocument>
-              <input type="hidden" name="questionSlug" value={unique} />
+              <input
+                type="hidden"
+                name={Object.keys(query)[0]}
+                value={Object.values(query)[0]}
+              />
               <Button
                 color="red"
                 type={'submit'}

@@ -79,3 +79,17 @@ export const DELETE_QUESTION = graphql(`
     }
   }
 `);
+
+export const DELETE_CLASS = graphql(`
+  mutation DeleteClass($input: InputIdObject!) {
+    deleteClass(input: $input) {
+      __typename
+      ... on IdObject {
+        id
+      }
+      ... on ApiError {
+        error
+      }
+    }
+  }
+`);

@@ -130,7 +130,6 @@ export default () => {
             will also delete all the test cases associated with it."
                           page="questions"
                           query={{ questionSlug: node.slug }}
-                          unique={node.slug}
                         />
                       </Flex>
                     </td>

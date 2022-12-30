@@ -3,7 +3,7 @@ declare module "routes-gen" {
     "/api/searchQuestion": Record<string, never>;
     "/": Record<string, never>;
     "/questions/:choice-action": { "choice": string };
-    "/classes/action/create": Record<string, never>;
+    "/classes/:choice-action": { "choice": string };
     "/information/toolchain": Record<string, never>;
     "/questions/solve/:slug": { "slug": string };
     "/playground": Record<string, never>;
@@ -19,7 +19,7 @@ declare module "routes-gen" {
       | ["/api/searchQuestion"]
       | ["/"]
       | ["/questions/:choice-action", RouteParams["/questions/:choice-action"]]
-      | ["/classes/action/create"]
+      | ["/classes/:choice-action", RouteParams["/classes/:choice-action"]]
       | ["/information/toolchain"]
       | ["/questions/solve/:slug", RouteParams["/questions/solve/:slug"]]
       | ["/playground"]

@@ -1,3 +1,4 @@
+import { DELETE_CLASS } from ':graphql/orchestrator/mutations';
 import { CLASSES_CONNECTION } from ':graphql/orchestrator/queries';
 import {
   Alert,
@@ -12,11 +13,20 @@ import {
 } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { withQuery } from 'ufo';
-import { gqlClient } from '~/lib/services/graphql.server';
-import { getArgs, metaFunction } from '~/lib/utils';
-import type { LoaderArgs } from '@remix-run/node';
+import { z } from 'zod';
+import { zx } from 'zodix';
+import { ListActions } from '~/lib/components/ListActions';
+import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
+import {
+  getArgs,
+  metaFunction,
+  PageAction,
+  unprocessableEntityError,
+} from '~/lib/utils';
+import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
 const elementsPerPage = 10;
 
@@ -30,6 +40,26 @@ export async function loader({ request }: LoaderArgs) {
   return json({ classesConnection, meta: { title: 'All classes' } });
 }
 
+const actionSchema = z.object({
+  action: z.nativeEnum(PageAction),
+  classId: z.string(),
+});
+
+export async function action({ request }: ActionArgs) {
+  const { action, classId } = await zx.parseForm(request, actionSchema);
+  if (action === PageAction.Delete) {
+    const { deleteClass } = await gqlClient.request(
+      DELETE_CLASS,
+      { input: { id: classId } },
+      authenticatedRequest(request)
+    );
+    if (deleteClass.__typename === 'ApiError')
+      // TODO: set error flash message here
+      return badRequest({ message: deleteClass.error });
+    else return null;
+  } else throw unprocessableEntityError('Invalid action');
+}
+
 export default () => {
   const { classesConnection } = useLoaderData<typeof loader>();
 
@@ -37,7 +67,10 @@ export default () => {
     <Container size={'sm'} h={'100%'}>
       <Stack spacing={'xl'}>
         <Title>All Classes</Title>
-        <Button component="a" href={route('/classes/action/create')}>
+        <Button
+          component="a"
+          href={route('/classes/:choice-action', { choice: PageAction.Create })}
+        >
           Create a new class
         </Button>
         {classesConnection.edges.length === 0 ? (
@@ -76,7 +109,17 @@ export default () => {
                     </td>
                     <td>{node.name}</td>
                     <td>{node.numTeachers}</td>
-                    <td>{node.numStudents}</td>
+                    <td>
+                      <Flex justify={'space-between'}>
+                        {node.numStudents}
+                        <ListActions
+                          modalText="Are you sure you want to delete this class? Deleting a question
+                                    will also delete all goals and questions associated with it."
+                          page="classes"
+                          query={{ classId: node.id }}
+                        />
+                      </Flex>
+                    </td>
                   </tr>
                 ))}
               </tbody>

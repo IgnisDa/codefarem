@@ -19,6 +19,7 @@ const documents = {
     "\n  query TestCaseUnits {\n    testCaseUnits\n  }\n": types.TestCaseUnitsDocument,
     "\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          __typename\n          ... on ExecuteCodeError {\n            error\n            step\n          }\n          ... on TestCaseSuccessStatus {\n            passed\n            userOutput\n            expectedOutput\n            diff\n            time {\n              compilation\n              execution\n            }\n          }\n        }\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.ExecuteCodeForQuestionDocument,
     "\n  mutation DeleteQuestion($input: DeleteQuestionInput!) {\n    deleteQuestion(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.DeleteQuestionDocument,
+    "\n  mutation DeleteClass($input: InputIdObject!) {\n    deleteClass(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.DeleteClassDocument,
     "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.RegisterUserDocument,
     "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n": types.SupportedLanguagesDocument,
     "\n  query LanguageExample($language: SupportedLanguage!) {\n    languageExample(language: $language)\n  }\n": types.LanguageExampleDocument,
@@ -57,6 +58,10 @@ export function graphql(source: "\n  mutation ExecuteCodeForQuestion($input: Exe
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation DeleteQuestion($input: DeleteQuestionInput!) {\n    deleteQuestion(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteQuestion($input: DeleteQuestionInput!) {\n    deleteQuestion(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DeleteClass($input: InputIdObject!) {\n    deleteClass(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteClass($input: InputIdObject!) {\n    deleteClass(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

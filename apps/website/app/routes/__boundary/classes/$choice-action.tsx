@@ -1,7 +1,7 @@
 import { DateRangePicker } from '@mantine/dates';
 import { useFragment } from ':generated/graphql/orchestrator';
 import { AccountType } from ':generated/graphql/orchestrator/graphql';
-import { CREATE_CLASS } from ':graphql/orchestrator/mutations';
+import { UPSERT_CLASS } from ':graphql/orchestrator/mutations';
 import {
   SEARCH_USER_DETAILS_FRAGMENT,
   SEARCH_USERS,
@@ -35,7 +35,7 @@ import { zx } from 'zodix';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import { forbiddenError } from '~/lib/utils';
+import { forbiddenError, verifyPageAction } from '~/lib/utils';
 import type { SearchLoader } from '~/routes/api/searchQuestion';
 import type { SearchUserDetailsFragment } from ':generated/graphql/orchestrator/graphql';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
@@ -70,7 +70,8 @@ const MultiSelectItem = forwardRef<HTMLDivElement, ItemProps>(
   )
 );
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderArgs) => {
+  const action = verifyPageAction(params);
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
@@ -92,7 +93,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       questionInstances: [],
     },
   ];
-  return json({ students, teachers, defaultGoals });
+  return json({ students, teachers, defaultGoals, action });
 };
 
 export const action = async ({ request }: ActionArgs) => {
@@ -108,13 +109,13 @@ export const action = async ({ request }: ActionArgs) => {
   const teacherIds = teachersData.split(',').filter(Boolean);
   const studentIds = studentsData.split(',').filter(Boolean);
 
-  const { createClass } = await gqlClient.request(
-    CREATE_CLASS,
+  const { upsertClass } = await gqlClient.request(
+    UPSERT_CLASS,
     { input: { name, teacherIds, studentIds } },
     authenticatedRequest(request)
   );
-  if (createClass.__typename === 'ApiError')
-    throw badRequest({ message: createClass.error });
+  if (upsertClass.__typename === 'ApiError')
+    throw badRequest({ message: upsertClass.error });
   throw redirect(route('/classes'));
 };
 
