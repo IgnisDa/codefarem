@@ -1,15 +1,26 @@
 import { TestCaseUnit } from ':generated/graphql/orchestrator/graphql';
 import { isNumber } from 'lodash';
 import { forbidden, unprocessableEntity } from 'remix-utils';
-import type { MetaFunction } from '@remix-run/server-runtime';
+import invariant from 'tiny-invariant';
 import { z } from 'zod';
 import { zx } from 'zodix';
+import type { MetaFunction } from '@remix-run/server-runtime';
+import type { Params } from '@remix-run/react';
 
 export enum PageAction {
   Create = 'Create',
   Update = 'Update',
   Duplicate = 'Duplicate',
 }
+
+export const verifyPageAction = (params: Params<string>) => {
+  const action = params.choice as PageAction;
+  invariant(
+    Object.values(PageAction).includes(action),
+    'Invalid action provided'
+  );
+  return action;
+};
 
 /* Guess the data type for an input based on the properties of its contents. */
 export const guessDataType = (data: string): TestCaseUnit => {

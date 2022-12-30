@@ -37,7 +37,12 @@ import { TestCaseInput } from '~/lib/components/TestCases';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import { forbiddenError, metaFunction, PageAction } from '~/lib/utils';
+import {
+  forbiddenError,
+  metaFunction,
+  PageAction,
+  verifyPageAction,
+} from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   TestCase,
@@ -58,12 +63,7 @@ type SimplifiedTestCase = {
 };
 
 export async function loader({ request, params }: LoaderArgs) {
-  const action = params.choice as PageAction;
-
-  invariant(
-    Object.values(PageAction).includes(action),
-    'Invalid action provided'
-  );
+  const action = verifyPageAction(params);
 
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
