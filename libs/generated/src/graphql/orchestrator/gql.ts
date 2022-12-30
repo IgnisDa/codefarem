@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation ExecuteCode($input: ExecuteCodeInput!) {\n    executeCode(input: $input) {\n      __typename\n      ... on ExecuteCodeOutput {\n        output\n        time {\n          compilation\n          execution\n        }\n      }\n      ... on ExecuteCodeError {\n        error\n        step\n      }\n    }\n  }\n": types.ExecuteCodeDocument,
-    "\n  mutation CreateClass($input: CreateClassInput!) {\n    createClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateClassOutput {\n        id\n      }\n    }\n  }\n": types.CreateClassDocument,
+    "\n  mutation UpsertClass($input: UpsertClassInput!) {\n    upsertClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UpsertClassOutput {\n        id\n      }\n    }\n  }\n": types.UpsertClassDocument,
     "\n  mutation UpsertQuestion($input: UpsertQuestionInput!) {\n    upsertQuestion(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UpsertQuestionOutput {\n        slug\n      }\n    }\n  }\n": types.UpsertQuestionDocument,
     "\n  query TestCaseUnits {\n    testCaseUnits\n  }\n": types.TestCaseUnitsDocument,
     "\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          __typename\n          ... on ExecuteCodeError {\n            error\n            step\n          }\n          ... on TestCaseSuccessStatus {\n            passed\n            userOutput\n            expectedOutput\n            diff\n            time {\n              compilation\n              execution\n            }\n          }\n        }\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.ExecuteCodeForQuestionDocument,
@@ -40,7 +40,7 @@ export function graphql(source: "\n  mutation ExecuteCode($input: ExecuteCodeInp
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateClass($input: CreateClassInput!) {\n    createClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateClassOutput {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateClass($input: CreateClassInput!) {\n    createClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on CreateClassOutput {\n        id\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation UpsertClass($input: UpsertClassInput!) {\n    upsertClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UpsertClassOutput {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpsertClass($input: UpsertClassInput!) {\n    upsertClass(input: $input) {\n      __typename\n      ... on ApiError {\n        error\n      }\n      ... on UpsertClassOutput {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

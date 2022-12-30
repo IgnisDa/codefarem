@@ -1,13 +1,13 @@
 import { graphql } from ':generated/graphql/orchestrator';
 
-export const CREATE_CLASS = graphql(`
-  mutation CreateClass($input: CreateClassInput!) {
-    createClass(input: $input) {
+export const UPSERT_CLASS = graphql(`
+  mutation UpsertClass($input: UpsertClassInput!) {
+    upsertClass(input: $input) {
       __typename
       ... on ApiError {
         error
       }
-      ... on CreateClassOutput {
+      ... on UpsertClassOutput {
         id
       }
     }

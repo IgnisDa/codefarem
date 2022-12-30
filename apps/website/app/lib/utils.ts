@@ -11,6 +11,7 @@ export enum PageAction {
   Create = 'Create',
   Update = 'Update',
   Duplicate = 'Duplicate',
+  Delete = 'Delete',
 }
 
 export const verifyPageAction = (params: Params<string>) => {
