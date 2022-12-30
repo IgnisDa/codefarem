@@ -3,6 +3,7 @@ use crate::{
     learning::{
         dto::{
             mutations::{
+                delete_class::DeleteClassResultUnion,
                 delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
                     ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
@@ -27,7 +28,10 @@ use async_graphql::{
 };
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
-use utilities::graphql::{ConnectionArguments, SearchQueryInput};
+use utilities::{
+    graphql::{ConnectionArguments, SearchQueryInput},
+    models::InputIdObject,
+};
 use uuid::Uuid;
 
 /// The query segment for Learning
@@ -146,6 +150,20 @@ impl LearningMutation {
             )
             .await;
         to_result_union_response!(output, UpsertQuestionResultUnion)
+    }
+
+    /// Delete a class
+    async fn delete_class(
+        &self,
+        ctx: &Context<'_>,
+        input: InputIdObject,
+    ) -> Result<DeleteClassResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .delete_class(&hanko_id, input.id())
+            .await;
+        to_result_union_response!(output, DeleteClassResultUnion)
     }
 
     /// Delete a question

@@ -49,6 +49,8 @@ const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/question-details.edgeql");
+const DELETE_CLASS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/delete-class.edgeql");
 const DELETE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/delete-question.edgeql");
 const CLASS_DETAILS: &str =
@@ -295,6 +297,23 @@ impl LearningService {
             )
             .await
             .unwrap();
+        Ok(question)
+    }
+
+    pub async fn delete_class<'a>(
+        &self,
+        hanko_id: &'a str,
+        class_id: &Uuid,
+    ) -> Result<IdObject, ApiError> {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let question = self
+            .db_conn
+            .query_required_single::<IdObject, _>(DELETE_CLASS, &(class_id,))
+            .await
+            .map_err(|_| ApiError {
+                error: "There was an error deleting the class, please try again.".to_string(),
+            })?;
         Ok(question)
     }
 
