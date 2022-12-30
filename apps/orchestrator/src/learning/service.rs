@@ -5,11 +5,9 @@ use crate::{
     },
     learning::dto::{
         mutations::{
-            delete_question::DeleteQuestionOutput,
             execute_code_for_question::{
                 ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
             },
-            upsert_class::UpsertClassOutput,
             upsert_question::UpsertQuestionOutput,
         },
         queries::{
@@ -55,8 +53,8 @@ const DELETE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/delete-question.edgeql");
 const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
-const CREATE_CLASS: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/create-class.edgeql");
+const UPSERT_CLASS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/upsert-class.edgeql");
 const UPSERT_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/upsert-question.edgeql");
 const DELETE_TEST_CASES: &str =
@@ -168,19 +166,20 @@ impl LearningService {
     pub async fn upsert_class<'a>(
         &self,
         hanko_id: &'a str,
+        join_slug: &'a Option<String>,
         name: &'a str,
         teacher_ids: &[Uuid],
         student_ids: &[Uuid],
-    ) -> Result<UpsertClassOutput, ApiError> {
+    ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
         let mut all_teachers_to_insert = teacher_ids.to_vec();
         all_teachers_to_insert.push(user_details.id);
-        let slug = random_string(8);
+        let slug = join_slug.clone().unwrap_or_else(|| random_string(8));
         let student_ids = student_ids.to_vec();
         self.db_conn
-            .query_required_single::<UpsertClassOutput, _>(
-                CREATE_CLASS,
+            .query_required_single::<IdObject, _>(
+                UPSERT_CLASS,
                 &(name, slug, all_teachers_to_insert, student_ids),
             )
             .await
@@ -303,12 +302,12 @@ impl LearningService {
         &self,
         hanko_id: &'a str,
         question_slug: &'a str,
-    ) -> Result<DeleteQuestionOutput, ApiError> {
+    ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
         let question = self
             .db_conn
-            .query_required_single::<DeleteQuestionOutput, _>(DELETE_QUESTION, &(question_slug,))
+            .query_required_single::<IdObject, _>(DELETE_QUESTION, &(question_slug,))
             .await
             .map_err(|_| ApiError {
                 error: "There was an error deleting the question, please try again.".to_string(),

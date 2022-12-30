@@ -1,12 +1,14 @@
-use async_graphql::{InputObject, SimpleObject, Union};
+use async_graphql::{InputObject, Union};
 use derive_getters::Getters;
-use edgedb_derive::Queryable;
-use utilities::graphql::ApiError;
+use utilities::{graphql::ApiError, models::IdObject};
 use uuid::Uuid;
 
 /// The input object used to create a new class
 #[derive(InputObject, Getters)]
 pub struct UpsertClassInput {
+    /// The ID of the class. If this is present, then the class will be updated.
+    join_slug: Option<String>,
+
     /// The name of the class
     name: String,
 
@@ -17,18 +19,11 @@ pub struct UpsertClassInput {
     student_ids: Vec<Uuid>,
 }
 
-/// The result type if the class was created successfully
-#[derive(SimpleObject, Queryable)]
-pub struct UpsertClassOutput {
-    /// The ID of the class
-    id: Uuid,
-}
-
 /// The output object when creating a new class
 #[derive(Union)]
 pub enum UpsertClassResultUnion {
     /// The type returned if creating a new class was successful
-    Result(UpsertClassOutput),
+    Result(IdObject),
 
     /// The type returned if creating a new class was unsuccessful
     Error(ApiError),

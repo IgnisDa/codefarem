@@ -1,6 +1,8 @@
 module learning {
     type Class {
-        required property name -> str;
+        required property name -> str {
+            constraint exclusive;
+        };
         multi link students -> users::Student {
             on target delete allow;
             on source delete allow;

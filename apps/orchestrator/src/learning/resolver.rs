@@ -119,6 +119,7 @@ impl LearningMutation {
             .data_unchecked::<LearningService>()
             .upsert_class(
                 &hanko_id,
+                input.join_slug(),
                 input.name(),
                 input.teacher_ids(),
                 input.student_ids(),
