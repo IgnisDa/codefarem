@@ -137,6 +137,7 @@ export default () => {
               >
                 <Stack>
                   <TextInput
+                    id="email"
                     placeholder="ana@email.com"
                     description="An email will be sent for verification"
                     type={'email'}
@@ -186,6 +187,7 @@ export default () => {
                 <Stack>
                   <Center>
                     <PinInput
+                      id="passcode"
                       length={6}
                       autoFocus
                       required

@@ -49,7 +49,9 @@ tasks:
     inputs:
       - '@group(remix)'
     outputs:
-      - 'build'
+      - build
+      - '.cache'
+      - public/build
 
   start:
     command: 'remix-serve ./build'
