@@ -1,13 +1,16 @@
 use crate::users::dto::queries::{
     search_users::{SearchUsersDetails, SearchUsersGroup},
+    user_details::{UserDetailsDto, UserDetailsGeneratedData},
     user_with_email::UserWithEmailError,
 };
+use avatars::{female_avatar, generate_seed, male_avatar, Gender, Mood};
 use chrono::DateTime;
 use edgedb_tokio::Client;
+use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use utilities::{
-    graphql::{ApiError, UserDetailsOutput},
+    graphql::ApiError,
     models::IdObject,
     users::{get_user_details_from_hanko_id, AccountType},
 };
@@ -73,8 +76,27 @@ impl UserService {
         SearchUsersGroup { students, teachers }
     }
 
-    pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
-        get_user_details_from_hanko_id(hanko_id, &self.db_conn).await
+    pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsDto, ApiError> {
+        let db_data = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        let seed = generate_seed(&db_data.profile.username);
+        let mut rng = rand::thread_rng();
+
+        let moods = [Mood::Happy, Mood::Sad, Mood::Surprised];
+        let random_mood = moods.choose(&mut rng).unwrap();
+
+        let genders = [Gender::Male, Gender::Female];
+        let random_gender = genders.choose(&mut rng).unwrap();
+
+        let profile_avatar = match random_gender {
+            Gender::Female => female_avatar(seed, random_mood),
+            Gender::Male => male_avatar(seed, random_mood),
+        };
+
+        let generated_data = UserDetailsGeneratedData { profile_avatar };
+        Ok(UserDetailsDto {
+            db_data,
+            generated_data,
+        })
     }
 
     pub async fn user_with_email<'a>(

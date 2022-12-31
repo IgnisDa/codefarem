@@ -311,6 +311,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
+name = "avatars"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee4a9f62df325759adb54c98a1be65f7e565ced4bce6abf2813cfdf685c180c6"
+dependencies = [
+ "itoa 1.0.5",
+]
+
+[[package]]
 name = "axum"
 version = "0.5.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -324,7 +333,7 @@ dependencies = [
  "http",
  "http-body 0.4.5",
  "hyper 0.14.20",
- "itoa 1.0.3",
+ "itoa 1.0.5",
  "matchit 0.5.0",
  "memchr",
  "mime",
@@ -355,7 +364,7 @@ dependencies = [
  "http",
  "http-body 0.4.5",
  "hyper 0.14.20",
- "itoa 1.0.3",
+ "itoa 1.0.5",
  "matchit 0.7.0",
  "memchr",
  "mime",
@@ -1312,7 +1321,7 @@ checksum = "75f43d41e26995c17e71ee126451dd3941010b0514a81a9d11f3b341debc2399"
 dependencies = [
  "bytes 1.2.1",
  "fnv",
- "itoa 1.0.3",
+ "itoa 1.0.5",
 ]
 
 [[package]]
@@ -1414,7 +1423,7 @@ dependencies = [
  "http-body 0.4.5",
  "httparse",
  "httpdate 1.0.2",
- "itoa 1.0.3",
+ "itoa 1.0.5",
  "pin-project-lite 0.2.9",
  "socket2 0.4.7",
  "tokio 1.23.0",
@@ -1617,9 +1626,9 @@ checksum = "b71991ff56294aa922b450139ee08b3bfc70982c6b2c7562771375cf73542dd4"
 
 [[package]]
 name = "itoa"
-version = "1.0.3"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c8af84674fe1f223a982c933a0ee1086ac4d4052aa0fb8060c12c6ad838e754"
+checksum = "fad582f4b9e86b6caa621cabeb0963332d92eea04729ab12892c2533951e6440"
 
 [[package]]
 name = "jpeg-decoder"
@@ -2097,6 +2106,7 @@ dependencies = [
  "async-graphql",
  "async-graphql-rocket",
  "auth",
+ "avatars",
  "chrono",
  "derive-getters",
  "dotenv",
@@ -2108,6 +2118,7 @@ dependencies = [
  "main_db",
  "once_cell",
  "protobuf",
+ "rand 0.8.5",
  "rocket",
  "serde",
  "serde_json",
@@ -2972,7 +2983,7 @@ version = "1.0.85"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e55a28e3aaef9d5ce0506d0a14dbba8054ddc7e499ef522dd8b26859ec9d4a44"
 dependencies = [
- "itoa 1.0.3",
+ "itoa 1.0.5",
  "ryu",
  "serde",
 ]
@@ -2993,7 +3004,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3491c14715ca2294c4d6a88f15e84739788c1d030eed8c110436aafdaa2f3fd"
 dependencies = [
  "form_urlencoded",
- "itoa 1.0.3",
+ "itoa 1.0.5",
  "ryu",
  "serde",
 ]
@@ -3317,7 +3328,7 @@ version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3c3f9a28b618c3a6b9251b6908e9c99e04b9e5c02e6581ccbb67d59c34ef7f9b"
 dependencies = [
- "itoa 1.0.3",
+ "itoa 1.0.5",
  "libc",
  "num_threads",
  "time-macros",
