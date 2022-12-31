@@ -71,6 +71,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
           <ScrollRestoration />
           <Scripts />
           <script
+            // rome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
             dangerouslySetInnerHTML={{
               __html: `window.ENV = ${JSON.stringify(ENV)}`
             }}

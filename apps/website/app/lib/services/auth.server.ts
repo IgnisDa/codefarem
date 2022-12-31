@@ -16,7 +16,7 @@ export async function requireValidJwt(
   const decoded = decode(hankoCookie) as JwtPayload;
   const hankoId = decoded?.sub;
   const exp = (decoded?.exp || 0) * 1000;
-  if (!decoded || !hankoId || exp < Date.now()) {
+  if (!(decoded && hankoId ) || exp < Date.now()) {
     const searchParams = new URLSearchParams([['redirectTo', redirectTo]]);
     throw redirect(`${FAILURE_REDIRECT_PATH}?${searchParams}`);
   }

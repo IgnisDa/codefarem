@@ -63,7 +63,7 @@ export const CodeEditor = ({
         onChange={(value) => setCode(value || '')}
       />
       <Flex justify={'end'} gap={'lg'} align={'center'}>
-        {leftButton ? leftButton : <div></div>}
+        {leftButton ? leftButton : <div />}
         <Button
           leftIcon={<IconPlayerPlay size={24} />}
           loading={isSubmittingLoading}

@@ -137,7 +137,7 @@ export async function action({ request, params }: ActionArgs) {
   const input: UpsertQuestionInput = JSON.parse(data);
   if (action === PageAction.Duplicate)
     // remove the slug from the input
-    delete input.updateSlug;
+    input.updateSlug = undefined;
 
   const { upsertQuestion } = await gqlClient.request(
     UPSERT_QUESTION,
