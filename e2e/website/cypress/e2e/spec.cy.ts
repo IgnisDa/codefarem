@@ -10,4 +10,12 @@ describe('Main tests', () => {
   });
 });
 
+describe('Auth tests', () => {
+  it('Login as normal user', () => {
+    cy.loginNormal();
+    // page should contain `Dashboard` text
+    cy.contains('Dashboard');
+  });
+});
+
 export {};
