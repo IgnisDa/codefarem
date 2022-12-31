@@ -11,7 +11,7 @@ services:
     environment:
       - HANKO_URL=http://localhost:9000
       - HANKO_URL_INTERNAL=http://hanko-backend:9000
-    user: vscode
+    user: archlinux
 
   mail:
     image: mailhog/mailhog
