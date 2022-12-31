@@ -1,4 +1,8 @@
 module users {
+    scalar type Mood extending enum<Happy, Sad, Surprised>;
+    scalar type Gender extending enum<Male, Female>;
+    scalar type AccountType extending enum<Student, Teacher>;
+
     abstract type User {
         required link auth -> users::UserAuth {
             on target delete delete source;
@@ -24,6 +28,10 @@ module users {
         required property username -> str {
             constraint exclusive;
         };
+        required property mood -> Mood;
+        required property gender -> Gender;
+        # an svg avatar image of the user
+        required property profile_avatar -> str;
     }
 
     type Student extending users::User {
@@ -35,6 +43,4 @@ module users {
         # the classes that this teacher teachers
         multi link classes := .<teachers[is learning::Class];
     }
-
-    scalar type AccountType extending enum<Student, Teacher>;
 }

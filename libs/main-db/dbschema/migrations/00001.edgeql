@@ -1,4 +1,4 @@
-CREATE MIGRATION m15m7qbpom52cmt46bwc4dcivvbgapucxma3c5zrttjfemfq3g7yga
+CREATE MIGRATION m1djgowuchn7fap7ft4nsrehlmolcizyqidgkbvl5p3rebql524rpq
     ONTO initial
 {
   CREATE MODULE external IF NOT EXISTS;
@@ -47,17 +47,24 @@ CREATE MIGRATION m15m7qbpom52cmt46bwc4dcivvbgapucxma3c5zrttjfemfq3g7yga
       CREATE REQUIRED PROPERTY join_slug -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
-      CREATE REQUIRED PROPERTY name -> std::str;
+      CREATE REQUIRED PROPERTY name -> std::str {
+          CREATE CONSTRAINT std::exclusive;
+      };
   };
   CREATE TYPE users::UserAuth {
       CREATE REQUIRED PROPERTY hanko_id -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
   };
+  CREATE SCALAR TYPE users::Gender EXTENDING enum<Male, Female>;
+  CREATE SCALAR TYPE users::Mood EXTENDING enum<Happy, Sad, Surprised>;
   CREATE TYPE users::UserProfile {
       CREATE REQUIRED PROPERTY email -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
+      CREATE REQUIRED PROPERTY gender -> users::Gender;
+      CREATE REQUIRED PROPERTY mood -> users::Mood;
+      CREATE REQUIRED PROPERTY profile_avatar -> std::str;
       CREATE REQUIRED PROPERTY username -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
@@ -112,6 +119,11 @@ CREATE MIGRATION m15m7qbpom52cmt46bwc4dcivvbgapucxma3c5zrttjfemfq3g7yga
       CREATE REQUIRED PROPERTY end_date -> std::datetime {
           SET default := (SELECT
               (std::datetime_current() + <cal::relative_duration>'14 days')
+          );
+      };
+      CREATE REQUIRED PROPERTY start_date -> std::datetime {
+          SET default := (SELECT
+              std::datetime_current()
           );
       };
   };
