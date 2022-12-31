@@ -35,6 +35,6 @@ RUN set -eu ;\
     rustup target add "wasm32-wasi"
 
 RUN for pkg in \
-    "protobuf" "protolint" "grpcurl-bin" "python-poetry" \
-    "alsa-lib" "gtk3" "at-spi2-core" "nss" "xorg-server-xvfb"; \
+    "protobuf" "protolint" "grpcurl-bin" "python-poetry" "libxss" "libnotify" \
+    "alsa-lib" "gtk2" "gtk3" "at-spi2-core" "nss" "xorg-server-xvfb" "xorg-server" ; \
     do paru -S --noconfirm $pkg; done

@@ -6,7 +6,10 @@ tasks:
     local: true
 
   test:
-    command: 'cypress run'
+    command: cypress
+    args:
+      - run
+      - '--headless'
     inputs:
       - 'cypress.config.ts'
       - 'cypress/**/*'
