@@ -18,29 +18,14 @@ fileGroups:
 tasks:
   lint:
     command:
-      # TODO: Replace with rome
-      - eslint
-      - '--ext'
-      - '.js,.mjs,.jsx,.ts,.tsx'
-      - '--fix'
-      - '--report-unused-disable-directives'
-      - '--no-error-on-unmatched-pattern'
-      - '--exit-on-fatal-error'
-      - '--ignore-path'
-      - '@in(4)'
+      # TODO: This does not work
+      - rome
+      - check
       - '.'
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
-      - '*.config.*'
-      - '**/.eslintrc.*'
-      - '/.eslintignore'
-      - '/.eslintrc.*'
-      - 'types/**/*'
-      - 'tsconfig.json'
-      - '/tsconfig.eslint.json'
-      - '/tsconfig.options.json'
-
+      - 'rome.json'
   test:
     command:
       - jest

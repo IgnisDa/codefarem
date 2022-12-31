@@ -22,5 +22,4 @@ const config: CodegenConfig = {
   schema: 'http://127.0.0.1:6001/graphql'
 };
 
-// eslint-disable-next-line import/no-default-export
 export default config;

@@ -35,7 +35,6 @@
     "outDir": "../../.moon/cache/types/apps/website"
   },
   "include": [
-    ".eslintrc.js",
     "remix.env.d.ts",
     "**/*"
   ],

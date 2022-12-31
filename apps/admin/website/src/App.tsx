@@ -34,7 +34,6 @@ const routeConfig = rootRoute.addChildren([indexPage, inviteRoute]);
 
 const router = createReactRouter({ routeConfig });
 
-// eslint-disable-next-line import/no-default-export
 export default function App() {
   return (
     <MantineProvider
