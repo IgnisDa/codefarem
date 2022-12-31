@@ -51,3 +51,12 @@ pub struct SearchQueryInput {
     /// The query to search by
     query_string: Option<String>,
 }
+
+/// The input object used to specify a range
+#[derive(InputObject, Debug, Getters)]
+pub struct RangeInput {
+    /// The start of the range
+    pub start: String,
+    /// The end of the range
+    pub end: String,
+}

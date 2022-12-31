@@ -1,3 +1,4 @@
+use super::goals::GoalInput;
 use async_graphql::{InputObject, Union};
 use derive_getters::Getters;
 use utilities::{graphql::ApiError, models::IdObject};
@@ -17,6 +18,9 @@ pub struct UpsertClassInput {
 
     /// The students who are in the class
     student_ids: Vec<Uuid>,
+
+    /// The goals that are part of the class
+    goals: Vec<GoalInput>,
 }
 
 /// The output object when creating a new class
