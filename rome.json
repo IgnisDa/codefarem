@@ -2,10 +2,14 @@
   "$schema": "./node_modules/rome/configuration_schema.json",
   "files": {
     "ignore": [
-      "*dist*",
-      "*coverage*",
+      "dist",
+      "coverage",
       "build",
-      "libs/generated/src/graphql/*/*.ts"
+      "libs/generated/src/graphql",
+      "routes.d.ts",
+      "tmp",
+      "target",
+      "node_modules"
     ]
   },
   "formatter": {

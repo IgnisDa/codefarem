@@ -65,7 +65,7 @@ const passcodeSchema = z.object({
 const useStyles = createStyles((_theme) => ({
   pinInput: {
     'div + div': {
-      ["@media (min-width: 400px)"]: { marginLeft: 7 }
+      ['@media (min-width: 400px)']: { marginLeft: 7 }
     }
   }
 }));
