@@ -20,6 +20,7 @@
     "rvest.vs-code-prettier-eslint",
     "moonrepo.moon-console",
     "ms-python.python",
-    "bierner.markdown-mermaid"
+    "bierner.markdown-mermaid",
+    "rome.rome"
   ]
 }

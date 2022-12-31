@@ -5,7 +5,7 @@ import {
   Navbar,
   Stack,
   Tooltip,
-  UnstyledButton,
+  UnstyledButton
 } from '@mantine/core';
 import {
   IconCode,
@@ -13,7 +13,7 @@ import {
   IconLogout,
   IconPlaylistAdd,
   IconSwitchHorizontal,
-  TablerIcon,
+  TablerIcon
 } from '@tabler/icons';
 import { Link } from '@tanstack/react-router';
 
@@ -22,11 +22,11 @@ const useStyles = createStyles((theme) => ({
     '&, &:hover': {
       backgroundColor: theme.fn.variant({
         color: theme.primaryColor,
-        variant: 'light',
+        variant: 'light'
       }).background,
       color: theme.fn.variant({ color: theme.primaryColor, variant: 'light' })
-        .color,
-    },
+        .color
+    }
   },
 
   link: {
@@ -34,7 +34,7 @@ const useStyles = createStyles((theme) => ({
       backgroundColor:
         theme.colorScheme === 'dark'
           ? theme.colors.dark[5]
-          : theme.colors.gray[0],
+          : theme.colors.gray[0]
     },
 
     alignItems: 'center',
@@ -46,8 +46,8 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     height: 50,
     justifyContent: 'center',
-    width: 50,
-  },
+    width: 50
+  }
 }));
 
 interface NavbarLinkProps {
@@ -61,7 +61,7 @@ const NavbarButton = ({
   icon: Icon,
   label,
   active,
-  onClick,
+  onClick
 }: NavbarLinkProps) => {
   const { classes, cx } = useStyles();
   return (
@@ -80,7 +80,7 @@ const NavbarLink = ({
   icon: Icon,
   label,
   link,
-  onClick,
+  onClick
 }: NavbarLinkProps & { link: string }) => (
   <Link to={link} search={{}} params={{}}>
     <NavbarButton label={label} onClick={onClick} icon={Icon} />
@@ -89,7 +89,7 @@ const NavbarLink = ({
 
 const mockData = [
   { icon: IconGauge, label: 'Dashboard', link: '/' },
-  { icon: IconPlaylistAdd, label: 'Invite', link: '/invite' },
+  { icon: IconPlaylistAdd, label: 'Invite', link: '/invite' }
 ];
 
 export const NavbarMinimal = () => {

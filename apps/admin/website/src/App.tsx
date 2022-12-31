@@ -4,7 +4,7 @@ import {
   createReactRouter,
   createRouteConfig,
   Outlet,
-  RouterProvider,
+  RouterProvider
 } from '@tanstack/react-router';
 import { NavbarMinimal } from './components/Navbar';
 import { IndexPage } from './pages';
@@ -17,17 +17,17 @@ const rootRoute = createRouteConfig({
     <AppShell navbar={<NavbarMinimal />}>
       <Outlet />
     </AppShell>
-  ),
+  )
 });
 
 const indexPage = rootRoute.createRoute({
   component: IndexPage,
-  path: '/',
+  path: '/'
 });
 
 const inviteRoute = rootRoute.createRoute({
   component: InvitePage,
-  path: '/invite',
+  path: '/invite'
 });
 
 const routeConfig = rootRoute.addChildren([indexPage, inviteRoute]);
