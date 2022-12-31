@@ -18,6 +18,7 @@ fileGroups:
 tasks:
   lint:
     command:
+      # TODO: Replace with rome
       - eslint
       - '--ext'
       - '.js,.mjs,.jsx,.ts,.tsx'
