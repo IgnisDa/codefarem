@@ -26,6 +26,7 @@ export const USER_DETAILS = graphql(`
         profile {
           email
           username
+          profileAvatar
         }
       }
     }
