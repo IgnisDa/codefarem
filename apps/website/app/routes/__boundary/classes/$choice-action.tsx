@@ -239,7 +239,12 @@ export default () => {
                         />
                       </Group>
                       <Select
-                        data={allQuestions}
+                        data={allQuestions.filter((q) => {
+                          const index = goal.questionInstances.findIndex(
+                            (qi) => qi.id === q.value
+                          );
+                          return index === -1;
+                        })}
                         required
                         label="Questions for this goal"
                         placeholder="Start typing to search for questions"
@@ -252,6 +257,12 @@ export default () => {
                               (q) => q.value === selected
                             );
                             if (!question) return newGoals;
+                            const index = newGoals[
+                              i
+                            ].questionInstances.findIndex(
+                              (q) => q.id === question.value
+                            );
+                            if (index !== -1) return newGoals;
                             const newQuestion = {
                               id: question.value,
                               numTestCases: question.numTestCases,
