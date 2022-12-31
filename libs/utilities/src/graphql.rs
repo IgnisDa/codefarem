@@ -19,6 +19,8 @@ pub struct UserProfileInformation {
     pub email: String,
     /// The username of the user
     pub username: String,
+    /// The profile avatar of the user
+    pub profile_avatar: String,
 }
 
 /// The result type if details about the user were found successfully.

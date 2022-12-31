@@ -312,11 +312,12 @@ checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
 name = "avatars"
-version = "0.1.6"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ee4a9f62df325759adb54c98a1be65f7e565ced4bce6abf2813cfdf685c180c6"
+checksum = "f7d6c180edaa25fd1ae4245aa36706343929a4acd51931e1ebce8c4b1c5a1d39"
 dependencies = [
  "itoa 1.0.5",
+ "strum",
 ]
 
 [[package]]

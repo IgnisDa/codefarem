@@ -1,6 +1,5 @@
 use crate::users::dto::queries::{
     search_users::{SearchUsersDetails, SearchUsersGroup},
-    user_details::{UserDetailsDto, UserDetailsGeneratedData},
     user_with_email::UserWithEmailError,
 };
 use avatars::{female_avatar, generate_seed, male_avatar, Gender, Mood};
@@ -10,7 +9,7 @@ use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use utilities::{
-    graphql::ApiError,
+    graphql::{ApiError, UserDetailsOutput},
     models::IdObject,
     users::{get_user_details_from_hanko_id, AccountType},
 };
@@ -76,27 +75,8 @@ impl UserService {
         SearchUsersGroup { students, teachers }
     }
 
-    pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsDto, ApiError> {
-        let db_data = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
-        let seed = generate_seed(&db_data.profile.username);
-        let mut rng = rand::thread_rng();
-
-        let moods = [Mood::Happy, Mood::Sad, Mood::Surprised];
-        let random_mood = moods.choose(&mut rng).unwrap();
-
-        let genders = [Gender::Male, Gender::Female];
-        let random_gender = genders.choose(&mut rng).unwrap();
-
-        let profile_avatar = match random_gender {
-            Gender::Female => female_avatar(seed, random_mood),
-            Gender::Male => male_avatar(seed, random_mood),
-        };
-
-        let generated_data = UserDetailsGeneratedData { profile_avatar };
-        Ok(UserDetailsDto {
-            db_data,
-            generated_data,
-        })
+    pub async fn user_details<'a>(&self, hanko_id: &'a str) -> Result<UserDetailsOutput, ApiError> {
+        get_user_details_from_hanko_id(hanko_id, &self.db_conn).await
     }
 
     pub async fn user_with_email<'a>(
@@ -136,11 +116,8 @@ impl UserService {
                 .db_conn
                 .query_single_json(GET_INVITE_LINK, &(it,))
                 .await
-                .map_err(|e| {
-                    eprintln!("Error: {e:?}");
-                    ApiError {
-                        error: "Invite link not found".to_string(),
-                    }
+                .map_err(|_| ApiError {
+                    error: "Invite link not found".to_string(),
                 })?
                 .unwrap();
             let invite_link: A = serde_json::from_str(&invite_link).unwrap();
@@ -172,9 +149,36 @@ impl UserService {
         let account_type_string = account_type.to_string();
         // replace `User` in REGISTER_USER with the correct account_type
         let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
+
+        let (mood, gender) = {
+            let mut rng = rand::thread_rng();
+            let mood = [Mood::Happy, Mood::Sad, Mood::Surprised]
+                .choose(&mut rng)
+                .unwrap();
+            let gender = [Gender::Female, Gender::Male].choose(&mut rng).unwrap();
+            (mood, gender)
+        };
+
+        let seed = generate_seed(username);
+
+        let profile_avatar = match gender {
+            Gender::Female => female_avatar(seed, mood),
+            Gender::Male => male_avatar(seed, mood),
+        };
+
         Ok(self
             .db_conn
-            .query_required_single::<IdObject, _>(new_query.as_str(), &(username, email, hanko_id))
+            .query_required_single::<IdObject, _>(
+                new_query.as_str(),
+                &(
+                    username,
+                    email,
+                    mood.to_string(),
+                    gender.to_string(),
+                    profile_avatar,
+                    hanko_id,
+                ),
+            )
             .await
             .unwrap())
     }
