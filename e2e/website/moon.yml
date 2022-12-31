@@ -13,6 +13,9 @@ tasks:
     inputs:
       - 'cypress.config.ts'
       - 'cypress/**/*'
+    outputs:
+      - 'cypress/videos'
+      - 'cypress/screenshots'
     options:
       runInCI: false
 
