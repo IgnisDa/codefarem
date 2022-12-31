@@ -26,7 +26,7 @@ export const CodeEditor = ({
   setLanguage,
   isSubmittingLoading,
   btnText,
-  leftButton,
+  leftButton
 }: CodeEditorProps) => {
   return (
     <Stack w={'100%'}>
@@ -34,7 +34,7 @@ export const CodeEditor = ({
         <Select
           data={supportedLanguages.map((l) => ({
             label: l.toUpperCase(),
-            value: l,
+            value: l
           }))}
           value={language}
           onChange={(e) => setLanguage(e as SupportedLanguage)}
@@ -47,7 +47,7 @@ export const CodeEditor = ({
               title: 'System notification',
               message: 'This feature has not been implemented yet',
               color: 'red',
-              autoClose: 5000,
+              autoClose: 5000
             });
           }}
         >

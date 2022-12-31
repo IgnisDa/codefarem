@@ -21,7 +21,7 @@ export const TestCaseInput = ({
   testCaseUnits,
   selectValue,
   onSelectChange,
-  actionBtnHandler,
+  actionBtnHandler
 }: TestCaseProps) => {
   return (
     <Flex gap={10} align={'center'}>

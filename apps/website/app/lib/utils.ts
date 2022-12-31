@@ -11,7 +11,7 @@ export enum PageAction {
   Create = 'Create',
   Update = 'Update',
   Duplicate = 'Duplicate',
-  Delete = 'Delete',
+  Delete = 'Delete'
 }
 
 export const verifyPageAction = (params: Params<string>) => {
@@ -44,14 +44,14 @@ export const guessDataType = (data: string): TestCaseUnit => {
 export const forbiddenError = () => {
   throw forbidden({
     message: 'Forbidden',
-    description: 'You are not allowed to access this route',
+    description: 'You are not allowed to access this route'
   });
 };
 
 export const unprocessableEntityError = (description: string) => {
   throw unprocessableEntity({
     message: 'Unimplemented',
-    description,
+    description
   });
 };
 
@@ -64,7 +64,7 @@ export const argSchema = z.object({
   after: z.string().optional(),
   first: z.string().optional(),
   before: z.string().optional(),
-  last: z.string().optional(),
+  last: z.string().optional()
 });
 
 export const getArgs = (request: Request, defaultElementsPerPage: number) => {
@@ -77,7 +77,7 @@ export const getArgs = (request: Request, defaultElementsPerPage: number) => {
       : undefined,
     after: after,
     before: before,
-    last: last ? parseInt(last) : undefined,
+    last: last ? parseInt(last) : undefined
   };
   return args;
 };

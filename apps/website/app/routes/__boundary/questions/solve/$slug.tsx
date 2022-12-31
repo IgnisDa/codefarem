@@ -2,7 +2,7 @@ import { SupportedLanguage } from ':generated/graphql/orchestrator/graphql';
 import { EXECUTE_CODE_FOR_QUESTION } from ':graphql/orchestrator/mutations';
 import {
   QUESTION_DETAILS,
-  SUPPORTED_LANGUAGES,
+  SUPPORTED_LANGUAGES
 } from ':graphql/orchestrator/queries';
 import {
   Accordion,
@@ -19,7 +19,7 @@ import {
   Text,
   Title,
   Tooltip,
-  UnstyledButton,
+  UnstyledButton
 } from '@mantine/core';
 import { Prism } from '@mantine/prism';
 import { RichTextEditor } from '@mantine/tiptap';
@@ -34,7 +34,7 @@ import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
 import {
   DisplayErrorOutput,
-  DisplaySuccessOutput,
+  DisplaySuccessOutput
 } from '~/lib/components/DisplayOutput';
 import { getDefaultExtensions } from '~/lib/editor';
 import { gqlClient } from '~/lib/services/graphql.server';
@@ -49,7 +49,7 @@ export async function loader({ params }: LoaderArgs) {
   const questionSlug = params.slug;
   invariant(typeof questionSlug === 'string', 'Slug should be a string');
   const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
-    questionSlug,
+    questionSlug
   });
   if (questionDetails.__typename === 'ApiError') throw notFound({});
   const meta = { title: `${questionDetails.name}` };
@@ -57,16 +57,14 @@ export async function loader({ params }: LoaderArgs) {
     ...questionDetails,
     combinedTestCases: questionDetails.testCases.map((testCase) => ({
       input: testCase.inputs.map((input) => input.normalizedData).join(' '),
-      output: testCase.outputs
-        .map((output) => output.normalizedData)
-        .join('\n'),
-    })),
+      output: testCase.outputs.map((output) => output.normalizedData).join('\n')
+    }))
   };
   return json({
     supportedLanguages,
     combinedQuestionDetails,
     meta,
-    questionSlug,
+    questionSlug
   });
 }
 
@@ -77,7 +75,7 @@ export const unstable_shouldReload: ShouldReloadFunction = () => {
 const inputSchema = z.object({
   input: z.string(),
   language: z.nativeEnum(SupportedLanguage),
-  questionSlug: z.string(),
+  questionSlug: z.string()
 });
 type inputSchemaType = z.infer<typeof inputSchema>;
 
@@ -94,9 +92,9 @@ export async function action({ request }: ActionArgs) {
         executeInput: {
           arguments: [],
           code: JSON.parse(input),
-          language: language,
-        },
-      },
+          language: language
+        }
+      }
     }
   );
   return json({ executeCodeForQuestion });
@@ -108,7 +106,7 @@ export default () => {
   const editor = useEditor({
     extensions: getDefaultExtensions(),
     editable: false,
-    content: combinedQuestionDetails.problem,
+    content: combinedQuestionDetails.problem
   });
   const [language, setLanguage] = useState(SupportedLanguage.Python);
   const [code, setCode] = useState('');
@@ -127,7 +125,7 @@ export default () => {
       // find the first test case that has failed, and select it
       for (const [
         testCaseIndex,
-        testCase,
+        testCase
       ] of fetcher.data.executeCodeForQuestion.testCaseStatuses.entries())
         if (testCase.__typename === 'TestCaseSuccessStatus') {
           if (!testCase.passed) {
@@ -194,7 +192,7 @@ export default () => {
                 const data: inputSchemaType = {
                   input: JSON.stringify(code),
                   language,
-                  questionSlug,
+                  questionSlug
                 };
                 fetcher.submit(data, { method: 'post' });
               }}

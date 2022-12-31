@@ -1,10 +1,10 @@
 import {
   AccountType,
-  TestCaseUnit,
+  TestCaseUnit
 } from ':generated/graphql/orchestrator/graphql';
 import {
   TEST_CASE_UNITS,
-  UPSERT_QUESTION,
+  UPSERT_QUESTION
 } from ':graphql/orchestrator/mutations';
 import { QUESTION_DETAILS } from ':graphql/orchestrator/queries';
 import {
@@ -20,7 +20,7 @@ import {
   Stack,
   Tabs,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { json, redirect } from '@remix-run/node';
 import { Form, useFetcher, useLoaderData } from '@remix-run/react';
@@ -41,20 +41,20 @@ import {
   forbiddenError,
   metaFunction,
   PageAction,
-  verifyPageAction,
+  verifyPageAction
 } from '~/lib/utils';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type {
   TestCase,
   InputCaseUnit,
   OutputCaseUnit,
-  UpsertQuestionInput,
+  UpsertQuestionInput
 } from ':generated/graphql/orchestrator/graphql';
 
 export const meta = metaFunction;
 
 const querySchema = z.object({
-  questionSlug: z.string().optional(),
+  questionSlug: z.string().optional()
 });
 
 type SimplifiedTestCase = {
@@ -76,12 +76,12 @@ export async function loader({ request, params }: LoaderArgs) {
     .with(PageAction.Update, PageAction.Duplicate, async () => {
       invariant(typeof questionSlug === 'string', 'Slug should be a string');
       const { questionDetails } = await gqlClient.request(QUESTION_DETAILS, {
-        questionSlug,
+        questionSlug
       });
       if (questionDetails.__typename === 'ApiError')
         throw badRequest({
           message: 'Question not found',
-          description: 'You requested to edit a question that does not exist',
+          description: 'You requested to edit a question that does not exist'
         });
 
       const testCases: SimplifiedTestCase[] = questionDetails.testCases.map(
@@ -90,7 +90,7 @@ export async function loader({ request, params }: LoaderArgs) {
             data.map((d, idx) => ({
               data: d.normalizedData,
               dataType: d.unitType,
-              name: `line${idx}`,
+              name: `line${idx}`
             }));
           const inputs = change(testCase.inputs);
           const outputs = change(testCase.outputs);
@@ -100,7 +100,7 @@ export async function loader({ request, params }: LoaderArgs) {
       return {
         name: questionDetails.name,
         problem: questionDetails.problem,
-        testCases: testCases,
+        testCases: testCases
       };
     })
     .with(PageAction.Create, PageAction.Delete, () => ({
@@ -109,9 +109,9 @@ export async function loader({ request, params }: LoaderArgs) {
       testCases: [
         {
           inputs: [{ data: '', dataType: TestCaseUnit.String, name: 'line0' }],
-          outputs: [{ data: '', dataType: TestCaseUnit.String }],
-        },
-      ],
+          outputs: [{ data: '', dataType: TestCaseUnit.String }]
+        }
+      ]
     }))
     .exhaustive();
 
@@ -120,13 +120,13 @@ export async function loader({ request, params }: LoaderArgs) {
     action,
     questionSlug,
     testCaseUnits,
-    meta: { title: `${action} Question` },
+    meta: { title: `${action} Question` }
   });
 }
 
 const actionSchema = z.object({
   data: z.string(),
-  updateSlug: z.string().optional(),
+  updateSlug: z.string().optional()
 });
 
 export async function action({ request, params }: ActionArgs) {
@@ -151,7 +151,7 @@ export async function action({ request, params }: ActionArgs) {
 
 const defaultOutput: OutputCaseUnit = {
   data: '',
-  dataType: TestCaseUnit.String,
+  dataType: TestCaseUnit.String
 };
 
 const defaultInput: InputCaseUnit = { ...defaultOutput, name: 'line0' };
@@ -177,7 +177,7 @@ export default () => {
       name: name,
       problem: problem.trim(),
       testCases: newTestCases,
-      updateSlug: questionSlug,
+      updateSlug: questionSlug
     };
     const validatedData = actionSchema.parse({ data: JSON.stringify(data) });
     fetcher.submit(validatedData, { method: 'post' });
@@ -192,7 +192,7 @@ export default () => {
   const addTestCase = () => {
     setTestCases((prev) => [
       ...prev,
-      { inputs: [defaultInput], outputs: [defaultOutput] },
+      { inputs: [defaultInput], outputs: [defaultOutput] }
     ]);
   };
 
@@ -207,7 +207,7 @@ export default () => {
     const newCases = [...testCases];
     newCases[testCaseIdx][inputOrOutput].push({
       ...defaultInput,
-      name: `line${newCases[testCaseIdx][inputOrOutput].length}`,
+      name: `line${newCases[testCaseIdx][inputOrOutput].length}`
     });
     setTestCases(newCases);
   };

@@ -13,5 +13,5 @@ export const getDefaultExtensions = () => [
   Superscript,
   SubScript,
   Highlight,
-  TextAlign.configure({ types: ['heading', 'paragraph'] }),
+  TextAlign.configure({ types: ['heading', 'paragraph'] })
 ];

@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import {
   SEARCH_QUESTIONS,
   SEARCH_USER_DETAILS_FRAGMENT,
-  SEARCH_USERS,
+  SEARCH_USERS
 } from ':graphql/orchestrator/queries';
 import {
   ActionIcon,
@@ -24,7 +24,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { DateRangePicker } from '@mantine/dates';
 import { json, redirect } from '@remix-run/node';
@@ -52,7 +52,7 @@ const convertFromFragmentList = (
     return {
       value: frag.id,
       details: frag.profile,
-      label: frag.profile.username,
+      label: frag.profile.username
     };
   });
 };
@@ -85,12 +85,12 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   const { searchUsers } = await gqlClient.request(SEARCH_USERS, { input: {} });
 
   const { searchQuestions } = await gqlClient.request(SEARCH_QUESTIONS, {
-    input: { queryString: '' },
+    input: { queryString: '' }
   });
   const allQuestions = searchQuestions.results.map((s) => ({
     value: s.id,
     label: s.name,
-    numTestCases: s.numTestCases,
+    numTestCases: s.numTestCases
   }));
   const students = convertFromFragmentList(
     searchUsers.students,
@@ -105,8 +105,8 @@ export const loader = async ({ request, params }: LoaderArgs) => {
       name: 'Learn the basics',
       color: '#7b9c30',
       dateRange: ['2022-12-30', '2022-12-31'] as [string, string],
-      questionInstances: [],
-    },
+      questionInstances: []
+    }
   ];
   return json({ students, teachers, defaultGoals, action, allQuestions });
 };
@@ -124,7 +124,7 @@ export const action = async ({ request }: ActionArgs) => {
       const ranges = value.toString().split(' – ');
       newValue = {
         start: dayjs(ranges[0], 'DD MMM').toISOString(),
-        end: dayjs(ranges[1], 'DD MMM').toISOString(),
+        end: dayjs(ranges[1], 'DD MMM').toISOString()
       };
     }
     set(input, key, newValue);
@@ -207,7 +207,7 @@ export default () => {
                           required
                           value={[
                             new Date(goal.dateRange[0]),
-                            new Date(goal.dateRange[1]),
+                            new Date(goal.dateRange[1])
                           ]}
                           inputFormat="DD MMM"
                           dropdownType={'modal'}
@@ -266,7 +266,7 @@ export default () => {
                             const newQuestion = {
                               id: question.value,
                               numTestCases: question.numTestCases,
-                              name: question.label,
+                              name: question.label
                             };
                             newGoals[i].questionInstances.push(newQuestion);
                             return newGoals;
@@ -323,7 +323,7 @@ export default () => {
                         string,
                         string
                       ],
-                      questionInstances: [],
+                      questionInstances: []
                     };
                     setGoals((prev) => [...prev, newGoal]);
                   }}

@@ -9,7 +9,7 @@ import {
   Stack,
   Table,
   Text,
-  Title,
+  Title
 } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
@@ -24,7 +24,7 @@ import {
   getArgs,
   metaFunction,
   PageAction,
-  unprocessableEntityError,
+  unprocessableEntityError
 } from '~/lib/utils';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -35,14 +35,14 @@ export const meta = metaFunction;
 export async function loader({ request }: LoaderArgs) {
   const args = getArgs(request, elementsPerPage);
   const { classesConnection } = await gqlClient.request(CLASSES_CONNECTION, {
-    args,
+    args
   });
   return json({ classesConnection, meta: { title: 'All classes' } });
 }
 
 const actionSchema = z.object({
   action: z.nativeEnum(PageAction),
-  classId: z.string(),
+  classId: z.string()
 });
 
 export async function action({ request }: ActionArgs) {
@@ -129,7 +129,7 @@ export default () => {
                 component={'a'}
                 href={withQuery(route('/classes'), {
                   before: classesConnection.pageInfo.startCursor,
-                  last: String(elementsPerPage),
+                  last: String(elementsPerPage)
                 })}
                 disabled={!classesConnection.pageInfo.hasPreviousPage}
               >
@@ -139,7 +139,7 @@ export default () => {
                 component={'a'}
                 href={withQuery(route('/classes'), {
                   after: classesConnection.pageInfo.endCursor,
-                  first: String(elementsPerPage),
+                  first: String(elementsPerPage)
                 })}
                 disabled={!classesConnection.pageInfo.hasNextPage}
               >

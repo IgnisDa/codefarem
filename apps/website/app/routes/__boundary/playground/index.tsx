@@ -1,11 +1,11 @@
 import {
   SupportedLanguage,
-  TestCaseUnit,
+  TestCaseUnit
 } from ':generated/graphql/orchestrator/graphql';
 import { EXECUTE_CODE } from ':graphql/orchestrator/mutations';
 import {
   LANGUAGE_EXAMPLE,
-  SUPPORTED_LANGUAGES,
+  SUPPORTED_LANGUAGES
 } from ':graphql/orchestrator/queries';
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   Drawer,
   Stack,
   Title,
-  useMantineTheme,
+  useMantineTheme
 } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
@@ -25,7 +25,7 @@ import { zx } from 'zodix';
 import { CodeEditor } from '~/lib/components/CodeEditor';
 import {
   DisplayErrorOutput,
-  DisplaySuccessOutput,
+  DisplaySuccessOutput
 } from '~/lib/components/DisplayOutput';
 import { TestCaseInput } from '~/lib/components/TestCases';
 import { gqlClient } from '~/lib/services/graphql.server';
@@ -45,21 +45,21 @@ export async function loader(_args: LoaderArgs) {
   const languageExamples: Map<SupportedLanguage, string> = new Map();
   for (const lang of supportedLanguages) {
     const { languageExample } = await gqlClient.request(LANGUAGE_EXAMPLE, {
-      language: lang,
+      language: lang
     });
     languageExamples.set(lang, languageExample);
   }
   return json({
     meta: { title: 'Playground' },
     languageExamples: Object.fromEntries(languageExamples),
-    supportedLanguages,
+    supportedLanguages
   });
 }
 
 const inputSchema = z.object({
   input: z.string(),
   language: z.nativeEnum(SupportedLanguage),
-  args: z.string(),
+  args: z.string()
 });
 type inputSchemaType = z.infer<typeof inputSchema>;
 
@@ -70,8 +70,8 @@ export async function action({ request }: ActionArgs) {
     input: {
       code: JSON.parse(input),
       language: language as SupportedLanguage,
-      arguments: sanitizedArgs,
-    },
+      arguments: sanitizedArgs
+    }
   });
   return json({ output: executeCode.executeCode });
 }
@@ -102,7 +102,7 @@ export default () => {
             const data: inputSchemaType = {
               input: JSON.stringify(code),
               language,
-              args: JSON.stringify(args),
+              args: JSON.stringify(args)
             };
             fetcher.submit(data, { method: 'post' });
           }}
@@ -155,8 +155,8 @@ export default () => {
                 {
                   data: '',
                   dataType: TestCaseUnit.String,
-                  name: `arg${state.length}`,
-                },
+                  name: `arg${state.length}`
+                }
               ])
             }
           >

@@ -7,7 +7,7 @@ import {
   Paper,
   Stack,
   Stepper,
-  TextInput,
+  TextInput
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { PinInput } from '@mantine/labs';
@@ -18,7 +18,7 @@ import { IconMailOpened, IconShieldCheck } from '@tabler/icons';
 import {
   Hanko,
   InvalidPasscodeError,
-  NotFoundError,
+  NotFoundError
 } from '@teamhanko/hanko-frontend-sdk';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
@@ -31,7 +31,7 @@ import type { ActionArgs } from '@remix-run/node';
 const authSchema = z.object({
   email: z.string().email(),
   hankoId: z.string(),
-  inviteToken: z.string().optional(),
+  inviteToken: z.string().optional()
 });
 
 export const action = async ({ request }: ActionArgs) => {
@@ -40,12 +40,12 @@ export const action = async ({ request }: ActionArgs) => {
     authSchema
   );
   const { userWithEmail } = await gqlClient.request(USER_WITH_EMAIL, {
-    input: { email },
+    input: { email }
   });
   if (userWithEmail.__typename === 'UserWithEmailError') {
     const username = generateUsernameFromEmail(email);
     await gqlClient.request(REGISTER_USER, {
-      input: { email, username, hankoId, inviteToken: inviteToken || null },
+      input: { email, username, hankoId, inviteToken: inviteToken || null }
     });
   }
   const url = new URL(request.url);
@@ -56,18 +56,18 @@ export const action = async ({ request }: ActionArgs) => {
 
 const emailSchema = z.object({
   email: z.string().email(),
-  inviteToken: z.string().optional(),
+  inviteToken: z.string().optional()
 });
 const passcodeSchema = z.object({
-  passcode: z.string().length(6),
+  passcode: z.string().length(6)
 });
 
 const useStyles = createStyles((_theme) => ({
   pinInput: {
     'div + div': {
-      [`@media (min-width: 400px)`]: { marginLeft: 7 },
-    },
-  },
+      [`@media (min-width: 400px)`]: { marginLeft: 7 }
+    }
+  }
 }));
 
 export default () => {
@@ -80,11 +80,11 @@ export default () => {
   const fetcher = useFetcher();
   const emailForm = useForm({
     validate: zodResolver(emailSchema),
-    initialValues: { email: '', inviteToken: '' },
+    initialValues: { email: '', inviteToken: '' }
   });
   const passcodeForm = useForm({
     validate: zodResolver(passcodeSchema),
-    initialValues: { passcode: '' },
+    initialValues: { passcode: '' }
   });
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export default () => {
                       showNotification({
                         title: 'System Action',
                         message: 'Created new user',
-                        color: 'blue',
+                        color: 'blue'
                       });
                       userId = user.id;
                     }
@@ -125,7 +125,7 @@ export default () => {
                       showNotification({
                         title: 'Authorization Error',
                         message: 'There was an error authorizing you',
-                        color: 'red',
+                        color: 'red'
                       });
                     } else {
                       await hankoSdk.passcode.initialize(userId);
@@ -170,7 +170,7 @@ export default () => {
                     const data = authSchema.parse({
                       hankoId: hankoUserId,
                       email: emailForm.values.email,
-                      inviteToken: inviteToken,
+                      inviteToken: inviteToken
                     });
                     fetcher.submit(data, { method: 'post' });
                   } catch (e) {
@@ -178,7 +178,7 @@ export default () => {
                       showNotification({
                         title: 'Authorization Error',
                         message: 'Invalid passcode',
-                        color: 'red',
+                        color: 'red'
                       });
                   }
                   setIsLoading(false);

@@ -6,7 +6,7 @@ import {
   ThemeIcon,
   Text,
   UnstyledButton,
-  createStyles,
+  createStyles
 } from '@mantine/core';
 import type { TablerIcon } from '@tabler/icons';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons';
@@ -25,8 +25,8 @@ const useStyles = createStyles((theme) => ({
         theme.colorScheme === 'dark'
           ? theme.colors.dark[7]
           : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    },
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black
+    }
   },
 
   link: {
@@ -50,13 +50,13 @@ const useStyles = createStyles((theme) => ({
         theme.colorScheme === 'dark'
           ? theme.colors.dark[7]
           : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    },
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black
+    }
   },
 
   chevron: {
-    transition: 'transform 200ms ease',
-  },
+    transition: 'transform 200ms ease'
+  }
 }));
 
 interface LinksGroupProps {
@@ -70,7 +70,7 @@ export const LinksGroup = ({
   icon: Icon,
   label,
   initiallyOpened,
-  links,
+  links
 }: LinksGroupProps) => {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
@@ -108,7 +108,7 @@ export const LinksGroup = ({
               style={{
                 transform: opened
                   ? `rotate(${theme.dir === 'rtl' ? -90 : 90}deg)`
-                  : 'none',
+                  : 'none'
               }}
             />
           )}

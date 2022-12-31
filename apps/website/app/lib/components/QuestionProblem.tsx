@@ -5,14 +5,14 @@ import type { Dispatch, SetStateAction } from 'react';
 
 export const QuestionProblem = ({
   text,
-  setText,
+  setText
 }: {
   text: string;
   setText: Dispatch<SetStateAction<string>>;
 }) => {
   const editor = useEditor({
     extensions: getDefaultExtensions(),
-    content: text || '<br />'.repeat(4),
+    content: text || '<br />'.repeat(4)
   });
 
   editor?.on('update', (e) => {

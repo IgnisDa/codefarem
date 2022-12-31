@@ -11,7 +11,7 @@ import {
   ScrollArea,
   Stack,
   Text,
-  Title,
+  Title
 } from '@mantine/core';
 import { SUCCESSFUL_REDIRECT_PATH } from '../constants';
 
@@ -24,8 +24,8 @@ const useStyles = createStyles((theme) => ({
     color: theme.colors[theme.primaryColor][3],
 
     [theme.fn.smallerThan('sm')]: {
-      fontSize: 120,
-    },
+      fontSize: 120
+    }
   },
 
   title: {
@@ -35,16 +35,16 @@ const useStyles = createStyles((theme) => ({
     color: theme.white,
 
     [theme.fn.smallerThan('sm')]: {
-      fontSize: 32,
-    },
+      fontSize: 32
+    }
   },
 
   description: {
     maxWidth: 540,
     margin: 'auto',
     marginTop: theme.spacing.xl,
-    color: theme.colors[theme.primaryColor][1],
-  },
+    color: theme.colors[theme.primaryColor][1]
+  }
 }));
 
 interface ErrorPageProps {
@@ -58,7 +58,7 @@ export function ErrorPage({
   statusCode,
   message,
   description,
-  stack,
+  stack
 }: ErrorPageProps) {
   const { classes } = useStyles();
 

@@ -2,7 +2,7 @@ import {
   AppShell,
   Box,
   createEmotionCache,
-  MantineProvider,
+  MantineProvider
 } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { StylesPlaceholder } from '@mantine/remix';
@@ -14,7 +14,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useLoaderData
 } from '@remix-run/react';
 import { AppNavbar } from './lib/components/AppShell';
 import { ApplicationConfig } from './lib/config.server';
@@ -36,15 +36,15 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
   title: 'CodeFarem',
-  viewport: 'width=device-width,initial-scale=1',
+  viewport: 'width=device-width,initial-scale=1'
 });
 
 export async function loader() {
   return json({
     ENV: {
       HANKO_URL: ApplicationConfig.HANKO_URL,
-      NODE_ENV: process.env.NODE_ENV,
-    },
+      NODE_ENV: process.env.NODE_ENV
+    }
   });
 }
 
@@ -72,7 +72,7 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
           <Scripts />
           <script
             dangerouslySetInnerHTML={{
-              __html: `window.ENV = ${JSON.stringify(ENV)}`,
+              __html: `window.ENV = ${JSON.stringify(ENV)}`
             }}
           />
           {ENV.NODE_ENV === 'development' && <LiveReload />}

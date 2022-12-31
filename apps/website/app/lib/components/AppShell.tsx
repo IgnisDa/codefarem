@@ -5,14 +5,14 @@ import {
   Title,
   Center,
   Anchor,
-  Text,
+  Text
 } from '@mantine/core';
 import {
   IconLogout,
   IconCode,
   IconQuestionMark,
   IconSchool,
-  IconInfoCircle,
+  IconInfoCircle
 } from '@tabler/icons';
 import { route } from 'routes-gen';
 import { LinksGroup } from './LinksGroup';
@@ -23,13 +23,13 @@ const useStyles = createStyles((theme, _params, getRef) => {
     header: {
       paddingBottom: theme.spacing.md,
       marginBottom: theme.spacing.md * 1.5,
-      borderBottom: `1px solid ${theme.colors.dark[4]}`,
+      borderBottom: `1px solid ${theme.colors.dark[4]}`
     },
 
     footer: {
       paddingTop: theme.spacing.md,
       marginTop: theme.spacing.md,
-      borderTop: `1px solid ${theme.colors.dark[4]}`,
+      borderTop: `1px solid ${theme.colors.dark[4]}`
     },
 
     link: {
@@ -48,9 +48,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
         color: theme.white,
 
         [`& .${icon}`]: {
-          color: theme.white,
-        },
-      },
+          color: theme.white
+        }
+      }
     },
 
     linkIcon: {
@@ -59,8 +59,8 @@ const useStyles = createStyles((theme, _params, getRef) => {
         theme.colorScheme === 'dark'
           ? theme.colors.dark[2]
           : theme.colors.gray[6],
-      marginRight: theme.spacing.sm,
-    },
+      marginRight: theme.spacing.sm
+    }
   };
 });
 
@@ -71,14 +71,14 @@ const data = [
     links: [
       {
         link: route('/playground'),
-        label: 'Code',
-      },
-    ],
+        label: 'Code'
+      }
+    ]
   },
   {
     label: 'Classes',
     icon: IconSchool,
-    links: [{ link: route('/classes'), label: 'List' }],
+    links: [{ link: route('/classes'), label: 'List' }]
   },
   {
     label: 'Questions',
@@ -86,9 +86,9 @@ const data = [
     links: [
       {
         link: route('/questions'),
-        label: 'List',
-      },
-    ],
+        label: 'List'
+      }
+    ]
   },
   {
     label: 'Information',
@@ -96,10 +96,10 @@ const data = [
     links: [
       {
         link: route('/information/toolchain'),
-        label: 'Toolchain',
-      },
-    ],
-  },
+        label: 'Toolchain'
+      }
+    ]
+  }
 ];
 
 export const AppNavbar = () => {

@@ -6,7 +6,7 @@ import {
   Flex,
   Menu,
   Modal,
-  Stack,
+  Stack
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Form } from '@remix-run/react';
@@ -26,7 +26,7 @@ export const ListActions = ({
   hasDuplicateAction,
   page,
   query,
-  modalText,
+  modalText
 }: ListActionsProps) => {
   const [isModalOpen, handler] = useDisclosure(false);
 
@@ -34,15 +34,15 @@ export const ListActions = ({
     {
       icon: <IconEdit size={14} />,
       label: PageAction.Update,
-      href: withQuery(`/${page}/Update-action`, query),
-    },
+      href: withQuery(`/${page}/Update-action`, query)
+    }
   ];
 
   if (hasDuplicateAction)
     actions.push({
       icon: <IconCopy size={14} />,
       label: PageAction.Duplicate,
-      href: withQuery(`/${page}/Duplicate-action`, query),
+      href: withQuery(`/${page}/Duplicate-action`, query)
     });
 
   return (

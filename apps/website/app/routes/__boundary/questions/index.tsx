@@ -9,7 +9,7 @@ import {
   Stack,
   Table,
   Text,
-  Title,
+  Title
 } from '@mantine/core';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
@@ -24,7 +24,7 @@ import {
   getArgs,
   metaFunction,
   PageAction,
-  unprocessableEntityError,
+  unprocessableEntityError
 } from '~/lib/utils';
 import type { LoaderArgs, ActionArgs } from '@remix-run/node';
 
@@ -40,13 +40,13 @@ export async function loader({ request }: LoaderArgs) {
   );
   return json({
     allQuestions: questionsConnection,
-    meta: { title: 'All questions' },
+    meta: { title: 'All questions' }
   });
 }
 
 const actionSchema = z.object({
   action: z.nativeEnum(PageAction),
-  questionSlug: z.string(),
+  questionSlug: z.string()
 });
 
 export async function action({ request }: ActionArgs) {
@@ -74,7 +74,7 @@ export default () => {
         <Button
           component="a"
           href={route('/questions/:choice-action', {
-            choice: PageAction.Create,
+            choice: PageAction.Create
           })}
         >
           Create a new question
@@ -111,7 +111,7 @@ export default () => {
                     <td>
                       <Anchor
                         href={route('/questions/solve/:slug', {
-                          slug: node.slug,
+                          slug: node.slug
                         })}
                       >
                         {node.slug}
@@ -142,7 +142,7 @@ export default () => {
                 component={'a'}
                 href={withQuery(route('/questions'), {
                   before: allQuestions.pageInfo.startCursor,
-                  last: String(elementsPerPage),
+                  last: String(elementsPerPage)
                 })}
                 disabled={!allQuestions.pageInfo.hasPreviousPage}
               >
@@ -152,7 +152,7 @@ export default () => {
                 component={'a'}
                 href={withQuery(route('/questions'), {
                   after: allQuestions.pageInfo.endCursor,
-                  first: String(elementsPerPage),
+                  first: String(elementsPerPage)
                 })}
                 disabled={!allQuestions.pageInfo.hasNextPage}
               >

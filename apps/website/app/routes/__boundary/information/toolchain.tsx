@@ -7,7 +7,7 @@ import {
   Grid,
   Stack,
   Title,
-  Tooltip,
+  Tooltip
 } from '@mantine/core';
 import { useLoaderData } from '@remix-run/react';
 import { json } from '@remix-run/server-runtime';
@@ -30,7 +30,7 @@ interface ToolchainDisplayProps {
 export function ToolchainDisplay({
   avatar,
   name,
-  version,
+  version
 }: ToolchainDisplayProps) {
   return (
     <Tooltip label={name.toUpperCase()} position={'bottom-end'}>
