@@ -15,6 +15,7 @@ module users {
     }
 
     type UserAuth {
+        link user := .<auth[is users::User];
         # the unique ID issued by the hanko auth provider
         required property hanko_id -> str {
             constraint exclusive;
@@ -22,6 +23,7 @@ module users {
     }
 
     type UserProfile {
+        link user := .<profile[is users::User];
         required property email ->  str {
             constraint exclusive;
         };
