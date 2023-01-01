@@ -312,9 +312,9 @@ checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
 name = "avatars"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f7d6c180edaa25fd1ae4245aa36706343929a4acd51931e1ebce8c4b1c5a1d39"
+checksum = "1e6dc1821193d174d02f88f0126e39bdb98cfd9f37530bcda20e0e7320362db8"
 dependencies = [
  "itoa 1.0.5",
  "strum",
@@ -2107,7 +2107,6 @@ dependencies = [
  "async-graphql",
  "async-graphql-rocket",
  "auth",
- "avatars",
  "chrono",
  "derive-getters",
  "dotenv",
@@ -3929,6 +3928,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "async-graphql",
+ "avatars",
  "chrono",
  "derive-getters",
  "edgedb-derive",

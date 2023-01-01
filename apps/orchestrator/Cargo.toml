@@ -13,7 +13,6 @@ utilities = { path = "../../libs/utilities" }
 anyhow = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-rocket = { workspace = true }
-avatars = { version = "0.1.8", features = ["strum"] }
 chrono = { workspace = true }
 derive-getters = { workspace = true }
 dotenv = { workspace = true }

@@ -2,16 +2,14 @@ use crate::users::dto::queries::{
     search_users::{SearchUsersDetails, SearchUsersGroup},
     user_with_email::UserWithEmailError,
 };
-use avatars::{female_avatar, generate_seed, male_avatar, Gender, Mood};
 use chrono::DateTime;
 use edgedb_tokio::Client;
-use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use utilities::{
     graphql::{ApiError, UserDetailsOutput},
     models::IdObject,
-    users::{get_user_details_from_hanko_id, AccountType},
+    users::{generate_profile_avatar_svg, get_user_details_from_hanko_id, AccountType},
 };
 use uuid::Uuid;
 
@@ -150,21 +148,7 @@ impl UserService {
         // replace `User` in REGISTER_USER with the correct account_type
         let new_query = REGISTER_USER.replace("{User}", account_type_string.as_str());
 
-        let (mood, gender) = {
-            let mut rng = rand::thread_rng();
-            let mood = [Mood::Happy, Mood::Sad, Mood::Surprised]
-                .choose(&mut rng)
-                .unwrap();
-            let gender = [Gender::Female, Gender::Male].choose(&mut rng).unwrap();
-            (mood, gender)
-        };
-
-        let seed = generate_seed(username);
-
-        let profile_avatar = match gender {
-            Gender::Female => female_avatar(seed, mood),
-            Gender::Male => male_avatar(seed, mood),
-        };
+        let profile_avatar = generate_profile_avatar_svg(Some(username));
 
         Ok(self
             .db_conn
