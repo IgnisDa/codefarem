@@ -37,6 +37,10 @@ impl UserService {
 }
 
 impl UserService {
+    pub fn random_profile_avatar(&self) -> String {
+        generate_profile_avatar_svg(None)
+    }
+
     pub async fn search_users<'a>(&self, query_string: &'a Option<String>) -> SearchUsersGroup {
         let username = query_string.clone().unwrap_or_default();
         #[derive(Debug, Deserialize, Default, Clone)]

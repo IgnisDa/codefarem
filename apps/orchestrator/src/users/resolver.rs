@@ -28,6 +28,11 @@ pub struct UserMutation {}
 
 #[Object]
 impl UserQuery {
+    /// Generate a random profile avatar
+    async fn random_profile_avatar(&self, ctx: &Context<'_>) -> String {
+        ctx.data_unchecked::<UserService>().random_profile_avatar()
+    }
+
     /// Get information about the current user
     async fn user_details(&self, ctx: &Context<'_>) -> Result<UserDetailsResultUnion> {
         let hanko_id = hanko_id_from_request!(ctx);
