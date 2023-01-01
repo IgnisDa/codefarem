@@ -1,3 +1,4 @@
+import { UPDATE_USER } from ':graphql/orchestrator/mutations';
 import {
   Box,
   Button,
@@ -9,11 +10,15 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { json } from '@remix-run/node';
+import { ActionArgs, json } from '@remix-run/node';
 import { Form, useFetcher, useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
+import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
+import { z } from 'zod';
+import { zx } from 'zodix';
 import { requireValidJwt } from '~/lib/services/auth.server';
+import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
 import { metaFunction } from '~/lib/utils';
 import type { loader as randomProfileAvatarLoader } from '~/routes/api/randomProfileAvatar';
@@ -23,9 +28,29 @@ export const meta = metaFunction;
 
 export const loader = async ({ request }: LoaderArgs) => {
   requireValidJwt(request);
-
   const userDetails = await getUserDetails(request);
   return json({ userDetails, meta: { title: 'Profile' } });
+};
+
+const updateUserSchema = z.object({
+  profileAvatar: z.string().optional(),
+  username: z.string().optional()
+});
+
+export const action = async ({ request }: ActionArgs) => {
+  const { profileAvatar, username } = await zx.parseForm(
+    request,
+    updateUserSchema
+  );
+  const { updateUser } = await gqlClient.request(
+    UPDATE_USER,
+    { input: { profileAvatar, username } },
+    authenticatedRequest(request)
+  );
+  if (updateUser.__typename === 'ApiError')
+    throw badRequest({ message: updateUser.error });
+  // TODO: Set flash message here
+  return json({});
 };
 
 export default () => {
@@ -73,7 +98,7 @@ export default () => {
         {isEdited && (
           <Form method={'post'}>
             <input type="hidden" name="profileAvatar" value={profileSvg} />
-            <Button variant={'light'} color={'green'}>
+            <Button variant={'light'} color={'green'} type={'submit'}>
               Update profile
             </Button>
           </Form>
