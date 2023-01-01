@@ -10,17 +10,22 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { json } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
+import { Form, useFetcher, useLoaderData } from '@remix-run/react';
+import { useEffect, useState } from 'react';
+import { route } from 'routes-gen';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { getUserDetails } from '~/lib/services/user.server';
+import { metaFunction } from '~/lib/utils';
+import type { loader as randomProfileAvatarLoader } from '~/routes/api/randomProfileAvatar';
 import type { LoaderArgs } from '@remix-run/node';
+
+export const meta = metaFunction;
 
 export const loader = async ({ request }: LoaderArgs) => {
   requireValidJwt(request);
 
   const userDetails = await getUserDetails(request);
-  return json({ userDetails });
+  return json({ userDetails, meta: { title: 'Profile' } });
 };
 
 export default () => {
@@ -29,6 +34,14 @@ export default () => {
     userDetails.profile.profileAvatar
   );
   const [isEdited, editedHandler] = useDisclosure(false);
+  const fetcher = useFetcher<typeof randomProfileAvatarLoader>();
+
+  useEffect(() => {
+    if (fetcher.data) {
+      setProfileSvg(fetcher.data.randomProfileAvatar);
+      editedHandler.open();
+    }
+  }, [fetcher.data]);
 
   return (
     <Container>
@@ -42,13 +55,16 @@ export default () => {
               sx={{ cursor: 'pointer' }}
               // rome-ignore lint/security/noDangerouslySetInnerHtml: generated on the server using a secure library
               dangerouslySetInnerHTML={{ __html: profileSvg }}
-              onClick={() => {
-                editedHandler.open();
-              }}
+              onClick={() => fetcher.load(route('/api/randomProfileAvatar'))}
             />
           </Tooltip>
           <Box>
-            <Title variant={'gradient'} span order={2}>
+            <Title
+              variant={'gradient'}
+              gradient={{ from: '#FF512F', to: '#DD2476' }}
+              span
+              order={2}
+            >
               @{userDetails.profile.username}
             </Title>
             <Text color={'dimmed'}>{userDetails.profile.email}</Text>
