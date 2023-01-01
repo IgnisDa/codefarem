@@ -55,3 +55,9 @@ export const SEARCH_USERS = graphql(`
     }
   }
 `);
+
+export const RANDOM_PROFILE_AVATAR = graphql(`
+  query RandomProfileAvatar {
+    randomProfileAvatar
+  }
+`);
