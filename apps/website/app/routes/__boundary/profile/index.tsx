@@ -40,7 +40,7 @@ export default () => {
               h={'120px'}
               w={'120px'}
               sx={{ cursor: 'pointer' }}
-              // rome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+              // rome-ignore lint/security/noDangerouslySetInnerHtml: generated on the server using a secure library
               dangerouslySetInnerHTML={{ __html: profileSvg }}
               onClick={() => {
                 editedHandler.open();
