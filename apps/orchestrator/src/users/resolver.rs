@@ -2,7 +2,10 @@ use crate::{
     config::AppConfig,
     users::{
         dto::{
-            mutations::register_user::{RegisterUserInput, RegisterUserResultUnion},
+            mutations::{
+                register_user::{RegisterUserInput, RegisterUserResultUnion},
+                update_user::{UpdateUserInput, UpdateUserResultUnion},
+            },
             queries::{
                 search_users::SearchUsersGroup,
                 user_details::UserDetailsResultUnion,
@@ -83,5 +86,19 @@ impl UserMutation {
             )
             .await;
         to_result_union_response!(output, RegisterUserResultUnion)
+    }
+
+    /// Update the profile of the current user
+    async fn update_user(
+        &self,
+        ctx: &Context<'_>,
+        input: UpdateUserInput,
+    ) -> Result<UpdateUserResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<UserService>()
+            .update_user(&hanko_id, input.username(), input.profile_avatar())
+            .await;
+        to_result_union_response!(output, UpdateUserResultUnion)
     }
 }

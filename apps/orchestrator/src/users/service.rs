@@ -23,6 +23,7 @@ const GET_INVITE_LINK: &str =
     include_str!("../../../../libs/main-db/edgeql/external/get-invite-link.edgeql");
 const SEARCH_USERS: &str =
     include_str!("../../../../libs/main-db/edgeql/users/search-users.edgeql");
+const UPDATE_USER: &str = include_str!("../../../../libs/main-db/edgeql/users/update-user.edgeql");
 
 pub struct UserService {
     db_conn: Arc<Client>,
@@ -162,5 +163,22 @@ impl UserService {
             )
             .await
             .unwrap())
+    }
+
+    pub async fn update_user(
+        &self,
+        hanko_id: &str,
+        username: &Option<String>,
+        profile_avatar: &Option<String>,
+    ) -> Result<IdObject, ApiError> {
+        self.db_conn
+            .query_required_single::<IdObject, _>(
+                UPDATE_USER,
+                &(hanko_id, username.to_owned(), profile_avatar.to_owned()),
+            )
+            .await
+            .map_err(|_| ApiError {
+                error: "There was an error updating the user".to_string(),
+            })
     }
 }
