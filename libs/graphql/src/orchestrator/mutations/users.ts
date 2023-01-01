@@ -13,3 +13,17 @@ export const REGISTER_USER = graphql(`
     }
   }
 `);
+
+export const UPDATE_USER = graphql(`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      __typename
+      ... on IdObject {
+        id
+      }
+      ... on ApiError {
+        error
+      }
+    }
+  }
+`);
