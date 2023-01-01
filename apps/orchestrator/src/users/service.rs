@@ -170,14 +170,7 @@ impl UserService {
             .db_conn
             .query_required_single::<IdObject, _>(
                 new_query.as_str(),
-                &(
-                    username,
-                    email,
-                    mood.to_string(),
-                    gender.to_string(),
-                    profile_avatar,
-                    hanko_id,
-                ),
+                &(username, email, profile_avatar, hanko_id),
             )
             .await
             .unwrap())

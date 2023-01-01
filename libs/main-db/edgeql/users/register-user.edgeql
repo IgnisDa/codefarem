@@ -4,12 +4,10 @@ SELECT (
     profile := (INSERT users::UserProfile {
       username := <str>$0,
       email := <str>$1,
-      mood := <str>$2,
-      gender := <str>$3,
-      profile_avatar := <str>$4,
+      profile_avatar := <str>$2,
     }),
     auth := (INSERT users::UserAuth {
-      hanko_id := <str>$5,
+      hanko_id := <str>$3,
     }),
   }
 )

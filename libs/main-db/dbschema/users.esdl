@@ -28,8 +28,6 @@ module users {
         required property username -> str {
             constraint exclusive;
         };
-        required property mood -> Mood;
-        required property gender -> Gender;
         # an svg avatar image of the user
         required property profile_avatar -> str;
     }
