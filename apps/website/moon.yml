@@ -1,4 +1,4 @@
-type: 'application'
+type: application
 
 dependsOn:
   - deployment
@@ -7,66 +7,66 @@ dependsOn:
 
 fileGroups:
   remix:
-    - 'app/**/*'
-    - 'public/**/*'
-    - 'remix.env.d.ts'
-    - 'remix.config.*'
+    - app/**/*
+    - public/**/*
+    - remix.env.d.ts
+    - remix.config.*
 
 tasks:
   # FIXME: Remove once rome supports config files in parent directories
   format:
     args:
-      - 'apps/website'
+      - apps/website
 
   # FIXME: Remove once rome supports config files in parent directories
   lint:
     args:
-      - 'apps/website'
+      - apps/website
 
   dev-routes:
-    command: 'routes-gen'
+    command: routes-gen
     args:
-      - '--driver'
+      - --driver
       - '@routes-gen/remix'
       - '--output'
-      - 'app/lib/routes.d.ts'
+      - app/lib/routes.d.ts
       - '--watch'
     inputs:
       - '@group(remix)'
     local: true
 
   routes:
-    command: 'routes-gen'
+    command: routes-gen
     args:
       - '--driver'
       - '@routes-gen/remix'
       - '--output'
-      - 'app/lib/routes.d.ts'
+      - app/lib/routes.d.ts
     inputs:
       - '@group(remix)'
     output:
-      - 'app/lib/routes.d.ts'
+      - app/lib/routes.d.ts
     local: true
 
   dev:
-    command: 'remix dev'
+    command: remix dev
     inputs:
       - '@group(remix)'
     local: true
 
   build:
-    command: 'remix build'
+    command: remix build
     inputs:
       - '@group(remix)'
     outputs:
       - build
-      - '.cache'
+      - .cache
       - public/build
 
   start:
-    command: 'remix-serve ./build'
+    command: remix-serve ./build
     deps:
-      - '~:build'
+      - ~:build
     inputs:
       - '@group(remix)'
     local: true
@@ -78,5 +78,5 @@ tasks:
 workspace:
   inheritedTasks:
     exclude:
-      - 'build'
-      - 'test'
+      - build
+      - test

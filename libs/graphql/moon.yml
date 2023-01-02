@@ -1,15 +1,15 @@
-type: 'library'
+type: library
 
 tasks:
   # FIXME: Remove once rome supports config files in parent directories
   format:
     args:
-      - 'libs/graphql'
+      - libs/graphql
 
   # FIXME: Remove once rome supports config files in parent directories
   lint:
     args:
-      - 'libs/graphql'
+      - libs/graphql
 
 workspace:
   inheritedTasks:

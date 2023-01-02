@@ -2,23 +2,23 @@ tasks:
   # FIXME: Remove once rome supports config files in parent directories
   lint:
     args:
-      - 'apps/mails'
+      - apps/mails
 
   dev:
-    command: 'email dev'
+    command: email dev
     local: true
 
   build:
     command: email
     args:
       - export
-      - '--pretty'
-      - '--outDir'
+      - --pretty
+      - --outDir
       - dist
     inputs:
-      - 'emails/**/*'
+      - emails/**/*
     outputs:
-      - 'dist'
+      - dist
     # FIXME: remove this once https://github.com/zenorocha/react-email/issues/293 is fixed
     options:
       runInCI: false

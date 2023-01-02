@@ -1,4 +1,4 @@
-type: 'library'
+type: library
 
 dependsOn:
   - deployment

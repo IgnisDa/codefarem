@@ -1,4 +1,4 @@
-type: 'application'
+type: application
 
 dependsOn:
   - deployment

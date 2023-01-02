@@ -1,8 +1,8 @@
-type: 'application'
+type: application
 
 tasks:
   dev:
-    command: 'cypress open'
+    command: cypress open
     local: true
 
   test:
@@ -11,16 +11,16 @@ tasks:
       - run
       - '--headless'
     inputs:
-      - 'cypress.config.ts'
-      - 'cypress/**/*'
+      - cypress.config.ts
+      - cypress/**/*
     outputs:
-      - 'cypress/videos'
-      - 'cypress/screenshots'
+      - cypress/videos
+      - cypress/screenshots
     options:
       runInCI: false
 
 workspace:
   inheritedTasks:
     exclude:
-      - 'build'
-      - 'test'
+      - build
+      - test

@@ -1,22 +1,22 @@
-type: 'library'
+type: library
 
 tasks:
   orchestrator-graphql:
     command:
-      - 'graphql-codegen'
+      - graphql-codegen
       - '--config'
-      - 'src/graphql/orchestrator/codegen.ts'
+      - src/graphql/orchestrator/codegen.ts
     outputs:
-      - 'src/graphql/orchestrator-generated'
+      - src/graphql/orchestrator-generated
     local: true
 
   admin-graphql:
     command:
-      - 'graphql-codegen'
+      - graphql-codegen
       - '--config'
-      - 'src/graphql/admin/codegen.ts'
+      - src/graphql/admin/codegen.ts
     outputs:
-      - 'src/graphql/admin-generated'
+      - src/graphql/admin-generated
     local: true
 
 workspace:
