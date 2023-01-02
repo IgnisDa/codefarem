@@ -92,7 +92,7 @@ export default () => {
   }, []);
 
   return (
-    <Center h={'100%'} mx={'md'}>
+    <Center mx={'md'} sx={{ flexGrow: 1 }}>
       {hankoSdk ? (
         <Paper withBorder p="md">
           <Stepper active={active} onStepClick={setActive}>

@@ -1,4 +1,4 @@
-import { Box, createEmotionCache, MantineProvider } from '@mantine/core';
+import { createEmotionCache, Flex, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { StylesPlaceholder } from '@mantine/remix';
 import { json } from '@remix-run/node';
@@ -58,9 +58,14 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         />
       </head>
       <body>
-        <Box h={'100%'} py={40}>
+        <Flex
+          direction={'column'}
+          h={'100%'}
+          py={40}
+          sx={{ minHeight: '100vh' }}
+        >
           {children}
-        </Box>
+        </Flex>
         <ScrollRestoration />
         <Scripts />
         <script
