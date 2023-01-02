@@ -17,15 +17,14 @@ fileGroups:
 
 tasks:
   lint:
-    command:
-      # TODO: This does not work
-      - rome
-      - check
-      - '.'
+    command: 'rome check'
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
       - 'rome.json'
+    options:
+      runFromWorkspaceRoot: true
+
   test:
     command:
       - jest
