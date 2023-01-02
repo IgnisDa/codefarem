@@ -7,16 +7,18 @@ import {
   Stack,
   Text,
   Title,
-  Tooltip
+  Tooltip,
+  UnstyledButton
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ActionArgs, json } from '@remix-run/node';
+import { ActionArgs, json, redirect } from '@remix-run/node';
 import { Form, useFetcher, useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
+import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
@@ -50,7 +52,7 @@ export const action = async ({ request }: ActionArgs) => {
   if (updateUser.__typename === 'ApiError')
     throw badRequest({ message: updateUser.error });
   // TODO: Set flash message here
-  return json({});
+  return redirect(SUCCESSFUL_REDIRECT_PATH);
 };
 
 export default () => {
@@ -74,7 +76,7 @@ export default () => {
         <Title>Your profile</Title>
         <Group>
           <Tooltip label={'Regenerate profile picture'} position={'left'}>
-            <Box
+            <UnstyledButton
               h={'120px'}
               w={'120px'}
               sx={{ cursor: 'pointer' }}
