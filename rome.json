@@ -9,7 +9,8 @@
       "routes.d.ts",
       "tmp",
       "target",
-      "node_modules"
+      "node_modules",
+      ".moon"
     ]
   },
   "formatter": {
