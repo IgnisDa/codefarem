@@ -1,9 +1,4 @@
-import {
-  AppShell,
-  Box,
-  createEmotionCache,
-  MantineProvider
-} from '@mantine/core';
+import { Box, createEmotionCache, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { StylesPlaceholder } from '@mantine/remix';
 import { json } from '@remix-run/node';
@@ -16,7 +11,6 @@ import {
   ScrollRestoration,
   useLoaderData
 } from '@remix-run/react';
-import { AppNavbar } from './lib/components/AppShell';
 import { ApplicationConfig } from './lib/config.server';
 import type { ShouldReloadFunction } from '@remix-run/react';
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
@@ -64,20 +58,18 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         />
       </head>
       <body>
-        <AppShell navbar={<AppNavbar />} padding={0}>
-          <Box h={'100%'} py={40}>
-            {children}
-          </Box>
-          <ScrollRestoration />
-          <Scripts />
-          <script
-            // rome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-            dangerouslySetInnerHTML={{
-              __html: `window.ENV = ${JSON.stringify(ENV)}`
-            }}
-          />
-          {ENV.NODE_ENV === 'development' && <LiveReload />}
-        </AppShell>
+        <Box h={'100%'} py={40}>
+          {children}
+        </Box>
+        <ScrollRestoration />
+        <Scripts />
+        <script
+          // rome-ignore lint/security/noDangerouslySetInnerHtml: trusted content
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(ENV)}`
+          }}
+        />
+        {ENV.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
   );

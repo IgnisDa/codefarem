@@ -6,9 +6,11 @@ import {
   Center,
   Anchor,
   Text,
-  Group,
   UnstyledButton,
-  Box
+  Box,
+  Flex,
+  Menu,
+  Group
 } from '@mantine/core';
 import {
   IconLogout,
@@ -43,26 +45,15 @@ const useStyles = createStyles((theme, _params, getRef) => {
       textDecoration: 'none',
       fontSize: theme.fontSizes.sm,
       color: theme.colors.dark[1],
-      padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
       borderRadius: theme.radius.sm,
       fontWeight: 500,
 
-      '&:hover': {
-        backgroundColor: theme.colors.dark[6],
-        color: theme.white,
-
-        [`& .${icon}`]: {
-          color: theme.white
-        }
-      }
+      '&:hover': { color: theme.white }
     },
 
     linkIcon: {
       ref: icon,
-      color:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[2]
-          : theme.colors.gray[6],
+      color: theme.colors.dark[2],
       marginRight: theme.spacing.sm
     }
   };
@@ -106,6 +97,19 @@ const navbarLinks = [
   }
 ];
 
+const userActions = [
+  {
+    label: 'Logout',
+    icon: IconLogout,
+    link: route('/auth/logout')
+  },
+  {
+    label: 'Profile',
+    icon: IconChevronRight,
+    link: route('/profile')
+  }
+];
+
 interface NavbarProps {
   username: string;
   email: string;
@@ -137,25 +141,45 @@ export const AppNavbar = ({
         </Navbar.Section>
         <Navbar.Section grow>{links}</Navbar.Section>
         <Navbar.Section className={classes.footer}>
-          <UnstyledButton>
-            <Group>
-              {/* rome-ignore lint/security/noDangerouslySetInnerHtml: generated on the server */}
-              <Box dangerouslySetInnerHTML={{ __html: profileAvatarSvg }} />
-              <Box style={{ flex: 1 }}>
-                <Text size="sm" weight={500}>
-                  {username}
-                </Text>
-                <Text color="dimmed" size="xs">
-                  {email}
-                </Text>
-              </Box>
-              <IconChevronRight size={14} stroke={1.5} />
-            </Group>
-          </UnstyledButton>
-          <Anchor href={route('/auth/logout')} className={classes.link}>
-            <IconLogout className={classes.linkIcon} stroke={1.5} />
-            <Text>Logout</Text>
-          </Anchor>
+          <Menu shadow="md" width={200}>
+            <Menu.Target>
+              <UnstyledButton py={'xs'} w={'100%'}>
+                <Group position='apart'>
+                  <Flex align={'center'} gap={10}>
+                    <Box
+                      h={'35px'}
+                      w={'35px'}
+                      // rome-ignore lint/security/noDangerouslySetInnerHtml: generated on the server
+                      dangerouslySetInnerHTML={{ __html: profileAvatarSvg }}
+                    />
+                    <Box style={{ flex: 1 }}>
+                      <Text
+                        size="sm"
+                        fz={'xl'}
+                        variant={'gradient'}
+                        gradient={{ from: '#FF512F', to: '#DD2476' }}
+                      >
+                        {username}
+                      </Text>
+                      <Text color="dimmed" size="xs">
+                        {email}
+                      </Text>
+                    </Box>
+                  </Flex>
+                  <IconChevronRight size={14} stroke={1.5} />
+                </Group>
+              </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              {userActions.map((action) => (
+                <Menu.Item icon={<action.icon />} key={action.label}>
+                  <Anchor href={action.link} className={classes.link}>
+                    <Text>{action.label}</Text>
+                  </Anchor>
+                </Menu.Item>
+              ))}
+            </Menu.Dropdown>
+          </Menu>
         </Navbar.Section>
       </Navbar>
     </MediaQuery>
