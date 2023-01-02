@@ -10,6 +10,11 @@ fileGroups:
 
 tasks:
   # FIXME: Remove once rome supports config files in parent directories
+  format:
+    args:
+      - 'apps/admin/website'
+
+  # FIXME: Remove once rome supports config files in parent directories
   lint:
     args:
       - 'apps/admin/website'

@@ -25,6 +25,15 @@ tasks:
     options:
       runFromWorkspaceRoot: true
 
+  format:
+    command: 'rome format'
+    inputs:
+      - 'src/**/*'
+      - 'tests/**/*'
+      - 'rome.json'
+    options:
+      runFromWorkspaceRoot: true
+
   test:
     command:
       - jest

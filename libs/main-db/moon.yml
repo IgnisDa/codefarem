@@ -24,3 +24,4 @@ workspace:
       - lint
       - typecheck
       - test
+      - format

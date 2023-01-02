@@ -2,6 +2,11 @@ type: 'library'
 
 tasks:
   # FIXME: Remove once rome supports config files in parent directories
+  format:
+    args:
+      - 'libs/faker'
+
+  # FIXME: Remove once rome supports config files in parent directories
   lint:
     args:
       - 'libs/faker'
@@ -10,3 +15,4 @@ workspace:
   inheritedTasks:
     exclude:
       - build
+      - test
