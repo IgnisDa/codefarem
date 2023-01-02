@@ -5,14 +5,18 @@ import {
   Title,
   Center,
   Anchor,
-  Text
+  Text,
+  Group,
+  UnstyledButton,
+  Box
 } from '@mantine/core';
 import {
   IconLogout,
   IconCode,
   IconQuestionMark,
   IconSchool,
-  IconInfoCircle
+  IconInfoCircle,
+  IconChevronRight
 } from '@tabler/icons';
 import { route } from 'routes-gen';
 import { LinksGroup } from './LinksGroup';
@@ -64,7 +68,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-const data = [
+const navbarLinks = [
   {
     label: 'Playground',
     icon: IconCode,
@@ -102,9 +106,19 @@ const data = [
   }
 ];
 
-export const AppNavbar = () => {
+interface NavbarProps {
+  username: string;
+  email: string;
+  profileAvatarSvg: string;
+}
+
+export const AppNavbar = ({
+  username,
+  email,
+  profileAvatarSvg
+}: NavbarProps) => {
   const { classes } = useStyles();
-  const links = data.map((item, idx) => (
+  const links = navbarLinks.map((item, idx) => (
     <LinksGroup
       links={item.links}
       label={item.label}
@@ -123,6 +137,21 @@ export const AppNavbar = () => {
         </Navbar.Section>
         <Navbar.Section grow>{links}</Navbar.Section>
         <Navbar.Section className={classes.footer}>
+          <UnstyledButton>
+            <Group>
+              {/* rome-ignore lint/security/noDangerouslySetInnerHtml: generated on the server */}
+              <Box dangerouslySetInnerHTML={{ __html: profileAvatarSvg }} />
+              <Box style={{ flex: 1 }}>
+                <Text size="sm" weight={500}>
+                  {username}
+                </Text>
+                <Text color="dimmed" size="xs">
+                  {email}
+                </Text>
+              </Box>
+              <IconChevronRight size={14} stroke={1.5} />
+            </Group>
+          </UnstyledButton>
           <Anchor href={route('/auth/logout')} className={classes.link}>
             <IconLogout className={classes.linkIcon} stroke={1.5} />
             <Text>Logout</Text>
