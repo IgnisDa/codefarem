@@ -38,12 +38,16 @@ export async function loader() {
     ENV: {
       HANKO_URL: ApplicationConfig.HANKO_URL,
       NODE_ENV: process.env.NODE_ENV
+    },
+    analytics: {
+      domain: ApplicationConfig.ANALYTICS_DOMAIN,
+      script: ApplicationConfig.ANALYTICS_SCRIPT
     }
   });
 }
 
 const Document: FC<{ children: ReactNode }> = ({ children }) => {
-  const { ENV } = useLoaderData<typeof loader>();
+  const { ENV, analytics } = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -51,11 +55,9 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         <StylesPlaceholder />
         <Meta />
         <Links />
-        <script
-          defer
-          data-domain="codefarem.ignisda.tech"
-          src="https://plausible.ignisda.tech/js/script.js"
-        />
+        {analytics.domain && analytics.script && (
+          <script defer data-domain={analytics.domain} src={analytics.script} />
+        )}
       </head>
       <body>
         <Box h={'100%'} py={40} sx={{ minHeight: '100vh' }}>
