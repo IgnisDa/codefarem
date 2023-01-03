@@ -4,6 +4,11 @@ tasks:
     args:
       - apps/mails
 
+  # FIXME: Remove once rome supports config files in parent directories
+  format:
+    args:
+      - apps/mails
+
   dev:
     command: email dev
     local: true
