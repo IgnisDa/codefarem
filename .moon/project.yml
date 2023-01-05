@@ -18,6 +18,8 @@ fileGroups:
 tasks:
   lint:
     command: 'rome check'
+    args:
+      - $(pwd)
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
@@ -27,6 +29,8 @@ tasks:
 
   format:
     command: 'rome format'
+    args:
+      - $(pwd)
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
