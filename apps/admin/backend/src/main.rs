@@ -41,8 +41,8 @@ async fn main() -> Result<()> {
         .allow_headers(Any)
         .allow_origin(Any);
     let app = Router::new()
-        .route("/graphiql", get(graphiql))
-        .route("/graphql", post(graphql_handler))
+        .route("/graphiql", get(graphiql).fallback(handler_404))
+        .route("/graphql", post(graphql_handler).fallback(handler_404))
         .fallback(handler_404)
         .layer(Extension(schema))
         .layer(cors);
