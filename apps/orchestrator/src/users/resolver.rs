@@ -14,7 +14,7 @@ use crate::{
         },
         service::UserService,
     },
-    utils::RequestData,
+    utils::Token,
 };
 use async_graphql::{Context, ErrorExtensions, Object, Result};
 use auth::{get_hanko_id_from_authorization_token, AuthError};

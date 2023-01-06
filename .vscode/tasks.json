@@ -150,7 +150,7 @@
             "detail": "Run the orchestrator service",
             "options": {
                 "env": {
-                    "ROCKET_PORT": "8000"
+                    "PORT": "8000"
                 }
             },
         },

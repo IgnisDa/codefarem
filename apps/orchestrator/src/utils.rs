@@ -1,26 +1,9 @@
-use rocket::{
-    async_trait,
-    request::{FromRequest, Outcome},
-    Request,
-};
+use axum::http::HeaderMap;
 
-#[derive(Debug)]
-pub struct RequestData {
-    pub user_token: Option<String>,
-}
+pub struct Token(pub String);
 
-pub struct Token(pub Option<String>);
-
-#[async_trait]
-impl<'r> FromRequest<'r> for Token {
-    type Error = String;
-
-    async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let token_str = request
-            .headers()
-            .get_one("authorization")
-            .map(|f| f.to_string());
-        let token = Token(token_str);
-        Outcome::Success(token)
-    }
+pub fn get_token_from_headers(headers: &HeaderMap) -> Option<Token> {
+    headers
+        .get("authorization")
+        .and_then(|value| value.to_str().map(|s| Token(s.to_string())).ok())
 }

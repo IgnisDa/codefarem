@@ -20,7 +20,7 @@ use crate::{
         },
         service::LearningService,
     },
-    utils::RequestData,
+    utils::Token,
 };
 use async_graphql::{
     connection::{Connection, EmptyFields},
