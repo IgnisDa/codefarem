@@ -20,6 +20,7 @@ use crate::{
             test_case::{TestCase, TestCaseUnit},
         },
     },
+    utils::log_error_and_return_api_error,
 };
 use async_graphql::{
     connection::{Connection, EmptyFields},
@@ -148,8 +149,8 @@ impl LearningService {
         self.db_conn
             .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
             .await
-            .map_err(|_| ApiError {
-                error: format!("Class with id={class_id:?} not found"),
+            .map_err(|e| {
+                log_error_and_return_api_error(e, &format!("Class with id={class_id:?} not found"))
             })
     }
 
@@ -240,14 +241,17 @@ impl LearningService {
                 &(name, problem, slug),
             )
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error creating the question, please try again.".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating the question, please try again.",
+                )
             })?;
         // delete all of the old test cases if any
         self.db_conn
             .query_json(DELETE_TEST_CASES, &(question.id,))
             .await
-            .unwrap();
+            .expect("Can not fail");
         fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
             match test_case {
                 TestCaseUnit::Number => INSERT_NUMBER_UNIT,
@@ -326,8 +330,11 @@ impl LearningService {
             .db_conn
             .query_required_single::<IdObject, _>(DELETE_CLASS, &(class_id,))
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error deleting the class, please try again.".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error deleting the class, please try again.",
+                )
             })?;
         Ok(question)
     }
@@ -343,8 +350,11 @@ impl LearningService {
             .db_conn
             .query_required_single::<IdObject, _>(DELETE_QUESTION, &(question_slug,))
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error deleting the question, please try again.".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error deleting the question, please try again.",
+                )
             })?;
         Ok(question)
     }

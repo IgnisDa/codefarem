@@ -1,6 +1,9 @@
-use crate::users::dto::queries::{
-    search_users::{SearchUsersDetails, SearchUsersGroup},
-    user_with_email::UserWithEmailError,
+use crate::{
+    users::dto::queries::{
+        search_users::{SearchUsersDetails, SearchUsersGroup},
+        user_with_email::UserWithEmailError,
+    },
+    utils::log_error_and_return_api_error,
 };
 use chrono::DateTime;
 use edgedb_tokio::Client;
@@ -119,9 +122,7 @@ impl UserService {
                 .db_conn
                 .query_single_json(GET_INVITE_LINK, &(it,))
                 .await
-                .map_err(|_| ApiError {
-                    error: "Invite link not found".to_string(),
-                })?
+                .map_err(|e| log_error_and_return_api_error(e, "Invite link not found"))?
                 .unwrap();
             let invite_link: A = serde_json::from_str(&invite_link).unwrap();
             let now = chrono::Utc::now();
@@ -177,8 +178,6 @@ impl UserService {
                 &(hanko_id, username.to_owned(), profile_avatar.to_owned()),
             )
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error updating the user".to_string(),
-            })
+            .map_err(|e| log_error_and_return_api_error(e, "There was an error updating the user."))
     }
 }
