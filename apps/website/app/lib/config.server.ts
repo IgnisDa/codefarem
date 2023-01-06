@@ -15,8 +15,9 @@ const HANKO_URL = env
   .asUrlString()
   .slice(0, -1);
 const COOKIE_DOMAIN = env.get('WEBSITE_COOKIE_DOMAIN').required().asString();
-const ANALYTICS_DOMAIN = env.get('WEBSITE_ANALYTICS_DOMAIN').asString();
+const ANALYTICS_DOMAINS = env.get('WEBSITE_ANALYTICS_DOMAINS').asString();
 const ANALYTICS_SCRIPT = env.get('WEBSITE_ANALYTICS_SCRIPT').asString();
+const ANALYTICS_WEBSITE_ID = env.get('WEBSITE_ANALYTICS_WEBSITE_ID').asString();
 
 export const ApplicationConfig = {
   APPLICATION_API_URL,
@@ -24,6 +25,7 @@ export const ApplicationConfig = {
   NODE_ENV,
   HANKO_URL,
   COOKIE_DOMAIN,
-  ANALYTICS_DOMAIN,
-  ANALYTICS_SCRIPT
+  ANALYTICS_DOMAINS,
+  ANALYTICS_SCRIPT,
+  ANALYTICS_WEBSITE_ID
 };

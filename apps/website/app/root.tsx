@@ -40,8 +40,9 @@ export async function loader() {
       NODE_ENV: process.env.NODE_ENV
     },
     analytics: {
-      domain: ApplicationConfig.ANALYTICS_DOMAIN,
-      script: ApplicationConfig.ANALYTICS_SCRIPT
+      domains: ApplicationConfig.ANALYTICS_DOMAINS,
+      script: ApplicationConfig.ANALYTICS_SCRIPT,
+      websiteId: ApplicationConfig.ANALYTICS_WEBSITE_ID
     }
   });
 }
@@ -55,9 +56,13 @@ const Document: FC<{ children: ReactNode }> = ({ children }) => {
         <StylesPlaceholder />
         <Meta />
         <Links />
-        {analytics.domain && analytics.script && (
-          <script defer data-domain={analytics.domain} src={analytics.script} />
-        )}
+        <script
+          async
+          defer
+          data-website-id={analytics.websiteId}
+          src={analytics.script}
+          data-domains={analytics.domains}
+        />
       </head>
       <body>
         <Box h={'100%'} py={40} sx={{ minHeight: '100vh' }}>
