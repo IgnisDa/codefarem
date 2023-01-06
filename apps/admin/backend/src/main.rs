@@ -6,7 +6,7 @@ use axum::{
     extract::Extension,
     http::{Method, StatusCode},
     response::{Html, IntoResponse},
-    routing::get,
+    routing::{get, post},
     Router, Server,
 };
 use tower_http::cors::{Any, CorsLayer};
@@ -21,7 +21,7 @@ async fn graphql_handler(schema: Extension<GraphqlSchema>, req: GraphQLRequest) 
 }
 
 async fn graphiql() -> impl IntoResponse {
-    Html(GraphiQLSource::build().finish())
+    Html(GraphiQLSource::build().endpoint("/graphql").finish())
 }
 
 #[tokio::main]
@@ -41,7 +41,8 @@ async fn main() -> Result<()> {
         .allow_headers(Any)
         .allow_origin(Any);
     let app = Router::new()
-        .route("/graphql", get(graphiql).post(graphql_handler))
+        .route("/graphiql", get(graphiql))
+        .route("/graphql", post(graphql_handler))
         .fallback(handler_404)
         .layer(Extension(schema))
         .layer(cors);
