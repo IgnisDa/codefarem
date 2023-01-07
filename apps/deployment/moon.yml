@@ -1,11 +1,5 @@
 type: application
 
-tasks:
-  # FIXME: Remove once rome supports config files in parent directories
-  lint:
-    args:
-      - apps/deployment
-
 workspace:
   inheritedTasks:
     include:

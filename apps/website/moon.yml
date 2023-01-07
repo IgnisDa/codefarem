@@ -18,11 +18,6 @@ tasks:
     args:
       - apps/website
 
-  # FIXME: Remove once rome supports config files in parent directories
-  lint:
-    args:
-      - apps/website
-
   dev-routes:
     command: routes-gen
     args:

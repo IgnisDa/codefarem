@@ -14,11 +14,6 @@ tasks:
     args:
       - apps/admin/website
 
-  # FIXME: Remove once rome supports config files in parent directories
-  lint:
-    args:
-      - apps/admin/website
-
   dev:
     command: vite dev
     local: true

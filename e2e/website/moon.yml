@@ -2,11 +2,6 @@ type: application
 
 tasks:
   # FIXME: Remove once rome supports config files in parent directories
-  lint:
-    args:
-      - e2e/website
-
-  # FIXME: Remove once rome supports config files in parent directories
   format:
     args:
       - apps/mails

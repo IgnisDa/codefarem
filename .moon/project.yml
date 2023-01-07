@@ -17,7 +17,7 @@ fileGroups:
 
 tasks:
   lint:
-    command: 'rome check'
+    command: 'rome check $projectRoot'
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
