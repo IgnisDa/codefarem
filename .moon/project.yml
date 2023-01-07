@@ -26,7 +26,7 @@ tasks:
       runFromWorkspaceRoot: true
 
   format:
-    command: 'rome format'
+    command: 'rome format $projectRoot'
     inputs:
       - 'src/**/*'
       - 'tests/**/*'

@@ -13,11 +13,6 @@ fileGroups:
     - remix.config.*
 
 tasks:
-  # FIXME: Remove once rome supports config files in parent directories
-  format:
-    args:
-      - apps/website
-
   dev-routes:
     command: routes-gen
     args:
