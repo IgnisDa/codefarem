@@ -127,7 +127,6 @@ impl LearningMutation {
                 input.name(),
                 input.teacher_ids(),
                 input.student_ids(),
-                input.goals(),
             )
             .await;
         to_result_union_response!(output, UpsertClassResultUnion)

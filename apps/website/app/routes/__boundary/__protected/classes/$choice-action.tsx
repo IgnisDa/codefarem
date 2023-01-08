@@ -130,6 +130,8 @@ export const action = async ({ request }: ActionArgs) => {
     set(input, key, newValue);
   });
 
+  // FIXME: remove this
+  input.goals = undefined;
   console.dir(input, { depth: Infinity });
 
   const { upsertClass } = await gqlClient.request(
@@ -245,7 +247,6 @@ export default () => {
                           );
                           return index === -1;
                         })}
-                        required
                         label="Questions for this goal"
                         placeholder="Start typing to search for questions"
                         searchable

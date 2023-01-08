@@ -164,17 +164,6 @@ export type ExecuteCodeTime = {
   execution: Scalars['String'];
 };
 
-export type GoalInput = {
-  /** The color assigned to this goal */
-  color: Scalars['String'];
-  /** The name of the goal */
-  name: Scalars['String'];
-  /** The questions that are part of this goal */
-  questionInstances: Array<Scalars['UUID']>;
-  /** The start and end date for this goal */
-  range: RangeInput;
-};
-
 /** Used to uniquely identify an output object. Can also be used to query the database. */
 export type IdObject = {
   /** The unique identifier of the object */
@@ -426,14 +415,6 @@ export type QuestionTestCase = {
   outputs: Array<QuestionData>;
 };
 
-/** The input object used to specify a range */
-export type RangeInput = {
-  /** The end of the range */
-  end: Scalars['String'];
-  /** The start of the range */
-  start: Scalars['String'];
-};
-
 /** The input object used to create a new user */
 export type RegisterUserInput = {
   /** The email of the user */
@@ -538,8 +519,6 @@ export type UpdateUserResultUnion = ApiError | IdObject;
 
 /** The input object used to create a new class */
 export type UpsertClassInput = {
-  /** The goals that are part of the class */
-  goals: Array<GoalInput>;
   /** The ID of the class. If this is present, then the class will be updated. */
   joinSlug?: InputMaybe<Scalars['String']>;
   /** The name of the class */

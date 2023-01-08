@@ -8,7 +8,6 @@ use crate::{
             execute_code_for_question::{
                 ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
             },
-            goals::GoalInput,
             upsert_question::UpsertQuestionOutput,
         },
         queries::{
@@ -176,7 +175,6 @@ impl LearningService {
         name: &'a str,
         teacher_ids: &[Uuid],
         student_ids: &[Uuid],
-        goals: &[GoalInput],
     ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
@@ -188,9 +186,11 @@ impl LearningService {
             .db_conn
             .query_required_single::<IdObject, _>(UPSERT_CLASS, &(name, slug))
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error creating/updating the class, please try again."
-                    .to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating/updating the class, please try again.",
+                )
             })?;
         self.db_conn
             .query_required_single_json(
@@ -198,8 +198,11 @@ impl LearningService {
                 &(id_object.id, all_teachers_to_insert, student_ids),
             )
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error associating users with the class".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error associating users with the class",
+                )
             })?;
         Ok(id_object)
     }
