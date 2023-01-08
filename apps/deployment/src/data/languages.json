@@ -25,11 +25,17 @@
       "COMMANDS": [
         "apt update",
         "apt install -y wget",
+        "wget https://dl.google.com/go/go${GO_RELEASE}.linux-amd64.tar.gz",
+        "tar xf go${GO_RELEASE}.linux-amd64.tar.gz -C /usr/local",
+        "find /usr/local/go -mindepth 1 -maxdepth 1 ! -name 'src' ! -name 'VERSION' ! -name 'bin' ! -name 'pkg' -exec rm -rf {} +",
+        "rm -rf go${GO_RELEASE}.linux-amd64.tar.gz",
         "wget https://github.com/tinygo-org/tinygo/releases/download/v0.26.0/tinygo_0.26.0_amd64.deb",
         "dpkg -i tinygo_0.26.0_amd64.deb",
         "rm -rf tinygo_0.26.0_amd64.deb"
       ],
-      "ENVIRONMENT_VARIABLES": {}
+      "ENVIRONMENT_VARIABLES": {
+        "GO_RELEASE": "1.19.1"
+      }
     },
     {
       "EXECUTABLE_NAMES": [
