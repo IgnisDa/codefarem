@@ -82,3 +82,20 @@ export const SEARCH_QUESTIONS = graphql(`
     }
   }
 `);
+
+export const CLASS_DETAILS = graphql(`
+  query ClassDetails($joinSlug: String!) {
+    classDetails(joinSlug: $joinSlug) {
+      __typename
+      ...on ClassDetailsOutput {
+        name
+        numGoals
+        numStudents
+        numTeachers
+      }
+      ...on ApiError {
+        error
+      }
+    }
+  }
+`);
