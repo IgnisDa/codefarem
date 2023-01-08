@@ -1,6 +1,9 @@
 import { useFragment } from ':generated/graphql/orchestrator';
-import { AccountType } from ':generated/graphql/orchestrator/graphql';
-import { UPSERT_CLASS } from ':graphql/orchestrator/mutations';
+import {
+  AccountType,
+  CreateGoalInput
+} from ':generated/graphql/orchestrator/graphql';
+import { CREATE_GOAL, UPSERT_CLASS } from ':graphql/orchestrator/mutations';
 import dayjs from 'dayjs';
 import {
   SEARCH_QUESTIONS,
@@ -130,9 +133,8 @@ export const action = async ({ request }: ActionArgs) => {
     set(input, key, newValue);
   });
 
-  // FIXME: remove this
+  const goals: CreateGoalInput[] = input.goals;
   input.goals = undefined;
-  console.dir(input, { depth: Infinity });
 
   const { upsertClass } = await gqlClient.request(
     UPSERT_CLASS,
@@ -141,6 +143,15 @@ export const action = async ({ request }: ActionArgs) => {
   );
   if (upsertClass.__typename === 'ApiError')
     throw badRequest({ message: upsertClass.error });
+  for (const goal of goals) {
+    const { createGoal } = await gqlClient.request(
+      CREATE_GOAL,
+      { input: { ...goal, classId: upsertClass.id } },
+      authenticatedRequest(request)
+    );
+    if (createGoal.__typename === 'ApiError')
+      throw badRequest({ message: createGoal.error });
+  }
   throw redirect(route('/classes'));
 };
 
@@ -280,7 +291,7 @@ export default () => {
                             <Card shadow="sm" radius="md" withBorder key={q.id}>
                               <input
                                 type="hidden"
-                                name={`goals.${i}.questionInstances[${idx}]]`}
+                                name={`goals.${i}.questionIds[${idx}]]`}
                                 value={q.id}
                               />
                               <Group position="apart">
