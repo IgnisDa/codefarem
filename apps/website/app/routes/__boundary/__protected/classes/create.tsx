@@ -40,11 +40,13 @@ import { route } from 'routes-gen';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import { forbiddenError } from '~/lib/utils';
+import { forbiddenError, metaFunction } from '~/lib/utils';
 import type { SearchUserDetailsFragment } from ':generated/graphql/orchestrator/graphql';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type { FragmentType } from ':generated/graphql/orchestrator';
 import type { ComponentPropsWithoutRef } from 'react';
+
+export const meta = metaFunction;
 
 const convertFromFragmentList = (
   list: FragmentType<typeof SEARCH_USER_DETAILS_FRAGMENT>[],
