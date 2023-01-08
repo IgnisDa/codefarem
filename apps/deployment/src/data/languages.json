@@ -3,19 +3,35 @@
   "project_type": "rust",
   "apps": [
     {
-      "EXECUTABLE_NAMES": ["rs-service"],
+      "EXECUTABLE_NAMES": [
+        "rs-service"
+      ],
       "IMAGE_NAME": "rust:1.65",
-      "COMMANDS": ["rustup target add wasm32-wasi"],
+      "COMMANDS": [
+        "rustup target add wasm32-wasi"
+      ],
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAMES": ["go-service"],
-      "IMAGE_NAME": "tinygo/tinygo:0.26.0",
-      "COMMANDS": [],
+      "EXECUTABLE_NAMES": [
+        "go-service"
+      ],
+      "IMAGE_NAME": "ubuntu:latest",
+      "COMMANDS": [
+        "apt update",
+        "apt install -y wget",
+        "wget https://github.com/tinygo-org/tinygo/releases/download/v0.26.0/tinygo_0.26.0_amd64.deb",
+        "dpkg -i tinygo_0.26.0_amd64.deb",
+        "rm -rf tinygo_0.26.0_amd64.deb"
+      ],
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAMES": ["c-service", "cpp-service", "zig-service"],
+      "EXECUTABLE_NAMES": [
+        "c-service",
+        "cpp-service",
+        "zig-service"
+      ],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt update",
@@ -29,7 +45,9 @@
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAMES": ["swift-service"],
+      "EXECUTABLE_NAMES": [
+        "swift-service"
+      ],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt update",
@@ -43,19 +61,25 @@
       }
     },
     {
-      "EXECUTABLE_NAMES": ["ruby-service"],
+      "EXECUTABLE_NAMES": [
+        "ruby-service"
+      ],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAMES": ["python-service"],
+      "EXECUTABLE_NAMES": [
+        "python-service"
+      ],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     },
     {
-      "EXECUTABLE_NAMES": ["grain-service"],
+      "EXECUTABLE_NAMES": [
+        "grain-service"
+      ],
       "IMAGE_NAME": "ubuntu:latest",
       "COMMANDS": [
         "apt update",
