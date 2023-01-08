@@ -7,6 +7,12 @@ use utilities::graphql::ApiError;
 pub struct ClassDetailsOutput {
     /// The name of the class
     name: String,
+    /// The number of goals in the class
+    num_goals: i64,
+    /// The number of students in the class
+    num_students: i64,
+    /// The number of teachers in the class
+    num_teachers: i64,
 }
 
 /// The output object when getting details about a class

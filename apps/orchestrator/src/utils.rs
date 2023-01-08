@@ -12,7 +12,7 @@ pub fn get_token_from_headers(headers: &HeaderMap) -> Option<Token> {
         .and_then(|value| value.to_str().map(|s| Token(s.to_string())).ok())
 }
 
-// A function that logs the error and then returns an ApiError
+/// A function that logs the error and then returns an ApiError
 #[track_caller]
 pub fn log_error_and_return_api_error(e: Error, error_string: &str) -> ApiError {
     let location = Location::caller();

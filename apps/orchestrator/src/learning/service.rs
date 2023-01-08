@@ -148,12 +148,12 @@ impl LearningService {
             .await
     }
 
-    pub async fn class_details(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
+    pub async fn class_details(&self, join_slug: &str) -> Result<ClassDetailsOutput, ApiError> {
         self.db_conn
-            .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
+            .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(join_slug,))
             .await
             .map_err(|e| {
-                log_error_and_return_api_error(e, &format!("Class with id={class_id:?} not found"))
+                log_error_and_return_api_error(e, &format!("Class with slug={join_slug} not found"))
             })
     }
 

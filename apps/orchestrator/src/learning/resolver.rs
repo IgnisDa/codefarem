@@ -4,6 +4,7 @@ use crate::{
         dto::{
             mutations::{
                 create_goals::CreateGoalInput,
+                create_goals::CreateGoalResultUnion,
                 delete_class::DeleteClassResultUnion,
                 delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
@@ -33,9 +34,6 @@ use utilities::{
     graphql::{ConnectionArguments, SearchQueryInput},
     models::InputIdObject,
 };
-use uuid::Uuid;
-
-use super::dto::mutations::create_goals::CreateGoalResultUnion;
 
 /// The query segment for Learning
 #[derive(Default)]
@@ -90,11 +88,11 @@ impl LearningQuery {
     async fn class_details(
         &self,
         ctx: &Context<'_>,
-        class_id: Uuid,
+        join_slug: String,
     ) -> Result<ClassDetailsResultUnion> {
         let output = ctx
             .data_unchecked::<LearningService>()
-            .class_details(class_id)
+            .class_details(&join_slug)
             .await;
         to_result_union_response!(output, ClassDetailsResultUnion)
     }
