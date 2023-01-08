@@ -88,6 +88,7 @@ export const CLASS_DETAILS = graphql(`
     classDetails(joinSlug: $joinSlug) {
       __typename
       ...on ClassDetailsOutput {
+        id
         name
         numGoals
         numStudents

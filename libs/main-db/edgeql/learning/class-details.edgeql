@@ -1,5 +1,6 @@
 # get details about a class
 SELECT learning::Class {
+  id,
   name,
   num_goals := count(.goals),
   num_students := count(.students),
