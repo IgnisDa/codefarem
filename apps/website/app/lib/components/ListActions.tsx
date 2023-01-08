@@ -88,7 +88,7 @@ export const ListActions = ({
             <Button variant="outline" onClick={handler.close}>
               Cancel
             </Button>
-            <Form method={'post'} reloadDocument>
+            <Form method={'post'}>
               <input
                 type="hidden"
                 name={Object.keys(query)[0]}

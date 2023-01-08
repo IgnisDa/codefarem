@@ -56,7 +56,7 @@ export async function action({ request }: ActionArgs) {
     if (deleteClass.__typename === 'ApiError')
       // TODO: set error flash message here
       return badRequest({ message: deleteClass.error });
-    else return null;
+    else return json({});
   } else throw unprocessableEntityError('Invalid action');
 }
 

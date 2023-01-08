@@ -1,4 +1,7 @@
-use async_graphql::{extensions::Analyzer, http::GraphiQLSource, EmptySubscription, Schema};
+use async_graphql::{
+    extensions::Analyzer, http::GraphiQLSource, parser::types::DocumentOperations,
+    EmptySubscription, Schema,
+};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
 use axum::{
     extract::Extension,
@@ -7,6 +10,7 @@ use axum::{
     routing::{get, post},
     Router, Server,
 };
+use log::trace;
 use orchestrator::{
     config::get_app_state,
     farem::service::FaremService,
@@ -34,6 +38,15 @@ async fn graphql_handler(
     req: GraphQLRequest,
 ) -> GraphQLResponse {
     let mut request = req.into_inner();
+    let query = request.parsed_query().expect("Failed to parse query");
+    match &query.operations {
+        DocumentOperations::Multiple(x) => {
+            for key in x.keys() {
+                trace!("Operation name: {key:?}");
+            }
+        }
+        DocumentOperations::Single(_) => {}
+    }
     if let Some(token) = get_token_from_headers(&headers) {
         request = request.data(token);
     }
