@@ -4,9 +4,9 @@ GROUP (
     id,
     profile: {
       email,
-      username
+      username,
+      profile_avatar
     },
-
   }
   FILTER
     .profile.username ILIKE '%' ++ <str>$0 ++ '%'
