@@ -16,6 +16,8 @@ module learning {
             on target delete allow;
             on source delete allow;
         };
+        # the goals that this class has
+        multi link goals := .<class[is learning::Goal];
     }
     type Question {
         # a name for this question
