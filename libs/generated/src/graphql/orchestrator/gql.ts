@@ -20,6 +20,7 @@ const documents = {
     "\n  mutation ExecuteCodeForQuestion($input: ExecuteCodeForQuestionInput!) {\n    executeCodeForQuestion(input: $input) {\n      __typename\n      ... on ExecuteCodeForQuestionOutput {\n        numTestCases\n        numTestCasesFailed\n        testCaseStatuses {\n          __typename\n          ... on ExecuteCodeError {\n            error\n            step\n          }\n          ... on TestCaseSuccessStatus {\n            passed\n            userOutput\n            expectedOutput\n            diff\n            time {\n              compilation\n              execution\n            }\n          }\n        }\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.ExecuteCodeForQuestionDocument,
     "\n  mutation DeleteQuestion($input: DeleteQuestionInput!) {\n    deleteQuestion(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.DeleteQuestionDocument,
     "\n  mutation DeleteClass($input: InputIdObject!) {\n    deleteClass(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.DeleteClassDocument,
+    "\n  mutation CreateGoal($input: CreateGoalInput!) {\n    createGoal(input: $input) {\n      __typename\n      ...on IdObject {\n        id\n      }\n      ...on ApiError {\n        error\n      }\n    }\n  }\n": types.CreateGoalDocument,
     "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.RegisterUserDocument,
     "\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.UpdateUserDocument,
     "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n": types.SupportedLanguagesDocument,
@@ -64,6 +65,10 @@ export function graphql(source: "\n  mutation DeleteQuestion($input: DeleteQuest
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation DeleteClass($input: InputIdObject!) {\n    deleteClass(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteClass($input: InputIdObject!) {\n    deleteClass(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateGoal($input: CreateGoalInput!) {\n    createGoal(input: $input) {\n      __typename\n      ...on IdObject {\n        id\n      }\n      ...on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateGoal($input: CreateGoalInput!) {\n    createGoal(input: $input) {\n      __typename\n      ...on IdObject {\n        id\n      }\n      ...on ApiError {\n        error\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

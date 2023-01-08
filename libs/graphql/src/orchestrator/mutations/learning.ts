@@ -93,3 +93,17 @@ export const DELETE_CLASS = graphql(`
     }
   }
 `);
+
+export const CREATE_GOAL = graphql(`
+  mutation CreateGoal($input: CreateGoalInput!) {
+    createGoal(input: $input) {
+      __typename
+      ...on IdObject {
+        id
+      }
+      ...on ApiError {
+        error
+      }
+    }
+  }
+`);
