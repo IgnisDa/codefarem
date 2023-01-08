@@ -40,7 +40,7 @@ import { route } from 'routes-gen';
 import { requireValidJwt } from '~/lib/services/auth.server';
 import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { getUserDetails } from '~/lib/services/user.server';
-import { forbiddenError, verifyPageAction } from '~/lib/utils';
+import { forbiddenError } from '~/lib/utils';
 import type { SearchUserDetailsFragment } from ':generated/graphql/orchestrator/graphql';
 import type { ActionArgs, LoaderArgs } from '@remix-run/node';
 import type { FragmentType } from ':generated/graphql/orchestrator';
@@ -80,8 +80,7 @@ type Goal = {
   questionInstances: { id: string; numTestCases: number; name: string }[];
 };
 
-export const loader = async ({ request, params }: LoaderArgs) => {
-  const action = verifyPageAction(params);
+export const loader = async ({ request }: LoaderArgs) => {
   await requireValidJwt(request);
   const userDetails = await getUserDetails(request);
   if (userDetails.accountType !== AccountType.Teacher) forbiddenError();
@@ -111,7 +110,13 @@ export const loader = async ({ request, params }: LoaderArgs) => {
       questionInstances: []
     }
   ];
-  return json({ students, teachers, defaultGoals, action, allQuestions });
+  return json({
+    students,
+    teachers,
+    defaultGoals,
+    allQuestions,
+    meta: { title: 'Create class' }
+  });
 };
 
 export const action = async ({ request }: ActionArgs) => {

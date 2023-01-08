@@ -67,10 +67,7 @@ export default () => {
     <Container size={'sm'} h={'100%'}>
       <Stack spacing={'xl'}>
         <Title>All Classes</Title>
-        <Button
-          component="a"
-          href={route('/classes/:choice-action', { choice: PageAction.Create })}
-        >
+        <Button component="a" href={route('/classes/create')}>
           Create a new class
         </Button>
         {classesConnection.edges.length === 0 ? (
