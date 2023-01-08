@@ -6,7 +6,7 @@
       "EXECUTABLE_NAMES": [
         "rs-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [
         "apt update",
         "apt install -y curl",
@@ -21,7 +21,7 @@
       "EXECUTABLE_NAMES": [
         "go-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [
         "apt update",
         "apt install -y wget",
@@ -43,7 +43,7 @@
         "cpp-service",
         "zig-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [
         "apt update",
         "apt install -y wget xz-utils",
@@ -59,7 +59,7 @@
       "EXECUTABLE_NAMES": [
         "swift-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [
         "apt update",
         "apt install -y wget xz-utils binutils git gnupg2 libc6-dev libcurl4 libedit2 libgcc-9-dev libpython2.7 libsqlite3-0 libstdc++-9-dev libxml2 libz3-dev pkg-config tzdata zlib1g-dev",
@@ -75,7 +75,7 @@
       "EXECUTABLE_NAMES": [
         "ruby-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     },
@@ -83,7 +83,7 @@
       "EXECUTABLE_NAMES": [
         "python-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     },
@@ -91,7 +91,7 @@
       "EXECUTABLE_NAMES": [
         "grain-service"
       ],
-      "IMAGE_NAME": "ubuntu:latest",
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [
         "apt update",
         "apt install -y curl",

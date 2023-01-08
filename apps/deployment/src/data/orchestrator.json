@@ -3,8 +3,10 @@
   "project_type": "rust",
   "apps": [
     {
-      "EXECUTABLE_NAMES": ["orchestrator"],
-      "IMAGE_NAME": "ubuntu:latest",
+      "EXECUTABLE_NAMES": [
+        "orchestrator"
+      ],
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {
         "EDGEDB_RUN_VERSION_CHECK": "never"
