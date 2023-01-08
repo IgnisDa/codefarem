@@ -3,6 +3,7 @@ use crate::{
     learning::{
         dto::{
             mutations::{
+                create_goals::CreateGoalInput,
                 delete_class::DeleteClassResultUnion,
                 delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
@@ -33,6 +34,8 @@ use utilities::{
     models::InputIdObject,
 };
 use uuid::Uuid;
+
+use super::dto::mutations::create_goals::CreateGoalResultUnion;
 
 /// The query segment for Learning
 #[derive(Default)]
@@ -112,6 +115,27 @@ impl LearningQuery {
 
 #[Object]
 impl LearningMutation {
+    /// Create a new goal
+    async fn create_goal(
+        &self,
+        ctx: &Context<'_>,
+        input: CreateGoalInput,
+    ) -> Result<CreateGoalResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .create_goal(
+                &hanko_id,
+                input.class_id(),
+                input.name(),
+                input.range(),
+                input.color(),
+                input.question_ids(),
+            )
+            .await;
+        to_result_union_response!(output, CreateGoalResultUnion)
+    }
+
     /// Create a new class or update an existing one
     async fn upsert_class(
         &self,

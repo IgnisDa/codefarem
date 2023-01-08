@@ -18,6 +18,7 @@
     "moonrepo.moon-console",
     "ms-python.python",
     "bierner.markdown-mermaid",
-    "rome.rome"
+    "rome.rome",
+    "graphql.vscode-graphql"
   ]
 }

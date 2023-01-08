@@ -31,7 +31,7 @@ use std::sync::Arc;
 use strum::IntoEnumIterator;
 use utilities::{
     diff::get_diff_of_lines,
-    graphql::ApiError,
+    graphql::{ApiError, RangeInput},
     models::IdObject,
     random_string,
     services::GraphQLConnectionService,
@@ -82,6 +82,10 @@ const INSERT_TEST_CASE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/test-case.edgeql");
 const UPDATE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/update-question.edgeql");
+const CREATE_QUESTION_INSTANCES: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/create-question-instances.edgeql");
+const CREATE_GOAL: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/create-goal.edgeql");
 
 pub struct LearningService {
     db_conn: Arc<Client>,
@@ -113,7 +117,7 @@ impl LearningService {
             .unwrap()
     }
 
-    pub async fn questions_connection<'a>(
+    pub async fn questions_connection(
         &self,
         after: Option<String>,
         before: Option<String>,
@@ -132,7 +136,7 @@ impl LearningService {
             .await
     }
 
-    pub async fn classes_connection<'a>(
+    pub async fn classes_connection(
         &self,
         after: Option<String>,
         before: Option<String>,
@@ -144,7 +148,7 @@ impl LearningService {
             .await
     }
 
-    pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
+    pub async fn class_details(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
         self.db_conn
             .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
             .await
@@ -153,9 +157,9 @@ impl LearningService {
             })
     }
 
-    pub async fn question_details<'a>(
+    pub async fn question_details(
         &self,
-        question_slug: &'_ str,
+        question_slug: &str,
     ) -> Result<QuestionDetailsOutput, ApiError> {
         let question_model = self
             .db_conn
@@ -168,11 +172,11 @@ impl LearningService {
         Ok(serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap())
     }
 
-    pub async fn upsert_class<'a>(
+    pub async fn upsert_class(
         &self,
-        hanko_id: &'a str,
-        join_slug: &'a Option<String>,
-        name: &'a str,
+        hanko_id: &str,
+        join_slug: &Option<String>,
+        name: &str,
         teacher_ids: &[Uuid],
         student_ids: &[Uuid],
     ) -> Result<IdObject, ApiError> {
@@ -207,15 +211,60 @@ impl LearningService {
         Ok(id_object)
     }
 
-    // TODO: Create new resolver to associate users with class
-
-    pub async fn upsert_question<'a>(
+    pub async fn create_goal(
         &self,
-        hanko_id: &'a str,
-        name: &'a str,
-        problem: &'a str,
+        hanko_id: &str,
+        class_id: &Uuid,
+        name: &str,
+        range: &RangeInput,
+        color: &str,
+        question_ids: &[Uuid],
+    ) -> Result<IdObject, ApiError> {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let question_ids = question_ids.to_vec();
+        let question_instances_objs = self
+            .db_conn
+            .query::<IdObject, _>(CREATE_QUESTION_INSTANCES, &(question_ids,))
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating the question instances",
+                )
+            })?;
+        let question_instances_ids = question_instances_objs
+            .into_iter()
+            .map(|q| q.id)
+            .collect::<Vec<_>>();
+        self.db_conn
+            .query_required_single::<IdObject, _>(
+                CREATE_GOAL,
+                &(
+                    class_id,
+                    color,
+                    range.start(),
+                    range.end(),
+                    name,
+                    question_instances_ids,
+                ),
+            )
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating the goal, please try again.",
+                )
+            })
+    }
+
+    pub async fn upsert_question(
+        &self,
+        hanko_id: &str,
+        name: &str,
+        problem: &str,
         test_cases: &[TestCase],
-        update_slug: &'a Option<String>,
+        update_slug: &Option<String>,
     ) -> Result<UpsertQuestionOutput, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
@@ -322,9 +371,9 @@ impl LearningService {
         Ok(question)
     }
 
-    pub async fn delete_class<'a>(
+    pub async fn delete_class(
         &self,
-        hanko_id: &'a str,
+        hanko_id: &str,
         class_id: &Uuid,
     ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
@@ -342,10 +391,10 @@ impl LearningService {
         Ok(question)
     }
 
-    pub async fn delete_question<'a>(
+    pub async fn delete_question(
         &self,
-        hanko_id: &'a str,
-        question_slug: &'a str,
+        hanko_id: &str,
+        question_slug: &str,
     ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
