@@ -10,6 +10,7 @@ declare module "routes-gen" {
     "/classes/create": Record<string, never>;
     "/classes": Record<string, never>;
     "/profile": Record<string, never>;
+    "/classes/join": Record<string, never>;
     "/classes/:id": { "id": string };
     "/auth/logout": Record<string, never>;
     "/auth": Record<string, never>;
@@ -27,6 +28,7 @@ declare module "routes-gen" {
       | ["/classes/create"]
       | ["/classes"]
       | ["/profile"]
+      | ["/classes/join"]
       | ["/classes/:id", RouteParams["/classes/:id"]]
       | ["/auth/logout"]
       | ["/auth"]

@@ -73,7 +73,10 @@ const navbarLinks = [
   {
     label: 'Classes',
     icon: IconSchool,
-    links: [{ link: route('/classes'), label: 'List' }]
+    links: [
+      { link: route('/classes/join'), label: 'Join' },
+      { link: route('/classes'), label: 'List' }
+    ]
   },
   {
     label: 'Questions',
@@ -127,7 +130,7 @@ export const AppNavbar = ({
       links={item.links}
       label={item.label}
       icon={item.icon}
-      key={idx}
+      key={item.label + idx}
     />
   ));
 
