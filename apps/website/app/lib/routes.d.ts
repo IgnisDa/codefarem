@@ -1,6 +1,7 @@
 declare module "routes-gen" {
   export type RouteParams = {
     "/api/randomProfileAvatar": Record<string, never>;
+    "/api/classDetails": Record<string, never>;
     "/": Record<string, never>;
     "/information/toolchain": Record<string, never>;
     "/playground": Record<string, never>;
@@ -19,6 +20,7 @@ declare module "routes-gen" {
   export function route<
     T extends
       | ["/api/randomProfileAvatar"]
+      | ["/api/classDetails"]
       | ["/"]
       | ["/information/toolchain"]
       | ["/playground"]
