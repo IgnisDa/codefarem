@@ -23,6 +23,7 @@ const documents = {
     "\n  mutation CreateGoal($input: CreateGoalInput!) {\n    createGoal(input: $input) {\n      __typename\n      ...on IdObject {\n        id\n      }\n      ...on ApiError {\n        error\n      }\n    }\n  }\n": types.CreateGoalDocument,
     "\n  mutation RegisterUser($input: RegisterUserInput!) {\n    registerUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.RegisterUserDocument,
     "\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n": types.UpdateUserDocument,
+    "\n  mutation AddUserToClass($classId: UUID!) {\n    addUserToClass(classId: $classId)\n  }\n": types.AddUserToClassDocument,
     "\n  query SupportedLanguages {\n    supportedLanguages\n  }\n": types.SupportedLanguagesDocument,
     "\n  query LanguageExample($language: SupportedLanguage!) {\n    languageExample(language: $language)\n  }\n": types.LanguageExampleDocument,
     "\n  query ToolchainInformation {\n    toolchainInformation {\n      service\n      version\n      languageLogo\n    }\n  }\n": types.ToolchainInformationDocument,
@@ -78,6 +79,10 @@ export function graphql(source: "\n  mutation RegisterUser($input: RegisterUserI
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      __typename\n      ... on IdObject {\n        id\n      }\n      ... on ApiError {\n        error\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation AddUserToClass($classId: UUID!) {\n    addUserToClass(classId: $classId)\n  }\n"): (typeof documents)["\n  mutation AddUserToClass($classId: UUID!) {\n    addUserToClass(classId: $classId)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

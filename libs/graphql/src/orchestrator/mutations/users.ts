@@ -27,3 +27,9 @@ export const UPDATE_USER = graphql(`
     }
   }
 `);
+
+export const ADD_USER_TO_CLASS = graphql(`
+  mutation AddUserToClass($classId: UUID!) {
+    addUserToClass(classId: $classId)
+  }
+`);
