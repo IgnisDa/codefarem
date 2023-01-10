@@ -2,7 +2,7 @@ import { Button, Flex, Select, Stack } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import Editor from '@monaco-editor/react';
 import { IconDeviceFloppy, IconPlayerPlay } from '@tabler/icons';
-import type { SupportedLanguage } from ':generated/graphql/orchestrator/generated/graphql';
+import type { SupportedLanguage } from ':generated/graphql/orchestrator/graphql';
 import type { Dispatch, SetStateAction } from 'react';
 
 interface CodeEditorProps {
@@ -26,7 +26,7 @@ export const CodeEditor = ({
   setLanguage,
   isSubmittingLoading,
   btnText,
-  leftButton,
+  leftButton
 }: CodeEditorProps) => {
   return (
     <Stack w={'100%'}>
@@ -34,7 +34,7 @@ export const CodeEditor = ({
         <Select
           data={supportedLanguages.map((l) => ({
             label: l.toUpperCase(),
-            value: l,
+            value: l
           }))}
           value={language}
           onChange={(e) => setLanguage(e as SupportedLanguage)}
@@ -47,7 +47,7 @@ export const CodeEditor = ({
               title: 'System notification',
               message: 'This feature has not been implemented yet',
               color: 'red',
-              autoClose: 5000,
+              autoClose: 5000
             });
           }}
         >
@@ -63,7 +63,7 @@ export const CodeEditor = ({
         onChange={(value) => setCode(value || '')}
       />
       <Flex justify={'end'} gap={'lg'} align={'center'}>
-        {leftButton ? leftButton : <div></div>}
+        {leftButton ? leftButton : <div />}
         <Button
           leftIcon={<IconPlayerPlay size={24} />}
           loading={isSubmittingLoading}

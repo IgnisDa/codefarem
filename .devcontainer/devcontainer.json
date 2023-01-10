@@ -6,7 +6,7 @@
   "workspaceFolder": "/workspace",
   "postCreateCommand": ". ${containerWorkspaceFolder}/.devcontainer/scripts/post-create.sh",
   "postStartCommand": ". ${containerWorkspaceFolder}/.devcontainer/scripts/post-start.sh",
-  "remoteUser": "vscode",
+  "remoteUser": "archlinux",
   "remoteEnv": {
     "GIT_AUTHOR_NAME": "${localEnv:GIT_AUTHOR_NAME}",
     "GIT_AUTHOR_EMAIL": "${localEnv:GIT_AUTHOR_EMAIL}",

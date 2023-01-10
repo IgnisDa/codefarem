@@ -11,7 +11,7 @@ services:
     environment:
       - HANKO_URL=http://localhost:9000
       - HANKO_URL_INTERNAL=http://hanko-backend:9000
-    user: vscode
+    user: archlinux
 
   mail:
     image: mailhog/mailhog
@@ -26,12 +26,6 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - hanko_db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: pg_isready
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   hanko-backend:
     image: ghcr.io/teamhanko/hanko:main
@@ -44,16 +38,12 @@ services:
     ports:
       - 9000:9000 # public
       - 9001:9001 # admin
-    restart: unless-stopped
 
   hanko-migrate:
     image: ghcr.io/teamhanko/hanko:main
     volumes:
       - ./config/hanko.yml:/config/config.yaml
     command: migrate up
-    depends_on:
-      hanko-database:
-        condition: service_healthy
 
 volumes:
   hanko_db_data:

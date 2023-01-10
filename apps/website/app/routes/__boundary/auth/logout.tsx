@@ -10,9 +10,9 @@ export const loader = async (_args: DataFunctionArgs) => {
     domain: ApplicationConfig.COOKIE_DOMAIN,
     maxAge: -1,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production'
   });
   return redirect(FAILURE_REDIRECT_PATH, {
-    headers: { 'Set-Cookie': hankoCookie },
+    headers: { 'Set-Cookie': hankoCookie }
   });
 };

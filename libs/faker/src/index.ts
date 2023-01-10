@@ -30,5 +30,5 @@ export const fakeDataDevelopmentMode = <T>(fn: () => T): T | undefined => {
  */
 export const createUserInfo = () => ({
   auth: { hanko_id: faker.datatype.uuid() },
-  profile: { email: createEmail(), username: createUsername() },
+  profile: { email: createEmail(), username: createUsername() }
 });

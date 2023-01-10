@@ -1,7 +1,7 @@
 import { ActionIcon, Flex, Select, TextInput } from '@mantine/core';
 import { IconMinus } from '@tabler/icons';
 import { guessDataType } from '../utils';
-import type { TestCaseUnit } from ':generated/graphql/orchestrator/generated/graphql';
+import type { TestCaseUnit } from ':generated/graphql/orchestrator/graphql';
 import type { ChangeEventHandler, MouseEventHandler } from 'react';
 
 type TestCaseProps = {
@@ -21,7 +21,7 @@ export const TestCaseInput = ({
   testCaseUnits,
   selectValue,
   onSelectChange,
-  actionBtnHandler,
+  actionBtnHandler
 }: TestCaseProps) => {
   return (
     <Flex gap={10} align={'center'}>

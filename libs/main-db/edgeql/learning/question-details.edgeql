@@ -1,3 +1,4 @@
+# get details about a particular question
 SELECT learning::Question {
   created_at,
   name,

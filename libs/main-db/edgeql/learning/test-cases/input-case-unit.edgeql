@@ -1,3 +1,4 @@
+# create a new input case unit
 INSERT learning::InputCaseUnit {
     name := <str>$0,
     seq := <int32>$1,

@@ -3,8 +3,10 @@
   "project_type": "rust",
   "apps": [
     {
-      "EXECUTABLE_NAMES": ["admin-backend"],
-      "IMAGE_NAME": "ubuntu:latest",
+      "EXECUTABLE_NAMES": [
+        "admin-backend"
+      ],
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [],
       "ENVIRONMENT_VARIABLES": {}
     }

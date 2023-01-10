@@ -1,8 +1,8 @@
-CREATE MIGRATION m1m5yzfkyldh5hn4k2u6prusha2agehv2pf3qdwgpzoolpjvyq6cga
-    ONTO m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
+CREATE MIGRATION m12i22n5oh5ztykaxylgocsodbc27fy4bx2pkfpkf7xxqp6dl6smca
+    ONTO m1djgowuchn7fap7ft4nsrehlmolcizyqidgkbvl5p3rebql524rpq
 {
-  ALTER TYPE learning::Question {
-      DROP LINK authored_by;
-      DROP LINK classes;
+  ALTER TYPE users::UserProfile {
+      DROP PROPERTY gender;
+      DROP PROPERTY mood;
   };
 };

@@ -6,7 +6,6 @@ use utilities::graphql::{ApiError, UserDetailsOutput};
 pub enum UserDetailsResultUnion {
     /// The type returned if getting details about user was successful
     Result(UserDetailsOutput),
-
     /// The type returned if getting details about user was unsuccessful
     Error(ApiError),
 }

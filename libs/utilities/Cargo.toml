@@ -8,7 +8,9 @@ protobuf = { path = "../protobuf" }
 
 anyhow = { workspace = true }
 async-graphql = { workspace = true }
+avatars = { version = "0.1.8", features = ["strum"] }
 chrono = { workspace = true }
+derive-getters = { workspace = true }
 edgedb-derive = { workspace = true }
 edgedb-protocol = { workspace = true }
 edgedb-tokio = { workspace = true }

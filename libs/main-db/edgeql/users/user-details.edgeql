@@ -1,8 +1,10 @@
+# get details of a user by their unique hanko_id
 SELECT DISTINCT users::User {
   id,
   profile: {
     email,
-    username
+    username,
+    profile_avatar
   },
   account_type := .__type__.name
 }

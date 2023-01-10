@@ -1,5 +1,7 @@
 use crate::users::AccountType;
 use async_graphql::{InputObject, SimpleObject};
+use derive_getters::Getters;
+use edgedb_derive::Queryable;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -11,12 +13,14 @@ pub struct ApiError {
 }
 
 /// The details of a user's profile.
-#[derive(Debug, SimpleObject, Deserialize, Clone)]
+#[derive(Debug, SimpleObject, Deserialize, Clone, Queryable, Default)]
 pub struct UserProfileInformation {
     /// The email of the user
     pub email: String,
     /// The username of the user
     pub username: String,
+    /// The profile avatar of the user
+    pub profile_avatar: String,
 }
 
 /// The result type if details about the user were found successfully.
@@ -41,4 +45,20 @@ pub struct ConnectionArguments {
     pub first: Option<i32>,
     /// The number of items to return from the end
     pub last: Option<i32>,
+}
+
+/// The input object used to query for some resource
+#[derive(InputObject, Getters)]
+pub struct SearchQueryInput {
+    /// The query to search by
+    query_string: Option<String>,
+}
+
+/// The input object used to specify a range
+#[derive(InputObject, Debug, Getters)]
+pub struct RangeInput {
+    /// The start of the range
+    pub start: String,
+    /// The end of the range
+    pub end: String,
 }

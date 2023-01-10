@@ -1,12 +1,21 @@
 use async_graphql::{SimpleObject, Union};
 use edgedb_derive::Queryable;
 use utilities::graphql::ApiError;
+use uuid::Uuid;
 
 /// The result type if details about the class were found successfully
 #[derive(Debug, SimpleObject, Queryable)]
 pub struct ClassDetailsOutput {
+    /// The id of the class
+    id: Uuid,
     /// The name of the class
     name: String,
+    /// The number of goals in the class
+    num_goals: i64,
+    /// The number of students in the class
+    num_students: i64,
+    /// The number of teachers in the class
+    num_teachers: i64,
 }
 
 /// The output object when getting details about a class

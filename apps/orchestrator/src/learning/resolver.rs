@@ -3,21 +3,26 @@ use crate::{
     learning::{
         dto::{
             mutations::{
-                create_class::{CreateClassInput, CreateClassResultUnion},
+                create_goals::CreateGoalInput,
+                create_goals::CreateGoalResultUnion,
+                delete_class::DeleteClassResultUnion,
                 delete_question::{DeleteQuestionInput, DeleteQuestionResultUnion},
                 execute_code_for_question::{
                     ExecuteCodeForQuestionInput, ExecuteCodeForQuestionResultUnion,
                 },
+                upsert_class::{UpsertClassInput, UpsertClassResultUnion},
                 upsert_question::{UpsertQuestionInput, UpsertQuestionResultUnion},
             },
             queries::{
-                all_questions::QuestionPartialsDetails, class_details::ClassDetailsResultUnion,
-                question_details::QuestionDetailsResultUnion, test_case::TestCaseUnit,
+                class_connection::ClassPartialsDetails, class_details::ClassDetailsResultUnion,
+                question_details::QuestionDetailsResultUnion,
+                questions_connection::QuestionPartialsDetails,
+                search_questions::SearchQuestionsOutput, test_case::TestCaseUnit,
             },
         },
         service::LearningService,
     },
-    utils::RequestData,
+    utils::Token,
 };
 use async_graphql::{
     connection::{Connection, EmptyFields},
@@ -25,7 +30,10 @@ use async_graphql::{
 };
 use auth::{get_hanko_id_from_authorization_token, AuthError};
 use macros::{hanko_id_from_request, to_result_union_response};
-use utilities::graphql::ConnectionArguments;
+use utilities::{
+    graphql::{ConnectionArguments, SearchQueryInput},
+    models::InputIdObject,
+};
 use uuid::Uuid;
 
 /// The query segment for Learning
@@ -43,6 +51,17 @@ impl LearningQuery {
         ctx.data_unchecked::<LearningService>().test_case_units()
     }
 
+    /// Search for questions. If no query is provided, all questions are returned.
+    async fn search_questions(
+        &self,
+        ctx: &Context<'_>,
+        input: SearchQueryInput,
+    ) -> SearchQuestionsOutput {
+        ctx.data_unchecked::<LearningService>()
+            .search_questions(input.query_string())
+            .await
+    }
+
     /// Get a paginated list of questions in the relay connection format. It uses a cursor
     /// based pagination.
     async fn questions_connection(
@@ -55,15 +74,26 @@ impl LearningQuery {
             .await
     }
 
+    /// Get a paginated list of classes in the relay connection format.
+    async fn classes_connection(
+        &self,
+        ctx: &Context<'_>,
+        args: ConnectionArguments,
+    ) -> Result<Connection<String, ClassPartialsDetails, EmptyFields, EmptyFields>> {
+        ctx.data_unchecked::<LearningService>()
+            .classes_connection(args.after, args.before, args.first, args.last)
+            .await
+    }
+
     /// Get information about a class
     async fn class_details(
         &self,
         ctx: &Context<'_>,
-        class_id: Uuid,
+        join_slug: String,
     ) -> Result<ClassDetailsResultUnion> {
         let output = ctx
             .data_unchecked::<LearningService>()
-            .class_details(class_id)
+            .class_details(&join_slug)
             .await;
         to_result_union_response!(output, ClassDetailsResultUnion)
     }
@@ -84,18 +114,45 @@ impl LearningQuery {
 
 #[Object]
 impl LearningMutation {
-    /// Create a new class
-    async fn create_class(
+    /// Create a new goal
+    async fn create_goal(
         &self,
         ctx: &Context<'_>,
-        input: CreateClassInput,
-    ) -> Result<CreateClassResultUnion> {
+        input: CreateGoalInput,
+    ) -> Result<CreateGoalResultUnion> {
         let hanko_id = hanko_id_from_request!(ctx);
         let output = ctx
             .data_unchecked::<LearningService>()
-            .create_class(&hanko_id, input.name(), input.teacher_ids())
+            .create_goal(
+                &hanko_id,
+                input.class_id(),
+                input.name(),
+                input.range(),
+                input.color(),
+                input.question_ids(),
+            )
             .await;
-        to_result_union_response!(output, CreateClassResultUnion)
+        to_result_union_response!(output, CreateGoalResultUnion)
+    }
+
+    /// Create a new class or update an existing one
+    async fn upsert_class(
+        &self,
+        ctx: &Context<'_>,
+        input: UpsertClassInput,
+    ) -> Result<UpsertClassResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .upsert_class(
+                &hanko_id,
+                input.join_slug(),
+                input.name(),
+                input.teacher_ids(),
+                input.student_ids(),
+            )
+            .await;
+        to_result_union_response!(output, UpsertClassResultUnion)
     }
 
     /// Upsert a question (create if it doesn't exist, update if it does)
@@ -116,6 +173,20 @@ impl LearningMutation {
             )
             .await;
         to_result_union_response!(output, UpsertQuestionResultUnion)
+    }
+
+    /// Delete a class
+    async fn delete_class(
+        &self,
+        ctx: &Context<'_>,
+        input: InputIdObject,
+    ) -> Result<DeleteClassResultUnion> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        let output = ctx
+            .data_unchecked::<LearningService>()
+            .delete_class(&hanko_id, input.id())
+            .await;
+        to_result_union_response!(output, DeleteClassResultUnion)
     }
 
     /// Delete a question
@@ -147,5 +218,14 @@ impl LearningMutation {
             )
             .await;
         to_result_union_response!(output, ExecuteCodeForQuestionResultUnion)
+    }
+
+    /// Add a user to a specific class
+    async fn add_user_to_class(&self, ctx: &Context<'_>, class_id: Uuid) -> Result<bool> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        Ok(ctx
+            .data_unchecked::<LearningService>()
+            .add_user_to_class(&hanko_id, &class_id)
+            .await)
     }
 }

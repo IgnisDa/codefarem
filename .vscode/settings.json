@@ -87,6 +87,7 @@
         "trpc",
         "typecheck",
         "upsert",
+        "upserting",
         "urql",
         "vite",
         "vitest",

@@ -17,28 +17,22 @@ fileGroups:
 
 tasks:
   lint:
-    command:
-      - eslint
-      - '--ext'
-      - '.js,.mjs,.jsx,.ts,.tsx'
-      - '--fix'
-      - '--report-unused-disable-directives'
-      - '--no-error-on-unmatched-pattern'
-      - '--exit-on-fatal-error'
-      - '--ignore-path'
-      - '@in(4)'
-      - '.'
+    command: 'rome check $projectRoot'
     inputs:
       - 'src/**/*'
       - 'tests/**/*'
-      - '*.config.*'
-      - '**/.eslintrc.*'
-      - '/.eslintignore'
-      - '/.eslintrc.*'
-      - 'types/**/*'
-      - 'tsconfig.json'
-      - '/tsconfig.eslint.json'
-      - '/tsconfig.options.json'
+      - 'rome.json'
+    options:
+      runFromWorkspaceRoot: true
+
+  format:
+    command: 'rome format $projectRoot'
+    inputs:
+      - 'src/**/*'
+      - 'tests/**/*'
+      - 'rome.json'
+    options:
+      runFromWorkspaceRoot: true
 
   test:
     command:

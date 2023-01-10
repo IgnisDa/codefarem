@@ -1,39 +1,61 @@
-use async_graphql::{extensions::Analyzer, http::GraphiQLSource, EmptySubscription, Schema};
-use async_graphql_rocket::{GraphQLRequest, GraphQLResponse};
+use async_graphql::{
+    extensions::Analyzer, http::GraphiQLSource, parser::types::DocumentOperations,
+    EmptySubscription, Schema,
+};
+use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
+use axum::{
+    extract::Extension,
+    http::{header::HeaderMap, StatusCode},
+    response::{Html, IntoResponse},
+    routing::{get, post},
+    Router, Server,
+};
+use log::trace;
 use orchestrator::{
     config::get_app_state,
     farem::service::FaremService,
     graphql::{MutationRoot, QueryRoot},
     learning::service::LearningService,
     users::service::UserService,
-    utils::{RequestData, Token},
+    utils::get_token_from_headers,
 };
-use rocket::{get, launch, post, response::content::RawHtml, routes, State};
 use std::sync::Arc;
+use utilities::get_server_url;
 
 type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
-#[get("/graphiql")]
-async fn graphiql() -> RawHtml<String> {
-    RawHtml(GraphiQLSource::build().endpoint("/graphql").finish())
+async fn handler_404() -> impl IntoResponse {
+    (StatusCode::NOT_FOUND, "Nothing to see here!")
 }
 
-#[post("/graphql", data = "<graphql_request>", format = "application/json")]
-async fn graphql_request(
-    schema: &State<GraphqlSchema>,
-    user_token: Token,
-    graphql_request: GraphQLRequest,
+async fn graphiql() -> impl IntoResponse {
+    Html(GraphiQLSource::build().endpoint("/graphql").finish())
+}
+
+async fn graphql_handler(
+    Extension(schema): Extension<GraphqlSchema>,
+    headers: HeaderMap,
+    req: GraphQLRequest,
 ) -> GraphQLResponse {
-    let request_data = RequestData {
-        user_token: user_token.0,
-    };
-    let request = graphql_request.data(request_data).0;
-    let response = schema.execute(request).await;
-    GraphQLResponse::from(response)
+    let mut request = req.into_inner();
+    let query = request.parsed_query().expect("Failed to parse query");
+    match &query.operations {
+        DocumentOperations::Multiple(x) => {
+            for key in x.keys() {
+                trace!("Operation name: {key:?}");
+            }
+        }
+        DocumentOperations::Single(_) => {}
+    }
+    if let Some(token) = get_token_from_headers(&headers) {
+        request = request.data(token);
+    }
+    schema.execute(request).await.into()
 }
 
-#[launch]
-async fn rocket() -> _ {
+#[tokio::main]
+async fn main() {
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     let app_state = get_app_state().await.unwrap();
     let farem_service = FaremService::new(
         &app_state.executor_service,
@@ -63,7 +85,15 @@ async fn rocket() -> _ {
     .extension(Analyzer)
     .finish();
 
-    rocket::build()
-        .manage(schema)
-        .mount("/", routes![graphiql, graphql_request])
+    let app = Router::new()
+        .route("/graphiql", get(graphiql).fallback(handler_404))
+        .route("/graphql", post(graphql_handler).fallback(handler_404))
+        .fallback(handler_404)
+        .layer(Extension(schema));
+
+    let server_url = get_server_url();
+    Server::bind(&server_url.parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 }

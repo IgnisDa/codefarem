@@ -1,12 +1,23 @@
 module learning {
     type Class {
-        required property name -> str;
-        multi link students -> users::Student;
+        required property name -> str {
+            constraint exclusive;
+        };
+        multi link students -> users::Student {
+            on target delete allow;
+            on source delete allow;
+        };
+        required property join_slug -> str {
+            constraint exclusive;
+        };
         # must have one or more teachers
         multi link teachers -> users::Teacher {
             # if a teacher is deleted, silently remove them from the class
             on target delete allow;
+            on source delete allow;
         };
+        # the goals that this class has
+        multi link goals := .<class[is learning::Goal];
     }
     type Question {
         # a name for this question
@@ -47,7 +58,7 @@ module learning {
         };
         # the order in which the inputs are passed
         required property seq -> int32;
-
+        # the data, converted into a string
         property normalized_data := (
             SELECT (
                 array_join(.data[is learning::StringCollectionUnit].string_collection_value, ',') IF .data is learning::StringCollectionUnit ELSE
@@ -75,5 +86,49 @@ module learning {
     }
     type StringCollectionUnit extending learning::CaseUnit {
         required property string_collection_value -> array<str>;
+    }
+
+    # Each class has multiple goals. Each goal will have multiple questions associated
+    # with it for a student to 'achieve'.
+    type Goal {
+        required property name -> str;
+        # a hex color for the goal
+        required property color -> str {
+            # https://coolors.co/826aed-c879ff-ffb7ff-3bf4fb-caff8a
+            default := (
+                SELECT assert_single((
+                  SELECT {"826AED", "C879FF", "FFB7FF", "3BF4FB", "CAFF8A"}
+                  ORDER BY random() LIMIT 1
+                ))
+            )
+        };
+        required link class -> learning::Class {
+            on source delete allow;
+            on target delete delete source;
+        };
+        # the date when this goal will start
+        required property start_date -> datetime {
+            default := (SELECT datetime_current());
+        };
+        # the date when this goal will end
+        required property end_date -> datetime {
+            default := (SELECT datetime_current() + <cal::relative_duration>'14 days');
+        };
+        required multi link questions -> learning::QuestionInstance {
+            on source delete delete target;
+            on target delete allow;
+        };
+        constraint exclusive on ( (.name, .color, .class) );
+    }
+
+    # A question that will appear in a class
+    type QuestionInstance {
+        # the question that this instance is based on
+        required link question -> learning::Question {
+            on source delete allow;
+            on target delete delete source;
+        };
+        # TODO: Allow teachers to associate a difficulty with a question so that the
+        # student can get more points for solving a harder question.
     }
 }

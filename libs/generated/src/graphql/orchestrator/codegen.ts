@@ -1,23 +1,27 @@
+import { join } from 'node:path';
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
-const config: CodegenConfig = {
-    config: {
-        scalars: {
-            UUID: 'string',
-        }
-    },
-    documents: ["./src/graphql/orchestrator/{queries,mutations}.ts"],
-    generates: {
-        './src/graphql/orchestrator/generated/': {
-            config: { skipTypename: true },
-            plugins: [],
-            preset: 'client',
+import { definitionsLibraryPath } from '..';
 
-        },
-    },
-    ignoreNoDocuments: true,
-    overwrite: true,
-    schema: 'http://127.0.0.1:8000/graphql',
+const config: CodegenConfig = {
+  config: {
+    scalars: {
+      UUID: 'string'
+    }
+  },
+  documents: [
+    join(definitionsLibraryPath, 'orchestrator/{queries,mutations}/*.ts')
+  ],
+  generates: {
+    './src/graphql/orchestrator/': {
+      config: { skipTypename: true },
+      plugins: [],
+      preset: 'client'
+    }
+  },
+  ignoreNoDocuments: true,
+  overwrite: true,
+  schema: 'http://127.0.0.1:8000/graphql'
 };
 
 // eslint-disable-next-line import/no-default-export

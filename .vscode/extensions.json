@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
     "magicstack.edgedb",
     "tamasfe.even-better-toml",
     "dustypomerleau.rust-syntax",
@@ -13,13 +12,13 @@
     "bradlc.vscode-tailwindcss",
     "heybourn.headwind",
     "rbbit.typescript-hero",
-    "dbaeumer.vscode-eslint",
     "firsttris.vscode-jest-runner",
     "ms-vscode.cpptools",
     "zxh404.vscode-proto3",
-    "rvest.vs-code-prettier-eslint",
     "moonrepo.moon-console",
     "ms-python.python",
-    "bierner.markdown-mermaid"
+    "bierner.markdown-mermaid",
+    "rome.rome",
+    "graphql.vscode-graphql"
   ]
 }

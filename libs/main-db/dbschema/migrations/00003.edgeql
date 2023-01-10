@@ -1,12 +1,10 @@
-CREATE MIGRATION m1fzzoaapgp6vmafrqcdu2cb6z2zqysuihht3ygr2wkayumywgv4za
-    ONTO m1m5yzfkyldh5hn4k2u6prusha2agehv2pf3qdwgpzoolpjvyq6cga
+CREATE MIGRATION m1mxjzq62xpiix2afdn3a72s3h5v2xuhwmpshzvkfftglkhzf5pvya
+    ONTO m12i22n5oh5ztykaxylgocsodbc27fy4bx2pkfpkf7xxqp6dl6smca
 {
-  ALTER TYPE learning::Question {
-      ALTER LINK test_cases {
-          ON TARGET DELETE ALLOW;
-      };
+  ALTER TYPE users::UserAuth {
+      CREATE LINK user := (.<auth[IS users::User]);
   };
-  ALTER TYPE learning::TestCase {
-      CREATE LINK question := (.<test_cases[IS learning::Question]);
+  ALTER TYPE users::UserProfile {
+      CREATE LINK user := (.<profile[IS users::User]);
   };
 };

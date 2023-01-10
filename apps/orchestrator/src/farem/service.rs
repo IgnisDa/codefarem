@@ -93,7 +93,7 @@ impl FaremService {
                     .toolchain_info(Request::new(VoidParams {}))
                     .await
                     .map_err(|f| {
-                        println!("Error: {:?} for language: {:?}", f, language);
+                        println!("Error: {f:?} for language: {language:?}");
                     })
                     .unwrap()
                     .into_inner();

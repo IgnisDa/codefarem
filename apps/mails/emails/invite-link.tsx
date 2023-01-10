@@ -7,14 +7,12 @@ import { Preview } from '@react-email/preview';
 import { Section } from '@react-email/section';
 import { Text } from '@react-email/text';
 
-const main = {
-  backgroundColor: '#ffffff',
-};
+const main = { backgroundColor: '#ffffff' };
 
 const container = {
   margin: '0 auto',
   paddingLeft: '12px',
-  paddingRight: '12px',
+  paddingRight: '12px'
 };
 
 const h1 = {
@@ -24,7 +22,7 @@ const h1 = {
   fontSize: '24px',
   fontWeight: 'bold',
   margin: '40px 0',
-  padding: '0',
+  padding: '0'
 };
 
 const link = {
@@ -32,7 +30,7 @@ const link = {
   fontFamily:
     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   fontSize: '14px',
-  textDecoration: 'underline',
+  textDecoration: 'underline'
 };
 
 const text = {
@@ -40,7 +38,7 @@ const text = {
   fontFamily:
     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   fontSize: '14px',
-  margin: '24px 0',
+  margin: '24px 0'
 };
 
 const footer = {
@@ -50,7 +48,7 @@ const footer = {
   fontSize: '12px',
   lineHeight: '22px',
   marginBottom: '24px',
-  marginTop: '12px',
+  marginTop: '12px'
 };
 
 const code = {
@@ -60,7 +58,7 @@ const code = {
   color: '#333',
   display: 'inline-block',
   padding: '16px 4.5%',
-  width: '90.5%',
+  width: '90.5%'
 };
 
 export default function InviteLinkEmail() {
@@ -77,7 +75,7 @@ export default function InviteLinkEmail() {
             style={{
               ...link,
               display: 'block',
-              marginBottom: '16px',
+              marginBottom: '16px'
             }}
           >
             Click here to log in with this magic link
@@ -85,23 +83,23 @@ export default function InviteLinkEmail() {
           <Text style={{ ...text, marginBottom: '14px' }}>
             Or, copy and paste this temporary login code:
           </Text>
-          <code style={code}>sparo-ndigo-amurt-secan</code>
+          <code style={code}>abcde-abcde-abcde-abcde</code>
           <Text
             style={{
               ...text,
               color: '#ababab',
               marginBottom: '16px',
-              marginTop: '14px',
+              marginTop: '14px'
             }}
           >
-            If you didn&apos;t try to login, you can safely ignore this email.
+            If you did not try to login, you can safely ignore this email.
           </Text>
           <Text
             style={{
               ...text,
               color: '#ababab',
               marginBottom: '38px',
-              marginTop: '12px',
+              marginTop: '12px'
             }}
           >
             Hint: You can set a permanent password in Settings & members → My

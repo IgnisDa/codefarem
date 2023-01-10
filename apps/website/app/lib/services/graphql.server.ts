@@ -8,7 +8,7 @@ export const gqlClient = new GraphQLClient(
 );
 
 const getAuthHeader = (token: string) => ({
-  authorization: `Bearer ${token}`,
+  authorization: `Bearer ${token}`
 });
 
 export const extractHankoCookie = (request: Request) => {

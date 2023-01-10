@@ -1,39 +1,27 @@
-type: 'library'
-language: 'typescript'
+type: library
+language: rust
 
 fileGroups:
   dbschema:
-    - 'dbschema/**/*.esdl'
+    - dbschema/**/*.esdl
 
 tasks:
-  test:
-    options:
-      runInCI: false
-
-  generate:
-    command:
-      - edgeql-js
-    inputs:
-      - '@group(dbschema)'
-    outputs:
-      - 'dbschema/edgeql-js'
-    local: true
-
   lint-edgeql:
     command: 'noop'
     inputs:
       - '@group(dbschema)'
-      - 'edgeql/**/*.edgeql'
+      - edgeql/**/*.edgeql
 
   lint:
     deps:
-      - '~:lint-edgeql'
-      - '~:lint-js'
+      - ~:lint-edgeql
     command: 'noop'
 
 workspace:
   inheritedTasks:
     exclude:
-      - 'build'
-    rename:
-      lint: 'lint-js'
+      - build
+      - lint
+      - typecheck
+      - test
+      - format

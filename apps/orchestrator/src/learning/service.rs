@@ -5,35 +5,36 @@ use crate::{
     },
     learning::dto::{
         mutations::{
-            create_class::CreateClassOutput,
-            delete_question::DeleteQuestionOutput,
             execute_code_for_question::{
                 ExecuteCodeForQuestionOutput, TestCaseResultUnion, TestCaseSuccessStatus,
             },
             upsert_question::UpsertQuestionOutput,
         },
         queries::{
-            all_questions::QuestionPartialsDetails,
+            class_connection::ClassPartialsDetails,
             class_details::ClassDetailsOutput,
             question_details::QuestionDetailsOutput,
+            questions_connection::QuestionPartialsDetails,
+            search_questions::SearchQuestionsOutput,
             test_case::{TestCase, TestCaseUnit},
         },
     },
+    utils::log_error_and_return_api_error,
 };
 use async_graphql::{
-    connection::{query, Connection, Edge, EmptyFields},
-    Error, Result,
+    connection::{Connection, EmptyFields},
+    Result,
 };
 use auth::validate_user_role;
-use edgedb_derive::Queryable;
 use edgedb_tokio::Client;
 use std::sync::Arc;
 use strum::IntoEnumIterator;
 use utilities::{
     diff::get_diff_of_lines,
-    graphql::ApiError,
+    graphql::{ApiError, RangeInput},
     models::IdObject,
     random_string,
+    services::GraphQLConnectionService,
     users::{get_user_details_from_hanko_id, AccountType},
     SupportedLanguage,
 };
@@ -41,16 +42,24 @@ use uuid::Uuid;
 
 const PAGINATED_QUESTIONS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/paginated-questions.edgeql");
+const SEARCH_QUESTIONS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/search-questions.edgeql");
+const PAGINATED_CLASSES: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/paginated-classes.edgeql");
 const IS_SLUG_NOT_UNIQUE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/is-slug-not-unique.edgeql");
 const QUESTION_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/question-details.edgeql");
+const DELETE_CLASS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/delete-class.edgeql");
 const DELETE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/delete-question.edgeql");
 const CLASS_DETAILS: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/class-details.edgeql");
-const CREATE_CLASS: &str =
-    include_str!("../../../../libs/main-db/edgeql/learning/create-class.edgeql");
+const UPSERT_CLASS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/upsert-class.edgeql");
+const ASSOCIATE_USERS_WITH_CLASS: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/associate-users-with-class.edgeql");
 const UPSERT_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/upsert-question.edgeql");
 const DELETE_TEST_CASES: &str =
@@ -73,17 +82,24 @@ const INSERT_TEST_CASE: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/test-case.edgeql");
 const UPDATE_QUESTION: &str =
     include_str!("../../../../libs/main-db/edgeql/learning/test-cases/update-question.edgeql");
+const CREATE_QUESTION_INSTANCES: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/create-question-instances.edgeql");
+const CREATE_GOAL: &str =
+    include_str!("../../../../libs/main-db/edgeql/learning/create-goal.edgeql");
 
 pub struct LearningService {
     db_conn: Arc<Client>,
     farem_service: Arc<FaremService>,
+    graphql_connection_service: GraphQLConnectionService,
 }
 
 impl LearningService {
     pub fn new(db_conn: &Arc<Client>, farem_service: &Arc<FaremService>) -> Self {
+        let graphql_connection_service = GraphQLConnectionService::default();
         Self {
             db_conn: db_conn.clone(),
             farem_service: farem_service.clone(),
+            graphql_connection_service,
         }
     }
 }
@@ -93,72 +109,57 @@ impl LearningService {
         TestCaseUnit::iter().collect()
     }
 
-    pub async fn questions_connection<'a>(
+    pub async fn search_questions(&self, search_query: &Option<String>) -> SearchQuestionsOutput {
+        let search_query = search_query.clone().unwrap_or_default();
+        self.db_conn
+            .query_required_single::<SearchQuestionsOutput, _>(SEARCH_QUESTIONS, &(search_query,))
+            .await
+            .unwrap()
+    }
+
+    pub async fn questions_connection(
         &self,
         after: Option<String>,
         before: Option<String>,
         first: Option<i32>,
         last: Option<i32>,
     ) -> Result<Connection<String, QuestionPartialsDetails, EmptyFields, EmptyFields>> {
-        query(
-            after,
-            before,
-            first,
-            last,
-            |after, before, first, last| async move {
-                let mut direction = "ASC";
-
-                let first = first.map(|f| f as i16);
-                let last = last.map(|l| {
-                    direction = "DESC";
-                    l as i16
-                });
-                let limit = first.or(last);
-
-                let convert = |id: Option<String>| id.map(|id| Uuid::parse_str(&id).unwrap());
-                let after = convert(after);
-                let before = convert(before);
-
-                #[derive(Debug, Queryable)]
-                struct QueryResult {
-                    selected: Vec<QuestionPartialsDetails>,
-                    has_previous_page: bool,
-                    has_next_page: bool,
-                }
-
-                let new_query = PAGINATED_QUESTIONS.replace("{{DIRECTION}}", direction);
-
-                let result = self
-                    .db_conn
-                    .query_required_single::<QueryResult, _>(&new_query, &(after, before, limit))
-                    .await
-                    .unwrap();
-
-                let mut connection =
-                    Connection::new(result.has_previous_page, result.has_next_page);
-                connection
-                    .edges
-                    .extend(result.selected.into_iter().map(|question| {
-                        Edge::with_additional_fields(question.id.to_string(), question, EmptyFields)
-                    }));
-                Ok::<_, Error>(connection)
-            },
-        )
-        .await
+        self.graphql_connection_service
+            .paginate_db_query(
+                after,
+                before,
+                first,
+                last,
+                PAGINATED_QUESTIONS,
+                &self.db_conn,
+            )
+            .await
     }
 
-    pub async fn class_details<'a>(&self, class_id: Uuid) -> Result<ClassDetailsOutput, ApiError> {
-        self.db_conn
-            .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(class_id,))
+    pub async fn classes_connection(
+        &self,
+        after: Option<String>,
+        before: Option<String>,
+        first: Option<i32>,
+        last: Option<i32>,
+    ) -> Result<Connection<String, ClassPartialsDetails, EmptyFields, EmptyFields>> {
+        self.graphql_connection_service
+            .paginate_db_query(after, before, first, last, PAGINATED_CLASSES, &self.db_conn)
             .await
-            .map_err(|_| ApiError {
-                error: format!("Class with id={class_id:?} not found"),
+    }
+
+    pub async fn class_details(&self, join_slug: &str) -> Result<ClassDetailsOutput, ApiError> {
+        self.db_conn
+            .query_required_single::<ClassDetailsOutput, _>(CLASS_DETAILS, &(join_slug,))
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(e, &format!("Class with slug={join_slug} not found"))
             })
     }
 
-    pub async fn question_details<'a>(
+    pub async fn question_details(
         &self,
-        question_slug: &'_ str,
+        question_slug: &str,
     ) -> Result<QuestionDetailsOutput, ApiError> {
         let question_model = self
             .db_conn
@@ -171,40 +172,99 @@ impl LearningService {
         Ok(serde_json::from_str::<QuestionDetailsOutput>(&question_model).unwrap())
     }
 
-    pub async fn create_class<'a>(
+    pub async fn upsert_class(
         &self,
-        hanko_id: &'a str,
-        name: &'a str,
+        hanko_id: &str,
+        join_slug: &Option<String>,
+        name: &str,
         teacher_ids: &[Uuid],
-    ) -> Result<CreateClassOutput, ApiError> {
+        student_ids: &[Uuid],
+    ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
         let mut all_teachers_to_insert = teacher_ids.to_vec();
         all_teachers_to_insert.push(user_details.id);
+        let slug = join_slug.clone().unwrap_or_else(|| random_string(8));
+        let student_ids = student_ids.to_vec();
+        let id_object = self
+            .db_conn
+            .query_required_single::<IdObject, _>(UPSERT_CLASS, &(name, slug))
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating/updating the class, please try again.",
+                )
+            })?;
         self.db_conn
-            .query_required_single::<CreateClassOutput, _>(
-                CREATE_CLASS,
-                &(name, all_teachers_to_insert),
+            .query_required_single_json(
+                ASSOCIATE_USERS_WITH_CLASS,
+                &(id_object.id, all_teachers_to_insert, student_ids),
             )
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error creating the class, please try again.".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error associating users with the class",
+                )
+            })?;
+        Ok(id_object)
+    }
+
+    pub async fn create_goal(
+        &self,
+        hanko_id: &str,
+        class_id: &Uuid,
+        name: &str,
+        range: &RangeInput,
+        color: &str,
+        question_ids: &[Uuid],
+    ) -> Result<IdObject, ApiError> {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let question_ids = question_ids.to_vec();
+        let question_instances_objs = self
+            .db_conn
+            .query::<IdObject, _>(CREATE_QUESTION_INSTANCES, &(question_ids,))
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating the question instances",
+                )
+            })?;
+        let question_instances_ids = question_instances_objs
+            .into_iter()
+            .map(|q| q.id)
+            .collect::<Vec<_>>();
+        self.db_conn
+            .query_required_single::<IdObject, _>(
+                CREATE_GOAL,
+                &(
+                    class_id,
+                    color,
+                    range.start(),
+                    range.end(),
+                    name,
+                    question_instances_ids,
+                ),
+            )
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating the goal, please try again.",
+                )
             })
     }
 
-    // TODO: Convert this into an upsert
-
-    // 1. Convert create question to an upsert:
-    // https://www.edgedb.com/tutorial/data-mutations/upsert/conditional-inserts To
-    // 2. To update a question's test cases, just delete all of the old ones and create the
-    // new ones that are specified in the input data.
-    pub async fn upsert_question<'a>(
+    pub async fn upsert_question(
         &self,
-        hanko_id: &'a str,
-        name: &'a str,
-        problem: &'a str,
+        hanko_id: &str,
+        name: &str,
+        problem: &str,
         test_cases: &[TestCase],
-        update_slug: &'a Option<String>,
+        update_slug: &Option<String>,
     ) -> Result<UpsertQuestionOutput, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
@@ -233,14 +293,17 @@ impl LearningService {
                 &(name, problem, slug),
             )
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error creating the question, please try again.".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error creating the question, please try again.",
+                )
             })?;
         // delete all of the old test cases if any
         self.db_conn
             .query_json(DELETE_TEST_CASES, &(question.id,))
             .await
-            .unwrap();
+            .expect("Can not fail");
         fn get_insert_ql(test_case: &TestCaseUnit) -> &'static str {
             match test_case {
                 TestCaseUnit::Number => INSERT_NUMBER_UNIT,
@@ -308,19 +371,42 @@ impl LearningService {
         Ok(question)
     }
 
-    pub async fn delete_question<'a>(
+    pub async fn delete_class(
         &self,
-        hanko_id: &'a str,
-        question_slug: &'a str,
-    ) -> Result<DeleteQuestionOutput, ApiError> {
+        hanko_id: &str,
+        class_id: &Uuid,
+    ) -> Result<IdObject, ApiError> {
         let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
         validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
         let question = self
             .db_conn
-            .query_required_single::<DeleteQuestionOutput, _>(DELETE_QUESTION, &(question_slug,))
+            .query_required_single::<IdObject, _>(DELETE_CLASS, &(class_id,))
             .await
-            .map_err(|_| ApiError {
-                error: "There was an error deleting the question, please try again.".to_string(),
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error deleting the class, please try again.",
+                )
+            })?;
+        Ok(question)
+    }
+
+    pub async fn delete_question(
+        &self,
+        hanko_id: &str,
+        question_slug: &str,
+    ) -> Result<IdObject, ApiError> {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn).await?;
+        validate_user_role(&AccountType::Teacher, &user_details.account_type)?;
+        let question = self
+            .db_conn
+            .query_required_single::<IdObject, _>(DELETE_QUESTION, &(question_slug,))
+            .await
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error deleting the question, please try again.",
+                )
             })?;
         Ok(question)
     }
@@ -397,5 +483,33 @@ impl LearningService {
             num_test_cases_failed: total_passed,
             test_case_statuses: outputs,
         })
+    }
+
+    pub async fn add_user_to_class(&self, hanko_id: &str, class_id: &Uuid) -> bool {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn)
+            .await
+            .unwrap();
+        let mut teachers_to_add = vec![];
+        let mut students_to_add = vec![];
+        if matches!(user_details.account_type, AccountType::Teacher) {
+            teachers_to_add.push(user_details.id);
+        } else {
+            students_to_add.push(user_details.id);
+        }
+        self.db_conn
+            .query_required_single_json(
+                ASSOCIATE_USERS_WITH_CLASS,
+                &(class_id, teachers_to_add, students_to_add),
+            )
+            .await
+            .map(|_| true)
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error associating users with the class",
+                );
+                false
+            })
+            .unwrap()
     }
 }

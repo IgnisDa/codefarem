@@ -6,12 +6,12 @@ import {
   ScrollArea,
   Stack,
   Text,
-  Tooltip,
+  Tooltip
 } from '@mantine/core';
-import type { ExecuteCodeErrorStep } from ':generated/graphql/orchestrator/generated/graphql';
+import type { ExecuteCodeErrorStep } from ':generated/graphql/orchestrator/graphql';
 
 const useStyles = createStyles((theme) => ({
-  timeText: { fontSize: theme.fontSizes.md },
+  timeText: { fontSize: theme.fontSizes.md }
 }));
 
 interface SuccessProps {
@@ -31,7 +31,7 @@ const DisplayOutputWrapper = ({ children }: { children: JSX.Element }) => {
 
 export const DisplaySuccessOutput = ({
   successOutput,
-  successStepTimings,
+  successStepTimings
 }: SuccessProps) => {
   const { classes } = useStyles();
   return (

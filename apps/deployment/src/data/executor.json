@@ -3,8 +3,10 @@
   "project_type": "rust",
   "apps": [
     {
-      "EXECUTABLE_NAMES": ["executor"],
-      "IMAGE_NAME": "ubuntu:latest",
+      "EXECUTABLE_NAMES": [
+        "executor"
+      ],
+      "IMAGE_NAME": "ubuntu:jammy-20221130",
       "COMMANDS": [
         "apt-get update -y",
         "apt-get install -y curl xz-utils",

@@ -1,3 +1,4 @@
+# create a new test case with the given inputs and outputs
 INSERT learning::TestCase {
     inputs := (
         SELECT learning::InputCaseUnit

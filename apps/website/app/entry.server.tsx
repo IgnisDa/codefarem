@@ -18,6 +18,6 @@ export default function handleRequest(
 
   return new Response(`<!DOCTYPE html>${injectStyles(markup, server)}`, {
     status: responseStatusCode,
-    headers: responseHeaders,
+    headers: responseHeaders
   });
 }

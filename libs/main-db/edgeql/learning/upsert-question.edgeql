@@ -1,3 +1,4 @@
+# upsert a question
 SELECT (
   INSERT learning::Question {
     name := <str>$0,

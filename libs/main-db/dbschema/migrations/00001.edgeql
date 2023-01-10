@@ -1,4 +1,4 @@
-CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
+CREATE MIGRATION m1djgowuchn7fap7ft4nsrehlmolcizyqidgkbvl5p3rebql524rpq
     ONTO initial
 {
   CREATE MODULE external IF NOT EXISTS;
@@ -34,6 +34,9 @@ CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
       CREATE REQUIRED LINK data -> learning::CaseUnit {
           ON SOURCE DELETE DELETE TARGET;
       };
+      CREATE PROPERTY normalized_data := (SELECT
+          (std::array_join(.data[IS learning::StringCollectionUnit].string_collection_value, ',') IF (.data IS learning::StringCollectionUnit) ELSE (std::array_join(<array<std::str>>.data[IS learning::NumberCollectionUnit].number_collection_value, ',') IF (.data IS learning::NumberCollectionUnit) ELSE (<std::str>.data[IS learning::NumberUnit].number_value IF (.data IS learning::NumberUnit) ELSE .data[IS learning::StringUnit].string_value)))
+      );
       CREATE REQUIRED PROPERTY seq -> std::int32;
   };
   CREATE TYPE learning::InputCaseUnit EXTENDING learning::CommonCaseUnit {
@@ -41,17 +44,27 @@ CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
   };
   CREATE TYPE learning::OutputCaseUnit EXTENDING learning::CommonCaseUnit;
   CREATE TYPE learning::Class {
-      CREATE REQUIRED PROPERTY name -> std::str;
+      CREATE REQUIRED PROPERTY join_slug -> std::str {
+          CREATE CONSTRAINT std::exclusive;
+      };
+      CREATE REQUIRED PROPERTY name -> std::str {
+          CREATE CONSTRAINT std::exclusive;
+      };
   };
   CREATE TYPE users::UserAuth {
       CREATE REQUIRED PROPERTY hanko_id -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
   };
+  CREATE SCALAR TYPE users::Gender EXTENDING enum<Male, Female>;
+  CREATE SCALAR TYPE users::Mood EXTENDING enum<Happy, Sad, Surprised>;
   CREATE TYPE users::UserProfile {
       CREATE REQUIRED PROPERTY email -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
+      CREATE REQUIRED PROPERTY gender -> users::Gender;
+      CREATE REQUIRED PROPERTY mood -> users::Mood;
+      CREATE REQUIRED PROPERTY profile_avatar -> std::str;
       CREATE REQUIRED PROPERTY username -> std::str {
           CREATE CONSTRAINT std::exclusive;
       };
@@ -68,7 +81,10 @@ CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
   };
   CREATE TYPE users::Student EXTENDING users::User;
   ALTER TYPE learning::Class {
-      CREATE MULTI LINK students -> users::Student;
+      CREATE MULTI LINK students -> users::Student {
+          ON SOURCE DELETE ALLOW;
+          ON TARGET DELETE ALLOW;
+      };
   };
   ALTER TYPE users::Student {
       CREATE MULTI LINK classes := (.<students[IS learning::Class]);
@@ -76,11 +92,47 @@ CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
   CREATE TYPE users::Teacher EXTENDING users::User;
   ALTER TYPE learning::Class {
       CREATE MULTI LINK teachers -> users::Teacher {
+          ON SOURCE DELETE ALLOW;
           ON TARGET DELETE ALLOW;
       };
   };
   ALTER TYPE users::Teacher {
       CREATE MULTI LINK classes := (.<teachers[IS learning::Class]);
+  };
+  CREATE TYPE learning::Goal {
+      CREATE REQUIRED LINK class -> learning::Class {
+          ON SOURCE DELETE ALLOW;
+          ON TARGET DELETE DELETE SOURCE;
+      };
+      CREATE REQUIRED PROPERTY color -> std::str {
+          SET default := (SELECT
+              std::assert_single((SELECT
+                  {'826AED', 'C879FF', 'FFB7FF', '3BF4FB', 'CAFF8A'} ORDER BY
+                      std::random() ASC
+              LIMIT
+                  1
+              ))
+          );
+      };
+      CREATE REQUIRED PROPERTY name -> std::str;
+      CREATE CONSTRAINT std::exclusive ON ((.name, .color, .class));
+      CREATE REQUIRED PROPERTY end_date -> std::datetime {
+          SET default := (SELECT
+              (std::datetime_current() + <cal::relative_duration>'14 days')
+          );
+      };
+      CREATE REQUIRED PROPERTY start_date -> std::datetime {
+          SET default := (SELECT
+              std::datetime_current()
+          );
+      };
+  };
+  CREATE TYPE learning::QuestionInstance;
+  ALTER TYPE learning::Goal {
+      CREATE REQUIRED MULTI LINK questions -> learning::QuestionInstance {
+          ON SOURCE DELETE DELETE TARGET;
+          ON TARGET DELETE ALLOW;
+      };
   };
   CREATE TYPE learning::TestCase {
       CREATE MULTI LINK inputs -> learning::InputCaseUnit {
@@ -91,13 +143,9 @@ CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
       };
   };
   CREATE TYPE learning::Question {
-      CREATE MULTI LINK classes -> learning::Class;
-      CREATE MULTI LINK authored_by -> users::User {
-          ON SOURCE DELETE ALLOW;
-          ON TARGET DELETE ALLOW;
-      };
       CREATE MULTI LINK test_cases -> learning::TestCase {
           ON SOURCE DELETE DELETE TARGET;
+          ON TARGET DELETE ALLOW;
       };
       CREATE REQUIRED PROPERTY created_at -> std::datetime {
           SET default := (SELECT
@@ -109,6 +157,15 @@ CREATE MIGRATION m1i4yf54buxbmnjlgls7w74a2hugqxmbmz5niv4zt2vcbrxdlc5aba
       CREATE REQUIRED PROPERTY slug -> std::str {
           CREATE CONSTRAINT std::exclusive;
           CREATE CONSTRAINT std::expression ON ((std::len(__subject__) = 8));
+      };
+  };
+  ALTER TYPE learning::TestCase {
+      CREATE LINK question := (.<test_cases[IS learning::Question]);
+  };
+  ALTER TYPE learning::QuestionInstance {
+      CREATE REQUIRED LINK question -> learning::Question {
+          ON SOURCE DELETE ALLOW;
+          ON TARGET DELETE DELETE SOURCE;
       };
   };
 };

@@ -14,29 +14,29 @@ import {
   Space,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AccountType,
-  CreateInviteLinkInput,
-} from ':generated/graphql/admin/generated/graphql';
-import { CREATE_INVITE_LINK } from ':generated/graphql/admin/mutations';
-import { ALL_INVITE_LINKS } from ':generated/graphql/admin/queries';
+  CreateInviteLinkInput
+} from ':generated/graphql/admin/graphql';
+import { CREATE_INVITE_LINK } from ':graphql/admin/mutations';
+import { ALL_INVITE_LINKS } from ':graphql/admin/queries';
 import { client } from '../services/graphql';
 
 const schema = z.object({
   accountType: z.nativeEnum(AccountType),
   email: z.string().email({ message: 'Invalid email' }),
-  validFor: z.string(),
+  validFor: z.string()
 });
 
 const times = [
   ['1 hour', '1h'],
   ['1 day', '1d'],
   ['1 week', '1w'],
-  ['1 month', '1M'],
+  ['1 month', '1M']
 ];
 
 export const InvitePage = () => {
@@ -49,22 +49,22 @@ export const InvitePage = () => {
     initialValues: {
       accountType: AccountType.Teacher,
       email: '',
-      validFor: times[2][1],
+      validFor: times[2][1]
     },
-    validate: zodResolver(schema),
+    validate: zodResolver(schema)
   });
 
   const mutation = useMutation({
     mutationFn: async (input: CreateInviteLinkInput) => {
       const { createInviteLink } = await client.request(CREATE_INVITE_LINK, {
-        input,
+        input
       });
       return createInviteLink;
     },
     onSuccess: async () => {
       await refetch();
       form.reset();
-    },
+    }
   });
 
   return (
@@ -142,7 +142,7 @@ export const InvitePage = () => {
                 <SegmentedControl
                   data={[
                     { label: 'Teacher', value: AccountType.Teacher },
-                    { label: 'Student', value: AccountType.Student },
+                    { label: 'Student', value: AccountType.Student }
                   ]}
                   {...form.getInputProps('accountType')}
                 />

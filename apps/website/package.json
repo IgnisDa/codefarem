@@ -5,6 +5,7 @@
     "@codefarem/deployment": "workspace:^",
     "@codefarem/faker": "workspace:*",
     "@codefarem/generated": "workspace:*",
+    "@codefarem/graphql": "workspace:*",
     "@emotion/react": "11.10.5",
     "@emotion/server": "11.10.0",
     "@headlessui/react": "1.7.2",
@@ -68,7 +69,6 @@
   },
   "devDependencies": {
     "@remix-run/dev": "1.8.2",
-    "@remix-run/eslint-config": "1.8.2",
     "@types/cookie": "0.5.1",
     "@types/jsonwebtoken": "8.5.1",
     "@types/lodash": "4.14.185",
