@@ -484,4 +484,32 @@ impl LearningService {
             test_case_statuses: outputs,
         })
     }
+
+    pub async fn add_user_to_class(&self, hanko_id: &str, class_id: &Uuid) -> bool {
+        let user_details = get_user_details_from_hanko_id(hanko_id, &self.db_conn)
+            .await
+            .unwrap();
+        let mut teachers_to_add = vec![];
+        let mut students_to_add = vec![];
+        if matches!(user_details.account_type, AccountType::Teacher) {
+            teachers_to_add.push(user_details.id);
+        } else {
+            students_to_add.push(user_details.id);
+        }
+        self.db_conn
+            .query_required_single_json(
+                ASSOCIATE_USERS_WITH_CLASS,
+                &(class_id, teachers_to_add, students_to_add),
+            )
+            .await
+            .map(|_| true)
+            .map_err(|e| {
+                log_error_and_return_api_error(
+                    e,
+                    "There was an error associating users with the class",
+                );
+                false
+            })
+            .unwrap()
+    }
 }

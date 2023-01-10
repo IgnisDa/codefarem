@@ -34,6 +34,7 @@ use utilities::{
     graphql::{ConnectionArguments, SearchQueryInput},
     models::InputIdObject,
 };
+use uuid::Uuid;
 
 /// The query segment for Learning
 #[derive(Default)]
@@ -217,5 +218,14 @@ impl LearningMutation {
             )
             .await;
         to_result_union_response!(output, ExecuteCodeForQuestionResultUnion)
+    }
+
+    /// Add a user to a specific class
+    async fn add_user_to_class(&self, ctx: &Context<'_>, class_id: Uuid) -> Result<bool> {
+        let hanko_id = hanko_id_from_request!(ctx);
+        Ok(ctx
+            .data_unchecked::<LearningService>()
+            .add_user_to_class(&hanko_id, &class_id)
+            .await)
     }
 }
