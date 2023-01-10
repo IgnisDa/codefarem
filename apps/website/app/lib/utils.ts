@@ -55,6 +55,9 @@ export const unprocessableEntityError = (description: string) => {
   });
 };
 
+/*
+ * This function exports the data returned by the remix loader to the page title.
+ */
 export const metaFunction: MetaFunction = ({ data }) => {
   if (!data) return {};
   return data.meta;

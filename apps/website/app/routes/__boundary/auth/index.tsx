@@ -13,7 +13,7 @@ import {
 import { useForm, zodResolver } from '@mantine/form';
 import { PinInput } from '@mantine/labs';
 import { showNotification } from '@mantine/notifications';
-import { redirect } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { useFetcher } from '@remix-run/react';
 import { IconMailOpened, IconShieldCheck } from '@tabler/icons';
 import {
@@ -26,8 +26,14 @@ import { z } from 'zod';
 import { zx } from 'zodix';
 import { SUCCESSFUL_REDIRECT_PATH } from '~/lib/constants';
 import { gqlClient } from '~/lib/services/graphql.server';
-import { generateUsernameFromEmail } from '~/lib/utils';
+import { generateUsernameFromEmail, metaFunction } from '~/lib/utils';
 import type { ActionArgs } from '@remix-run/node';
+
+export const meta = metaFunction;
+
+export const loader = () => {
+  return json({ meta: { title: 'Authenticate' } });
+};
 
 const authSchema = z.object({
   email: z.string().email(),
