@@ -1,18 +1,29 @@
+import { ADD_USER_TO_CLASS } from ':graphql/orchestrator/mutations';
 import {
-  Alert,
+  Box,
   Button,
+  Card,
   Container,
+  Group,
   Paper,
   Stack,
+  Text,
   TextInput,
   Title
 } from '@mantine/core';
-import { useFetcher } from '@remix-run/react';
-import { ActionArgs, json, LoaderArgs } from '@remix-run/server-runtime';
+import { Form, useFetcher } from '@remix-run/react';
+import {
+  ActionArgs,
+  json,
+  LoaderArgs,
+  redirect
+} from '@remix-run/server-runtime';
+import { badRequest } from 'remix-utils';
 import { route } from 'routes-gen';
 import { z } from 'zod';
 import { zx } from 'zodix';
 import { requireValidJwt } from '~/lib/services/auth.server';
+import { authenticatedRequest, gqlClient } from '~/lib/services/graphql.server';
 import { metaFunction } from '~/lib/utils';
 import { loader as classDetailsLoader } from '~/routes/api/classDetails';
 
@@ -25,13 +36,18 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ meta: { title } });
 };
 
-const actionSchema = z.object({
-  classId: z.string()
-});
+const actionSchema = z.object({ classId: z.string() });
 
 export const action = async ({ request }: ActionArgs) => {
   const { classId } = await zx.parseForm(request, actionSchema);
-  // classId;
+  const { addUserToClass } = await gqlClient.request(
+    ADD_USER_TO_CLASS,
+    { classId },
+    authenticatedRequest(request)
+  );
+  if (!addUserToClass)
+    throw badRequest({ message: 'Could not join class, please try again' });
+  return redirect(route('/classes/:id', { id: classId }));
 };
 
 export default () => {
@@ -55,7 +71,26 @@ export default () => {
           </details.Form>
         </Paper>
         {details.data && (
-          <Alert>{JSON.stringify(details.data.classDetails)}</Alert>
+          <Card shadow="sm" p="lg" radius="md" withBorder>
+            <Group position={'apart'}>
+              <Box>
+                <Text>Name: {details.data.classDetails.name}</Text>
+                <Text>Teachers: {details.data.classDetails.numTeachers}</Text>
+                <Text>Students: {details.data.classDetails.numStudents}</Text>
+                <Text>Goals: {details.data.classDetails.numGoals}</Text>
+              </Box>
+              <Box>
+                <Form method="post">
+                  <input
+                    type="hidden"
+                    name="classId"
+                    value={details.data.classDetails.id}
+                  />
+                  <Button type={'submit'}>Join</Button>
+                </Form>
+              </Box>
+            </Group>
+          </Card>
         )}
       </Stack>
     </Container>
