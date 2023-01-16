@@ -14,9 +14,6 @@ tasks:
       - emails/**/*
     outputs:
       - dist
-    # FIXME: remove this once https://github.com/zenorocha/react-email/issues/293 is fixed
-    options:
-      runInCI: false
 
 workspace:
   inheritedTasks:
