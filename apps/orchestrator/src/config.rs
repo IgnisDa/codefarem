@@ -51,9 +51,11 @@ impl AppState {
         db_conn
             .ensure_connected()
             .await
-            .expect("Unable to connect to the edgedb instance");
+            .context("Unable to connect to the edgedb instance")?;
 
-        let config: AppConfig = get_figment_config().extract()?;
+        let config: AppConfig = get_figment_config()
+            .extract()
+            .context("Unable to extract configuration from environment")?;
 
         let executor_service = ExecutorServiceClient::connect(config.service_urls.executor.clone())
             .await

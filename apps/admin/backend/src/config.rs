@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use dotenv::dotenv;
 use edgedb_tokio::Client;
 use mailer::Mailer;
@@ -37,7 +37,7 @@ impl AppState {
         db_conn
             .ensure_connected()
             .await
-            .expect("Unable to connect to the edgedb instance");
+            .context("Unable to connect to the edgedb instance")?;
 
         let config: AppConfig = get_figment_config().extract()?;
 
