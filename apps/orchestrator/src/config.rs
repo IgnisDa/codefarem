@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use dotenv::dotenv;
 use edgedb_tokio::Client;
 use protobuf::generated::{
@@ -55,26 +55,39 @@ impl AppState {
 
         let config: AppConfig = get_figment_config().extract()?;
 
-        let executor_service =
-            ExecutorServiceClient::connect(config.service_urls.executor.clone()).await?;
-        let cpp_service =
-            CompilerServiceClient::connect(config.service_urls.cpp_service.clone()).await?;
-        let go_service =
-            CompilerServiceClient::connect(config.service_urls.go_service.clone()).await?;
-        let rust_service =
-            CompilerServiceClient::connect(config.service_urls.rust_service.clone()).await?;
-        let zig_service =
-            CompilerServiceClient::connect(config.service_urls.zig_service.clone()).await?;
-        let c_service =
-            CompilerServiceClient::connect(config.service_urls.c_service.clone()).await?;
+        let executor_service = ExecutorServiceClient::connect(config.service_urls.executor.clone())
+            .await
+            .context("executor service")?;
+        let cpp_service = CompilerServiceClient::connect(config.service_urls.cpp_service.clone())
+            .await
+            .context("cpp service")?;
+        let go_service = CompilerServiceClient::connect(config.service_urls.go_service.clone())
+            .await
+            .context("go service")?;
+        let rust_service = CompilerServiceClient::connect(config.service_urls.rust_service.clone())
+            .await
+            .context("rust service")?;
+        let zig_service = CompilerServiceClient::connect(config.service_urls.zig_service.clone())
+            .await
+            .context("zig service")?;
+        let c_service = CompilerServiceClient::connect(config.service_urls.c_service.clone())
+            .await
+            .context("c service")?;
         let python_service =
-            CompilerServiceClient::connect(config.service_urls.python_service.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.python_service.clone())
+                .await
+                .context("python service")?;
         let swift_service =
-            CompilerServiceClient::connect(config.service_urls.swift_service.clone()).await?;
-        let ruby_service =
-            CompilerServiceClient::connect(config.service_urls.ruby_service.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.swift_service.clone())
+                .await
+                .context("swift service")?;
+        let ruby_service = CompilerServiceClient::connect(config.service_urls.ruby_service.clone())
+            .await
+            .context("ruby service")?;
         let grain_service =
-            CompilerServiceClient::connect(config.service_urls.grain_service.clone()).await?;
+            CompilerServiceClient::connect(config.service_urls.grain_service.clone())
+                .await
+                .context("grain service")?;
 
         Ok(Self {
             db_conn: Arc::new(db_conn),
