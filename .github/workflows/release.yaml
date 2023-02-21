@@ -19,7 +19,7 @@ jobs:
       - uses: ./.github/actions/setup-node
         name: Setup Nodejs
 
-      - uses: ./.github/actions/setup-moon
+      - uses: moonrepo/setup-moon-action@v0.0.5
         name: Setup moon
 
       - uses: ./.github/actions/setup-dasel

@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: ./.github/actions/setup-moon
+      - uses: moonrepo/setup-moon-action@v0.0.5
         name: Setup moon
 
       - uses: ./.github/actions/set-base-commit
